@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI陪练 · 学员端 APP</title>
+<style>
+:root{
+  --primary:#1B5BF0; --primary-d:#1248C8; --p-bg:#EBF1FF; --p-bd:#C4D6FF;
+  --cyan:#04C6EE; --grad:linear-gradient(135deg,#04C6EE,#175EF5);
+  --bg:#F3F5FA; --surface:#FFF; --bd:#E8ECF4; --bd2:#D9DFEB;
+  --t1:#1A2233; --t2:#5B6478; --t3:#939BAD;
+  --ok:#12A760; --ok-bg:#E6F7EF; --warn:#E8960C; --warn-bg:#FFF5E3; --bad:#E0453F; --bad-bg:#FDECEB;
+  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:linear-gradient(160deg,#E9EEF8,#DDE6F5);color:var(--t1);font-size:14px;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 0}
+button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit}
+::-webkit-scrollbar{width:0}
+
+.phone{width:390px;height:844px;background:var(--bg);border-radius:44px;box-shadow:0 30px 80px rgba(20,31,74,.35),0 0 0 10px #10173A,0 0 0 12px #2A3563;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:100px;height:26px;background:#0B1020;border-radius:14px;z-index:60}
+.statusbar{position:absolute;top:0;left:0;right:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--t1);z-index:62;pointer-events:none}
+.sb-r{display:flex;align-items:center;gap:5px}
+.sb-r svg{display:block}
+.statusbar.light{color:#fff}
+.statusbar.solid{background:#fff}
+
+.appbody{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;padding-top:44px}
+.page{flex:1;overflow-y:auto;padding:0 16px 20px;display:flex;flex-direction:column}
+.page::-webkit-scrollbar{width:0}
+.page>*{flex-shrink:0}
+.page>.subhead{margin:0 -16px}
+.page.bleed{margin-top:-44px}
+
+/* tabbar */
+.tabbar{flex-shrink:0;background:#fff;border-top:1px solid var(--bd);display:flex;padding:7px 6px 20px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;color:var(--t3)}
+.tab svg{width:22px;height:22px}
+.tab.on{color:var(--primary);font-weight:600}
+
+/* 顶栏（二级页） */
+.subhead{position:sticky;top:0;z-index:30;display:flex;align-items:center;padding:8px 12px 10px;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--bd)}
+.subhead .bk{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--t1)}
+.subhead .bk:active{background:var(--bg)}
+.subhead b{position:absolute;left:0;right:0;top:8px;line-height:34px;text-align:center;font-size:16.5px;font-weight:650;pointer-events:none}
+.subhead .r{position:absolute;right:12px;top:8px;height:34px;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--primary);font-weight:550}
+.subhead .phb{width:30px;height:30px;border-radius:50%;background:var(--p-bg);color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.subhead .phb:active{background:#dbe6ff}
+.subhead .phb.txtb{font-size:13px;font-weight:650;line-height:1}
+
+/* 首页头部 */
+.home-head{margin:0 -16px;padding:64px 16px 18px;background:radial-gradient(130% 110% at 88% -25%,rgba(255,255,255,.32),transparent 55%),var(--grad);color:#fff;border-radius:0 0 24px 24px;box-shadow:0 10px 26px rgba(23,94,245,.22)}
+.home-head .row{display:flex;align-items:center;gap:10px}
+.home-head .row img{height:26px}
+.home-head .hello{margin-top:14px;font-size:19px;font-weight:700}
+.home-head .hello span{font-size:13px;font-weight:400;opacity:.85;display:block;margin-top:2px}
+.bell{margin-left:auto;position:relative;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center}
+.bell i{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;background:#FF4D4F;border-radius:99px;font-size:9.5px;font-style:normal;display:flex;align-items:center;justify-content:center;padding:0 4px;border:1.5px solid #fff}
+
+/* 卡片 */
+.card{background:var(--surface);border-radius:14px;padding:14px;box-shadow:0 1px 3px rgba(20,31,74,.05)}
+.sec-t{display:flex;align-items:center;margin:16px 0 9px}
+.sec-t b{font-size:15px;font-weight:650}
+.sec-t a{margin-left:auto;font-size:12px;color:var(--t3)}
+.mt{margin-top:12px}
+
+/* 任务页大标题 */
+.pg-h1{font-size:22px;font-weight:750;color:var(--t1);margin:8px 0 10px;letter-spacing:.2px}
+
+/* 任务卡（列表版，参考稿样式） */
+.tk{background:var(--surface);border-radius:16px;padding:16px 15px 13px;margin-bottom:12px;box-shadow:0 2px 10px rgba(20,31,74,.06);transition:transform .12s}
+.tk:active{transform:scale(.985)}
+.tk-top{display:flex;align-items:flex-start;gap:10px}
+.tk-name{flex:1;min-width:0;font-size:15.5px;font-weight:700;line-height:1.4;color:var(--t1)}
+.tk-badge{flex-shrink:0;font-size:11px;font-weight:550;line-height:1;padding:5px 10px;border-radius:99px;background:#E8F0FE;color:var(--primary);white-space:nowrap}
+.tk-desc{margin:8px 0 0;font-size:12.5px;line-height:1.7;color:var(--t2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tk-bar{height:6px;border-radius:3px;background:#E9EEF7;margin-top:12px;overflow:hidden}
+.tk-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#2F6BFF,#4E8DFF)}
+.tk-foot{display:flex;align-items:center;justify-content:space-between;margin-top:9px}
+.tk-dl{font-size:11.5px;color:var(--t3)}
+.tk-pct{display:inline-flex;align-items:center;gap:2px;font-size:12.5px;font-weight:600;color:var(--primary)}
+.tk-pct svg{margin-top:.5px}
+.task-hero{background:linear-gradient(120deg,#175EF5,#3E8BFF);border-radius:16px;padding:15px;color:#fff;box-shadow:0 8px 20px rgba(23,94,245,.3)}
+.task-hero .tag{font-size:10.5px;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:99px}
+.task-hero b.t{display:block;font-size:15.5px;margin:7px 0 3px}
+.task-hero p{font-size:11.5px;opacity:.85}
+.prog{height:6px;background:rgba(255,255,255,.25);border-radius:3px;margin-top:10px;overflow:hidden}
+.prog i{display:block;height:100%;background:#fff;border-radius:3px}
+
+/* 快捷入口 */
+.qgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.q{background:var(--surface);border-radius:14px;padding:13px 4px;text-align:center;box-shadow:0 1px 3px rgba(20,31,74,.05)}
+.q .ic{width:40px;height:40px;margin:0 auto 7px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+.q b{font-size:11.5px;font-weight:600;display:block}
+.ic-b{background:var(--p-bg);color:var(--primary)}
+.ic-g{background:#E6F7F0;color:#0DA678}
+.ic-o{background:#FFF3E4;color:#F08A0C}
+.ic-p{background:#F1EDFF;color:#6E4EEA}
+.ic-c{background:#E0F6FB;color:#0AA3C6}
+
+/* 通用条目 */
+.item{display:flex;align-items:center;gap:11px;background:var(--surface);border-radius:14px;padding:13px 14px;box-shadow:0 1px 3px rgba(20,31,74,.05);margin-bottom:9px}
+.item .thumb{width:44px;height:44px;border-radius:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:650}
+.item .tt{flex:1;min-width:0}
+.item .tt b{display:block;font-size:13.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .tt span{font-size:11.5px;color:var(--t3);display:block;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.go{color:var(--t3);flex-shrink:0}
+.bar{height:5px;background:#EDEFF5;border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--primary);border-radius:3px}
+.bar i.g{background:var(--ok)}.bar i.w{background:var(--warn)}.bar i.d{background:var(--bad)}
+.st{display:inline-flex;align-items:center;padding:1.5px 8px;border-radius:99px;font-size:10.5px;font-weight:600}
+.st.ok{background:var(--ok-bg);color:var(--ok)}.st.warn{background:var(--warn-bg);color:var(--warn)}
+.st.bad{background:var(--bad-bg);color:var(--bad)}.st.info{background:var(--p-bg);color:var(--primary)}
+.st.gray{background:#EEF0F5;color:var(--t3)}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;height:44px;border-radius:12px;font-size:14.5px;font-weight:600}
+.btn-p{background:var(--primary);color:#fff;box-shadow:0 5px 14px rgba(27,91,240,.3)}
+.btn-p:active{background:var(--primary-d)}
+.btn-g{background:#fff;border:1px solid var(--bd2);color:var(--t2)}
+.btn-dis{background:#E7EAF1;color:var(--t3);box-shadow:none}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0 10px}
+.chips::-webkit-scrollbar{height:0}
+.chips.tight{gap:6px;padding:0;margin:0}
+.chips.tight + .chips.tight{margin:6px 0 9px}
+.chips.tight .chip{padding:4px 11px;font-size:11.5px}
+.chips.tight .chip.on{font-weight:600}
+.chip{flex-shrink:0;padding:6px 14px;border-radius:99px;background:#fff;border:1px solid var(--bd);font-size:12.5px;color:var(--t2)}
+.chip.on{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:600}
+.search{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:9px 13px;margin-bottom:11px;color:var(--t3);font-size:13px;box-shadow:0 1px 3px rgba(20,31,74,.05)}
+.search input{border:none;outline:none;flex:1;font-size:13px;font-family:inherit;background:none}
+
+/* 剧本详情 */
+.cover{margin:0 -16px;padding:20px 16px 18px;background:radial-gradient(130% 110% at 88% -25%,rgba(255,255,255,.32),transparent 55%),var(--grad);color:#fff}
+.cover h1{font-size:19px;font-weight:700;margin-bottom:6px}
+.cover p{font-size:12.5px;opacity:.88;line-height:1.6}
+.pill{display:inline-block;font-size:11px;background:rgba(255,255,255,.18);padding:3px 9px;border-radius:99px;margin-right:6px;margin-top:8px}
+.persona-pick{display:flex;gap:9px}
+.pp{flex:1;border:1.5px solid var(--bd);border-radius:13px;padding:11px;text-align:center;cursor:pointer}
+.pp.on{border-color:var(--primary);background:#F6F9FF}
+.pp .av{width:40px;height:40px;border-radius:50%;margin:0 auto 7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:650;font-size:15px}
+.pp b{font-size:12.5px;display:block}
+.pp span{font-size:10.5px;color:var(--t3)}
+.pp-add{flex:1;border:1.5px dashed #C7D2E8;border-radius:13px;padding:11px;text-align:center;color:var(--primary);cursor:pointer;background:#F8FAFF}
+.pp-add .av{width:40px;height:40px;border-radius:50%;margin:0 auto 7px;display:flex;align-items:center;justify-content:center;background:#E3EDFF;color:var(--primary)}
+.pp-add b{font-size:12.5px;display:block}
+.pp-add span{font-size:10.5px;color:var(--t3)}
+/* 自定义客户表单 */
+.f-lab{display:block;font-size:12px;color:var(--t2);font-weight:600;margin:13px 0 0}
+.f-lab:first-child{margin-top:0}
+.f-in{width:100%;border:1px solid var(--bd2);border-radius:11px;padding:10px 12px;font-size:13px;font-family:inherit;outline:none;background:#fff;margin-top:6px}
+.f-in:focus{border-color:var(--primary)}
+.f-cnt{font-size:10.5px;color:var(--t3);margin-top:4px}
+.info-kv{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--bd);font-size:13px}
+.info-kv:last-child{border:none}
+.info-kv span{color:var(--t3)}
+.info-kv b{font-weight:600}
+
+/* 陪练执行 */
+.chatpage{flex:1;display:flex;flex-direction:column;overflow:hidden;background:linear-gradient(180deg,#EAF2FF 0%,#F3F5FA 30%)}
+.chat-head{flex-shrink:0;background:#fff;border-bottom:1px solid var(--bd);padding:8px 16px 10px;display:flex;align-items:center;gap:9px}
+.chat-head .end{margin-left:auto;color:var(--bad);font-size:13px;font-weight:600}
+.timer{font-size:12px;color:var(--t2);font-variant-numeric:tabular-nums;background:var(--bg);padding:3px 9px;border-radius:99px}
+.chat{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.msg{display:flex;gap:9px;max-width:85%}
+.msg.me{align-self:flex-end;flex-direction:row-reverse}
+.mav{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:650;overflow:hidden}
+.mav.ai{background:#fff;box-shadow:0 2px 6px rgba(23,94,245,.18)}
+.mav.ai img{width:100%;height:100%;object-fit:contain}
+.mav.self{background:linear-gradient(135deg,#12A760,#3FC98A)}
+.bub{background:#fff;border-radius:3px 14px 14px 14px;padding:10px 13px;font-size:13.5px;line-height:1.65;box-shadow:0 1px 3px rgba(20,31,74,.06)}
+.msg.me .bub{background:var(--primary);color:#fff;border-radius:14px 3px 14px 14px}
+/* 文字对话页：气泡操作条（推荐话术/评分/优化） */
+.crow{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
+.ccb{font-size:11px;padding:3.5px 10px;border-radius:99px;background:#fff;border:1px solid var(--bd);color:var(--t2)}
+.ccb.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.cextra{margin-top:6px;padding:8px 10px;border-radius:10px;font-size:12px;line-height:1.7;background:#F2F6FD;box-shadow:0 1px 3px rgba(20,30,60,.06)}
+.cextra b{display:block;margin-bottom:2px;font-size:11px;color:var(--primary)}
+.cextra .mut{color:var(--t3)}
+/* 剧本列表：头部 + 卡片 + toast */
+.s-head{display:flex;gap:9px;align-items:center}
+.search.s-short{flex:1;margin-bottom:0;padding:8px 12px}
+.crt{flex-shrink:0;height:29px;padding:0 10px;border-radius:9px;background:var(--primary);color:#fff;font-size:11.5px;font-weight:600;display:flex;align-items:center;gap:4px;box-shadow:0 3px 9px rgba(27,91,240,.24)}
+.crt:active{background:var(--primary-d)}
+.sc{background:var(--surface);border-radius:16px;padding:14px 14px 11px;margin-bottom:10px;box-shadow:0 2px 10px rgba(20,31,74,.06);transition:transform .12s}
+.sc:active{transform:scale(.985)}
+.sc-top{display:flex;align-items:flex-start;gap:12px}
+.sc-thumb{width:50px;height:50px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 10px rgba(20,31,74,.16)}
+.sc-tt{flex:1;min-width:0}
+.sc-tt b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;font-weight:650;line-height:1.45}
+.sc-tt span{display:block;font-size:11.5px;color:var(--t3);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-go{width:26px;height:26px;border-radius:50%;background:#F2F5FA;color:var(--t3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px}
+.sc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
+.sc-tags i{font-style:normal;font-size:10.5px;line-height:1.7;padding:1px 9px;border-radius:99px;background:#EEF2F9;color:var(--t2);white-space:nowrap;font-weight:500}
+.sc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:9px;border-top:1px dashed #E8ECF4;font-size:11px}
+.sc-cnt{color:var(--primary);font-weight:550}
+.sc-role{color:var(--t3)}
+.toast{position:fixed;left:50%;bottom:120px;transform:translateX(-50%);background:rgba(20,30,50,.88);color:#fff;font-size:12.5px;padding:9px 16px;border-radius:99px;z-index:99;opacity:0;pointer-events:none;transition:opacity .25s;white-space:nowrap}
+.toast.show{opacity:1}
+.typing{display:flex;gap:4px;padding:12px 14px}
+.typing i{width:6px;height:6px;border-radius:50%;background:#B9C4D8;animation:tp 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes tp{0%,100%{opacity:.4;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.composer{flex-shrink:0;background:#fff;border-top:1px solid var(--bd);padding:9px 14px 26px;display:flex;gap:9px;align-items:center}
+.composer input{flex:1;height:40px;border:1px solid var(--bd2);border-radius:12px;padding:0 13px;font-size:13.5px;font-family:inherit;outline:none}
+.micb{width:40px;height:40px;border-radius:12px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* 语音沉浸陪练（参考布局：全屏形象 + 气泡挂操作条 + 按住说话） */
+/* 语音沉浸陪练（参考：实时通话界面——全屏形象 + 通话状态 + 四键控制） */
+.vpage{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;position:relative;background:radial-gradient(125% 72% at 50% 2%,#2C5CB4 0%,#173572 44%,#0C1733 100%)}
+/* 通话主区：全屏形象 */
+.v-call{flex:1;display:flex;flex-direction:column;align-items:center;min-height:0;padding:2px 0 0;z-index:4}
+.v-avatar{position:relative;width:248px;height:248px;margin-top:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.v-avatar img{width:222px;height:222px;object-fit:contain;filter:drop-shadow(0 16px 34px rgba(0,0,0,.5));position:relative;z-index:2}
+.v-ring{position:absolute;border-radius:50%;border:1.5px solid rgba(150,220,255,.34);animation:vring 3s infinite ease-out}
+.v-ring.r1{inset:6px}.v-ring.r2{inset:-14px;animation-delay:1s}.v-ring.r3{inset:-34px;animation-delay:2s}
+@keyframes vring{0%{transform:scale(.86);opacity:.55}100%{transform:scale(1.16);opacity:0}}
+/* 正在聆听状态胶囊 */
+.v-pill{display:flex;align-items:center;gap:9px;margin-top:8px;background:rgba(4,9,22,.5);border:1px solid rgba(255,255,255,.13);border-radius:99px;padding:7px 17px;font-size:12.5px;color:#fff;flex-shrink:0}
+.v-bars{display:flex;gap:3px;align-items:flex-end;height:13px;transition:opacity .3s}
+.v-bars i{width:3px;background:#fff;border-radius:2px;animation:vbar 1s infinite ease-in-out}
+@keyframes vbar{0%,100%{height:4px}50%{height:13px}}
+/* 实时字幕 */
+.v-sub{width:100%;flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:10px 14px 6px}
+.v-sub::-webkit-scrollbar{width:0}
+.vbub{max-width:92%;border-radius:16px;padding:11px 12px;font-size:13.5px;line-height:1.6}
+.vbub.ai{align-self:flex-start;background:rgba(9,18,40,.78);color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.26)}
+.vbub.me{align-self:flex-end;background:rgba(255,255,255,.95);color:var(--t1);box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.vbub .vrow{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap}
+.vbub .vc{font-size:11px;padding:3.5px 10px;border-radius:99px;background:rgba(255,255,255,.13);color:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.22)}
+.vbub.me .vc{background:#F0F4FB;color:var(--t2);border-color:#E1E7F2}
+.vbub .vc.on{background:rgba(255,255,255,.3);color:#fff;border-color:rgba(255,255,255,.5)}
+.vbub.me .vc.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.vspk{margin-left:auto;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.14);color:#7FD8FF;flex-shrink:0}
+.vbub.me .vspk{background:#EDF3FE;color:var(--primary)}
+.vextra{margin-top:8px;padding:8px 10px;border-radius:10px;font-size:12px;line-height:1.7}
+.vbub.ai .vextra{background:rgba(255,255,255,.1)}
+.vbub.me .vextra{background:#F2F6FD}
+.vextra b{display:block;margin-bottom:2px;font-size:11px}
+.vbub.ai .vextra b{color:#8FD9FF}.vbub.me .vextra b{color:var(--primary)}
+.vextra .mut{color:var(--t3)}
+.vtyping{display:flex;gap:4px;padding:13px 15px}
+.vtyping i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);animation:tp 1.2s infinite}
+.vtyping i:nth-child(2){animation-delay:.2s}.vtyping i:nth-child(3){animation-delay:.4s}
+/* 通话控制栏：四键等大横排 */
+.v-controls{flex-shrink:0;position:relative;z-index:6;padding:6px 22px 20px}
+.v-keys{display:flex;align-items:flex-start;justify-content:space-around}
+/* 悬浮可拖动的设置入口 */
+.v-fab{position:absolute;right:12px;bottom:104px;z-index:12;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.v-fab:active{cursor:grabbing;background:rgba(255,255,255,.3)}
+.v-key{display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:none;color:rgba(255,255,255,.9);font-size:10.5px;font-family:inherit;cursor:pointer;padding:0;width:60px}
+.v-key .ic{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.13);display:flex;align-items:center;justify-content:center;transition:.15s}
+.v-key.on .ic{background:rgba(127,216,255,.26);box-shadow:0 0 0 2px rgba(127,216,255,.5)}
+.v-key:active .ic{background:rgba(255,255,255,.26)}
+.v-key .ic.hang{background:rgba(255,255,255,.1)}
+.v-key .ic.hang svg{stroke:#FF453A;stroke-width:2.2}
+.v-key.lbl-red{color:#FF6B61}
+/* 文字输入与菜单 */
+.vmenu{position:absolute;left:11px;right:11px;bottom:172px;z-index:9;background:#fff;border-radius:14px;padding:6px;box-shadow:0 12px 32px rgba(0,0,0,.3);display:none}
+.vmenu button{display:block;width:100%;text-align:left;padding:10px 12px;font-size:12.5px;border-radius:9px;color:var(--t1);white-space:nowrap;background:none;border:none;font-family:inherit}
+.vmenu button:active{background:var(--bg)}
+#vplus .pt{font-size:10.5px;color:var(--t3);padding:6px 12px 2px}
+.vhint{position:absolute;left:11px;right:11px;bottom:172px;z-index:9;background:#FFF8E8;border:1px solid #F2DCA8;border-radius:14px;padding:10px 12px;font-size:12px;color:#8A6116;line-height:1.7;box-shadow:0 12px 32px rgba(0,0,0,.3);display:none}
+/* 陪练升级：模拟客户卡片 / 训练方式切换 / 语音消息 */
+.psel{margin-top:10px;border:1px solid var(--bd);border-radius:12px;padding:11px 12px;background:var(--surface-2,#F7F9FC)}
+.psel .ph{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.psel .ph b{font-size:13.5px}
+.psel .ph span{font-size:11px;color:var(--t3)}
+.ptags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.bub.voice{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.bub.voice .vi{width:22px;height:22px;border-radius:50%;background:var(--p-bg);color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bub.voice .wave{display:flex;gap:2px;align-items:flex-end;height:16px;flex:1;min-width:70px}
+.bub.voice .wave i{width:2px;background:var(--primary);opacity:.5;border-radius:2px}
+.bub.voice .du{font-size:11.5px;color:var(--t3);font-weight:500}
+.bub.voice .vt{width:100%;font-size:11.5px;color:var(--t3);border-top:1px dashed var(--bd2);padding-top:6px;margin-top:2px}
+.recbtn{flex:1;height:40px;border-radius:12px;background:var(--p-bg);color:var(--primary);font-size:13px;font-family:inherit;border:1px solid transparent;display:flex;align-items:center;justify-content:center}
+.recbtn.rec{background:var(--bad);color:#fff;border-color:var(--bad)}
+.micb.gray{background:var(--bg);color:var(--t2);border:1px solid var(--bd2)}
+/* AI问答（知识库机器人） */
+.qa-tip{flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:5px;font-size:10.5px;color:var(--t3);padding:7px 16px}
+.qa-src{margin-top:5px;font-size:10.5px;color:var(--t3);display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.qa-quick{max-width:88%}
+.qa-quick b{display:block;font-size:11px;color:var(--t3);margin:2px 0 6px;font-weight:550}
+.qa-chips{display:flex;flex-direction:column;gap:7px}
+.qa-chips button{text-align:left;background:#fff;border:1px solid var(--bd);border-radius:11px;padding:8px 12px;font-size:12.5px;color:var(--t1);font-family:inherit;line-height:1.5;box-shadow:0 1px 3px rgba(20,31,74,.05)}
+.qa-chips button:active{background:#F2F6FD}
+.switch-row{display:flex;align-items:center;gap:9px;font-size:13px}
+.vnote{flex-shrink:0;padding:0 16px 6px;font-size:10.5px;color:var(--t3)}
+
+/* 报告 */
+.ring{width:110px;height:110px;border-radius:50%;background:conic-gradient(var(--primary) 0turn .86turn,#E9EDF5 .86turn 1turn);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ring::after{content:"";position:absolute;width:86px;height:86px;border-radius:50%;background:#fff}
+.ring .in{position:relative;z-index:1;text-align:center}
+.ring .in b{font-size:30px;font-weight:700;color:var(--primary)}
+.ring .in span{display:block;font-size:10px;color:var(--t3)}
+.score-hero{display:flex;align-items:center;gap:18px;background:#fff;border-radius:16px;padding:16px}
+.dim{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.dim label{width:66px;font-size:12px;color:var(--t2);flex-shrink:0}
+.dim b{width:24px;text-align:right;font-size:12px}
+.fb{border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.65;margin-bottom:8px;display:flex;gap:7px}
+.fb.good{background:var(--ok-bg);color:#0B7F4B}
+.fb.bad{background:var(--bad-bg);color:#B3302B}
+.fb.tip{background:#F1EDFF;color:#4B33B8}
+
+/* 任务详情阶段 */
+.stage{border:1.5px solid var(--bd);border-radius:14px;padding:12px 13px;margin-bottom:10px;background:#fff}
+.stage.lock{opacity:.62;background:#FAFBFD}
+.stage .sh{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.stage .sh b{font-size:13.5px}
+.stage .sh .st{margin-left:auto}
+.stage .locknote{font-size:11px;color:var(--t3);margin-top:6px;display:flex;align-items:center;gap:5px}
+.stepflow{display:flex;align-items:center;gap:0;margin:2px 0 8px}
+.stepflow i{flex:1;height:2px;background:var(--bd)}
+.stepflow i.done{background:var(--primary)}
+
+/* 考试 */
+.exam-q{background:#fff;border-radius:16px;padding:18px 16px}
+.exam-q .qn{font-size:11.5px;color:var(--t3);margin-bottom:8px}
+.exam-q .qt{font-size:15px;font-weight:600;line-height:1.7;margin-bottom:14px}
+.opt{border:1.5px solid var(--bd);border-radius:12px;padding:12px 14px;font-size:13.5px;margin-bottom:9px;display:flex;gap:9px;align-items:flex-start;cursor:pointer}
+.opt.on{border-color:var(--primary);background:#F6F9FF}
+.opt .o{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--bd2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--t3);flex-shrink:0}
+.opt.on .o{background:var(--primary);border-color:var(--primary);color:#fff}
+
+/* 我的 */
+.me-head{margin:0 -16px;padding:66px 16px 18px;background:radial-gradient(130% 110% at 88% -25%,rgba(255,255,255,.32),transparent 55%),var(--grad);color:#fff;border-radius:0 0 24px 24px;box-shadow:0 10px 26px rgba(23,94,245,.22)}
+.me-av{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700}
+.mstats{display:flex;background:#fff;border-radius:14px;margin-top:12px;padding:13px 0}
+.mstats>div{flex:1;text-align:center;border-right:1px solid var(--bd)}
+.mstats>div:last-child{border:none}
+.mstats b{display:block;font-size:19px;font-weight:700;color:var(--t1)}
+.mstats span{font-size:11px;color:var(--t3)}
+.menu-item{display:flex;align-items:center;gap:11px;background:#fff;border-radius:13px;padding:14px;margin-bottom:8px;font-size:13.5px;font-weight:550}
+.menu-item .ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.menu-item .n{margin-left:auto;color:var(--t3);font-weight:400}
+
+/* 时间线 */
+.tl{position:relative;padding-left:18px}
+.tl::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1.5px;background:var(--bd2)}
+.tl-item{position:relative;padding-bottom:14px}
+.tl-item::before{content:"";position:absolute;left:-17px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--primary);border:2px solid #fff;box-shadow:0 0 0 1.5px var(--p-bd)}
+
+.kv2{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px dashed var(--bd);font-size:13px}
+.kv2:last-child{border:none}
+.kv2 span{color:var(--t3)}
+.kv2 b{font-weight:600}
+.note{font-size:11.5px;color:var(--t3);line-height:1.7;background:var(--surface-2,#F7F9FC);border-radius:10px;padding:10px 12px}
+.empty{padding:70px 30px;text-align:center;color:var(--t3)}
+.empty .e{font-size:40px;margin-bottom:10px;opacity:.35}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"></div>
+  <div class="statusbar" id="sb"><span>9:41</span><span class="sb-r">
+   <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+   <svg width="15" height="11" viewBox="0 0 15 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M1 3.6a9.5 9.5 0 0 1 13 0"/><path d="M3.6 6.2a6 6 0 0 1 7.8 0"/><circle cx="7.5" cy="9.2" r="1.1" fill="currentColor" stroke="none"/></svg>
+   <svg width="24" height="12" viewBox="0 0 24 12" fill="none"><rect x=".5" y=".5" width="20" height="11" rx="3" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="15" height="8" rx="2" fill="currentColor"/><path d="M22.6 4.2v3.6a2 2 0 0 0 0-3.6z" fill="currentColor" opacity=".5"/></svg>
+  </span></div>
+  <div id="app" class="appbody"></div>
+</div>
+
+<script>
+/* ============ 图标 ============ */
+const IC={
+ home:'<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>',
+ sword:'<path d="M12 3l2.5 5.5L21 9l-4.5 4 1 6.5L12 16l-5.5 3.5 1-6.5L3 9l6.5-.5z"/>',
+ task:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+ me:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+ bell:'<path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/>',
+ mic:'<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/>',
+ send:'<path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/>',
+ back:'<path d="M15 18l-6-6 6-6"/>',
+ right:'<path d="M9 6l6 6-6 6"/>',
+ lock:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+ play:'<circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/>',
+ doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',
+ check:'<path d="M20 6L9 17l-5-5"/>',
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ chat:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+ book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+ mega:'<path d="M3 11v2a1 1 0 0 0 1 1h2l4 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12"/>',
+ refresh:'<path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/>'
+};
+const ic=(k,w,s)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="width:'+(w||20)+'px;height:'+(w||20)+'px;'+(s||'')+'">'+IC[k]+'</svg>';
+
+/* ============ 状态 ============ */
+let STACK=['home'];      // 导航栈
+let TABS={home:0,scripts:1,tasks:2,me:3};
+let CHAT=[], PRAC={scriptId:0,persona:0,taskId:null,from:'',mode:'文字',showRule:true};
+let EXAM={idx:0,ans:[null,null]};
+let W=86;
+
+const dim6=[['开场破冰',85],['需求挖掘',72],['产品介绍',78],['异议处理',64],['促成邀约',58],['沟通表达',88]];
+function bar(v,cls){return '<div class="bar"><i class="'+(v<62?'d':v<72?'w':'')+'" style="width:'+v+'%"></i></div>';}
+function stTag(t,c){return '<span class="st '+c+'">'+t+'</span>';}
+
+/* ============ 数据 ============ */
+const SCRIPTS=[
+ {id:0,name:'竞品对比价格谈判',type:'情景对话',time:'15-20 分钟',diff:'挑战',cnt:'本周已练 2 次 · 最高 86',
+  desc:'客户带着竞品报价单进店，要求你给出更低价格。训练在守住价格体系的前提下完成价值重构。',goal:'不降价的前提下，用金融方案+置换权益完成促成',personas:['王先生 · 私营业主','刘总 · 企业高管']},
+ {id:1,name:'进店首次接待·犹豫型客户',type:'情景对话',time:'10-15 分钟',diff:'进阶',cnt:'已完成 4 次 · 平均 72',
+  desc:'首次进店的犹豫型客户，对车型有兴趣但不敢下决定。',goal:'30 秒建立信任，挖出真实购车动机',personas:['李女士 · 白领','张老师 · 中学教师']},
+ {id:2,name:'试驾邀约电话演练',type:'背诵',time:'8-12 分钟',diff:'进阶',cnt:'已完成 3 次 · 最高 91',
+  desc:'给留资客户打邀约电话，客户借口忙碌推脱。',goal:'两轮异议内锁定具体试驾时间',personas:['刘总 · 企业高管']},
+ {id:3,name:'金融分期异议处理',type:'情景对话',time:'10-15 分钟',diff:'新手',cnt:'未开始',
+  desc:'客户认为分期手续费高、流程麻烦，倾向全款。',goal:'算清总账，把分期变成资产配置建议',personas:['张老师 · 中学教师']},
+ {id:4,name:'银河E5产品讲解·三分钟讲车',type:'产品讲解',time:'5-8 分钟',diff:'进阶',cnt:'已完成 2 次 · 最高 88',
+  desc:'按「外观-座舱-三电-智驾」结构完成一次标准讲车，节奏清晰、卖点不遗漏。',goal:'3 分钟内讲完核心卖点，每个卖点带一句客户利益转化',personas:['王先生 · 私营业主']},
+ {id:5,name:'新车上市·车型亮点演讲',type:'演讲',time:'10-15 分钟',diff:'挑战',cnt:'未开始',
+  desc:'面向店头活动客户的车型亮点演讲，开场抓人、层层递进、结尾促动。',goal:'开场 30 秒抓住注意力，结尾引导现场留资',personas:['刘总 · 企业高管','李女士 · 白领']},
+ {id:6,name:'客户接待标准流程话术朗读',type:'朗读',time:'5-8 分钟',diff:'新手',cnt:'已完成 6 次 · 平均 84',
+  desc:'朗读展厅接待标准话术，纠正语速、停顿与称呼规范。',goal:'语速平稳、称呼得体、关键节点零遗漏',personas:['张老师 · 中学教师']}];
+const COURSES=[
+ {id:0,name:'新车销售六步法',ch:8,prog:100,cate:'销售流程',from:'任务'},
+ {id:1,name:'银河E5产品卖点精讲',ch:6,prog:50,cate:'产品知识',from:'任务'},
+ {id:2,name:'客户异议处理二十讲',ch:12,prog:45,cate:'销售技巧',from:'自主'},
+ {id:3,name:'试驾邀约与体验设计',ch:5,prog:0,cate:'销售流程',from:'自主'}];
+const TASKS=[
+ {id:0,name:'新车型销售能力培训',type:'培训任务',dl:'11-30',prog:25,status:'ing',flow:['课程 1/2','陪练 1/2','考核 0/1'],
+  desc:'通过产品课程学习、客户沟通陪练和最终考核，提升新车型销售技能。'},
+ {id:1,name:'客户异议处理专项练习',type:'陪练任务',dl:'12-08',prog:0,status:'ing',flow:['剧本 0/2'],
+  desc:'完成指定的两个场景剧本训练。'},
+ {id:2,name:'新能源产品知识学习',type:'学习任务',dl:'12-15',prog:0,status:'ing',flow:['课程 0/2'],
+  desc:'完成指定的课程内容。'},
+ {id:3,name:'销售知识阶段考试',type:'考试任务',dl:'12-20',prog:0,status:'todo',flow:['考核 0/1'],
+  desc:'按要求完成一次正式试卷考试。'}];
+const EXAMS=[
+ {name:'新车销售顾问认证考核',type:'AI实训',rel:'进店首次接待·犹豫型客户',pass:80,time:'20 分钟',chance:'剩余 1 次'},
+ {name:'10月产品知识月考',type:'试卷',rel:'50题 · 限时45分钟',pass:60,time:'45 分钟',chance:'剩余 2 次'}];
+const PRAC_RECS=[
+ ['竞品对比价格谈判','王先生 · 语音 · 任务','86','10-25 20:10'],
+ ['进店首次接待·犹豫型客户','李女士 · 文字 · 任务','72','10-25 19:44'],
+ ['试驾邀约电话演练','刘总 · 模拟电话 · 任务','91','10-25 17:26'],
+ ['进店首次接待·犹豫型客户','李女士 · 文字 · 自主','64','10-22 12:03']];
+const EXAM_RECS=[
+ ['新车销售顾问认证考核','正式 · AI实训','88','通过','10-25 21:02'],
+ ['10月产品知识月考','正式 · 试卷','92','通过','10-20 10:15'],
+ ['新车销售顾问认证考核','模拟 · AI实训','76','模拟','10-19 15:22']];
+const MSGS=[
+ ['任务下发通知','「10月银河E5上市冲刺培训」已下发，10-31 截止，请及时完成','10-15 09:00',1],
+ ['截止提醒','「周末试驾邀约专项陪练」还有 3 天截止，你已完成 0/2 个剧本','10-25 08:30',1],
+ ['考核结果','「新车销售顾问认证考核」88 分 · 通过','10-25 21:05',0],
+ ['系统通知','你预约的陪练剧本「试驾邀约电话演练」已更新至 v2.1','10-12 10:00',0]];
+
+/* ============ 框架 ============ */
+const app=document.getElementById('app');
+function cur(){return STACK[STACK.length-1];}
+function navTo(s){STACK.push(s);render();}
+function back(){STACK.pop();render();}
+function goTab(s){STACK=[s];render();}
+function render(){
+  const s=cur();
+  const isRoot=STACK.length===1;
+  const hideTab=(s==='practice'||s==='practiceV'||s==='examRun'||s==='qa');
+  let head='';
+  if(!isRoot) head='<div class="subhead"><button class="bk" onclick="back()">'+ic('back',16)+'</button><b>'+TITLES[s]+'</b><span class="r">'+(SRIGHT[s]||'')+'</span></div>';
+  const body=SCREENS[s]();
+  app.innerHTML=(head?body.replace(/(<div class="(?:page|chatpage)[^"]*">)/,'$1'+head):body)+(!hideTab?TABBAR(s):'');
+  app.classList.toggle('dark',false);
+  const p=app.querySelector('.page'); if(p)p.scrollTop=0;
+  const sb=document.getElementById('sb');
+  if(sb){sb.classList.toggle('light',['home','me'].indexOf(s)>=0);sb.classList.toggle('solid',!isRoot);}
+  if(s==='diag'||s==='report') setTimeout(()=>drawRadar(s==='diag'?'dgRadar':'rpRadar',260),40);
+  if(s==='practice'||s==='practiceV') startTimer();
+  if(s==='practiceV'){const c=app.querySelector('#vchat');if(c)c.scrollTop=c.scrollHeight;const last=VCHAT[VCHAT.length-1];vSpeaking(last&&(last.who==='ai'||last.who==='typing'));}
+}
+const TITLES={courses:'课程中心',courseDetail:'课程详情',learn:'课程学习',courseDone:'课程完成',scriptDetail:'剧本详情',practice:'AI 陪练',practiceV:'AI 陪练',report:'陪练报告',taskDetail:'任务详情',taskCourses:'任务课程',taskScripts:'任务剧本',examDetail:'正式考核',examRun:'正式考核',examResult:'考试结果',archive:'学习档案',pRecords:'陪练记录',eRecords:'考试记录',diag:'能力诊断',msg:'消息中心',settings:'账号设置',qa:'AI问答',personaNew:'自定义客户'};
+const PHONE='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg>';
+const SRIGHT={practice:'<button class="phb" onclick="startPhone()" title="切换到模拟电话">'+PHONE+'</button>',practiceV:'<button class="phb txtb" onclick="backToText()" title="切换为文字对话">文</button>',examRun:'',qa:'<button class="phb" onclick="qaNew()" title="开启新对话">'+ic('refresh',14)+'</button>'};
+const PINFO={'王先生 · 私营业主':{tag:['价格敏感','决策快','重面子'],focus:'总价与月供，关注置换残值',tip:'先认同再重构，忌直接否定竞品'},'刘总 · 企业高管':{tag:['效率优先','要求专业','时间紧'],focus:'交付周期与售后保障',tip:'结论先行，用数据支撑，控制篇幅'},'李女士 · 白领':{tag:['犹豫型','重口碑','怕被推销'],focus:'用车场景与月供压力',tip:'少讲参数，多讲场景与故事'},'张老师 · 中学教师':{tag:['谨慎','重合同','怕隐性收费'],focus:'费用明细与条款',tip:'逐项拆解费用，给书面清单'}};
+function pInfo(p){return PINFO[p]||{tag:['价格敏感','需建立信任'],focus:'价格与用车成本',tip:'先问后说，用提问挖需求'};}
+
+const TABBAR=(cur)=>'<div class="tabbar">'+
+ [['home','首页','home'],['scripts','陪练','sword'],['tasks','任务','task'],['me','我的','me']].map(t=>
+  '<button class="tab'+(t[0]===cur?' on':'')+'" onclick="goTab(\''+t[0]+'\')">'+ic(t[2],22)+t[1]+'</button>').join('')+'</div>';
+
+/* ============ 屏幕 ============ */
+const SCREENS={};
+
+/* ---- L01 首页 ---- */
+SCREENS.home=()=>'<div class="page bleed" style="padding-bottom:0">'+
+ '<div class="home-head"><div class="row"><img src="assets/Horizontal_Logo_White_Text.svg" alt="AI陪练"><button class="bell" onclick="navTo(\'msg\')">'+ic('bell',16,'color:#fff')+'<i>2</i></button></div>'+
+  '<div class="hello">下午好，赵磊 👋<span>北京长久博瑞店 · 销售顾问</span></div></div>'+
+ '<div class="task-hero mt" onclick="navTo(\'taskDetail\')">'+
+  '<span class="tag">进行中 · '+TASKS[0].type+'</span><b class="t">'+TASKS[0].name+'</b><p>阶段2/3 · 陪练 1/2 · 截止 '+TASKS[0].dl+'</p><div class="prog"><i style="width:'+TASKS[0].prog+'%"></i></div></div>'+
+ '<div class="qgrid mt">'+
+  '<div class="q" onclick="navTo(\'courses\')"><div class="ic ic-b">'+ic('doc',18)+'</div><b>课程中心</b></div>'+
+  '<div class="q" onclick="goTab(\'scripts\')"><div class="ic ic-p">'+ic('sword',18)+'</div><b>AI陪练</b></div>'+
+  '<div class="q" onclick="goTab(\'tasks\')"><div class="ic ic-o">'+ic('task',18)+'</div><b>我的任务</b></div>'+
+  '<div class="q" onclick="navTo(\'diag\')"><div class="ic ic-g">'+ic('target',18)+'</div><b>能力诊断</b></div>'+
+  '<div class="q" onclick="navTo(\'qa\')"><div class="ic ic-c">'+ic('chat',18)+'</div><b>AI问答</b></div></div>'+
+ '<div class="sec-t"><b>继续学习</b><a onclick="navTo(\'courses\')">全部课程 ›</a></div>'+
+ '<div class="item" onclick="navTo(\'learn\')"><div class="thumb ic-b">'+ic('play',20)+'</div><div class="tt"><b>银河E5产品卖点精讲</b><span>第 3 章 · 动力与续航 · 已学 50%</span></div><button class="btn btn-p" style="height:32px;padding:0 14px;font-size:12.5px;border-radius:9px" onclick="event.stopPropagation();navTo(\'learn\')">继续</button></div>'+
+ '<div class="sec-t"><b>推荐剧本</b><a onclick="goTab(\'scripts\')">更多 ›</a></div>'+
+ SCRIPTS.slice(0,2).map(s=>'<div class="item" onclick="PRAC.taskId=null;navTo(\'scriptDetail\');SET_SCRIPT('+s.id+')"><div class="thumb" style="background:linear-gradient(135deg,#6E4EEA,#9F7CFF)">'+ic('sword',18)+'</div><div class="tt"><b>'+s.name+'</b><span>'+s.type+' · '+s.time+' · '+s.cnt.split(' · ')[1]+'</span></div>'+ic('right',15)+'</div>').join('')+
+ '<div style="height:8px"></div></div>';
+
+/* ---- AI问答（知识库机器人） ---- */
+const QA_KB=[
+ {k:['置换','旧车'],q:'银河E5置换政策怎么讲？',a:'置换补贴至高 8,000 元（11-30 前开票有效），可叠加金融贴息；旧车支持上门估价，48 小时内出评估报告。<br>注意：置换补贴与限时直降不可同享，先确认客户旧车品牌与车龄，再报权益。',src:'《2026Q4 销售政策手册》· 置换政策'},
+ {k:['电池','质保','衰减'],q:'电池质保怎么跟客户讲？',a:'三电系统（电池/电机/电控）首任车主终身质保、不限里程；电池衰减至 70% 以下免费换新，写入购车合同。<br>讲解要点：强调"首任车主""写入合同"两个信任点，并主动问客户年行驶里程，打消衰减顾虑。',src:'《银河E5 产品知识库》· 三电质保'},
+ {k:['竞品','对比','便宜','压价'],q:'客户拿竞品价格压价怎么办？',a:'标准路径：先认同（您对比得很细）→ 拆配置差价（给配置差异清单）→ 算三年总账（保养+电费+保险差额）→ 回到金融方案。<br>禁止直接贬低竞品，禁止承诺超权限优惠。',src:'《销售话术库》· 异议处理'},
+ {k:['分期','金融','手续费','月供'],q:'金融分期手续费怎么算？',a:'当前主推：3 年 12 万 0 利息（限额内），手续费 3,000 元一次性收取；5 年方案年费率 2.99%，首付 15% 起。<br>客户嫌手续费高时，用"手续费÷月供≈每天不到 3 元"重构话术。',src:'《金融产品库》· 分期方案'},
+ {k:['交付','提车','多久','排产'],q:'现在订车多久能提？',a:'主流配置（530km 旗舰版等）有现车，手续齐 3-5 个工作日提车；定制色/特殊配置排产 4-6 周。<br>旺季建议每周主动同步一次排产进度，降低客户焦虑。',src:'《交付流程指引》· 排产与交付'},
+ {k:['保养','维保','用车成本'],q:'保养费用大概多少？',a:'首保 5,000km/6 个月免费；此后常规保养约 300-500 元/次（工时+检查为主，无机油机滤），年均保养成本比同级燃油车低约 60%。<br>给客户算三年总账时，这是常用论据。',src:'《售后服务手册》· 保养周期'}];
+const QA_FALLBACK={a:'知识库中暂未命中这个问题。可以换个问法，带上车型、配置或政策关键词试试；我也会把这条转给店内专家跟进。',src:'知识库检索 · 未命中'};
+let QACHAT=[],QAMODE='text',QAREC=false,QARECSEC=0,QARECIV=null,QAVIDX=0;
+function qaInit(){if(!QACHAT.length)QACHAT=[{who:'ai',txt:'你好，我是 AI 问答助手 🤖<br>产品参数、销售政策、流程规范、话术打法都可以问我。回答调取企业知识库并附来源，可直接讲给客户。'}];}
+function qaNew(){QACHAT=[];render();}
+function qaAnswer(t){t=t||'';for(const e of QA_KB){if(e.k.some(k=>t.indexOf(k)>=0))return e;}return QA_FALLBACK;}
+function qaScroll(){const c=document.getElementById('qachat');if(c)c.scrollTop=c.scrollHeight;}
+function qaReply(txt){setTimeout(()=>{QACHAT.push({who:'typing'});render();qaScroll();
+  setTimeout(()=>{QACHAT.pop();QACHAT.push(Object.assign({who:'ai'},qaAnswer(txt)));render();qaScroll();},900);},300);}
+function qaSend(txt){QACHAT.push({who:'me',txt});render();qaScroll();qaReply(txt);}
+function qaAsk(q){qaSend(q);}
+function qaPush(){const i=document.getElementById('qaInput');
+  const t=(i&&i.value.trim())||'银河E5现在订车多久能提？';
+  if(i)i.value='';qaSend(t);}
+function qaRecStart(){if(QAREC)return;QAREC=true;QARECSEC=0;const b=document.getElementById('qaRec');
+  if(b){b.classList.add('rec');b.textContent='松开 发送 · 0\u2033';}
+  QARECIV=setInterval(()=>{QARECSEC++;const x=document.getElementById('qaRec');if(x)x.textContent='松开 发送 · '+QARECSEC+'\u2033';},1000);}
+function qaRecEnd(){if(!QAREC)return;QAREC=false;clearInterval(QARECIV);QARECIV=null;
+  const t=QA_KB[QAVIDX++%QA_KB.length].q;
+  QACHAT.push({who:'me',txt:t,voice:true,dur:QARECSEC||4});render();qaScroll();qaReply(t);}
+SCREENS.qa=()=>{qaInit();
+ const wave=Array.from({length:14},(_,i)=>'<i style="height:'+(5+((i*7)%11))+'px"></i>').join('');
+ const body=QACHAT.map(m=>{
+  if(m.who==='typing')return '<div class="msg"><div class="mav ai"><img src="assets/Robot_Icon_Transparent.svg"></div><div class="bub typing"><i></i><i></i><i></i></div></div>';
+  if(m.who==='ai')return '<div class="msg"><div class="mav ai"><img src="assets/Robot_Icon_Transparent.svg"></div><div><div class="bub">'+m.txt+'</div><div class="qa-src">'+ic('book',11)+'来源：'+m.src+'</div></div></div>';
+  if(m.voice)return '<div class="msg me"><div class="mav self">赵</div><div><div class="bub voice"><span class="vi">'+ic('mic',13)+'</span><span class="wave">'+wave+'</span><span class="du">'+m.dur+'\u2033</span><div class="vt">'+m.txt+'</div></div></div></div>';
+  return '<div class="msg me"><div class="mav self">赵</div><div><div class="bub">'+m.txt+'</div></div></div>';
+ }).join('');
+ const quick=(QACHAT.length===1)?'<div class="qa-quick"><b>猜你想问</b><div class="qa-chips">'+
+  QA_KB.slice(0,4).map(e=>'<button onclick="qaAsk(\''+e.q+'\')">'+e.q+'</button>').join('')+'</div></div>':'';
+ const comp=QAMODE==='voice'
+  ?'<div class="composer"><button class="recbtn'+(QAREC?' rec':'')+'" id="qaRec" onpointerdown="qaRecStart()" onpointerup="qaRecEnd()" onpointerleave="qaRecEnd()">'+(QAREC?'松开 发送 · '+QARECSEC+'\u2033':'按住 说话')+'</button><button class="micb gray" onclick="QAMODE=\'text\';render()" title="切换为文字提问">'+KBD+'</button></div>'
+  :'<div class="composer"><input id="qaInput" placeholder="向 AI 提问…" onkeydown="if(event.key===\'Enter\')qaPush()"><button class="micb gray" onclick="QAMODE=\'voice\';render()" title="切换为语音提问">'+ic('mic',17)+'</button><button class="micb" onclick="qaPush()">'+ic('send',17)+'</button></div>';
+ return '<div class="chatpage"><div class="qa-tip">'+ic('book',12)+'回答调取企业知识库 · 产品 / 政策 / 话术 / 流程 · 仅供参考</div><div class="chat" id="qachat">'+body+quick+'</div>'+comp+'</div>';};
+
+/* ---- 课程 ---- */
+SCREENS.courses=()=>'<div class="page">'+
+ '<div style="height:12px"></div><div class="search">'+ic('doc',14)+'<input placeholder="搜索课程名称"></div>'+
+ '<div class="chips">'+['全部','销售流程','产品知识','金融保险','销售技巧'].map((c,i)=>'<button class="chip'+(i===0?' on':'')+'">'+c+'</button>').join('')+'</div>'+
+ COURSES.map(c=>'<div class="item" onclick="navTo(\'courseDetail\');SET_COURSE('+c.id+')"><div class="thumb" style="background:linear-gradient(135deg,#175EF5,#04C6EE)">'+ic('play',18)+'</div><div class="tt"><b>'+c.name+'</b><span>'+c.cate+' · '+c.ch+' 章 · '+c.from+'</span><div style="display:flex;gap:8px;align-items:center;margin-top:6px"><div class="bar" style="flex:1"><i class="'+(c.prog===100?'g':c.prog>0&&c.prog<50?'w':'')+'" style="width:'+c.prog+'%"></i></div><span style="font-size:11px;color:var(--t3)">'+c.prog+'%</span></div></div></div>').join('')+
+ '<div class="note" style="margin-top:4px">仅展示已授权课程；未授权课程不可见。</div></div>';
+
+let COURSE=1;
+function SET_COURSE(i){COURSE=i;}
+SCREENS.courseDetail=()=>{const c=COURSES[COURSE];
+ return '<div class="page"><div class="cover"><h1>'+c.name+'</h1><p>讲师：集团培训中心 · 张伟</p><span class="pill">'+c.cate+'</span><span class="pill">'+c.ch+' 章</span><span class="pill">'+(c.from==='任务'?'来源：10月银河E5上市冲刺培训':'自主学习')+'</span></div>'+
+ '<div class="card mt"><div class="sec-t" style="margin:0 0 8px"><b>章节目录</b></div>'+
+  Array.from({length:c.ch},(_,i)=>'<div class="info-kv"><span>0'+(i+1)+' 章节名称</span>'+(i<c.ch*c.prog/100?stTag('已完成','ok'):stTag('未学习','gray'))+'</div>').join('')+'</div>'+
+ '<div class="card mt"><div class="info-kv"><span>学习要求</span><b>全部章节完成即计课程完成</b></div><div class="info-kv"><span>当前进度</span><b>'+c.prog+'%</b></div></div>'+
+ '<button class="btn btn-p mt" onclick="navTo(\'learn\')">'+(c.prog>0?'继续学习':'开始学习')+'</button></div>';};
+SCREENS.learn=()=>{const c=COURSES[COURSE];
+ return '<div class="page"><div class="card" style="padding:0;overflow:hidden"><div style="height:180px;background:linear-gradient(135deg,#175EF5,#04C6EE);display:flex;align-items:center;justify-content:center;color:#fff">'+ic('play',44)+'</div>'+
+ '<div style="padding:14px"><b style="font-size:15px">第 3 章 · 动力与续航</b><p style="font-size:12.5px;color:var(--t2);line-height:1.75;margin-top:8px">银河E5 提供 430/530km 两种 CLTC 续航版本，全系标配神盾短刀电池……讲解时优先结合客户每日通勤里程介绍，避免堆参数。</p></div></div>'+
+ '<div class="card mt"><div class="info-kv"><span>学习进度</span><b>'+c.prog+'% → 完成本章 +17%</b></div></div>'+
+ '<div style="display:flex;gap:10px" class="mt"><button class="btn btn-g" style="flex:1">上一章</button><button class="btn btn-p" style="flex:2" onclick="navTo(\'courseDone\')">完成本章</button></div></div>';};
+SCREENS.courseDone=()=>
+ '<div class="page" style="justify-content:center;text-align:center"><div style="font-size:52px">🎉</div><b style="font-size:19px;margin:12px 0 6px">「'+COURSES[COURSE].name+'」已完成</b>'+
+ '<p style="font-size:12.5px;color:var(--t3)">完成时间 2026-10-28 17:42 · 进度已同步</p>'+
+ '<div class="card mt" style="text-align:left"><div class="info-kv"><span>学习成果</span><b>8 章 · 96 分钟</b></div><div class="info-kv"><span>任务同步</span><b>课程阶段 2/2 完成</b></div><div class="info-kv"><span>下一阶段</span><b>'+stTag('陪练已解锁','ok')+'</b></div></div>'+
+ '<button class="btn btn-p mt" onclick="navTo(\'taskDetail\')">返回任务详情</button><button class="btn btn-g mt" style="margin-top:10px" onclick="back()">返回课程</button></div>';
+
+/* ---- 陪练链路 ---- */
+let SCRIPT=0;
+function SET_SCRIPT(i){SCRIPT=i;}
+const SFILTERS=['全部','情景对话','朗读','背诵','演讲','产品讲解'];
+let SFILTER='全部';
+function setSF(c){SFILTER=c;render();}
+let toastT=null;
+function toast(t){let el=document.getElementById('gtoast');if(!el){el=document.createElement('div');el.id='gtoast';el.className='toast';document.body.appendChild(el);}el.textContent=t;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),1800);}
+const SC_META={'情景对话':['linear-gradient(135deg,#2F6BFF,#04C6EE)','chat','#E3EDFF','#2F6BFF'],
+ '背诵':['linear-gradient(135deg,#7A5CFF,#9F7CFF)','book','#EFEAFF','#7A5CFF'],
+ '朗读':['linear-gradient(135deg,#12A760,#3ED598)','book','#E4F7EE','#12A760'],
+ '演讲':['linear-gradient(135deg,#F08A0C,#FFB84D)','mega','#FFF2E0','#E8960C'],
+ '产品讲解':['linear-gradient(135deg,#E0453F,#FF8A7A)','target','#FDECEB','#E0453F']};
+const DIFF_META={'挑战':['#FDECEB','#E0453F'],'进阶':['#FFF2E0','#E8960C'],'新手':['#E4F7EE','#12A760']};
+function scMeta(t){return SC_META[t]||['linear-gradient(135deg,#6E4EEA,#9F7CFF)','sword','#EFEAFF','#7A5CFF'];}
+SCREENS.scripts=()=>{const list=SCRIPTS.filter(s=>SFILTER==='全部'||s.type===SFILTER);
+ return '<div class="page"><div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">'+
+ '<div class="pg-h1" style="margin:0">AI陪练</div>'+
+ '<button class="crt" onclick="toast(\'自定义剧本创建即将上线，可联系管理员配置\')">'+ic('plus',11)+'创建剧本</button></div>'+
+ '<div style="height:10px"></div>'+
+ '<div class="chips">'+SFILTERS.map(c=>'<button class="chip'+(SFILTER===c?' on':'')+'" onclick="setSF(\''+c+'\')">'+c+'</button>').join('')+'</div>'+
+ (list.length?list.map(s=>{const m=scMeta(s.type),d=DIFF_META[s.diff]||['#EEF2F9','#8A93A6'];
+   return '<div class="sc" onclick="PRAC.taskId=null;navTo(\'scriptDetail\');SET_SCRIPT('+s.id+')">'+
+   '<div class="sc-top"><div class="sc-thumb" style="background:'+m[0]+'">'+ic(m[1],21)+'</div>'+
+   '<div class="sc-tt"><b>'+s.name+'</b><span>'+s.desc+'</span></div>'+
+   '<span class="sc-go">'+ic('right',13)+'</span></div>'+
+   '<div class="sc-tags"><i style="background:'+m[2]+';color:'+m[3]+';font-weight:600">'+s.type+'</i><i style="background:'+d[0]+';color:'+d[1]+'">'+s.diff+'</i><i>'+s.time+'</i></div>'+
+   '<div class="sc-foot"><span class="sc-cnt">'+s.cnt+'</span><span class="sc-role">'+s.personas.length+' 位模拟角色</span></div></div>';}).join('')
+  :'<div class="note" style="text-align:center">该分类下暂无剧本</div>')+
+ '<div class="note" style="margin-top:2px">一次会话只绑定一个剧本；同一剧本可反复训练，每次生成独立记录。</div></div>';};
+
+let CUSTOM_P=[];
+function pList(s){return s.personas.concat(CUSTOM_P.map(c=>c.name+' \u00b7 '+c.role));}
+SCREENS.scriptDetail=()=>{const s=SCRIPTS[SCRIPT];const plist=pList(s);const free=!PRAC.taskId;
+ if(PRAC.persona>=plist.length)PRAC.persona=0;
+ const p=plist[PRAC.persona],pi=pInfo(p);
+ return '<div class="page"><div class="cover"><h1>'+s.name+'</h1><p>'+s.desc+'</p><span class="pill">'+s.type+'</span><span class="pill">'+s.diff+'</span><span class="pill">'+s.time+'</span></div>'+
+ '<div class="card mt"><div class="sec-t" style="margin:0 0 4px"><b>训练目标</b></div><p style="font-size:12.5px;color:var(--t2);line-height:1.7">'+s.goal+'</p></div>'+
+ '<div class="card mt"><div class="sec-t" style="margin:0 0 10px"><b>选择模拟客户</b><span style="font-size:11px;color:var(--t3);margin-left:6px">本场会话固定一位</span></div>'+
+ '<div class="persona-pick" id="pp">'+plist.map((q,i)=>'<div class="pp'+(i===PRAC.persona?' on':'')+'" onclick="pickP('+i+')"><div class="av" style="background:'+(i===PRAC.persona?'linear-gradient(135deg,#175EF5,#04C6EE)':'linear-gradient(135deg,#F08A0C,#FFB84D)')+'">'+q[0]+'</div><b>'+q.split(' \u00b7 ')[0]+'</b><span>'+q.split(' \u00b7 ')[1]+'</span></div>').join('')+
+ (free?'<div class="pp-add" onclick="navTo(\'personaNew\')"><div class="av">'+ic('plus',18)+'</div><b>自定义客户</b><span>创建陪练角色</span></div>':'')+'</div>'+
+ (free?'':'<div class="note" style="margin-top:10px">任务陪练的客户由任务指定，不支持自定义。</div>')+
+ '<div class="psel"><div class="ph"><b>'+p.split(' \u00b7 ')[0]+'</b><span>'+p.split(' \u00b7 ')[1]+'</span></div>'+
+ '<div class="ptags">'+pi.tag.map(t=>stTag(t,'info')).join('')+'</div>'+
+ '<div class="kv2"><span>核心关注</span><b>'+pi.focus+'</b></div>'+
+ '<div class="kv2"><span>应对要点</span><b>'+pi.tip+'</b></div></div></div>'+
+ '<button class="btn btn-p mt" onclick="PRAC.scriptId='+SCRIPT+';PRAC.taskId=null;startPractice()">开始陪练</button>'+
+ '<p style="text-align:center;font-size:11px;color:var(--t3);margin-top:10px">默认进入文字对话，可在对话页切换语音输入或模拟电话</p></div>';};
+function pickP(i){PRAC.persona=i;
+ document.querySelectorAll('#pp .pp').forEach((n,j)=>n.classList.toggle('on',j===i));
+ const p=pList(SCRIPTS[SCRIPT])[i],pi=pInfo(p),el=document.querySelector('.psel');
+ if(el)el.innerHTML='<div class="ph"><b>'+p.split(' \u00b7 ')[0]+'</b><span>'+p.split(' \u00b7 ')[1]+'</span></div><div class="ptags">'+pi.tag.map(t=>stTag(t,'info')).join('')+'</div><div class="kv2"><span>核心关注</span><b>'+pi.focus+'</b></div><div class="kv2"><span>应对要点</span><b>'+pi.tip+'</b></div>';}
+SCREENS.personaNew=()=>
+ '<div class="page"><div style="height:12px"></div>'+
+ '<div class="card" style="padding-bottom:6px">'+
+ '<span class="f-lab">称呼 *</span><input class="f-in" id="fName" placeholder="如：周女士 / 陈叔叔" value="周女士">'+
+ '<span class="f-lab">身份 / 职业</span><input class="f-in" id="fRole" placeholder="如：自由职业 / 个体老板" value="自由职业">'+
+ '<span class="f-lab">性格标签（逗号分隔）</span><input class="f-in" id="fTags" placeholder="如：价格敏感，决策快，爱比较" value="价格敏感，决策快，爱比较竞品">'+
+ '<span class="f-lab">核心关注</span><input class="f-in" id="fFocus" placeholder="这位客户最在意什么？" value="落地总价与赠品，习惯拿多家报价对比">'+
+ '<span class="f-lab">应对要点</span><input class="f-in" id="fTip" placeholder="接场时的策略提示" value="先认同再重构，用三年总账回应比价，避免正面贬低竞品">'+
+ '<div class="f-cnt" style="margin-top:10px">自定义客户仅在自由选择剧本时可选；任务陪练与考试的客户由任务指定。</div></div>'+
+ '<button class="btn btn-p mt" onclick="personaSave()">保存并选用</button></div>';
+function personaSave(){
+ const g=i=>{const e=document.getElementById(i);return e?e.value.trim():'';};
+ const name=g('fName')||'自定义客户',role=g('fRole')||'自定义身份';
+ const tags=(g('fTags')||'价格敏感，需建立信任').split(/[,，、 ]+/).filter(Boolean).slice(0,4);
+ const focus=g('fFocus')||'由你定义：这位客户最在意什么';
+ const tip=g('fTip')||'由你定义：接场时的应对策略';
+ CUSTOM_P.push({name,role});
+ PINFO[name+' \u00b7 '+role]={tag:tags,focus,tip};
+ PRAC.persona=pList(SCRIPTS[SCRIPT]).length-1;
+ toast('已创建并选用自定义客户：'+name);
+ back();}
+
+
+const AI_REPLIES=[
+ {txt:'嗯，你说得有道理。不过隔壁品牌同配置便宜一万二，还送装潢包，你们怎么比？',
+  ex:'王哥，便宜那一万二咱们分两块看：一是配置差价，二是三年用车成本。我把保养、电费、保险列个明细，您再判断值不值。'},
+ {txt:'价格先放一边，你这车电池质保到底怎么写的？我现在最担心用几年衰减。',
+  ex:'电池首任车主终身质保、不限里程，衰减到 70% 以下免费换新——这条写在合同里。您平时一年大概跑多少公里？'},
+ {txt:'行，那你按刚才说的，把方案发我看看。但我丑话说前头，价格没诚意免谈。',
+  ex:'没问题王哥，我把金融贴息和置换权益都列进方案，今晚八点前发您微信。您看完咱们约个时间到店，我当面把账算清楚。'}];
+let replyIdx=0,timerIv=null,sec=0,PMODE='text',PREC=false,PRECSEC=0,PRECIV=null;
+function startPractice(){
+  sec=0;replyIdx=0;PMODE='text';
+  CHAT=[{who:'ai',txt:'你好，我看了你们银河E5的资料，今天主要想了解价格，你们最低能优惠多少？',ex:'王总您好！优惠肯定有，不过比价得同配置比。方便先说下您看中的竞品是哪个版本吗？咱们拉平了算总账。',show:{}}];
+  navTo('practice');
+}
+function startTimer(){clearInterval(timerIv);timerIv=setInterval(()=>{sec++;const t=document.getElementById('pTimer');if(t)t.textContent=fmt(sec);const v=document.getElementById('vTimer');if(v)v.textContent=fmt(sec);},1000);}
+function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function aiMsg(){const a=AI_REPLIES[replyIdx++%AI_REPLIES.length];return {who:'ai',txt:a.txt,ex:a.ex,show:{}};}
+function meMsg(txt,voice,dur){const e=VME[replyIdx%VME.length];
+ const m={who:'me',txt:txt||e.txt,fix:e.fix,opt:e.opt,
+  score:{t:'本句评分 '+e.sc+' / 10',d:'挖需 8 · 异议处理 8 · 沟通表达 9',note:'没有硬碰硬回价，用反问稳住节奏；建议补一句量化对比，说服力更强。'},show:{}};
+ if(voice){m.voice=true;m.dur=dur||3;}return m;}
+function cTgl(i,k){const m=CHAT[i];if(!m.show)m.show={};m.show[k]=!m.show[k];render();}
+function meExtras(m,i){return (m.show&&m.show.score?'<div class="cextra"><b>'+m.score.t+'</b>'+m.score.d+'<br><span class="mut">'+m.score.note+'</span></div>':'')+
+ (m.show&&m.show.opt?'<div class="cextra"><b>优化</b><span class="mut">原句：「'+m.fix.bad+'」→ 建议：「'+m.fix.good+'」</span><br>'+m.opt.t+'<br><span class="mut">'+m.opt.d+'</span></div>':'')+
+ '<div class="crow"><button class="ccb'+(m.show&&m.show.score?' on':'')+'" onclick="cTgl('+i+',\'score\')">评分</button><button class="ccb'+(m.show&&m.show.opt?' on':'')+'" onclick="cTgl('+i+',\'opt\')">优化</button></div>';}
+SCREENS.practice=()=>{const s=SCRIPTS[PRAC.scriptId];const voice=PMODE==='voice';const pn=pList(s)[PRAC.persona].split(' \u00b7 ')[0];
+ const wave=Array.from({length:14},(_,i)=>'<i style="height:'+(5+((i*7)%11))+'px"></i>').join('');
+ const body=CHAT.map((m,i)=>{
+  if(m.who==='typing') return '<div class="msg"><div class="mav ai"><img src="assets/Robot_Icon_Transparent.svg"></div><div class="bub typing"><i></i><i></i><i></i></div></div>';
+  if(m.who==='ai') return '<div class="msg"><div class="mav ai"><img src="assets/Robot_Icon_Transparent.svg"></div><div><div class="bub">'+m.txt+'</div>'+
+   (m.show&&m.show.ex?'<div class="cextra"><b>推荐话术</b>'+m.ex+'</div>':'')+
+   '<div class="crow"><button class="ccb'+(m.show&&m.show.ex?' on':'')+'" onclick="cTgl('+i+',\'ex\')">推荐话术</button></div></div></div>';
+  if(m.voice) return '<div class="msg me"><div class="mav self">赵</div><div><div class="bub voice"><span class="vi">'+ic('mic',13)+'</span><span class="wave">'+wave+'</span><span class="du">'+m.dur+'\u2033</span><div class="vt">'+m.txt+'</div></div>'+meExtras(m,i)+'</div></div>';
+  return '<div class="msg me"><div class="mav self">赵</div><div><div class="bub">'+m.txt+'</div>'+meExtras(m,i)+'</div></div>';
+ }).join('');
+ const comp=voice
+  ? '<div class="composer"><button class="recbtn'+(PREC?' rec':'')+'" id="recBtn" onpointerdown="pRecStart()" onpointerup="pRecEnd()" onpointerleave="pRecEnd()">'+(PREC?'松开 发送 · '+PRECSEC+'\u2033':'按住 说话')+'</button><button class="micb gray" onclick="togglePMode()" title="切换为文字输入">'+KBD+'</button></div>'
+  : '<div class="composer"><input id="pInput" placeholder="输入回应…" onkeydown="if(event.key===\'Enter\')pushMsg()"><button class="micb gray" onclick="togglePMode()" title="切换为语音输入">'+ic('mic',17)+'</button><button class="micb" onclick="pushMsg()">'+ic('send',17)+'</button></div>';
+ return '<div class="chatpage">'+
+ '<div class="chat-head"><div class="mav ai" style="width:38px;height:38px"><img src="assets/Robot_Icon_Transparent.svg"></div><div><b style="font-size:14.5px">'+pn+'</b><div style="font-size:10.5px;color:var(--t3)">'+s.name+'</div></div><span class="timer" id="pTimer" style="margin-left:auto">'+fmt(sec)+'</span><button class="end" style="margin-left:8px" onclick="endPractice()">结束</button></div>'+
+ '<div class="chat">'+body+'</div>'+
+ 
+ (voice?'<div class="vnote">按住说话，松开后以语音消息发送，并自动转为文字参与评分</div>':'')+
+ comp+'</div>';};
+function togglePMode(){PMODE=PMODE==='voice'?'text':'voice';render();}
+function startPhone(){VMODE='模拟电话';PRAC.mode='模拟电话';vInit();navTo('practiceV');}
+function aiReply(){setTimeout(()=>{CHAT.push({who:'typing'});render();
+  setTimeout(()=>{CHAT.pop();CHAT.push(aiMsg());render();},1300);},400);}
+const VOICE_TXT=['王哥，价格我肯定给您争取。不过先问一句，您置换的那台车现在打算卖多少？','您说的那款配置跟咱们不一样，咱得看三年保养、电费、保险加起来的总账。','这样王哥，您加个微信，我把对比表和报价明细一起发您，再约个时间到店试驾？'];
+function pRecStart(){if(PREC)return;PREC=true;PRECSEC=0;const b=document.getElementById('recBtn');if(b){b.classList.add('rec');b.textContent='松开 发送 · 0\u2033';}PRECIV=setInterval(()=>{PRECSEC++;const x=document.getElementById('recBtn');if(x)x.textContent='松开 发送 · '+PRECSEC+'\u2033';},1000);}
+function pRecEnd(){if(!PREC)return;PREC=false;clearInterval(PRECIV);PRECIV=null;CHAT.push(meMsg(VOICE_TXT[replyIdx%VOICE_TXT.length],true,PRECSEC||3));render();aiReply();}
+function pushMsg(){
+  const inp=document.getElementById('pInput');
+  const txt=(inp&&inp.value.trim())||'王哥，价格我肯定给您争取。不过先问一句，您置换的那台车现在打算卖多少？';
+  if(inp)inp.value='';
+  CHAT.push(meMsg(txt));render();aiReply();
+}
+function endPractice(){clearInterval(timerIv);navTo('report');}
+/* ---- 语音沉浸陪练（practiceV）：布局参考附件——全屏AI形象 + 气泡挂逐句操作条 + 按住说话 ---- */
+const SPK='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>';
+const KBD='<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h.01M17 14h.01M10 14h4"/></svg>';
+const TEL='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg>';
+
+const XEND='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg>';const MIC='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>';
+const SPK_BIG='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12"/></svg>';
+const GEAR='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
+const DOTS='<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg>';
+const REFRESH='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg>';
+let VCHAT=[],VREPLY=0,VMODE='语音',vRecIv=null,vRecT=0,vTxtOpen=false;
+const VAI=[
+ {txt:'你好，我看了你们银河E5的资料，今天主要想了解价格，你们最低能优惠多少？',
+  en:'Hi, I have looked at your Galaxy E5 materials. Today I mainly want to talk about price — what is the biggest discount you can offer?',
+  ex:'王总您好！优惠肯定有，不过比价得同配置比。方便先说下您看中的竞品是哪个版本吗？咱们拉平了算总账。'},
+ {txt:'隔壁品牌同配置便宜一万二，还送装潢包，你们怎么比？',
+  en:'The competitor with the same configuration is 12,000 cheaper and even includes a trim package. How can you compete with that?',
+  ex:'王哥，便宜那一万二咱们分两块看：一是配置差价，二是三年用车成本。我把保养、电费、保险列个明细，您再判断值不值。'},
+ {txt:'行，那你把方案发我看看。丑话说前头，价格没诚意免谈。',
+  en:'Fine, send me the proposal. Fair warning — if the price is not sincere, there is no deal.',
+  ex:'没问题王哥，我把金融贴息和置换权益都列进方案，今晚八点前发您微信。您看完咱们约个时间到店，我当面把账算清楚。'}];
+const VME=[
+ {txt:'王哥，价格我肯定给您争取。不过先问一句，您置换的那台车现在打算卖多少？',sc:8.5,
+  en:'Mr. Wang, I will definitely push for the best price for you. But first, how much were you thinking of for your trade-in?',
+  fix:{bad:'价格我肯定给您争取',good:'价格上我一定帮您向公司争取最优方案',note:'补上动作主体和「最优方案」，承诺更具体、更可信。'},
+  opt:{t:'「王哥，价格我一定帮您争取最优方案。先问一句：您置换那台车预算多少？」',d:'保留反问结构，把「争取」具体化为动作承诺。'}},
+ {txt:'您说的那款配置跟咱们不一样，咱得看三年保养、电费、保险加起来的总账。',sc:8.0,
+  en:'That model has a different configuration. We should compare the total three-year cost: maintenance, charging and insurance.',
+  fix:{bad:'配置不一样，咱得看总账',good:'配置有差异，我给您算笔三年总持有成本账',note:'口语化表达改为量化表达，更有说服力。'},
+  opt:{t:'「配置确实有差异，所以我建议比总账：三年保养+电费+保险，我给您逐项列。」',d:'先认同再重构，避免显得在回避比价。'}},
+ {txt:'这样王哥，您加个微信，我把对比表和报价明细一起发您，再约个时间到店试驾？',sc:9.0,
+  en:'How about this, Mr. Wang — add me on WeChat, I will send you the comparison sheet and quotation, and we can arrange a test drive.',
+  fix:{bad:'您留个联系方式',good:'您留个微信，我把对比表和报价明细一起发您',note:'给对方明确的动作回报，到店率更高。'},
+  opt:{t:'「您留个微信，今晚八点前我把对比表+报价明细发您，顺便帮您留个周末试驾的名额？」',d:'加时间锚点和稀缺性，推动二次到店。'}}];
+function vInit(){VCHAT=[{who:'ai',txt:VAI[0].txt,en:VAI[0].en,ex:VAI[0].ex,show:{}}];VREPLY=1;setTimeout(()=>vSpeaking(false),2600);}
+SCREENS.practiceV=()=>{const s=SCRIPTS[PRAC.scriptId];const pn=pList(s)[PRAC.persona].split(' · ')[0];
+ const chat=VCHAT.map((m,i)=>{
+  if(m.who==='typing')return `<div class="vbub ai vtyping" style="align-self:flex-start"><i></i><i></i><i></i></div>`;
+  if(m.who==='ai')return `<div class="vbub ai">`+m.txt+
+   (m.show.ex?`<div class="vextra"><b>推荐话术</b>`+m.ex+`</div>`:'')+
+   `<div class="vrow"><button class="vc`+(m.show.ex?' on':'')+`" onclick="vTgl(`+i+`,'ex')">推荐话术</button><span class="vspk" onclick="vPlay(this)">`+SPK+`</span></div></div>`;
+  return `<div class="vbub me">`+m.txt+
+   (m.show.score?`<div class="vextra"><b>`+m.score.t+`</b>`+m.score.d+`<br><span class="mut">`+m.score.note+`</span></div>`:'')+
+   (m.show.opt?`<div class="vextra"><b>优化</b><span class="mut">原句：「`+m.fix.bad+`」→ 建议：「`+m.fix.good+`」</span><br>`+m.opt.t+`<br><span class="mut">`+m.opt.d+`</span></div>`:'')+
+   `<div class="vrow"><button class="vc`+(m.show.score?' on':'')+`" onclick="vTgl(`+i+`,'score')">评分</button><button class="vc`+(m.show.opt?' on':'')+`" onclick="vTgl(`+i+`,'opt')">优化</button><span class="vspk" onclick="vPlay(this)">`+SPK+`</span></div></div>`;
+ }).join('');
+ return `<div class="chatpage">`+
+  `<div class="chat-head"><div class="mav ai" style="width:30px;height:30px"><img src="assets/Robot_Icon_Transparent.svg"></div><div><b style="font-size:14.5px">`+pn+`</b><div style="font-size:10.5px;color:var(--t3)">`+s.name+` · 模拟电话</div></div><span class="timer" id="vTimer" style="margin-left:auto">`+fmt(sec)+`</span><button class="end" style="margin-left:8px" onclick="endPractice()">结束</button></div>`+
+  `<div class="vpage">`+
+   `<div class="v-call">`+
+   `<div class="v-avatar" id="vavatar"><span class="v-ring r1"></span><span class="v-ring r2"></span><span class="v-ring r3"></span><img src="assets/Robot_Icon_Transparent.svg"></div>`+
+   `<div class="v-pill" id="vpill"><span class="v-bars" id="vbars"><i style="animation-delay:0s"></i><i style="animation-delay:.2s"></i><i style="animation-delay:.4s"></i><i style="animation-delay:.15s"></i><i style="animation-delay:.35s"></i></span><span id="vstatus">正在聆听</span></div>`+
+   `<div class="v-sub" id="vchat">`+chat+`</div>`+
+  `</div>`+
+  `<div class="v-controls"><div class="v-keys">`+
+   `<button class="v-key" id="vkMute" onclick="vToggle('Mute')"><span class="ic">`+MIC+`</span><span>静音</span></button>`+
+   `<button class="v-key" id="vkSpk" onclick="vToggle('Spk')"><span class="ic">`+SPK_BIG+`</span><span>免提</span></button>`+
+   `<button class="v-key lbl-red" onclick="endPractice()"><span class="ic hang">`+XEND+`</span><span>结束</span></button>`+
+  `</div></div>`+
+  `<button class="v-fab" id="vfab" style="`+(FAB.x!=null?('left:`+FAB.x+`px;top:`+FAB.y+`px;'):'')+`" onpointerdown="vFabDown(event)" onpointermove="vFabMove(event)" onpointerup="vFabUp(event)" onpointercancel="vFabCancel()" title="设置">`+GEAR+`</button>`+
+  `<div class="vmenu" id="vmenu"><button onclick="vHint()">💡 话术提示</button><button onclick="vPlusOpen()">常用话术</button><button onclick="endPractice()">结束 · 生成复盘报告</button></div>`+
+  `<div class="vmenu" id="vplus"><div class="pt">常用话术 · 点击直接说出</div><button onclick="vSay('王哥，价格我肯定给您争取，不过咱们得同配置拉平了比。')">同配置拉平了比</button><button onclick="vSay('您置换那台车，我让评估师给您算细账，还能叠加厂家补贴。')">置换算细账</button><button onclick="vSay('我把三年保养、电费、保险的总账给您列一下。')">三年总成本</button></div>`+
+  `<div class="vhint" id="vhint"><b>当前场景建议：</b>客户首句即压价，直接报折扣会被动。先用提问转移——了解竞品具体配置与置换需求，把比价拉到三年总持有成本维度，再谈金融方案。</div>`+
+  `</div>`+
+ `</div>`;};
+function vTgl(i,k){const m=VCHAT[i];if(!m.show)m.show={};m.show[k]=!m.show[k];render();}
+function vPlay(el){el.style.color='#FFD76A';setTimeout(()=>{el.style.color='';},900);}
+function vSay(t){document.getElementById('vplus').style.display='none';vSend(t);}
+function vSend(txt){
+  const tpl=VME[VREPLY%VME.length];
+  VCHAT.push({who:'me',txt:txt||tpl.txt,en:tpl.en,fix:tpl.fix,opt:tpl.opt,score:{t:'本句评分 '+tpl.sc+' / 10',d:'挖需 8 · 异议处理 8 · 沟通表达 9',note:'没有硬碰硬回价，用反问稳住节奏；建议补一句量化对比，说服力更强。'},show:{}});
+  render();
+  setTimeout(()=>{VCHAT.push({who:'typing'});vSpeaking(true);render();
+    setTimeout(()=>{VCHAT.pop();const a=VAI[VREPLY%VAI.length];VREPLY++;VCHAT.push({who:'ai',txt:a.txt,en:a.en,ex:a.ex,show:{}});vSpeaking(true);render();setTimeout(()=>vSpeaking(false),1700);},1300);
+  },350);}
+
+
+function backToText(){VMODE='语音';vTxtOpen=false;PRAC.mode='文字';PMODE='text';back();}
+function vMore(){const m=document.getElementById('vmenu'),p=document.getElementById('vplus'),h=document.getElementById('vhint');if(!m)return;p.style.display='none';h.style.display='none';m.style.display=m.style.display==='block'?'none':'block';}
+let FAB={x:null,y:null,ox:0,oy:0,sx:0,sy:0,moved:false,drag:false};
+function vFabDown(e){const el=document.getElementById('vfab');if(!el)return;
+  const r=el.getBoundingClientRect();
+  FAB.drag=true;FAB.moved=false;FAB.ox=e.clientX-r.left;FAB.oy=e.clientY-r.top;FAB.sx=e.clientX;FAB.sy=e.clientY;
+  try{el.setPointerCapture(e.pointerId);}catch(_){}
+  e.preventDefault();}
+function vFabMove(e){if(!FAB.drag)return;const el=document.getElementById('vfab');if(!el)return;
+  if(!FAB.moved&&(Math.abs(e.clientX-FAB.sx)>4||Math.abs(e.clientY-FAB.sy)>4))FAB.moved=true;
+  if(!FAB.moved)return;
+  const p=el.parentElement.getBoundingClientRect();
+  let x=e.clientX-FAB.ox-p.left,y=e.clientY-FAB.oy-p.top;
+  x=Math.max(4,Math.min(p.width-el.offsetWidth-4,x));
+  y=Math.max(4,Math.min(p.height-el.offsetHeight-4,y));
+  FAB.x=Math.round(x);FAB.y=Math.round(y);
+  el.style.left=x+'px';el.style.top=y+'px';el.style.right='auto';el.style.bottom='auto';
+  e.preventDefault();}
+function vFabUp(e){if(!FAB.drag)return;FAB.drag=false;const el=document.getElementById('vfab');
+  if(el&&el.hasPointerCapture&&el.hasPointerCapture(e.pointerId)){try{el.releasePointerCapture(e.pointerId);}catch(_){}}
+  if(!FAB.moved)vMore();}
+function vFabCancel(){FAB.drag=false;}
+
+function vHint(){document.getElementById('vmenu').style.display='none';document.getElementById('vplus').style.display='none';const h=document.getElementById('vhint');h.style.display=h.style.display==='block'?'none':'block';}
+function vToggle(name){const el=document.getElementById(name==='Mute'?'vkMute':'vkSpk');if(el)el.classList.toggle('on');}
+function vSpeaking(on){const b=document.getElementById('vbars');if(b)b.style.opacity=on?'1':'.35';const st=document.getElementById('vstatus');if(st)st.textContent=on?'对方说话中…':'正在聆听';}
+function vPlusOpen(){const m=document.getElementById('vmenu'),p=document.getElementById('vplus'),h=document.getElementById('vhint');if(m)m.style.display='none';if(h)h.style.display='none';if(p)p.style.display='block';}
+
+
+SCREENS.report=()=>{const s=SCRIPTS[PRAC.scriptId];
+ return '<div class="page"><div style="height:12px"></div>'+
+ '<div class="score-hero"><div class="ring" style="position:relative"><div class="in"><b>86</b><span>综合得分</span></div></div>'+
+ '<div style="flex:1"><b style="font-size:15px">'+s.name+'</b><div style="font-size:11.5px;color:var(--t3);margin:3px 0 8px">'+pList(s)[PRAC.persona]+' · '+fmt(sec)+' · '+(PRAC.taskId?'来源：任务':'自主陪练')+'</div>'+
+ '<div style="display:flex;gap:6px;flex-wrap:wrap">'+stTag('超越 78% 同事','info')+stTag('反问质量高','ok')+stTag('促成不足','bad')+'</div></div></div>'+
+ '<div class="card mt"><div class="sec-t" style="margin:0 0 10px"><b>能力维度</b></div>'+
+ dim6.map(d=>'<div class="dim"><label>'+d[0]+'</label>'+bar(d[1])+'<b>'+d[1]+'</b></div>').join('')+'<div id="rpRadar"></div></div>'+
+ '<div class="card mt"><div class="sec-t" style="margin:0 0 10px"><b>关键对话复盘</b></div>'+
+ '<div class="fb good"><span>✓</span><div>「先问您置换的那台车打算卖多少」——用置换话题转移价格压力，是本场的转折点。</div></div>'+
+ '<div class="fb bad"><span>✕</span><div>客户第二轮直接问竞品差价，你回答"配置不一样"，未给出可对比的量化依据，被判定回避问题。</div></div>'+
+ '<div class="fb tip"><span>↻</span><div>建议：报出三年保养/电费/保险总差额数据，再回到金融方案，成功率更高。</div></div></div>'+
+ (PRAC.showRule?'<div class="card mt"><div class="sec-t" style="margin:0 0 8px"><b>评分规则摘要</b><span style="font-size:11px;color:var(--t3);margin-left:6px">本场按此规则计算</span></div>'+
+ '<div class="kv2"><span>需求挖掘</span><b>20% · 有效提问与挖需</b></div>'+
+ '<div class="kv2"><span>价值传递</span><b>25% · 卖点与客户利益挂钩</b></div>'+
+ '<div class="kv2"><span>异议处理</span><b>25% · 先认同后重构</b></div>'+
+ '<div class="kv2"><span>沟通表达</span><b>15% · 口语化与节奏控制</b></div>'+
+ '<div class="kv2"><span>促成动作</span><b>15% · 明确下一步动作</b></div>'+
+ '<div class="note" style="margin-top:8px">综合得分 = 各维度加权求和；扣分项：打断客户、承诺超权限、出现违禁话术。低于 60 分建议重练本剧本。</div></div>':'')+
+ '<button class="btn btn-p mt" onclick="startPractice()">再练一次</button>'+
+ '<button class="btn btn-g mt" style="margin-top:10px" onclick="'+(PRAC.taskId?'navTo(\'taskScripts\')':'goTab(\'scripts\')')+'">'+(PRAC.taskId?'返回任务剧本列表':'返回剧本列表')+'</button></div>';};
+
+/* ---- 任务 ---- */
+const TF1S=['全部','待完成','已完成'],TF2S=['全部','培训','陪练','学习','考试'];
+let TF1='全部',TF2='全部';
+function setTF(r,c){if(r===1)TF1=c;else TF2=c;render();}
+function taskPass(t){
+  if(TF1==='待完成'&&t.status==='done')return false;
+  if(TF1==='已完成'&&t.status!=='done')return false;
+  if(TF2!=='全部'&&t.type.indexOf(TF2)!==0)return false;
+  return true;}
+SCREENS.tasks=()=>{const list=TASKS.filter(taskPass);
+ return '<div class="page"><div class="pg-h1">我的任务</div>'+
+ '<div class="chips tight" style="margin-top:0">'+TF1S.map(c=>'<button class="chip'+(TF1===c?' on':'')+'" onclick="setTF(1,\''+c+'\')">'+c+'</button>').join('')+'</div>'+
+ '<div class="chips tight">'+TF2S.map(c=>'<button class="chip'+(TF2===c?' on':'')+'" onclick="setTF(2,\''+c+'\')">'+c+'</button>').join('')+'</div>'+
+ (list.length?list.map(t=>'<div class="tk" onclick="navTo(\'taskDetail\');SET_TASK('+t.id+')">'+
+  '<div class="tk-top"><b class="tk-name">'+t.name+'</b><span class="tk-badge">'+t.type+'</span></div>'+
+  '<p class="tk-desc">'+t.desc+'</p>'+
+  '<div class="tk-bar"><i style="width:'+t.prog+'%"></i></div>'+
+  '<div class="tk-foot"><span class="tk-dl">截止：'+t.dl+'</span><span class="tk-pct">完成 '+t.prog+'% '+ic('right',12)+'</span></div></div>').join('')
+  :'<div class="note" style="text-align:center">当前筛选下暂无任务</div>')+'</div>';};
+
+let TASK=0;
+function SET_TASK(i){TASK=i;}
+SCREENS.taskDetail=()=>{const t=TASKS[TASK];
+ const stage=(no,title,items,done,locked,note)=>
+  '<div class="stage'+(locked?' lock':'')+'"><div class="sh"><b>'+no+' '+title+'</b>'+stTag(done?'已完成':'进行中',done?'ok':'info')+'</div>'+
+  '<div class="stepflow">'+items.map((x,i)=>'<i'+(x.done?' class="done"':'')+'></i>').join('')+'</div>'+
+  items.map(x=>'<div class="info-kv" style="padding:7px 0"><span>'+x.name+'</span>'+(locked?'<b style="color:var(--t3)">'+ic('lock',12)+' 未解锁</b>':x.act)+'</div>').join('')+
+  (note?'<div class="locknote">'+ic('lock',11)+note+'</div>':'')+'</div>';
+ return '<div class="page"><div style="height:12px"></div>'+
+ '<div class="card"><b style="font-size:16px">'+t.name+'</b><div style="margin:6px 0 4px">'+stTag(t.type,'info')+stTag('截止 '+t.dl,'warn')+'</div>'+
+ '<div style="display:flex;gap:8px;align-items:center;margin-top:10px"><div class="bar" style="flex:1"><i style="width:'+t.prog+'%"></i></div><span style="font-size:11.5px;color:var(--t3)">'+t.prog+'%</span></div></div>'+
+ (t.type==='培训任务'?
+  stage('①','课程阶段（2门）',[{name:'新车销售六步法',done:1,act:stTag('已完成','ok')},{name:'银河E5产品卖点精讲',done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'taskCourses\')">继续学习</button>'}],0,0)+
+  stage('②','陪练阶段（2个剧本）',[{name:'竞品对比价格谈判',done:1,act:stTag('已完成','ok')},{name:'进店首次接待·犹豫型客户',done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'taskScripts\')">去陪练</button>'}],0,0)+
+  stage('③','正式考核（1项）',[{name:'新车销售顾问认证考核 · 及格分80',done:0,act:'<button class="btn btn-dis" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px">未解锁</button>'}],0,1,'完成前两阶段后解锁')+
+  '<div class="note mt">培训任务严格按 课程 → 陪练 → 考核 顺序解锁；已完成阶段可查看历史记录。</div>'
+  :t.type==='陪练任务'?
+  stage('①','剧本阶段（2个）',[{name:'竞品对比价格谈判',done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'taskScripts\')">去陪练</button>'},{name:'金融分期异议处理',done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'taskScripts\')">去陪练</button>'}],0,0)
+  :t.type==='学习任务'?
+  stage('①','课程阶段（2门）',[{name:'新能源产品知识·三电技术篇',done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'taskCourses\')">继续学习</button>'},{name:'新能源产品知识·智驾功能篇',done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'taskCourses\')">继续学习</button>'}],0,0)
+  :stage('①','考核（1项）',[{name:EXAMS[1].name,done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'examDetail\');SET_EXAM(1)">进入考核</button>'}],0,0))+
+ '</div>';};
+SCREENS.taskCourses=()=>
+ '<div class="page"><div style="height:12px"></div><div class="note" style="margin-bottom:10px">完成全部课程后解锁陪练阶段（2/2 → 1/2）</div>'+
+ COURSES.slice(0,2).map(c=>'<div class="item" onclick="navTo(\'courseDetail\')"><div class="thumb ic-b">'+ic('play',18)+'</div><div class="tt"><b>'+c.name+'</b><span>'+c.ch+' 章</span><div style="display:flex;gap:8px;align-items:center;margin-top:5px"><div class="bar" style="flex:1"><i class="'+(c.prog===100?'g':'')+'" style="width:'+c.prog+'%"></i></div><span style="font-size:11px;color:var(--t3)">'+c.prog+'%</span></div></div>'+(c.prog===100?stTag('已完成','ok'):stTag('继续','info'))+'</div>').join('')+'</div>';
+SCREENS.taskScripts=()=>
+ '<div class="page"><div style="height:12px"></div><div class="note" style="margin-bottom:10px">每个剧本独立完成；完成 1/2 只显示 1/2，不会自动完成任务。</div>'+
+ SCRIPTS.slice(0,2).map((s,i)=>'<div class="item"><div class="thumb" style="background:linear-gradient(135deg,#6E4EEA,#9F7CFF)">'+ic('sword',18)+'</div><div class="tt"><b>'+s.name+'</b><span>'+(i===0?'已完成 1 次 · 最高 86 分':'未开始')+'</span></div><button class="btn btn-p" style="height:30px;padding:0 13px;font-size:12px;border-radius:9px" onclick="PRAC.scriptId='+s.id+';PRAC.persona=0;PRAC.taskId=1;'+(i===0?'navTo(\'report\')':'startPractice()')+'">'+(i===0?'查看报告':'开始')+'</button></div>').join('')+'</div>';
+
+SCREENS.examDetail=()=>{const e=EXAMS[0];
+ return '<div class="page"><div style="height:12px"></div>'+
+ '<div class="card"><b style="font-size:16px">'+e.name+'</b><div style="margin-top:6px">'+stTag(e.type,'info')+stTag('正式考核','warn')+'</div>'+
+ '<div class="info-kv" style="margin-top:8px"><span>限时</span><b>'+e.time+'</b></div><div class="info-kv"><span>及格线</span><b>'+e.pass+' 分</b></div><div class="info-kv"><span>考试机会</span><b>'+e.chance+'</b></div><div class="info-kv"><span>关联剧本</span><b>进店首次接待·犹豫型客户</b></div></div>'+
+ '<div class="card mt"><div class="sec-t" style="margin:0 0 6px"><b>考试说明</b></div><p style="font-size:12.5px;color:var(--t2);line-height:1.75">进入 AI 实训考试后与模拟客户进行一场完整对话。考试模式不提供实时教练提示，不展示评分规则；成绩计入正式任务，未通过可重考。</p></div>'+
+ '<button class="btn btn-p mt" onclick="SET_EXAM(1);navTo(\'examRun\')">开始考试</button>'+
+ '<button class="btn btn-g mt" style="margin-top:10px" onclick="navTo(\'examRun\')">先试一次模拟考核（不计成绩）</button></div>';};
+
+let EXI=1;
+function SET_EXAM(i){EXI=i;}
+const EQS=[
+ {q:'银河E5 的 CLTC 纯电续航最高是多少公里？',opts:['430 km','530 km','605 km','435 km']},
+ {q:'客户提出"我再对比一下其他品牌"，以下哪种应对最合适？',opts:['直接承诺给最低价','询问客户主要对比点，针对性给出总持有成本对比','贬低竞品质量','建议客户尽快下单享优惠']}];
+SCREENS.examRun=()=>
+ '<div class="page" style="background:#EEF1F8"><div style="height:12px"></div>'+
+ '<div class="card" style="display:flex;align-items:center;gap:10px;padding:11px 14px"><b style="font-size:13.5px">10月产品知识月考</b>'+stTag('试卷 · 45:00','warn')+'<span style="margin-left:auto;font-size:11.5px;color:var(--t3)">第 '+EXI+'/2 题</span></div>'+
+ '<div class="exam-q mt"><div class="qn">第 '+EXI+' 题 · 单选 · 5 分</div><div class="qt">'+EQS[EXI-1].q+'</div>'+
+ EQS[EXI-1].opts.map((o,i)=>'<div class="opt'+(EXAM.ans[EXI-1]===i?' on':'')+'" onclick="EXAM.ans['+(EXI-1)+']='+i+';render()"><span class="o">'+('ABCD'[i])+'</span>'+o+'</div>').join('')+'</div>'+
+ '<div style="display:flex;gap:10px" class="mt">'+
+ '<button class="btn btn-g" style="flex:1" onclick="EXI>1?(EXI--,render()):back()">上一题</button>'+
+ (EXI<EQS.length?'<button class="btn btn-p" style="flex:2" onclick="EXI++;render()">下一题</button>':'<button class="btn btn-p" style="flex:2" onclick="navTo(\'examResult\')">确认交卷</button>')+'</div>'+
+ '<div class="note mt">考试中退出将按规则处理；未作答题目交卷前会二次确认。正式考核不提供教练提示。</div></div>';
+SCREENS.examResult=()=>{
+ return '<div class="page" style="justify-content:center;text-align:center"><div style="font-size:48px">✅</div><b style="font-size:20px;margin:10px 0 4px">92 分 · 通过</b>'+
+ '<p style="font-size:12.5px;color:var(--t3)">及格线 60 分 · 用时 28:41 · 正式成绩</p>'+
+ '<div class="card mt" style="text-align:left"><div class="info-kv"><span>单选</span><b>20 题 · 全对</b></div><div class="info-kv"><span>多选</span><b>20 题 · 错 1 题（-2）</b></div><div class="info-kv"><span>判断</span><b>10 题 · 错 1 题（-6）</b></div><div class="info-kv"><span>任务状态</span><b>'+stTag('考核阶段已完成','ok')+'</b></div></div>'+
+ '<button class="btn btn-p mt" onclick="goTab(\'tasks\')">返回任务</button></div>';};
+
+/* ---- 我的 ---- */
+SCREENS.me=()=>'<div class="page bleed" style="padding-bottom:0">'+
+ '<div class="me-head"><div style="display:flex;align-items:center;gap:12px"><div class="me-av">赵</div><div><b style="font-size:17px">赵磊</b><div style="font-size:12px;opacity:.85;margin-top:2px">北京长久博瑞店 · 销售顾问</div></div></div>'+
+ '<div class="mstats"><div><b>12</b><span>已完成课程</span></div><div><b>18</b><span>陪练场次</span></div><div><b>5</b><span>通过考试</span></div></div></div>'+
+ '<div class="mt">'+
+ [['学习档案','ic-b','doc','archive','12 门课程 · 6 个任务'],['陪练记录','ic-p','sword','pRecords','18 场 · 最高 91 分'],['考试记录','ic-o','doc','eRecords','8 次 · 通过 5'],['能力诊断','ic-g','target','diag','综合 84 · 持续上升'],['账号设置','ic-b','me','settings','']].map(m=>
+ '<div class="menu-item" onclick="navTo(\''+m[3]+'\')"><div class="ic '+m[1]+'">'+ic(m[2],16)+'</div>'+m[0]+'<span class="n">'+m[4]+' ›</span></div>').join('')+
+ '</div><div style="height:10px"></div></div>';
+
+SCREENS.archive=()=>'<div class="page"><div style="height:12px"></div>'+
+ '<div class="card" style="display:flex;gap:0;text-align:center;padding:14px 0">'+
+ [['12','课程'],['18','陪练'],['8','考试'],['84','综合能力']].map(s=>'<div style="flex:1;border-right:1px solid var(--bd)"><b style="font-size:19px">'+s[0]+'</b><div style="font-size:11px;color:var(--t3)">'+s[1]+'</div></div>').join('')+'</div>'+
+ '<div class="sec-t"><b>学习时间线</b><a>筛选：全部来源</a></div><div class="card"><div class="tl">'+
+ [['10-25','完成考核「新车销售顾问认证考核」· 88 分 通过'],['10-25','陪练「竞品对比价格谈判」· 86 分（任务）'],['10-24','完成课程「新车销售六步法」第 8 章'],['10-23','自主学习「客户异议处理二十讲」45%'],['10-20','参加「10月产品知识月考」· 92 分']].map(t=>
+  '<div class="tl-item"><b style="font-size:12.5px">'+t[0]+'</b><div style="font-size:12px;color:var(--t2);margin-top:2px">'+t[1]+'</div></div>').join('')+'</div></div></div>';
+
+SCREENS.pRecords=()=>'<div class="page"><div style="height:12px"></div>'+
+ '<div class="chips">'+['全部','任务','自主'].map((c,i)=>'<button class="chip'+(i===0?' on':'')+'">'+c+'</button>').join('')+'</div>'+
+ PRAC_RECS.map((r,i)=>'<div class="item" onclick="navTo(\'report\')"><div class="thumb" style="background:linear-gradient(135deg,#6E4EEA,#9F7CFF)">'+ic('sword',16)+'</div><div class="tt"><b>'+r[0]+'</b><span>'+r[1]+' · '+r[3]+'</span></div><b style="color:'+(r[2]>=80?'var(--ok)':r[2]>=60?'var(--warn)':'var(--bad)')+';font-size:17px">'+r[2]+'</b></div>').join('')+
+ '<div class="note">历史记录只读，不能修改既有结果。</div></div>';
+
+SCREENS.eRecords=()=>'<div class="page"><div style="height:12px"></div>'+
+ EXAM_RECS.map(e=>'<div class="item"><div class="thumb ic-o">'+ic('doc',16)+'</div><div class="tt"><b>'+e[0]+'</b><span>'+e[1]+' · '+e[4]+'</span></div>'+(e[3]==='通过'?stTag('通过','ok'):e[3]==='模拟'?stTag('模拟','gray'):stTag('未通过','bad'))+'<b style="font-size:16px;margin-left:8px">'+e[2]+'</b></div>').join('')+
+ '<div class="note">模拟考核成绩独立记录，不影响正式任务合格判定。</div></div>';
+
+SCREENS.diag=()=>'<div class="page"><div style="height:12px"></div>'+
+ '<div class="score-hero"><div class="ring" style="position:relative;background:conic-gradient(var(--primary) 0turn .84turn,#E9EDF5 .84turn 1turn)"><div class="in"><b>84</b><span>综合能力</span></div></div>'+
+ '<div style="flex:1"><b style="font-size:14.5px">较上月 ↑ 6</b><div style="font-size:11.5px;color:var(--t3);margin:3px 0 8px">近 30 天 · 18 场训练 + 2 次考核</div>'+stTag('超过全店 75% 顾问','info')+'</div></div>'+
+ '<div class="card mt"><div class="sec-t" style="margin:0 0 8px"><b>能力雷达</b><span style="font-size:11px;color:var(--t3);margin-left:6px">虚线为门店均值</span></div><div id="dgRadar"></div></div>'+
+ '<div class="card mt"><div class="sec-t" style="margin:0 0 10px"><b>薄弱项与建议</b></div>'+
+ '<div class="fb bad"><span>①</span><div><b>促成邀约 58</b> · 连续 4 场低于均值 → 练习「试驾邀约电话演练」「老客户置换升级邀约」</div></div>'+
+ '<div class="fb warn" style="background:var(--warn-bg);color:#B8710A"><span>②</span><div><b>异议处理 64</b> → 重点补「认同-重构」话术链</div></div>'+
+ '<div class="fb tip"><span>★</span><div>优势项「沟通表达 88」保持即可，无需额外投入。</div></div></div>'+
+ '<button class="btn btn-p mt" onclick="goTab(\'scripts\')">去练薄弱剧本</button></div>';
+
+SCREENS.msg=()=>'<div class="page"><div style="height:12px"></div>'+
+ MSGS.map(m=>'<div class="item" style="align-items:flex-start'+(m[3]?';border-left:3px solid var(--primary)':'')+'"><div class="thumb '+(m[0]==='考核结果'?'ic-g':m[0]==='截止提醒'?'ic-o':'ic-b')+'">'+ic('bell',16)+'</div><div class="tt"><b>'+m[0]+'</b><span style="white-space:normal;line-height:1.6">'+m[1]+'</span><span>'+m[2]+'</span></div>'+(m[3]?'<i style="width:8px;height:8px;background:var(--bad);border-radius:50%;flex-shrink:0"></i>':'')+'</div>').join('')+'</div>';
+
+SCREENS.settings=()=>'<div class="page"><div style="height:12px"></div>'+
+ '<div class="card"><div class="kv2"><span>姓名</span><b>赵磊</b></div><div class="kv2"><span>手机号</span><b>138****6621</b></div><div class="kv2"><span>所属组织</span><b style="color:var(--t3)">北京长久博瑞店（只读）</b></div><div class="kv2"><span>岗位</span><b style="color:var(--t3)">销售顾问（只读）</b></div></div>'+
+ '<div class="card mt"><div class="kv2"><span>账户安全</span><b>修改密码 ›</b></div><div class="kv2"><span>清除缓存</span><b>12.6 MB ›</b></div><div class="kv2"><span>关于</span><b>v4.0.1</b></div></div>'+
+ '<button class="btn btn-g mt" style="color:var(--bad);border-color:#F5C6C4;margin-top:16px">退出登录</button>'+
+ '<p style="text-align:center;font-size:11px;color:var(--t3);margin-top:14px">退出后返回登录页 · 组织与岗位信息由后台管理</p></div>';
+
+/* ============ 雷达 ============ */
+function drawRadar(elId,size){
+  const el=document.getElementById(elId);if(!el)return;
+  const cx=size/2,cy=size/2,R=size*0.33,n=6,dims=dim6.map(d=>d[0]),vals=dim6.map(d=>d[1]),avg=[72,70,74,66,62,75];
+  const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/n;return[cx+r*Math.cos(a),cy+r*Math.sin(a)];};
+  let h='';
+  [.25,.5,.75,1].forEach(k=>h+='<polygon points="'+dims.map((_,i)=>pt(i,R*k).join(',')).join(' ')+'" fill="'+(k===1?'#FAFCFF':'none')+'" stroke="#E5E9F2"/>');
+  dims.forEach((d,i)=>{const[x,y]=pt(i,R);h+='<line x1="'+cx+'" y1="'+cy+'" x2="'+x+'" y2="'+y+'" stroke="#E5E9F2"/>';
+   const[lx,ly]=pt(i,R+21);const an=lx>cx+4?'start':(lx<cx-4?'end':'middle');
+   h+='<text x="'+lx+'" y="'+ly+4+'" font-size="11" fill="#5B6478" text-anchor="'+an+'" font-family="-apple-system,PingFang SC,sans-serif">'+d+'</text>';});
+  h+='<polygon points="'+avg.map((v,i)=>pt(i,R*v/100).join(',')).join(' ')+'" fill="none" stroke="#C4D6FF" stroke-width="1.5" stroke-dasharray="4 3"/>';
+  h+='<polygon points="'+vals.map((v,i)=>pt(i,R*v/100).join(',')).join(' ')+'" fill="rgba(27,91,240,.15)" stroke="#1B5BF0" stroke-width="2"/>';
+  el.innerHTML='<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" style="display:block;margin:0 auto">'+h+'</svg>';
+}
+
+render();
+</script>
+</body>
+</html>
