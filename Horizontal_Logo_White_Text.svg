@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300"><defs><linearGradient id="brandBlue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#04c6ee"/><stop offset="1" stop-color="#175ef5"/></linearGradient></defs><g transform="translate(30.00,12.00) scale(0.714286)"><defs>
+<linearGradient id="outer" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#10d7cb"/><stop offset=".38" stop-color="#08aeea"/><stop offset="1" stop-color="#2251e7"/></linearGradient>
+<linearGradient id="shell" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#f9ffff"/><stop offset=".56" stop-color="#ffffff"/><stop offset="1" stop-color="#a0b9f5"/></linearGradient>
+<linearGradient id="face" x1="0" y1="0" x2=".75" y2="1"><stop stop-color="#067aab"/><stop offset=".45" stop-color="#034c89"/><stop offset="1" stop-color="#0b134c"/></linearGradient>
+<linearGradient id="ear" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#00bddd"/><stop offset="1" stop-color="#141781"/></linearGradient>
+<linearGradient id="ant" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1ce9dd"/><stop offset="1" stop-color="#08246b"/></linearGradient>
+<linearGradient id="brandBlue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#04c6ee"/><stop offset="1" stop-color="#175ef5"/></linearGradient>
+</defs>
+<!-- antenna -->
+<rect x="200" y="32" width="16" height="44" rx="8" fill="#075a9f"/>
+<circle cx="208" cy="26" r="22" fill="url(#ant)"/>
+<!-- blue-cyan speech ring with tail -->
+<path d="M57 181 C57 96 119 61 204 59 C294 56 360 109 363 198 C367 275 315 315 236 329 C174 341 121 335 91 330 L45 350 L64 279 C28 250 38 214 57 181 Z" fill="url(#outer)"/>
+<!-- white inner body -->
+<path d="M69 194 C66 126 124 83 202 81 C286 78 341 126 341 197 C341 268 294 302 212 307 C128 312 76 275 69 194 Z" fill="url(#shell)"/>
+<!-- left/right headset earcups -->
+<rect x="35" y="150" width="50" height="116" rx="25" fill="url(#ear)"/>
+<rect x="321" y="150" width="50" height="116" rx="25" fill="url(#ear)"/>
+<!-- face -->
+<path d="M95 194 C95 138 131 115 202 114 C278 111 315 142 315 195 C315 247 286 263 205 263 C130 264 95 244 95 194 Z" fill="url(#face)"/>
+<!-- happy cyan eyes -->
+<path d="M133 205 C145 176 168 177 181 205" fill="none" stroke="#00d9f3" stroke-width="15" stroke-linecap="round"/>
+<path d="M226 205 C239 175 262 178 275 205" fill="none" stroke="#00d9f3" stroke-width="15" stroke-linecap="round"/>
+<!-- cheerful sparkle -->
+<path d="M377 126 L393 104" stroke="url(#brandBlue)" stroke-width="12" stroke-linecap="round"/>
+<path d="M381 159 L401 149" stroke="url(#brandBlue)" stroke-width="12" stroke-linecap="round"/>
+</g><g font-family="Noto Sans CJK SC, Noto Sans CJK JP, sans-serif" font-size="132" font-weight="900" letter-spacing="0"><text x="355" y="222" fill="#FFFFFF">AI</text><text x="568.84" y="222" fill="#FFFFFF">陪练</text></g></svg>
