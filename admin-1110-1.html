@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI陪练 · 客户管理后台 · 登录</title>
+<style>
+:root{
+  --nav:#141F4A; --nav-2:#1B2A5E; --nav-line:rgba(255,255,255,.10);
+  --primary:#1B5BF0; --primary-d:#1248C8; --primary-bg:#EBF1FF; --primary-bd:#C4D6FF;
+  --cyan:#04C6EE;
+  --bg:#F2F4F9; --surface:#FFF; --bd:#E5E9F2; --bd-2:#D6DCE8;
+  --t1:#1A2233; --t2:#5B6478; --t3:#8C94A8;
+  --ok:#12A760; --ok-bg:#E6F7EF;
+  --bad:#E0453F; --bad-bg:#FDECEB;
+  --warn:#E8960C; --warn-bg:#FFF5E3;
+  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  /* 设计系统 token：圆角 / 阴影（8pt 栅格对齐） */
+  --r-s:10px; --r-m:14px; --r-l:18px;
+  --sh-card:0 20px 50px -22px rgba(20,31,74,.20);
+  --sh-btn:0 8px 20px rgba(27,91,240,.22);
+  --sh-btn-h:0 10px 24px rgba(27,91,240,.28);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--t1);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input{font-family:inherit}
+
+/* ===== 整体布局：左品牌 / 右登录 ===== */
+.login-wrap{display:flex;min-height:100vh}
+.brand{flex:0 0 46%;max-width:600px;background:radial-gradient(120% 120% at 12% 0%,#22336F 0%,var(--nav) 55%,#0E1738 100%);color:#fff;display:flex;flex-direction:column;padding:48px 54px;position:relative;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.brand::after{content:"";position:absolute;right:-120px;bottom:-120px;width:420px;height:420px;border-radius:50%;background:linear-gradient(135deg,rgba(4,198,238,.20),rgba(27,91,240,.05));filter:blur(8px)}
+.brand .logo{display:flex;align-items:center;gap:12px;font-size:17px;font-weight:700;letter-spacing:.5px;z-index:2}
+.brand .logo .mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#04C6EE,#1B5BF0);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;box-shadow:0 8px 22px rgba(4,198,238,.35)}
+.brand .tag{margin-top:auto;z-index:2}
+.brand .slogan{position:relative;font-size:27px;font-weight:750;line-height:2;letter-spacing:2px;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.22)}
+.brand .slogan em{font-style:normal;color:#7FD6FF}
+.brand .slogan::before{content:"";display:block;width:42px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--cyan),var(--primary));margin-bottom:22px}
+.brand .slogan::after{content:"AI TRAINING PLATFORM";display:block;margin-top:20px;font-size:11px;font-weight:600;letter-spacing:4px;color:rgba(255,255,255,.35)}
+
+/* ===== 右侧登录区（卡片化现有容器，不新增元素） ===== */
+.panel{flex:1;display:flex;align-items:center;justify-content:center;padding:40px}
+.box{width:100%;max-width:384px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-l);padding:36px 34px;box-shadow:var(--sh-card)}
+.box .step{display:none}
+.box .step.on{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.box h2{font-size:22px;font-weight:750;letter-spacing:.3px;margin-bottom:8px}
+.box .sub{font-size:13px;color:var(--t3);margin-bottom:26px}
+.back-a{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--primary);font-weight:550;margin-bottom:16px;cursor:pointer}
+
+/* 输入框 */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;color:var(--t2);margin-bottom:7px;font-weight:550}
+.inp{display:flex;align-items:center;height:46px;border:1px solid var(--bd-2);border-radius:var(--r-s);background:#fff;padding:0 12px;transition:.15s}
+.inp:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-bg)}
+.inp svg{width:18px;height:18px;color:var(--t3);flex-shrink:0}
+.inp input{flex:1;border:none;outline:none;font-size:14.5px;color:var(--t1);background:transparent;padding:0 10px;height:100%}
+.inp .eye{color:var(--t3);cursor:pointer;padding:4px;display:flex}
+.inp .eye:hover{color:var(--primary)}
+
+.row-between{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.chk{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t2);cursor:pointer;user-select:none}
+.chk input{width:16px;height:16px;accent-color:var(--primary)}
+.lk{color:var(--primary);font-size:13px;cursor:pointer;font-weight:550}
+.lk:hover{text-decoration:underline}
+
+.btn-primary{width:100%;height:46px;border-radius:var(--r-s);background:linear-gradient(135deg,var(--primary),#2E6BFF);color:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s;box-shadow:var(--sh-btn)}
+.btn-primary:hover{background:linear-gradient(135deg,var(--primary-d),var(--primary));box-shadow:var(--sh-btn-h)}
+.btn-primary:disabled{background:#B9C7E8;cursor:not-allowed;box-shadow:none}
+
+.err{display:none;align-items:center;gap:7px;font-size:12.5px;color:var(--bad);background:var(--bad-bg);border:1px solid #F6D2D0;border-radius:9px;padding:9px 12px;margin-bottom:16px}
+.err.on{display:flex}
+.err svg{width:15px;height:15px;flex-shrink:0}
+
+/* 演示账号 */
+.demo{margin-top:22px;border:1px solid var(--bd);border-radius:var(--r-m);padding:13px 14px;background:#F6F8FC}
+.demo .dh{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--t2);font-weight:600;margin-bottom:9px}
+.demo .dh svg{width:15px;height:15px;color:var(--primary)}
+.demo ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.demo li{display:flex;align-items:center;font-size:12px;color:var(--t2)}
+.demo li code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--t1);background:#fff;border:1px solid var(--bd);border-radius:6px;padding:1px 7px;margin-right:8px;font-size:11.5px}
+.demo li .d{margin-left:auto;color:var(--t3);font-size:11.5px}
+.demo li .lk{cursor:pointer}
+
+.note{margin-top:18px;font-size:12px;color:var(--t3);text-align:center;line-height:1.7}
+.note b{color:var(--t2)}
+
+/* 租户选择 */
+.tenant-tip{font-size:12.5px;color:var(--t2);background:var(--primary-bg);border:1px solid var(--primary-bd);border-radius:10px;padding:11px 13px;margin-bottom:18px;line-height:1.6}
+.tenant{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid var(--bd);border-radius:12px;margin-bottom:12px;cursor:pointer;transition:.15s;background:#fff}
+.tenant:hover{border-color:var(--primary);box-shadow:0 6px 16px rgba(27,91,240,.10)}
+.tenant .av{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#3B6EF5,#6F9BFF);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0}
+.tenant .tt b{display:block;font-size:14.5px}
+.tenant .tt span{font-size:12px;color:var(--t3)}
+.tenant .go{margin-left:auto;color:var(--t3)}
+.tenant.disabled{opacity:.55;cursor:not-allowed;background:var(--surface-2,#F7F9FC)}
+.tenant.disabled:hover{border-color:var(--bd);box-shadow:none}
+
+/* 完成页 */
+.done{text-align:center;padding:14px 0 6px}
+.done .circle{width:64px;height:64px;border-radius:50%;background:var(--ok-bg);color:var(--ok);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.done .circle svg{width:32px;height:32px}
+.done h2{margin-bottom:8px}
+.done .who{display:inline-flex;flex-direction:column;gap:3px;background:var(--surface-2,#F7F9FC);border:1px solid var(--bd);border-radius:11px;padding:13px 18px;margin:14px 0 22px;font-size:13px;color:var(--t2)}
+.done .who b{color:var(--t1);font-size:15px}
+
+/* 改密码表单 */
+.pwd-tip{font-size:12.5px;color:var(--warn);background:var(--warn-bg);border:1px solid #F6E2BF;border-radius:10px;padding:10px 13px;margin-bottom:18px;line-height:1.6;display:flex;gap:8px;align-items:flex-start}
+.pwd-tip svg{width:15px;height:15px;flex-shrink:0;margin-top:1px}
+
+/* ===== 弹窗（忘记密码） ===== */
+.mask{position:fixed;inset:0;background:rgba(12,18,40,.45);display:none;align-items:center;justify-content:center;z-index:90;backdrop-filter:blur(2px)}
+.mask.on{display:flex}
+.modal{position:relative;width:420px;max-width:calc(100vw - 32px);background:#fff;border-radius:16px;padding:26px;box-shadow:0 30px 80px rgba(12,18,40,.30);animation:pop .2s ease}
+@keyframes pop{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
+.modal h3{font-size:18px;font-weight:700;margin-bottom:6px}
+.modal .ms{font-size:13px;color:var(--t3);margin-bottom:20px;line-height:1.6}
+.modal .field{margin-bottom:14px}
+.code-row{display:flex;gap:10px}
+.code-row .inp{flex:1}
+.code-btn{height:46px;flex-shrink:0;padding:0 14px;border:1px solid var(--primary);color:var(--primary);border-radius:10px;font-size:13px;font-weight:600;white-space:nowrap;background:#fff}
+.code-btn:disabled{border-color:var(--bd-2);color:var(--t3);background:var(--surface-2,#F7F9FC)}
+.modal-actions{display:flex;gap:10px;margin-top:8px}
+.btn-g{height:44px;border-radius:10px;background:#fff;border:1px solid var(--bd-2);color:var(--t2);font-size:14px;font-weight:600;flex:1}
+.btn-g:hover{border-color:var(--primary);color:var(--primary)}
+.modal .close-x{position:absolute;top:18px;right:18px;color:var(--t3);cursor:pointer;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.modal .close-x:hover{background:var(--surface-2,#F7F9FC)}
+
+.toast{position:fixed;left:50%;bottom:36px;transform:translateX(-50%) translateY(20px);background:rgba(20,31,74,.94);color:#fff;font-size:13.5px;padding:11px 20px;border-radius:11px;opacity:0;pointer-events:none;transition:.25s;z-index:120;display:flex;align-items:center;gap:8px}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast svg{width:16px;height:16px;color:#5FE0C8}
+
+@media(max-width:860px){
+  .brand{display:none}
+  .panel{padding:24px}
+  .box{padding:28px 22px}
+}
+</style>
+</head>
+<body>
+<div class="login-wrap">
+  <!-- 左侧品牌区 -->
+  <aside class="brand">
+    <div class="logo"><div class="mark">AI</div><div>AI陪练 · 客户运营管理后台</div></div>
+    <div class="tag">
+      <p class="slogan">让培训<em>更高效</em>，<br>让练习<em>更真实</em>，<br>让成长<em>看得见</em>。</p>
+    </div>
+  </aside>
+
+  <!-- 右侧登录区 -->
+  <main class="panel">
+    <div class="box">
+
+      <!-- 步骤 1：登录 -->
+      <section class="step on" id="stepLogin">
+        <h2>登录管理后台</h2>
+        <p class="sub">请使用企业管理员为您开通的账号登录</p>
+        <div class="err" id="loginErr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span id="loginErrTx"></span></div>
+        <div class="field">
+          <label>手机号</label>
+          <div class="inp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg><input id="phone" type="tel" inputmode="numeric" maxlength="11" placeholder="请输入 11 位手机号" autocomplete="username"></div>
+        </div>
+        <div class="field">
+          <label>密码</label>
+          <div class="inp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><input id="pwd" type="password" placeholder="请输入登录密码" autocomplete="current-password"><span class="eye" id="eye" onclick="toggleEye()" title="显示/隐藏密码"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+        </div>
+        <div class="row-between">
+          <label class="chk"><input type="checkbox" id="remember"> 记住此账号</label>
+          <span class="lk" onclick="openForgot()">忘记密码？</span>
+        </div>
+        <button class="btn-primary" id="loginBtn" onclick="doLogin()">登 录</button>
+
+        <div class="demo">
+          <div class="dh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M11 12h1v4h1"/></svg>演示账号（原型体验用）</div>
+          <ul>
+            <li><code>13800001000</code>Admin@123<span class="d">单租户 · 管理员</span></li>
+            <li><code>13800006621</code>ChangPwd@123<span class="d">首次登录需改密</span></li>
+            <li><code>13800002000</code>Test@123<span class="lk" onclick="fillDemo('13800002000','Test@123')">多租户（含停用租户）</span></li>
+            <li><code>13800003000</code>Lock@123<span class="d">全局锁定示例</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 步骤 2：选择租户 -->
+      <section class="step" id="stepTenant">
+        <span class="back-a" onclick="goStep('login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 18l-6-6 6-6"/></svg>返回登录</span>
+        <h2>选择租户</h2>
+        <p class="sub">该账号已开通以下租户的成员身份，请选择要进入的租户</p>
+        <div id="tenantList"></div>
+      </section>
+
+      <!-- 步骤 3：首次登录设置密码 -->
+      <section class="step" id="stepSetpwd">
+        <h2>设置登录密码</h2>
+        <p class="sub">检测到您使用的是初始密码，首次登录请设置新密码</p>
+        <div class="pwd-tip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>出于安全考虑，系统下发的初始密码不可长期使用。新密码需 8 位以上，且同时包含字母与数字。</span></div>
+        <div class="err" id="setErr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span id="setErrTx"></span></div>
+        <div class="field"><label>新密码</label><div class="inp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><input id="np1" type="password" placeholder="8 位以上，含字母和数字"></div></div>
+        <div class="field"><label>确认新密码</label><div class="inp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><input id="np2" type="password" placeholder="请再次输入新密码"></div></div>
+        <button class="btn-primary" onclick="doSetPwd()">确认并设置</button>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- 忘记密码弹窗 -->
+<div class="mask" id="forgotMask">
+  <div class="modal">
+    <div class="close-x" onclick="closeForgot()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    <h3>重置登录密码</h3>
+    <p class="ms">账号由后台开通，重置密码需验证手机号身份。我们将向该手机号发送短信验证码（原型演示中验证码任意 6 位即可）。</p>
+    <div class="err" id="fgErr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span id="fgErrTx"></span></div>
+    <div class="field"><label>手机号</label><div class="inp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg><input id="fgPhone" type="tel" inputmode="numeric" maxlength="11" placeholder="请输入开通账号的手机号"></div></div>
+    <div class="field"><label>短信验证码</label><div class="code-row"><div class="inp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v14H4z"/><path d="M4 8l8 5 8-5"/></svg><input id="fgCode" type="text" inputmode="numeric" maxlength="6" placeholder="6 位验证码"></div><button class="code-btn" id="codeBtn" onclick="sendCode()">获取验证码</button></div></div>
+    <div class="field"><label>新密码</label><div class="inp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><input id="fgPwd" type="password" placeholder="8 位以上，含字母和数字"></div></div>
+    <div class="field" style="margin-bottom:0"><label>确认新密码</label><div class="inp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><input id="fgPwd2" type="password" placeholder="请再次输入新密码"></div></div>
+    <div class="modal-actions">
+      <button class="btn-g" onclick="closeForgot()">取消</button>
+      <button class="btn-primary" style="flex:1" onclick="doReset()">重置密码</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg><span id="toastTx"></span></div>
+
+<script>
+/* ===== 演示账号（原型数据；生产环境由后台开通并下发初始密码）=====
+   状态模型遵循 V1.1：
+   - locked：全局账号锁定，所有租户均不可登录
+   - firstLogin：使用初始密码，首次登录须改密
+   - tenants[].member：当前租户成员状态（停用则禁止进入该租户，不影响其他租户） */
+const ACCOUNTS = {
+  '13800001000': {name:'系统管理员', pwd:'Admin@123', locked:false, firstLogin:false,
+    tenants:[{name:'长久集团', sub:'客户管理后台', member:'启用', role:'集团管理员'}]},
+  '13800006621': {name:'赵磊', pwd:'ChangPwd@123', locked:false, firstLogin:true,
+    tenants:[{name:'长久集团', sub:'客户管理后台', member:'启用', role:'门店培训管理员'}]},
+  '13800002000': {name:'钱多多', pwd:'Test@123', locked:false, firstLogin:false,
+    tenants:[{name:'长久集团', sub:'客户管理后台', member:'启用', role:'销售顾问'},
+             {name:'西南区域', sub:'客户管理后台', member:'启用', role:'销售顾问'},
+             {name:'华南区域', sub:'客户管理后台', member:'停用', role:'销售顾问'}]},
+  '13800003000': {name:'李文静', pwd:'Lock@123', locked:true, firstLogin:false,
+    tenants:[{name:'石家庄裕华店', sub:'客户管理后台', member:'启用', role:'销售顾问'}]}
+};
+const ATTEMPT_LIMIT = 5;
+let attempts = {};
+let cur = null;        // 当前登录账号 {phone, acct}
+let curTenant = null;  // 选中的租户
+
+/* ===== 工具 ===== */
+function $(id){return document.getElementById(id);}
+function goStep(s){
+  ['login','tenant','setpwd'].forEach(k=>$('step'+k.charAt(0).toUpperCase()+k.slice(1)).classList.remove('on'));
+  $('step'+s.charAt(0).toUpperCase()+s.slice(1)).classList.add('on');
+}
+function toast(msg){
+  $('toastTx').textContent = msg;
+  const t=$('toast'); t.classList.add('on');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('on'),2200);
+}
+function showErr(box, tx){
+  $(box+'Tx').textContent = tx;
+  $(box).classList.add('on');
+}
+function clearErr(box){ $(box).classList.remove('on'); }
+function fillDemo(phone,pwd){
+  $('phone').value = phone; $('pwd').value = pwd;
+  clearErr('loginErr');
+  toast('已填入演示账号');
+}
+function toggleEye(){
+  const i=$('pwd'); i.type = i.type==='password'?'text':'password';
+}
+function validPwd(p){
+  return p.length>=8 && /[A-Za-z]/.test(p) && /\d/.test(p);
+}
+
+/* ===== 步骤1：登录 ===== */
+function doLogin(){
+  clearErr('loginErr');
+  const phone = $('phone').value.trim();
+  const pwd = $('pwd').value;
+  if(!/^1\d{10}$/.test(phone)){ showErr('loginErr','请输入正确的 11 位手机号'); return; }
+  if(!pwd){ showErr('loginErr','请输入登录密码'); return; }
+  const acct = ACCOUNTS[phone];
+  if(!acct){ showErr('loginErr','该手机号尚未开通账号，请联系企业管理员在后台开通'); return; }
+  if(acct.locked){ showErr('loginErr','该账号已被全局锁定，所有租户均无法登录，请联系管理员'); return; }
+  if(acct.pwd !== pwd){
+    attempts[phone] = (attempts[phone]||0)+1;
+    const left = ATTEMPT_LIMIT - attempts[phone];
+    if(left<=0){ showErr('loginErr','密码连续错误次数过多，账号已临时锁定，请稍后或联系管理员'); return; }
+    showErr('loginErr','密码错误，还可尝试 '+left+' 次（达到 '+ATTEMPT_LIMIT+' 次将临时锁定）'); return;
+  }
+  // 登录成功：进入认证后流程
+  cur = {phone, acct};
+  attempts[phone] = 0;
+  if($('remember').checked){ try{localStorage.setItem('cj_rem', phone);}catch(e){} }
+  afterAuth();
+}
+
+/* 认证后：首次改密 → 选租户 → 完成 */
+function afterAuth(){
+  const avail = cur.acct.tenants.filter(t=>t.member==='启用');
+  if(cur.acct.firstLogin){ goStep('setpwd'); return; }
+  if(avail.length>1){ renderTenants(avail); goStep('tenant'); return; }
+  finish(avail[0]||null);
+}
+
+/* ===== 步骤2：租户选择 ===== */
+function renderTenants(avail){
+  const all = cur.acct.tenants;
+  let h='';
+  all.forEach((t,i)=>{
+    const ok = t.member==='启用';
+    h += '<div class="tenant'+(ok?'':' disabled')+'" '+(ok?'onclick="pickTenant('+i+')"':'')+'>'+
+      '<div class="av">'+t.name.charAt(0)+'</div>'+
+      '<div class="tt"><b>'+t.name+'</b><span>'+t.sub+' · '+t.role+'</span></div>'+
+      (ok?'<div class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M9 6l6 6-6 6"/></svg></div>'
+         :'<span class="st bad" style="font-size:11px;padding:2px 8px;border-radius:99px;background:#FDECEB;color:#E0453F">成员已停用</span>')+
+      '</div>';
+  });
+  $('tenantList').innerHTML = h;
+}
+function pickTenant(i){
+  const t = cur.acct.tenants[i];
+  if(t.member!=='启用') return;
+  finish(t);
+}
+
+/* ===== 步骤3：首次登录设置密码 ===== */
+function doSetPwd(){
+  clearErr('setErr');
+  const np=$('np1').value, cp=$('np2').value;
+  if(!validPwd(np)){ showErr('setErr','新密码需 8 位以上，且同时包含字母与数字'); return; }
+  if(np!==cp){ showErr('setErr','两次输入的密码不一致'); return; }
+  cur.acct.pwd = np;
+  cur.acct.firstLogin = false;
+  toast('密码设置成功');
+  afterAuth();
+}
+
+/* ===== 登录完成：直接进入客户管理后台（不再显示成功页）===== */
+function finish(tenant){
+  curTenant = tenant;
+  enter();
+}
+function enter(){
+  // 原型：跳转到客户管理后台原型页
+  try{ window.location.href = 'admin-1109-2.html'; }
+  catch(e){ toast('进入后台（原型链接）'); }
+}
+
+/* ===== 忘记密码 ===== */
+let codeTimer=null, codeSent=false;
+function openForgot(){ $('forgotMask').classList.add('on'); clearErr('fgErr'); }
+function closeForgot(){ $('forgotMask').classList.remove('on'); }
+function sendCode(){
+  const phone=$('fgPhone').value.trim();
+  if(!/^1\d{10}$/.test(phone)){ showErr('fgErr','请输入正确的 11 位手机号'); return; }
+  if(!ACCOUNTS[phone]){ showErr('fgErr','该手机号尚未开通账号，无法发送验证码'); return; }
+  if(ACCOUNTS[phone].locked){ showErr('fgErr','该账号已被全局锁定，请联系管理员重置'); return; }
+  codeSent=true;
+  let s=60; const b=$('codeBtn');
+  b.disabled=true; b.textContent=s+'s 后重发';
+  codeTimer=setTimeout(function tick(){ s--; if(s<=0){ b.disabled=false; b.textContent='重新获取'; clearTimeout(codeTimer);} else { b.textContent=s+'s 后重发'; codeTimer=setTimeout(tick,1000);} },1000);
+  toast('验证码已发送（演示：任意 6 位）');
+}
+function doReset(){
+  clearErr('fgErr');
+  const phone=$('fgPhone').value.trim();
+  const code=$('fgCode').value.trim();
+  const np=$('fgPwd').value, cp=$('fgPwd2').value;
+  if(!ACCOUNTS[phone]){ showErr('fgErr','该手机号尚未开通账号'); return; }
+  if(!codeSent){ showErr('fgErr','请先获取短信验证码'); return; }
+  if(!/^\d{6}$/.test(code)){ showErr('fgErr','请输入 6 位短信验证码'); return; }
+  if(!validPwd(np)){ showErr('fgErr','新密码需 8 位以上，且同时包含字母与数字'); return; }
+  if(np!==cp){ showErr('fgErr','两次输入的密码不一致'); return; }
+  ACCOUNTS[phone].pwd = np;
+  ACCOUNTS[phone].firstLogin = false;
+  closeForgot();
+  toast('密码重置成功，请使用新密码登录');
+}
+
+/* 记住账号回填 */
+try{ const r=localStorage.getItem('cj_rem'); if(r) $('phone').value=r; }catch(e){}
+
+/* 回车登录 */
+$('pwd').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+</script>
+</body>
+</html>
