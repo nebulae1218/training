@@ -346,8 +346,8 @@ function finish(tenant){
   enter();
 }
 function enter(){
-  // 原型：跳转到客户管理后台原型页
-  try{ window.location.href = 'admin-1109-2.html'; }
+  // 登录页与管理后台分开部署；进入现有管理端页面
+  try{ window.location.href = 'admin-1105-2.html'; }
   catch(e){ toast('进入后台（原型链接）'); }
 }
 
