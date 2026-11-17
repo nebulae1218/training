@@ -194,6 +194,87 @@ button{font-family:inherit;border:none;background:none;cursor:pointer;color:inhe
 .sc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:9px;border-top:1px dashed #E8ECF4;font-size:11px}
 .sc-cnt{color:var(--primary);font-weight:550}
 .sc-role{color:var(--t3)}
+
+/* ===== 快速创建（AI 生成剧本 / 客户）===== */
+.seg{display:flex;background:#EDF1F8;border-radius:12px;padding:3px;margin:12px 0 0}
+.seg-i{flex:1;text-align:center;font-size:12.5px;color:var(--t2);padding:8px 0;border-radius:9px;font-weight:550;display:flex;align-items:center;justify-content:center;gap:4px}
+.seg-i.on{background:#fff;color:var(--primary);font-weight:650;box-shadow:0 1px 4px rgba(20,31,74,.1)}
+.crt-card{background:#fff;border-radius:15px;padding:14px;margin-top:12px;box-shadow:0 1px 3px rgba(20,31,74,.05)}
+.ai-lead{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:650}
+.ai-lead em{font-style:normal;font-size:10px;font-weight:600;color:var(--primary);background:var(--p-bg);border:1px solid var(--p-bd);padding:1px 6px;border-radius:99px}
+.ai-ta{width:100%;border:1px solid var(--bd2);border-radius:12px;padding:11px 12px;font-size:13px;font-family:inherit;line-height:1.65;outline:none;resize:none;margin-top:9px;background:#FBFCFE;color:var(--t1)}
+.ai-ta:focus{border-color:var(--primary);background:#fff}
+.ai-ta::placeholder{color:#AAB3C5}
+.ai-hint{font-size:10.5px;color:var(--t3);margin-top:7px;line-height:1.6}
+.qt{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.qt b{font-size:10.5px;font-weight:500;color:var(--t2);background:#F2F5FA;border:1px solid var(--bd);border-radius:99px;padding:4px 9px}
+.qt b:active{background:var(--p-bg);border-color:var(--p-bd);color:var(--primary)}
+.qt b.on{background:var(--p-bg);border-color:var(--p-bd);color:var(--primary);font-weight:650}
+.gen-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;height:44px;border-radius:13px;background:var(--grad);color:#fff;font-size:14.5px;font-weight:650;box-shadow:0 6px 16px rgba(23,94,245,.28);margin-top:12px}
+.gen-btn:active{opacity:.9}
+.gen-btn.dis{opacity:.55;box-shadow:none}
+.gen-busy{padding:4px 2px 2px}
+.gen-busy .gl{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--t2);padding:7px 0}
+.gen-busy .gl em{width:15px;height:15px;border-radius:50%;border:2px solid var(--p-bd);border-top-color:var(--primary);animation:spin .8s linear infinite;font-style:normal;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sn-hero{margin-top:12px;border-radius:16px;padding:14px 15px 13px;background:radial-gradient(130% 120% at 86% -20%,rgba(255,255,255,.32),transparent 60%),var(--grad);color:#fff;box-shadow:0 10px 24px rgba(23,94,245,.22)}
+.sn-hero .sh-t{font-size:10.5px;opacity:.85;display:flex;align-items:center;gap:5px}
+.sn-hero h2{font-size:17px;font-weight:700;line-height:1.4;margin-top:6px}
+.sn-hero .sh-p{font-size:12px;opacity:.9;line-height:1.65;margin-top:6px}
+.sn-hero .sh-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.sn-hero .sh-tags i{font-style:normal;font-size:10.5px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.22);padding:2.5px 8px;border-radius:99px}
+.sn-hero .sh-name{width:100%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.26);border-radius:11px;color:#fff;font-size:15.5px;font-weight:700;font-family:inherit;padding:8px 10px;outline:none;margin-top:7px;line-height:1.4}
+.sn-hero .sh-name:focus{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.5)}
+.sn-sec{background:#fff;border-radius:14px;padding:13px 14px 14px;margin-top:10px;box-shadow:0 1px 3px rgba(20,31,74,.05)}
+.sn-h{display:flex;align-items:center;gap:7px}
+.sn-h .sn-n{width:18px;height:18px;border-radius:6px;background:var(--p-bg);color:var(--primary);font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sn-h b{font-size:13.5px;font-weight:650}
+.sn-h .redo{margin-left:auto;display:flex;align-items:center;gap:3px;font-size:10.5px;color:var(--t3);padding:3px 7px;border-radius:8px;background:#F5F7FB}
+.sn-h .redo:active{color:var(--primary);background:var(--p-bg)}
+.sn-p{font-size:12.5px;color:var(--t2);line-height:1.72;margin-top:8px}
+.sn-line{display:flex;gap:6px;font-size:12px;line-height:1.7;margin-top:6px}
+.sn-line span{color:var(--t3);flex-shrink:0}
+.sn-line b{font-weight:550;color:var(--t1)}
+.tlwrap{margin-top:11px;position:relative;padding-left:19px}
+.tlwrap:before{content:'';position:absolute;left:4.5px;top:5px;bottom:8px;width:1.5px;background:var(--bd2)}
+.tl-i{position:relative;padding-bottom:12px}
+.tl-i:last-child{padding-bottom:0}
+.tl-i:before{content:'';position:absolute;left:-19px;top:3px;width:9px;height:9px;border-radius:50%;background:#fff;border:2px solid var(--primary);box-sizing:border-box}
+.tl-i .tl-h{display:flex;align-items:center;gap:6px}
+.tl-i .tl-h b{font-size:12.5px;font-weight:650}
+.tl-i .tl-h i{font-style:normal;font-size:10px;color:var(--primary);background:var(--p-bg);padding:1px 6px;border-radius:99px}
+.tl-i p{font-size:11.5px;color:var(--t2);line-height:1.65;margin-top:4px}
+.tl-i .tl-t{font-size:10.5px;color:var(--t3);margin-top:3px;line-height:1.6}
+.tl-q{margin-top:6px;background:#F6F9FF;border-left:2px solid var(--p-bd);border-radius:0 8px 8px 0;padding:7px 9px;font-size:11px;line-height:1.65;color:var(--t2)}
+.tl-q em{font-style:normal;color:var(--primary);font-weight:650;margin-right:4px}
+.dimrow{display:flex;align-items:center;gap:8px;margin-top:9px;font-size:11.5px}
+.dimrow .dn{width:58px;flex-shrink:0;color:var(--t2)}
+.dimrow .db{flex:1;height:6px;border-radius:99px;background:#EEF2F9;overflow:hidden}
+.dimrow .db i{display:block;height:100%;border-radius:99px;background:var(--grad)}
+.dimrow .dv{width:28px;text-align:right;color:var(--t3);font-variant-numeric:tabular-nums;flex-shrink:0}
+.matrow{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px dashed var(--bd)}
+.matrow:last-child{border:none;padding-bottom:0}
+.matrow .mi{width:26px;height:26px;border-radius:8px;background:#E3EDFF;color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.matrow .mb{flex:1;min-width:0}
+.matrow .mb b{font-size:12px;font-weight:550;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.matrow .mb span{font-size:10px;color:var(--t3)}
+.matrow .mx{color:#C4CBD8;font-size:15px;padding:0 2px;flex-shrink:0}
+.pcard{display:flex;gap:10px;align-items:flex-start;padding:11px;border:1px solid var(--bd);border-radius:13px;background:#FBFCFE;margin-top:9px}
+.pcard .pa{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:650;flex-shrink:0;background:linear-gradient(135deg,#F08A0C,#FFB84D)}
+.pcard .pb{flex:1;min-width:0}
+.pcard .pb b{font-size:13px;display:block}
+.pcard .pb .pm{font-size:10.5px;color:var(--t3);margin-top:2px}
+.pcard .pb .pd{font-size:11.5px;color:var(--t2);line-height:1.65;margin-top:6px}
+.pcard .px{font-size:10.5px;color:var(--primary);padding:4px 8px;border-radius:8px;background:var(--p-bg);flex-shrink:0;white-space:nowrap}
+.pcard .ptagline{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.pcard .ptagline i{font-style:normal;font-size:10px;color:var(--t2);background:#EEF2F9;padding:1.5px 7px;border-radius:99px}
+.fld{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--t3);margin-top:12px}
+.fld:before{content:'';flex:1;height:1px;background:var(--bd)}
+.fld:after{content:'';flex:1;height:1px;background:var(--bd)}
+.mini-lab{font-size:11.5px;color:var(--t2);font-weight:600;margin:12px 0 6px;display:block}
+.voice-row{display:flex;gap:6px;flex-wrap:wrap}
+.voice-row b{font-size:11px;font-weight:500;color:var(--t2);background:#F2F5FA;border:1px solid var(--bd);border-radius:9px;padding:5px 9px}
+.voice-row b.on{background:var(--p-bg);border-color:var(--p-bd);color:var(--primary);font-weight:600}
 .toast{position:fixed;left:50%;bottom:120px;transform:translateX(-50%);background:rgba(20,30,50,.88);color:#fff;font-size:12.5px;padding:9px 16px;border-radius:99px;z-index:99;opacity:0;pointer-events:none;transition:opacity .25s;white-space:nowrap}
 .toast.show{opacity:1}
 .typing{display:flex;gap:4px;padding:12px 14px}
@@ -580,7 +661,8 @@ const IC={
  chat:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
  book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
  mega:'<path d="M3 11v2a1 1 0 0 0 1 1h2l4 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12"/>',
- refresh:'<path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/>'
+ refresh:'<path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/>',
+ spark:'<path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/><path d="M18.5 15.5l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/>'
 };
 const ic=(k,w,s)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="width:'+(w||20)+'px;height:'+(w||20)+'px;'+(s||'')+'">'+IC[k]+'</svg>';
 
@@ -667,7 +749,7 @@ function render(){
   if(s==='practice'||s==='practiceV') startTimer();
   if(s==='practiceV'){const c=app.querySelector('#vchat');if(c)c.scrollTop=c.scrollHeight;const last=VCHAT[VCHAT.length-1];vSpeaking(last&&(last.who==='ai'||last.who==='typing'));}
 }
-const TITLES={courses:'课程中心',courseDetail:'课程详情',learn:'课程学习',courseDone:'课程完成',scriptDetail:'剧本详情',practice:'AI 陪练',practiceV:'AI 陪练',report:'陪练报告',taskDetail:'任务详情',taskCourses:'任务课程',taskScripts:'任务剧本',examDetail:'正式考核',examRun:'正式考核',examResult:'考试结果',archive:'学习档案',pRecords:'陪练记录',eRecords:'考试记录',diag:'能力诊断',msg:'消息中心',settings:'账号设置',qa:'AI问答',personaNew:'自定义客户'};
+const TITLES={courses:'课程中心',courseDetail:'课程详情',learn:'课程学习',courseDone:'课程完成',scriptDetail:'剧本详情',practice:'AI 陪练',practiceV:'AI 陪练',report:'陪练报告',taskDetail:'任务详情',taskCourses:'任务课程',taskScripts:'任务剧本',examDetail:'正式考核',examRun:'正式考核',examResult:'考试结果',archive:'学习档案',pRecords:'陪练记录',eRecords:'考试记录',diag:'能力诊断',msg:'消息中心',settings:'账号设置',qa:'AI问答',personaNew:'自定义客户',scriptNew:'创建剧本',scriptNewResult:'AI 生成结果'};
 const PHONE='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg>';
 const SRIGHT={practice:'<button class="phb" onclick="startPhone()" title="切换到模拟电话">'+PHONE+'</button>',practiceV:'<button class="phb txtb" onclick="backToText()" title="切换为文字对话">文</button>',examRun:'',qa:'<button class="phb" onclick="qaNew()" title="开启新对话">'+ic('refresh',14)+'</button>'};
 const PINFO={'王先生 · 私营业主':{tag:['价格敏感','决策快','重面子'],focus:'总价与月供，关注置换残值',tip:'先认同再重构，忌直接否定竞品'},'刘总 · 企业高管':{tag:['效率优先','要求专业','时间紧'],focus:'交付周期与售后保障',tip:'结论先行，用数据支撑，控制篇幅'},'李女士 · 白领':{tag:['犹豫型','重口碑','怕被推销'],focus:'用车场景与月供压力',tip:'少讲参数，多讲场景与故事'},'张老师 · 中学教师':{tag:['谨慎','重合同','怕隐性收费'],focus:'费用明细与条款',tip:'逐项拆解费用，给书面清单'}};
@@ -784,7 +866,7 @@ function scMeta(t){return SC_META[t]||['linear-gradient(135deg,#6E4EEA,#9F7CFF)'
 SCREENS.scripts=()=>{const list=SCRIPTS.filter(s=>SFILTER==='全部'||s.type===SFILTER);
  return '<div class="page"><div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">'+
  '<div class="pg-h1" style="margin:0">AI陪练</div>'+
- '<button class="crt" onclick="toast(\'自定义剧本创建即将上线，可联系管理员配置\')">'+ic('plus',11)+'创建剧本</button></div>'+
+ '<button class="crt" onclick="snOpen()">'+ic('plus',11)+'创建剧本</button></div>'+
  '<div style="height:10px"></div>'+
  '<div class="chips">'+SFILTERS.map(c=>'<button class="chip'+(SFILTER===c?' on':'')+'" onclick="setSF(\''+c+'\')">'+c+'</button>').join('')+'</div>'+
  (list.length?list.map(s=>{const m=scMeta(s.type),d=DIFF_META[s.diff]||['#EEF2F9','#8A93A6'];
@@ -797,16 +879,443 @@ SCREENS.scripts=()=>{const list=SCRIPTS.filter(s=>SFILTER==='全部'||s.type===S
   :'<div class="note" style="text-align:center">该分类下暂无剧本</div>')+
  '<div class="note" style="margin-top:2px">一次会话只绑定一个剧本；同一剧本可反复训练，每次生成独立记录。</div></div>';};
 
+/* ============ 快速创建：APP 端极简（AI 直生成 / 3 项手填） ============ */
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const P_STYLES=['理性分析型','价格敏感型','谨慎犹豫型','爽快直接型','强势主导型','感性体验型','健谈互动型','沉默被动型'];
+const P_VOICES=['男声 · 成熟','男声 · 浑厚','女声 · 温和','女声 · 清亮'];
+const P_SPEEDS=['慢速','正常','快速'];
+const P_QTIPS=[
+ {t:'中年私营业主',p:'40 岁左右男性，自己开厂做生意，很在意落地总价，习惯拿隔壁品牌报价来压价'},
+ {t:'年轻女性白领',p:'28 岁女性白领，第一次买车，预算有限但很看重颜值和口碑，怕被销售忽悠'},
+ {t:'谨慎型教师',p:'40 岁中学教师，做事谨慎，最怕合同里有隐性收费，希望逐项讲清费用'},
+ {t:'企业高管',p:'50 岁企业高管，时间紧、要求专业，关注交付周期和售后保障'},
+ {t:'家庭换购客户',p:'35 岁二胎家庭换购 SUV，关注后排空间、儿童安全和日常用车成本'}
+];
+/* 客户库：与后台已发布客户对应（AI 生成与剧本选客户共用） */
+const PERSONA_POOL=[
+ {name:'王先生',role:'私营业主',sex:'男',age:'35–44岁',job:'个体经营者',fam:'已婚有孩',style:'价格敏感型',voice:'男声 · 浑厚',speed:'正常',
+  tags:['价格敏感','爱比价','决策快'],
+  desc:'自己开厂做生意，买车最看重落地总价，习惯拿多家报价来压价。',
+  focus:'落地总价与置换残值',tip:'先认同再重构，用三年总账回应比价',
+  k:['价格','贵','比价','优惠','便宜','报价','老板','生意']},
+ {name:'李女士',role:'白领',sex:'女',age:'25–34岁',job:'企业职员',fam:'单身',style:'谨慎犹豫型',voice:'女声 · 温和',speed:'正常',
+  tags:['犹豫型','重口碑','怕被推销'],
+  desc:'第一次买车，预算有限但很在意颜值和口碑，怕被销售忽悠。',
+  focus:'用车场景与月供压力',tip:'少讲参数，多讲场景与故事',
+  k:['女性','白领','年轻','颜值','口碑','第一次','预算','女生']},
+ {name:'张老师',role:'中学教师',sex:'男',age:'35–44岁',job:'公务员',fam:'已婚有孩',style:'理性分析型',voice:'男声 · 成熟',speed:'慢速',
+  tags:['谨慎','重合同','怕隐性收费'],
+  desc:'做事谨慎，习惯把每一项费用记下来核对，最怕合同里有隐性收费。',
+  focus:'费用明细与条款',tip:'逐项拆解费用，给书面清单',
+  k:['教师','老师','谨慎','合同','隐性','费用','条款']},
+ {name:'刘总',role:'企业高管',sex:'男',age:'45–54岁',job:'企业管理者',fam:'已婚有孩',style:'强势主导型',voice:'男声 · 成熟',speed:'快速',
+  tags:['效率优先','要求专业','时间紧'],
+  desc:'行程排得满，沟通要求结论先行，对交付周期和售后保障格外敏感。',
+  focus:'交付周期与售后保障',tip:'结论先行，用数据支撑，控制篇幅',
+  k:['高管','老板','时间','效率','专业','交付','售后']},
+ {name:'陈女士',role:'家庭换购',sex:'女',age:'35–44岁',job:'企业职员',fam:'已婚有孩',style:'感性体验型',voice:'女声 · 温和',speed:'正常',
+  tags:['家庭优先','重安全','关注空间'],
+  desc:'二胎家庭换购 SUV，最在意后排空间、儿童安全和日常用车成本。',
+  focus:'空间、安全与用车成本',tip:'从家庭场景切入，请家人一起体验',
+  k:['家庭','孩子','二胎','空间','换购','安全','suv','七座']}
+];
+function pnPick(prompt,ver){
+  const p=(prompt||'').toLowerCase();
+  const sc=PERSONA_POOL.map((c,i)=>({i:i,hit:c.k.reduce((n,k)=>n+(p.indexOf(k)>=0?1:0),0)}));
+  sc.sort((a,b)=>b.hit-a.hit||a.i-b.i);
+  return sc[(ver||0)%sc.length].i;
+}
+/* ---- 客户：状态与动作 ---- */
+let PN={prompt:'',draft:null,busy:false,ver:0,manual:false,style:'',voice:'',speed:''};
+function pnOpen(){PN={prompt:'',draft:null,busy:false,ver:0,manual:false,style:'',voice:'',speed:''};navTo('personaNew');}
+function pnMode(m){PN.manual=!!m;PN.style='';PN.voice='';PN.speed='';render();}
+function pnPrompt(v){PN.prompt=v;}
+function pnQt(i){PN.prompt=P_QTIPS[i].p;render();}
+function pnSet(k,v){PN[k]=v;if(PN.draft)PN.draft[k]=v;render();}
+function pnGen(){
+  if(PN.busy)return;
+  if(!(PN.prompt||'').trim()){toast('先用一句话描述这位客户');return;}
+  PN.busy=true;render();
+  setTimeout(()=>{PN.draft=pnBuild();PN.busy=false;render();},900);
+}
+function pnBuild(){
+  const c=PERSONA_POOL[pnPick(PN.prompt,PN.ver)];
+  return {name:c.name,role:c.role,sex:c.sex,age:c.age,job:c.job,fam:c.fam,
+    style:PN.style||c.style,voice:PN.voice||c.voice,speed:PN.speed||c.speed,
+    tags:c.tags.slice(),desc:c.desc,focus:c.focus,tip:c.tip};
+}
+function pnAnother(){PN.ver++;PN.style='';PN.voice='';PN.speed='';PN.draft=pnBuild();render();}
+function pnCommit(d){
+  CUSTOM_P.push({name:d.name,role:d.role,style:d.style,voice:d.voice,sex:d.sex,age:d.age,job:d.job,tags:d.tags.slice(),desc:d.desc});
+  PINFO[d.name+' \u00b7 '+d.role]={tag:d.tags.slice(0,4),focus:d.focus||'由你定义：这位客户最在意什么',tip:d.tip||'先问后说，用提问挖需求'};
+  PRAC.persona=pList(SCRIPTS[SCRIPT]).length-1;
+  toast('已创建并选用：'+d.name);
+  back();
+}
+function pnCommitDraft(){if(PN.draft)pnCommit(PN.draft);}
+function pnSaveManual(){
+  const g=id=>{const e=document.getElementById(id);return e?(e.value||'').trim():'';};
+  const name=g('pnName');
+  if(!name){toast('先填一下客户称呼');return;}
+  const role=g('pnRole')||'自定义客户';
+  const desc=g('pnDesc');
+  const st=PN.style||'理性分析型';
+  const tags=desc?desc.replace(/[，。；、]/g,' ').split(/\s+/).filter(Boolean).slice(0,3):['需建立信任'];
+  pnCommit({name:name,role:role,sex:PN.voice&&PN.voice.indexOf('女')>=0?'女':'男',age:'35–44岁',job:role,
+    style:st,voice:PN.voice||'男声 · 成熟',speed:PN.speed||'正常',
+    tags:tags.length?tags:['需建立信任'],desc:desc||'由你自定义的陪练客户，按所选风格进行角色扮演。',
+    focus:'由你定义：这位客户最在意什么',tip:'先问后说，用提问挖需求'});
+}
+function pnAiHtml(){
+  const d=PN.draft;
+  return '<div class="crt-card">'+
+   '<div class="ai-lead">'+ic('spark',14)+'一句话描述这位客户<em>AI</em></div>'+
+   '<textarea class="ai-ta" rows="3" id="pnTa" oninput="pnPrompt(this.value)" placeholder="例：40 岁左右男性，开厂做生意，很在意价格，喜欢拿隔壁品牌报价来压">'+esc(PN.prompt)+'</textarea>'+
+   '<div class="qt">'+P_QTIPS.map((t,i)=>'<b onclick="pnQt('+i+')">'+t.t+'</b>').join('')+'</div>'+
+   (PN.busy
+     ? '<div class="gen-busy"><div class="gl"><em></em>正在生成客户画像…</div><div class="gl"><em></em>匹配性格风格与语音</div><div class="gl"><em></em>推算关注点与应对要点</div></div>'
+     : '<button class="gen-btn" onclick="pnGen()">'+ic('spark',15)+'生成客户画像</button>')+
+   '<div class="ai-hint">AI 按描述补齐性别、年龄、职业、风格与语音，生成后可微调。</div></div>'+
+  (d?pnCardHtml(d)+'<button class="btn btn-p mt" onclick="pnCommitDraft()">保存并选用</button>':'')+
+  '<div class="note" style="margin-top:12px">自定义客户仅在自由选择剧本时可选；任务陪练与考试的客户由任务指定。</div>';
+}
+function pnCardHtml(d){
+  return '<div class="crt-card">'+
+   '<div class="sn-h"><span class="sn-n">'+ic('me',11)+'</span><b>客户画像</b><span class="redo" onclick="pnAnother()">'+ic('refresh',11)+'换一个</span></div>'+
+   '<div class="pcard" style="margin-top:10px">'+
+     '<div class="pa">'+esc((d.name||'客')[0])+'</div>'+
+     '<div class="pb"><b>'+esc(d.name)+' · '+esc(d.role)+'</b>'+
+       '<div class="pm">'+esc(d.sex)+' · '+esc(d.age)+' · '+esc(d.job)+' · '+esc(d.fam)+'</div>'+
+       '<div class="pd">'+esc(d.desc)+'</div>'+
+       '<div class="ptagline">'+d.tags.map(t=>'<i>'+esc(t)+'</i>').join('')+'</div></div>'+
+   '</div>'+
+   '<span class="mini-lab">客户风格</span>'+
+   '<div class="qt" style="margin-top:0">'+P_STYLES.map(s=>'<b class="'+(d.style===s?'on':'')+'" onclick="pnSet(\'style\',\''+s+'\')">'+s+'</b>').join('')+'</div>'+
+   '<span class="mini-lab">语音</span>'+
+   '<div class="voice-row">'+P_VOICES.map(v=>'<b class="'+(d.voice===v?'on':'')+'" onclick="pnSet(\'voice\',\''+v+'\')">'+esc(v)+'</b>').join('')+'</div>'+
+   '<div class="voice-row" style="margin-top:6px">'+P_SPEEDS.map(v=>'<b class="'+(d.speed===v?'on':'')+'" onclick="pnSet(\'speed\',\''+v+'\')">'+v+'</b>').join('')+'</div>'+
+   '<div class="sn-line" style="margin-top:11px"><span>核心关注</span><b>'+esc(d.focus)+'</b></div>'+
+   '<div class="sn-line"><span>应对要点</span><b>'+esc(d.tip)+'</b></div></div>';
+}
+function pnManualHtml(){
+  const st=PN.style;
+  return '<div class="crt-card">'+
+   '<span class="f-lab" style="margin-top:0">称呼 *</span><input class="f-in" id="pnName" placeholder="如：周女士 / 陈叔叔" oninput="PN.mn=this.value">'+
+   '<span class="f-lab">身份 / 职业</span><input class="f-in" id="pnRole" placeholder="如：自由职业 / 个体老板">'+
+   '<span class="f-lab">性格与关注点（一句话）</span><textarea class="ai-ta" rows="3" id="pnDesc" placeholder="如：做事谨慎，最在意费用明细，怕合同里有隐性收费，说话比较慢"></textarea>'+
+   '<span class="mini-lab">客户风格</span>'+
+   '<div class="qt" style="margin-top:0">'+P_STYLES.map(s=>'<b class="'+(st===s?'on':'')+'" onclick="pnSet(\'style\',\''+s+'\')">'+s+'</b>').join('')+'</div>'+
+   '<span class="mini-lab">语音</span>'+
+   '<div class="voice-row">'+P_VOICES.map(v=>'<b class="'+(PN.voice===v?'on':'')+'" onclick="pnSet(\'voice\',\''+esc(v)+'\')">'+esc(v)+'</b>').join('')+'</div>'+
+   '<div class="voice-row" style="margin-top:6px">'+P_SPEEDS.map(v=>'<b class="'+(PN.speed===v?'on':'')+'" onclick="pnSet(\'speed\',\''+v+'\')">'+v+'</b>').join('')+'</div>'+
+   '<div class="ai-hint">只填称呼也能保存，其余留空时由系统按所选风格自动补齐。</div></div>'+
+   '<button class="btn btn-p mt" onclick="pnSaveManual()">保存并选用</button>'+
+   '<div class="note" style="margin-top:12px">自定义客户仅在自由选择剧本时可选；任务陪练与考试的客户由任务指定。</div>';
+}
+SCREENS.personaNew=()=>'<div class="page">'+
+ '<div style="height:10px"></div>'+
+ '<div class="seg">'+
+  '<button class="seg-i'+(!PN.manual?' on':'')+'" onclick="pnMode(0)">'+ic('spark',13)+'AI 生成</button>'+
+  '<button class="seg-i'+(PN.manual?' on':'')+'" onclick="pnMode(1)">'+ic('me',13)+'手动填写</button>'+
+ '</div>'+
+ (PN.manual?pnManualHtml():pnAiHtml())+'</div>';
+
+/* ---- 剧本：模板库（AI 按描述匹配，可整套换一版） ---- */
+const S_QTIPS=[
+ {t:'客户嫌贵',p:'客户拿着竞品报价单说我们贵一万二，想练怎么守住价格，用金融方案和置换权益把价值讲清楚'},
+ {t:'竞品对比',p:'客户在两款车之间反复摇摆，一直问哪个好，想练怎么突出差异又不贬低竞品'},
+ {t:'首次接待',p:'客户第一次进店，只在展厅转、问一句答一句，想练开场破冰和挖出真实购车动机'},
+ {t:'试驾邀约',p:'给留资客户打电话邀约试驾，客户总说忙、改天再说，想练两轮异议内定下具体时间'},
+ {t:'金融分期',p:'客户觉得分期手续费高、流程麻烦，倾向全款，想练怎么算清总账把分期讲成资金安排'},
+ {t:'产品讲解',p:'要用三分钟讲清一台新车的核心卖点，想练节奏控制和卖点向客户利益的转化'}
+];
+const S_TPL=[
+{k:['贵','价格','优惠','比价','便宜','让价','报价','车价'],
+ name:'守住价格·竞品比价应对',diff:'挑战',time:'15 分钟',first:'客户先开口',radar:'价格异议 · 四维',
+ desc:'客户带着竞品报价单进店，要求你给出更低价格。训练在守住价格体系的前提下完成价值重构。',
+ goal:'不降价的前提下，用金融方案与置换权益把总账算清，推动当日下订',
+ scene:'客户已到店，手里拿着两份竞品报价单，坐下第一句就是"你们比隔壁贵一万二"。店内现金让价已经触顶，可用金融贴息与置换补贴组合，但不得口头承诺额外返现。',
+ dims:[['需求挖掘',20],['产品介绍',20],['异议处理',35],['促成邀约',25]],
+ mats:[['竞品对比话术手册.pdf','销售话术 · 12 页'],['金融方案与置换权益表.xlsx','政策文件 · 现金流测算']],
+ flow:[
+  {name:'开场破冰',w:25,goal:'30 秒内让客户愿意把两份报价单摊开逐项对比',limit:'不主动报优惠金额，不评价竞品好坏',
+   pts:'起身迎接并称呼姓氏\n确认客户看中的车型与配置\n请客户出示竞品报价单',
+   q:'我今天就是来比价的，你们比隔壁贵一万二，能不能做到这个价？',
+   a:'王哥，比价我特别支持，同一配置摊开算才准。您把隔壁那份单子给我，咱逐项对一下，差在哪、值不值，一目了然。'},
+  {name:'价值重构',w:40,goal:'把一万二的差价拆成配置差与三年用车成本两笔账',limit:'不贬低竞品，不口头承诺额外让价',
+   pts:'逐项对比配置差异并给出对应价值\n测算三年保养、能耗、保险成本\n用置换补贴补上差额',
+   q:'配置我看了，差不多。你就说便宜那一万二怎么补？',
+   a:'这一万二我给您分两块：配置上多了座椅通风和辅助驾驶，按选装价是 6000；三年用车我算过，电费加保养比油车省 9000 多。真算下来是您省了，不是多花。'},
+  {name:'方案促成',w:35,goal:'给出金融贴息与置换组合方案，锁定当日下订或明确到店时间',limit:'不承诺合同外权益，不虚构限时政策',
+   pts:'给出两套首付与月供方案\n说明权益有效期\n约定下订或二次到店时间',
+   q:'方案你发我微信吧，我回去想想。',
+   a:'行，方案我今天就发您。不过贴息额度是本月的，我先帮您把名额占上，这两天要是不合适随时退，不占您任何成本。'}
+ ]},
+{k:['对比','竞品','哪个好','选哪个','摇摆','犹豫','纠结'],
+ name:'竞品对比·差异化说清',diff:'进阶',time:'12 分钟',first:'学员先开口',radar:'竞品对比 · 四维',
+ desc:'客户在两款车之间反复摇摆，参数表都拿到了却迟迟不决。训练用场景化差异替代参数堆砌。',
+ goal:'帮客户建立一条属于自己的决策标准，把对比落到他真实的用车场景',
+ scene:'客户已经看过两个品牌，手里两份参数表，反复问"到底哪个好"。他对参数不敏感，更在意家人乘坐感受和三年后的保值。',
+ dims:[['需求挖掘',30],['产品介绍',30],['异议处理',25],['促成邀约',15]],
+ mats:[['竞品对比话术手册.pdf','销售话术 · 12 页'],['保值率与保养成本对照.xlsx','数据表 · 三年测算']],
+ flow:[
+  {name:'确认对比维度',w:30,goal:'把"哪个好"转成"你最在意哪三件事"',limit:'不先给结论，不评价竞品短板',
+   pts:'请客户说出最在意的三个点\n确认主要用车人和使用场景\n记录客户自述的决策标准',
+   q:'你就说这两台车到底哪个好？',
+   a:'两台都不差，关键看您怎么用。您先说三个最在意的：空间、油耗还是保值？我按您的排序讲，不耽误时间。'},
+  {name:'场景化验证',w:40,goal:'用客户自己的场景验证差异，让参数变成可感知的感受',limit:'不堆参数，不虚构测试数据',
+   pts:'按客户场景安排一次对比体验\n用可感知的细节讲差异\n请客户家人一起参与',
+   q:'参数我看不懂，你就说开起来有啥不一样？',
+   a:'咱不看表。我给您安排一段试驾：过小区减速带您坐后排感受一下，再上个匝道听下噪音，比参数直观。'},
+  {name:'决策收口',w:30,goal:'给出明确的下一步，避免客户继续摇摆',limit:'不催单，不贬低竞品',
+   pts:'复述客户的三条决策标准\n说明本店可提供的确定性保障\n约定二次到店或下订时间',
+   q:'我再看看，回去比较一下。',
+   a:'行。您比较的时候盯这三个点：后排、保值、保养价。这三点我们都有书面材料，您带回去对着看，周三前给我个话？'}
+ ]},
+{k:['首次','进店','接待','破冰','陌生','第一次','沉默','随便看'],
+ name:'首次接待·沉默型客户破冰',diff:'进阶',time:'10 分钟',first:'客户先开口',radar:'首次接待 · 四维',
+ desc:'客户第一次进店，只在展厅转、问一句答一句。训练低压力开场与快速挖出真实购车动机。',
+ goal:'30 秒内让客户愿意开口，问出购车动机、决策人和时间节点',
+ scene:'周六下午，客户独自进店，围着展车转了两圈，不与人对视，问"随便看看"之后就不再说话。',
+ dims:[['开场破冰',35],['需求挖掘',35],['产品介绍',15],['促成邀约',15]],
+ mats:[['门店标准接待话术.docx','销售话术 · 8 页'],['在售车型配置与价格表.xlsx','产品资料 · 实时更新']],
+ flow:[
+  {name:'低压力开场',w:30,goal:'让客户接受"不推销、只介绍"的定位，愿意停下脚步',limit:'不紧跟、不强行递资料、不问预算',
+   pts:'保持一米距离并行介绍\n用一句场景化话题打开\n说明可以随时自己看',
+   q:'我随便看看，你不用管我。',
+   a:'行，您随意看。这台是刚到店的展车，我先把门给您打开，您坐进去感受下视野，需要我再叫我。'},
+  {name:'开放式挖需',w:40,goal:'用三个问题问出用车人、用途和时间',limit:'不连续追问，不评判客户回答',
+   pts:'问主要谁开、平时跑什么路\n问现在开的什么车\n问大概什么时候想换',
+   q:'（沉默，继续看车）',
+   a:'您平时上下班远吗？要是每天通勤超过 30 公里，这台的电耗优势就比较明显了。'},
+  {name:'需求确认与引导',w:30,goal:'复述需求并给出一个具体下一步',limit:'不承诺价格，不强行留资',
+   pts:'复述客户说的关键需求\n推荐一个匹配配置\n提议试驾或算一份方案',
+   q:'这车多少钱？',
+   a:'这台指导价 13.98 万，落地要看您选的配置和置换情况。您先把需求告诉我，我给您算一页纸的方案，不占您时间。'}
+ ]},
+{k:['试驾','邀约','电话','打电话','留资','忙','改天'],
+ name:'试驾邀约·电话异议推进',diff:'挑战',time:'10 分钟',first:'学员先开口',radar:'电话邀约 · 三维',
+ desc:'给留资客户打电话邀约试驾，客户以"忙、改天"推脱。训练两轮异议内锁定具体时间。',
+ goal:'两轮异议内把"改天"变成具体到店时间，并完成到店前确认',
+ scene:'晚上 7 点，客户在线上留了电话但一直没到店。前两次没接通，这是第三次拨过去。',
+ dims:[['开场破冰',20],['异议处理',40],['促成邀约',40]],
+ mats:[['电话邀约标准话术.docx','销售话术 · 6 页'],['试驾路线与体验点说明.pdf','门店资料 · 2 条路线']],
+ flow:[
+  {name:'开场身份与来意',w:25,goal:'20 秒内说清身份与来电价值，争取继续通话',limit:'不寒暄过长，不急着介绍车',
+   pts:'报姓名与门店\n说明来电目的与占用时长\n征得同意再继续',
+   q:'喂？哪位？',
+   a:'王哥您好，我是长久博瑞的小赵，占用您两分钟。您上周在网上看过银河 E5，我这边刚好有台试驾车空出来。'},
+  {name:'异议拆解',w:40,goal:'把"忙"翻译成真实顾虑并逐个回应',limit:'不与客户争辩，不重复同一句话',
+   pts:'先认同再确认时间成本\n区分"没时间"和"没兴趣"\n给出最短到店方案',
+   q:'最近太忙了，改天再说吧。',
+   a:'理解，年底都忙。我不占您整块时间，试驾 20 分钟就够，您下班顺路过来，我提前把车备好，到了直接开。'},
+  {name:'时间锁定',w:35,goal:'给出二选一的具体时间，把邀约落到日程',limit:'不给开放式"您看什么时候方便"',
+   pts:'提供两个具体时段\n确认同行人\n发送到店指引',
+   q:'那……下周吧。',
+   a:'行，下周二晚上 7 点或者周六上午 10 点，您挑一个。我把车和路线都排上，前一天再跟您确认。'}
+ ]},
+{k:['分期','金融','贷款','月供','手续费','利息','全款','首付'],
+ name:'金融分期·总账算清',diff:'进阶',time:'12 分钟',first:'学员先开口',radar:'金融方案 · 四维',
+ desc:'客户认为分期手续费高、流程麻烦，倾向全款。训练把分期讲成资金安排，而不是"借钱"。',
+ goal:'用总账与资金机会成本，让客户自己算出分期更划算',
+ scene:'客户已选定车型，谈到付款方式时说"全款省事，分期还要手续费，不划算"。',
+ dims:[['需求挖掘',25],['产品介绍',20],['异议处理',35],['促成邀约',20]],
+ mats:[['金融方案与置换权益表.xlsx','政策文件 · 现金流测算'],['分期费用明细说明.pdf','合规材料 · 费项清单']],
+ flow:[
+  {name:'认同顾虑',w:25,goal:'让客户感到被理解，愿意听方案',limit:'不否定客户判断，不急着推金融',
+   pts:'认同全款省事的合理性\n确认客户对费用的具体担心\n说明只做测算不推销',
+   q:'分期手续费那么高，还要跑流程，我全款得了。',
+   a:'全款确实省心。不过手续费这块容易被算重，我把两种方式摊在一张纸上，您看完再定，不合适就全款。'},
+  {name:'总账拆解',w:40,goal:'把手续费、贴息、资金收益放在同一张表里对比',limit:'不隐瞒费用项，不夸大理财收益',
+   pts:'列出分期全部费用项\n算贴息后的实际成本\n对比资金留在手上的用途',
+   q:'那你算算，到底差多少？',
+   a:'这台车分期 12 万，贴息后三年利息 4800，手续费 2000，一共 6800。这 12 万留在您生意上周转，按您说的毛利，一年不止这个数。'},
+  {name:'方案促成',w:35,goal:'给出首选方案并降低决策门槛',limit:'不承诺政策外贴息，不诱导超能力贷款',
+   pts:'推荐一档首付与期限\n说明提前还款规则\n约定提交资料时间',
+   q:'那要准备什么材料？',
+   a:'身份证、银行卡、近半年流水，线上提交，最快当天出额度。您先按 30% 首付报一下，额度出来不合适咱再调。'}
+ ]},
+{k:['讲解','讲车','卖点','产品','介绍','三分钟','六方位'],
+ name:'三分钟讲车·卖点转化',diff:'进阶',time:'8 分钟',first:'学员先开口',radar:'产品讲解 · 四维',
+ desc:'按"外观-座舱-三电-智驾"结构完成一次标准讲车，训练节奏控制与卖点利益转化。',
+ goal:'3 分钟内讲完核心卖点，每个卖点都落到客户能感知的利益',
+ scene:'店头活动，客户站在车旁听讲解，同行还有两位家人。现场比较吵，客户注意力有限。',
+ dims:[['开场破冰',20],['产品介绍',45],['沟通表达',20],['促成邀约',15]],
+ mats:[['在售车型配置与价格表.xlsx','产品资料 · 实时更新'],['六方位讲车要点.docx','培训材料 · 4 页']],
+ flow:[
+  {name:'结构开场',w:20,goal:'一句话给出讲解结构，抓住注意力',limit:'不背参数表，开场不超过 30 秒',
+   pts:'点出三个核心卖点\n说明讲解顺序\n邀请客户上车体验',
+   q:'你简单说说这车有啥亮点？',
+   a:'三个点：看着体面、坐着舒服、用着省钱。我按这三块讲，三分钟，您随时打断我。'},
+  {name:'卖点与利益',w:55,goal:'每个卖点都配一句客户利益，至少完成三个',limit:'不堆参数，不与他人对比贬低',
+   pts:'外观讲比例与灯组\n座舱讲后排空间与静音\n三电讲续航与补能速度',
+   q:'续航到底能跑多少？',
+   a:'标称 530 公里，市区通勤基本一周一充。您每天 40 公里的话，周五晚上插上，周末带家人出去完全够。'},
+  {name:'体验邀约',w:25,goal:'把讲解转成一次体验或留资',limit:'不强留电话，不硬邀下订',
+   pts:'邀请客户坐进后排\n提议短途试驾\n给出到店权益',
+   q:'听着还行，我再看看。',
+   a:'您先坐后排感受下腿部空间，我把座椅调到最后。合适的话咱安排一圈试驾，十分钟就回来。'}
+ ]},
+{k:[],
+ name:'综合情景对话·定制练习',diff:'普通',time:'12 分钟',first:'学员先开口',radar:'情景对话 · 标准四维',
+ desc:'按你描述的场景生成的通用陪练剧本，覆盖建立连接、需求方案、推进收口三个阶段。',
+ goal:'在真实销售场景中把话说清、把需求问透、把下一步定下来',
+ scene:'门店接待场景，客户有明确购车意向但仍有顾虑，需要在有限时间内完成需求确认与方案推进。',
+ dims:[['需求挖掘',30],['产品介绍',25],['异议处理',30],['促成邀约',15]],
+ mats:[['门店标准接待话术.docx','销售话术 · 8 页'],['在售车型配置与价格表.xlsx','产品资料 · 实时更新']],
+ flow:[
+  {name:'建立连接',w:30,goal:'让客户愿意坐下来完整沟通一次',limit:'不急于介绍产品，不先问预算',
+   pts:'确认客户来意与看过的车型\n说明本次沟通会覆盖什么\n取得客户同意',
+   q:'我先看看，你简单介绍下就行。',
+   a:'行，我按您的节奏来。您最想先弄明白哪块：价格、配置，还是后期用车成本？'},
+  {name:'需求与方案',w:40,goal:'问出核心需求，给出一个匹配的方案',limit:'不夸大卖点，不承诺政策外权益',
+   pts:'确认用车人与主要场景\n推荐一个匹配配置\n把方案折算成月供或日均成本',
+   q:'那你推荐哪个配置？',
+   a:'按您每天 40 公里通勤，我建议中配：续航够用，辅助驾驶和座椅舒适性都齐了，落地比高配省两万多。'},
+  {name:'推进收口',w:30,goal:'把沟通转成一个具体的下一步',limit:'不催单，不做口头承诺',
+   pts:'复述客户关注点\n提出试驾或出方案\n约定下一步时间',
+   q:'我回去想想。',
+   a:'行。我把配置和方案整理成一页纸发您，您看完有疑问随时问我，方便的话这周末来试一圈？'}
+ ]}
+];
+/* ---- 剧本：状态与动作 ---- */
+let SN={mode:'ai',prompt:'',cust:0,diff:'自动',ver:0,busy:false,draft:null,mname:'',mwhat:''};
+function snOpen(){SN={mode:'ai',prompt:'',cust:0,diff:'自动',ver:0,busy:false,draft:null,mname:'',mwhat:''};navTo('scriptNew');}
+function snMode(m){SN.mode=m;render();}
+function snQt(i){SN.prompt=S_QTIPS[i].p;render();}
+function snCust(i){SN.cust=i;render();}
+function snDiff(d){SN.diff=d;render();}
+function snPick(prompt,ver){
+  const p=(prompt||'').toLowerCase();
+  const sc=S_TPL.map((t,i)=>({i:i,hit:t.k.reduce((n,k)=>n+(p.indexOf(k)>=0?1:0),0)}));
+  sc.sort((a,b)=>b.hit-a.hit||a.i-b.i);
+  if(!sc[0].hit)return S_TPL.length-1;
+  return sc[(ver||0)%sc.length].i;
+}
+function snBuild(){
+  const t=S_TPL[snPick(SN.prompt,SN.ver)];
+  const c=PERSONA_POOL[SN.cust]||PERSONA_POOL[0];
+  return {name:t.name,desc:t.desc,goal:t.goal,scene:t.scene,first:t.first,
+    diff:SN.diff==='自动'?t.diff:SN.diff,time:t.time,radar:t.radar,
+    cust:[c.name+' \u00b7 '+c.role],
+    flow:t.flow.map(f=>JSON.parse(JSON.stringify(f))),
+    dims:t.dims.map(d=>d.slice()),mats:t.mats.map(m=>m.slice()),userName:false};
+}
+function snGen(){
+  if(SN.busy)return;
+  if(!(SN.prompt||'').trim()){toast('先说一句你想练什么');return;}
+  SN.busy=true;render();
+  setTimeout(()=>{SN.draft=snBuild();SN.busy=false;navTo('scriptNewResult');},1150);
+}
+function snRefresh(){
+  const old=SN.draft;SN.ver++;
+  const n=snBuild();
+  if(old&&old.userName){n.name=old.name;n.userName=true;}
+  SN.draft=n;render();toast('已重新生成一版');
+}
+function snName(v){if(SN.draft){SN.draft.name=v;SN.draft.userName=true;}}
+function snNextCust(){SN.cust=(SN.cust+1)%PERSONA_POOL.length;
+  if(SN.draft){const c=PERSONA_POOL[SN.cust];SN.draft.cust=[c.name+' \u00b7 '+c.role];}render();}
+function snDelMat(n){if(!SN.draft)return;SN.draft.mats=SN.draft.mats.filter(m=>m[0]!==n);render();toast('已移除该素材');}
+function snSave(){
+  const d=SN.draft;if(!d)return;
+  const name=(d.name||'').trim();
+  if(!name){toast('剧本名称不能为空');return;}
+  const id=SCRIPTS.length;
+  SCRIPTS.push({id:id,name:name,type:'情景对话',time:d.time,diff:d.diff,
+    cnt:'新建 · 未开始',desc:d.desc,goal:d.goal,personas:d.cust,
+    scene:d.scene,first:d.first,flow:d.flow,dims:d.dims,mats:d.mats,radar:d.radar,from:'自建'});
+  STACK=['scripts'];SCRIPT=id;PRAC.taskId=null;PRAC.persona=0;
+  navTo('scriptDetail');toast('剧本已创建，可直接开始陪练');
+}
+function snCreateManual(){
+  const ne=document.getElementById('snMN'), we=document.getElementById('snMW');
+  const nm=((ne?ne.value:SN.mname)||'').trim();
+  if(!nm){toast('先填个剧本名称');return;}
+  SN.mname=nm;
+  SN.prompt=(((we?we.value:SN.mwhat)||'')).trim();
+  SN.ver=0;SN.draft=snBuild();SN.draft.name=nm;SN.draft.userName=true;
+  snSave();
+}
+SCREENS.scriptNew=()=>{
+  const ai=SN.mode==='ai';
+  return '<div class="page">'+
+  '<div class="seg">'+
+   '<button class="seg-i'+(ai?' on':'')+'" onclick="snMode(\'ai\')">'+ic('spark',13)+'AI 生成</button>'+
+   '<button class="seg-i'+(ai?'':' on')+'" onclick="snMode(\'manual\')">'+ic('doc',13)+'手动填写</button>'+
+  '</div>'+
+  (ai?
+   '<div class="crt-card">'+
+    '<div class="ai-lead">'+ic('spark',14)+'你想练什么？<em>AI</em></div>'+
+    '<textarea class="ai-ta" rows="3" id="snTa" oninput="SN.prompt=this.value" placeholder="用一句话说清场景和难点，例：客户拿着竞品报价单说我们贵一万二，想练怎么守住价格">'+esc(SN.prompt)+'</textarea>'+
+    '<div class="qt">'+S_QTIPS.map((t,i)=>'<b onclick="snQt('+i+')">'+t.t+'</b>').join('')+'</div>'+
+    '<div class="ai-hint">AI 会一次生成场景设定、会话框架、匹配客户与能力雷达，可逐段调整再保存。</div>'+
+   '</div>'
+   :
+   '<div class="crt-card">'+
+    '<span class="f-lab" style="margin-top:0">剧本名称 *</span><input class="f-in" id="snMN" value="'+esc(SN.mname)+'" oninput="SN.mname=this.value" placeholder="如：周末试驾邀约专项">'+
+    '<span class="f-lab">想练什么（一句话）</span><textarea class="ai-ta" rows="3" id="snMW" oninput="SN.mwhat=this.value" placeholder="例：客户总说忙、改天，想练怎么在电话里定下具体试驾时间">'+esc(SN.mwhat)+'</textarea>'+
+    '<div class="ai-hint">只填名称也能建，其余配置由系统按你的描述自动补齐。</div>'+
+   '</div>')+
+  '<div class="crt-card">'+
+   '<div class="ai-lead">'+ic('me',14)+'陪练客户</div>'+
+   '<div class="chips" style="margin-top:9px;padding-bottom:0">'+PERSONA_POOL.map((c,i)=>'<button class="chip'+(SN.cust===i?' on':'')+'" onclick="snCust('+i+')">'+esc(c.name)+' · '+esc(c.role)+'</button>').join('')+'</div>'+
+   '<span class="mini-lab">训练难度</span>'+
+   '<div class="qt" style="margin-top:0">'+['自动','新手','进阶','挑战'].map(d=>'<b class="'+(SN.diff===d?'on':'')+'" onclick="snDiff(\''+d+'\')">'+d+'</b>').join('')+'</div>'+
+  '</div>'+
+  (ai
+   ? (SN.busy
+      ? '<div class="crt-card gen-busy"><div class="gl"><em></em>正在理解你的训练需求…</div><div class="gl"><em></em>匹配场景模板与模拟客户</div><div class="gl"><em></em>生成会话框架与能力雷达</div></div>'
+      : '<button class="gen-btn" onclick="snGen()">'+ic('spark',15)+'AI 生成剧本</button>')
+   : '<button class="btn btn-p" style="margin-top:14px" onclick="snCreateManual()">'+ic('check',15)+'创建并开始陪练</button>')+
+  '<p style="text-align:center;font-size:10.5px;color:var(--t3);margin:10px 0 4px">生成的剧本归你个人使用；需要下发给全店时可由管理员在后台配置</p>'+
+  '</div>';
+};
+SCREENS.scriptNewResult=()=>{
+  const d=SN.draft||snBuild();
+  const c=PERSONA_POOL[SN.cust]||PERSONA_POOL[0];
+  const wk=d.flow.reduce((n,f)=>n+(+f.w||0),0);
+  return '<div class="page">'+
+  '<div class="sn-hero">'+
+   '<div class="sh-t">'+ic('spark',12)+'AI 已生成 · 逐段可调</div>'+
+   '<input class="sh-name" value="'+esc(d.name)+'" oninput="snName(this.value)">'+
+   '<div class="sh-p">'+esc(d.desc)+'</div>'+
+   '<div class="sh-tags"><i>'+esc(d.diff)+'</i><i>'+esc(d.time)+'</i><i>'+esc(d.first)+'</i><i>'+d.flow.length+' 个阶段</i></div>'+
+  '</div>'+
+  '<div class="sn-sec"><div class="sn-h"><span class="sn-n">1</span><b>场景设定</b><span class="redo" onclick="snRefresh()">'+ic('refresh',11)+'换一版</span></div>'+
+   '<div class="sn-p">'+esc(d.scene)+'</div>'+
+   '<div class="sn-line"><span>训练目标</span><b>'+esc(d.goal)+'</b></div></div>'+
+  '<div class="sn-sec"><div class="sn-h"><span class="sn-n">2</span><b>模拟客户</b><span class="redo" onclick="snNextCust()">'+ic('refresh',11)+'换一位</span></div>'+
+   '<div class="pcard" style="margin-top:10px"><div class="pa">'+esc(c.name[0])+'</div>'+
+    '<div class="pb"><b>'+esc(c.name)+' · '+esc(c.role)+'</b><div class="pm">'+esc(c.sex)+' · '+esc(c.age)+' · '+esc(c.job)+'</div>'+
+    '<div class="pd">'+esc(c.desc)+'</div><div class="ptagline">'+c.tags.map(t=>'<i>'+esc(t)+'</i>').join('')+'</div></div></div>'+
+   '<div class="sn-line"><span>语音</span><b>'+esc(c.voice)+' · '+esc(c.speed)+'</b></div></div>'+
+  '<div class="sn-sec"><div class="sn-h"><span class="sn-n">3</span><b>会话框架</b><span class="redo" onclick="snRefresh()">'+ic('refresh',11)+'换一版</span></div>'+
+   '<div class="tlwrap">'+d.flow.map(f=>'<div class="tl-i"><div class="tl-h"><b>'+esc(f.name)+'</b><i>'+f.w+'%</i></div>'+
+    '<p>'+esc(f.goal)+'</p><div class="tl-t">约束：'+esc(f.limit)+'</div>'+
+    (f.q?'<div class="tl-q"><em>Q</em>'+esc(f.q)+'<br><em>A</em>'+esc(f.a)+'</div>':'')+'</div>').join('')+'</div>'+
+   '<div class="note" style="margin-top:10px">'+esc(d.first)+' · 阶段评价权重合计 '+wk+'%</div></div>'+
+  '<div class="sn-sec"><div class="sn-h"><span class="sn-n">4</span><b>能力雷达</b><span class="redo" onclick="toast(\'雷达表由后台统一维护，可在管理端调整维度与权重\')">管理端维护</span></div>'+
+   '<div class="sn-line"><span>关联雷达表</span><b>'+esc(d.radar||'情景对话 · 标准四维')+'</b></div>'+
+   d.dims.map(x=>'<div class="dimrow"><span class="dn">'+esc(x[0])+'</span><span class="db"><i style="width:'+x[1]+'%"></i></span><span class="dv">'+x[1]+'%</span></div>').join('')+'</div>'+
+  '<div class="sn-sec"><div class="sn-h"><span class="sn-n">5</span><b>调用素材</b><span class="redo" onclick="toast(\'已从素材库匹配可识别的文档，可在管理端调整\')">'+ic('plus',11)+'添加</span></div>'+
+   d.mats.map(m=>'<div class="matrow"><div class="mi">'+ic('doc',14)+'</div><div class="mb"><b>'+esc(m[0])+'</b><span>'+esc(m[1])+'</span></div><span class="mx" onclick="snDelMat(\''+m[0]+'\')">×</span></div>').join('')+
+   '<div class="ai-hint">仅匹配可文字识别的文档类素材（doc / docx / xls / xlsx / ppt / pptx / pdf），用于陪练中的话术与知识点参考。</div></div>'+
+  '<button class="btn btn-p" style="margin-top:14px" onclick="snSave()">保存并开始陪练</button>'+
+  '<button class="btn btn-g mt" onclick="snRefresh()">'+ic('refresh',14)+'换一版</button>'+
+  '<p style="text-align:center;font-size:10.5px;color:var(--t3);margin:10px 0 4px">保存后出现在剧本列表，可反复训练</p>'+
+  '</div>';
+};
+
 let CUSTOM_P=[];
 function pList(s){return s.personas.concat(CUSTOM_P.map(c=>c.name+' \u00b7 '+c.role));}
 SCREENS.scriptDetail=()=>{const s=SCRIPTS[SCRIPT];const plist=pList(s);const free=!PRAC.taskId;
  if(PRAC.persona>=plist.length)PRAC.persona=0;
  const p=plist[PRAC.persona],pi=pInfo(p);
  return '<div class="page"><div class="cover"><h1>'+s.name+'</h1><p>'+s.desc+'</p><span class="pill">'+s.type+'</span><span class="pill">'+s.diff+'</span><span class="pill">'+s.time+'</span></div>'+
- '<div class="card mt"><div class="sec-t" style="margin:0 0 4px"><b>训练目标</b></div><p style="font-size:12.5px;color:var(--t2);line-height:1.7">'+s.goal+'</p></div>'+
  '<div class="card mt"><div class="sec-t" style="margin:0 0 10px"><b>选择模拟客户</b><span style="font-size:11px;color:var(--t3);margin-left:6px">本场会话固定一位</span></div>'+
  '<div class="persona-pick" id="pp">'+plist.map((q,i)=>'<div class="pp'+(i===PRAC.persona?' on':'')+'" onclick="pickP('+i+')"><div class="av" style="background:'+(i===PRAC.persona?'linear-gradient(135deg,#175EF5,#04C6EE)':'linear-gradient(135deg,#F08A0C,#FFB84D)')+'">'+q[0]+'</div><b>'+q.split(' \u00b7 ')[0]+'</b><span>'+q.split(' \u00b7 ')[1]+'</span></div>').join('')+
- (free?'<div class="pp-add" onclick="navTo(\'personaNew\')"><div class="av">'+ic('plus',18)+'</div><b>自定义客户</b><span>创建陪练角色</span></div>':'')+'</div>'+
+ (free?'<div class="pp-add" onclick="pnOpen()"><div class="av">'+ic('plus',18)+'</div><b>自定义客户</b><span>创建陪练角色</span></div>':'')+'</div>'+
  (free?'':'<div class="note" style="margin-top:10px">任务陪练的客户由任务指定，不支持自定义。</div>')+
  '<div class="psel"><div class="ph"><b>'+p.split(' \u00b7 ')[0]+'</b><span>'+p.split(' \u00b7 ')[1]+'</span></div>'+
  '<div class="ptags">'+pi.tag.map(t=>stTag(t,'info')).join('')+'</div>'+
@@ -818,27 +1327,6 @@ function pickP(i){PRAC.persona=i;
  document.querySelectorAll('#pp .pp').forEach((n,j)=>n.classList.toggle('on',j===i));
  const p=pList(SCRIPTS[SCRIPT])[i],pi=pInfo(p),el=document.querySelector('.psel');
  if(el)el.innerHTML='<div class="ph"><b>'+p.split(' \u00b7 ')[0]+'</b><span>'+p.split(' \u00b7 ')[1]+'</span></div><div class="ptags">'+pi.tag.map(t=>stTag(t,'info')).join('')+'</div><div class="kv2"><span>核心关注</span><b>'+pi.focus+'</b></div><div class="kv2"><span>应对要点</span><b>'+pi.tip+'</b></div>';}
-SCREENS.personaNew=()=>
- '<div class="page"><div style="height:12px"></div>'+
- '<div class="card" style="padding-bottom:6px">'+
- '<span class="f-lab">称呼 *</span><input class="f-in" id="fName" placeholder="如：周女士 / 陈叔叔" value="周女士">'+
- '<span class="f-lab">身份 / 职业</span><input class="f-in" id="fRole" placeholder="如：自由职业 / 个体老板" value="自由职业">'+
- '<span class="f-lab">性格标签（逗号分隔）</span><input class="f-in" id="fTags" placeholder="如：价格敏感，决策快，爱比较" value="价格敏感，决策快，爱比较竞品">'+
- '<span class="f-lab">核心关注</span><input class="f-in" id="fFocus" placeholder="这位客户最在意什么？" value="落地总价与赠品，习惯拿多家报价对比">'+
- '<span class="f-lab">应对要点</span><input class="f-in" id="fTip" placeholder="接场时的策略提示" value="先认同再重构，用三年总账回应比价，避免正面贬低竞品">'+
- '<div class="f-cnt" style="margin-top:10px">自定义客户仅在自由选择剧本时可选；任务陪练与考试的客户由任务指定。</div></div>'+
- '<button class="btn btn-p mt" onclick="personaSave()">保存并选用</button></div>';
-function personaSave(){
- const g=i=>{const e=document.getElementById(i);return e?e.value.trim():'';};
- const name=g('fName')||'自定义客户',role=g('fRole')||'自定义身份';
- const tags=(g('fTags')||'价格敏感，需建立信任').split(/[,，、 ]+/).filter(Boolean).slice(0,4);
- const focus=g('fFocus')||'由你定义：这位客户最在意什么';
- const tip=g('fTip')||'由你定义：接场时的应对策略';
- CUSTOM_P.push({name,role});
- PINFO[name+' \u00b7 '+role]={tag:tags,focus,tip};
- PRAC.persona=pList(SCRIPTS[SCRIPT]).length-1;
- toast('已创建并选用自定义客户：'+name);
- back();}
 
 
 const AI_REPLIES=[

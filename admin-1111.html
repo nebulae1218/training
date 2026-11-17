@@ -121,6 +121,17 @@ tbody tr:hover{background:#F8FAFF}
 .pgs button.on{background:var(--primary);border-color:var(--primary);color:#fff}
 .empty{padding:60px 0;text-align:center;color:var(--t3)}
 .empty .ic{font-size:34px;margin-bottom:8px;opacity:.4}
+/* 剧本场景配置模块（模板选择 + AI生成/润色分离） */
+.sc-rhead-ops{display:flex;align-items:center;gap:10px}
+.sc-chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.sc-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1px solid var(--bd);border-radius:18px;background:#fff;font-size:13px;color:var(--t2);cursor:pointer}
+.sc-chip:hover{border-color:var(--primary);color:var(--primary)}
+.sc-result{border:1px solid var(--bd);border-radius:10px;background:#fff;padding:10px 12px}
+.sc-rhead{display:flex;align-items:center;justify-content:space-between;color:var(--t3);font-size:12px;margin-bottom:6px}
+.sc-clear{cursor:pointer;color:var(--t3);display:inline-flex}
+.sc-clear:hover{color:var(--bad)}
+.sc-result textarea{width:100%;border:0;outline:none;resize:vertical;font-size:13px;line-height:1.8;min-height:130px;background:transparent;color:inherit}
+.sc-foot{text-align:right;color:var(--t3);font-size:12px;margin-top:4px}
 
 /* ===== 工作台 ===== */
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
@@ -315,12 +326,6 @@ tbody tr:hover{background:#F8FAFF}
 .org-note b{color:var(--t2)}
 
 /* ===== 开关 / 应用访问权限 ===== */
-.sw{position:relative;display:inline-block;width:38px;height:22px;flex-shrink:0;cursor:pointer}
-.sw input{position:absolute;opacity:0;width:0;height:0}
-.sw i{position:absolute;inset:0;background:#CFD6E4;border-radius:99px;transition:.18s}
-.sw i::before{content:'';position:absolute;width:18px;height:18px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.18s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
-.sw input:checked+i{background:var(--primary)}
-.sw input:checked+i::before{transform:translateX(16px)}
 .app-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid var(--bd);border-radius:9px;margin-bottom:8px}
 .app-row .ar-l b{font-size:12.5px;display:block}
 .app-row .ar-l span{font-size:11px;color:var(--t3)}
@@ -598,14 +603,15 @@ tbody tr:hover{background:#F8FAFF}
 .cuc.on .cuc-chk{background:var(--primary);border-color:var(--primary)}
 .cuc.on .cuc-chk::after{content:'✓'}
 /* 新建剧本 - 对话节点 */
-.flow-empty{font-size:12.5px;color:var(--t3);background:#F7F9FC;border:1px dashed var(--bd);border-radius:9px;padding:14px 16px;margin-bottom:14px}
+/* 新建剧本 - 会话框架底部（提示 + 权重合计 + 添加阶段） */
+.flow-foot{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.flow-empty{flex:1;font-size:12.5px;color:var(--t3);background:#F7F9FC;border:1px dashed var(--bd);border-radius:9px;padding:9px 14px}
 .flow-node{background:#F7F9FC;border:1px solid var(--bd);border-radius:10px;padding:13px 15px;margin-bottom:12px}
 .flow-node .fn-hd{display:flex;align-items:center;margin-bottom:10px}
 .flow-node .fn-no{font-size:12.5px;font-weight:650;color:var(--primary)}
 .flow-node .fn-del{margin-left:auto;font-size:12px;color:var(--bad);background:none;border:none;cursor:pointer;padding:2px 6px}
 .flow-node .fn-del:hover{text-decoration:underline}
-.flow-add{margin-bottom:16px}
-/* 新建剧本 - 评分维度权重 */
+/* 能力雷达 - 维度权重行（dim-row 通用 / sc-dim-row 维度编辑行） */
 .dim-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
 .dim-row{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--bd);border-radius:9px;padding:9px 13px}
 .dim-row .chk{margin:0}
@@ -634,6 +640,27 @@ tbody tr:hover{background:#F8FAFF}
 .flow-node .fn-del:hover{background:rgba(229,72,77,.1);text-decoration:none}
 .flow-add{border:1px dashed var(--primary-bd);color:var(--primary);background:#F7FAFF}
 .flow-add:hover{background:#EEF4FF;border-color:var(--primary)}
+/* 对话流程 · 会话框架（会话目标 + 阶段卡片） */
+.fh-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.fh-title{font-size:14px;font-weight:650}
+.fh-theme-box{position:relative;background:#F7F9FC;border:1px solid var(--bd);border-radius:10px;padding:11px 14px;margin-bottom:14px}
+.fh-theme-box textarea{width:100%;border:0;background:transparent;resize:vertical;font-size:12.5px;line-height:1.7;color:var(--t1);outline:none;font-family:inherit;display:block}
+.flow-node .fn-name{flex:1;min-width:0;border:0;background:transparent;font-size:13.5px;font-weight:650;color:var(--t1);outline:none;padding:2px 4px;border-radius:6px;font-family:inherit;transition:.15s}
+.flow-node .fn-name:focus{background:#fff;box-shadow:0 0 0 2px var(--primary-ring)}
+.flow-node .fn-no{font-size:13.5px;font-weight:650;color:var(--t1);background:none;border:0;padding:0}
+.flow-node .fn-ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--t3);flex-shrink:0;cursor:pointer;transition:.15s}
+.flow-node .fn-ic:hover{background:rgba(224,69,63,.1);color:var(--bad)}
+.flow-node .fn-ic.fn-add:hover{background:var(--primary-bg);color:var(--primary)}
+.fn-lr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.fn-lr label{margin-bottom:0}
+.fn-w{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--t2);flex-shrink:0}
+.fn-w input{width:58px;height:28px;border:1px solid var(--bd-2);border-radius:6px;text-align:center;font-size:12.5px;outline:none;background:#fff;color:var(--t1)}
+.fn-w input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-ring)}
+.flow-node .flow-desc{font-size:12.5px}
+.flow-node .flow-pts{font-size:12.5px;background:#fff}
+.fn-body{margin-top:8px;padding-top:10px;border-top:1px dashed var(--bd)}
+.fh-sum{font-size:12px;color:var(--t3)}
+.fh-sum.warn{color:var(--warn)}
 /* 模拟客户筛选 + 横向切换 */
 .cuc-filter{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
 .cuc-filter .cff-label{font-size:12.5px;color:var(--t2);font-weight:600;flex-shrink:0}
@@ -647,30 +674,150 @@ tbody tr:hover{background:#F8FAFF}
 .cuc-track::-webkit-scrollbar{height:7px}
 .cuc-track::-webkit-scrollbar-thumb{background:rgba(27,91,240,.25);border-radius:99px}
 .cuc-track .cuc{width:236px;flex-shrink:0}
-/* 推荐话术 · 话术库多选 */
-.sp{background:#F7F9FC;border:1px solid var(--bd);border-radius:9px;padding:10px 12px}
-.sp-chips{display:flex;flex-wrap:wrap;gap:6px;min-height:6px;margin-bottom:9px}
-.sp-chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--primary-bd);color:var(--primary);font-size:11.5px;padding:3px 9px;border-radius:99px;max-width:100%}
-.sp-chip i{cursor:pointer;font-style:normal;font-size:12px;line-height:1;opacity:.65}
-.sp-chip i:hover{opacity:1}
-.sp-empty{color:var(--t3);font-size:11.5px}
-.sp-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.sp-sel{flex:1;min-width:140px;height:32px;border:1px solid var(--bd);border-radius:8px;padding:0 9px;font-size:12px;background:#fff;color:var(--t1)}
-.sp-sel:focus{outline:none;border-color:var(--primary)}
-.sp-new{flex:1;min-width:140px;height:32px;border:1px solid var(--bd);border-radius:8px;padding:0 9px;font-size:12px}
-.sp-new:focus{outline:none;border-color:var(--primary)}
-/* 新建剧本 - 相关知识 多选 chips */
-.kb-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
-.kb-chip{font-size:12.5px;color:var(--t2);border:1px solid var(--bd-2);background:#fff;border-radius:8px;padding:6px 13px;cursor:pointer;transition:.15s;user-select:none}
-.kb-chip:hover{border-color:var(--primary-bd);color:var(--primary)}
-.kb-chip.on{background:#F0F5FF;border-color:var(--primary);color:var(--primary);font-weight:600}
-.kb-chip.on::before{content:'✓ ';font-weight:700}
-/* 新建剧本 - 评分维度 增 / 删 / 改 */
-.dim-list .dim-row .dim-name{width:auto;flex:1;min-width:0}
-.dim-ops{display:flex;gap:6px;flex-shrink:0;margin-left:12px}
-.dim-del{font-size:11.5px;border:1px solid var(--bd-2);background:#fff;color:var(--t2);border-radius:6px;padding:4px 10px;cursor:pointer;transition:.15s}
-.dim-del:hover{border-color:var(--bad);color:var(--bad)}
-.dim-add{margin:2px 0 14px}
+/* 参考话术 · Q/A 行 */
+.ref-hd{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.ref-hd>label{margin-bottom:0;font-weight:600;color:var(--t1)}
+.ref-ops{margin-left:auto;display:inline-flex;align-items:center;gap:10px}
+.ref-new{display:inline-flex;align-items:center;gap:4px;background:none;border:0;color:var(--primary);font-size:12px;font-weight:600;cursor:pointer;padding:2px 4px}
+.ref-new:hover{text-decoration:underline}
+.ref-item{background:#F7F9FC;border:1px solid var(--bd);border-radius:9px;padding:6px 10px;margin-bottom:8px}
+.ref-item:last-child{margin-bottom:0}
+.ref-q-row,.ref-a-row{display:flex;align-items:center;gap:8px;padding:5px 0}
+.ref-a-row{border-top:1px dashed var(--bd)}
+.ref-tag{flex-shrink:0;width:20px;height:20px;border-radius:6px;font-size:11px;font-weight:650;display:flex;align-items:center;justify-content:center}
+.ref-tag.q{background:var(--primary-bg);color:var(--primary)}
+.ref-tag.a{background:var(--ok-bg);color:var(--ok)}
+.ref-q-row .ref-q,.ref-a-row .ref-a{flex:1;min-width:0;border:0;background:transparent;font-size:12.5px;font-family:inherit;color:var(--t1);outline:none}
+.ref-q-row .ref-q:focus,.ref-a-row .ref-a:focus{box-shadow:0 1px 0 0 var(--primary)}
+.ref-ic{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--t3);background:none;border:0;cursor:pointer;flex-shrink:0;transition:.15s}
+.ref-ic:hover{background:var(--primary-bg);color:var(--primary)}
+.ref-ic.danger:hover{background:rgba(224,69,63,.1);color:var(--bad)}
+.sw{position:relative;display:inline-block;width:32px;height:18px;flex-shrink:0;cursor:pointer}
+.sw input{position:absolute;opacity:0;width:0;height:0}
+.sw i{position:absolute;inset:0;background:var(--bd-2);border-radius:99px;transition:.2s}
+.sw i::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sw input:checked+i{background:var(--primary)}
+.sw input:checked+i::after{transform:translateX(14px)}
+/* 新建剧本 - 调用素材：分组树 + 素材多选列表（仅可文字识别的文档类素材） */
+.kb2-wrap{display:flex;gap:12px;background:#F9FBFE;border:1px solid var(--bd);border-radius:11px;padding:12px;margin-bottom:14px}
+.kb2-side{width:190px;flex-shrink:0;border-right:1px solid var(--bd);padding-right:12px}
+.kb2-side-h{font-size:12px;color:var(--t3);margin-bottom:8px;font-weight:600}
+.kb2-node{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--t1);padding:6px 8px;border-radius:8px;cursor:pointer;margin-bottom:2px;transition:.15s}
+.kb2-node:hover{background:#EFF4FF}
+.kb2-node.on{background:#F0F5FF;color:var(--primary);font-weight:600}
+.kb2-node .cnt{margin-left:auto;font-size:11px;color:var(--t3)}
+.kb2-node.on .cnt{color:var(--primary)}
+.kb2-node .sub{padding-left:14px}
+.kb2-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.kb2-search{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--bd-2);border-radius:8px;padding:7px 10px;margin-bottom:10px;color:var(--t3)}
+.kb2-search input{border:none;outline:none;flex:1;font-size:12.5px;background:transparent}
+.kb2-list{max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+.kb2-item{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--bd-2);border-radius:9px;padding:9px 12px;cursor:pointer;transition:.15s;user-select:none}
+.kb2-item:hover{border-color:var(--primary-bd)}
+.kb2-item.on{border-color:var(--primary);background:#F7FAFF}
+.kb2-ic{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FFB35C,#F08A1D);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.kb2-bd{flex:1;min-width:0}
+.kb2-nm{font-size:13px;color:var(--t1);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kb2-meta{font-size:11px;color:var(--t3);margin-top:2px}
+.kb2-ext{font-size:10.5px;color:var(--primary);background:#F0F5FF;border-radius:4px;padding:1px 6px;font-weight:600;text-transform:uppercase;flex-shrink:0}
+.kb2-chk{width:16px;height:16px;border:1.5px solid var(--bd-2);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;transition:.15s}
+.kb2-item.on .kb2-chk{background:var(--primary);border-color:var(--primary)}
+.kb2-empty{font-size:12px;color:var(--t3);text-align:center;padding:24px 0}
+.kb-sel-h{font-size:12.5px;color:var(--t2);margin:2px 0 8px}
+.kb-sel-h b{color:var(--primary)}
+.kb-chip .x{margin-left:6px;color:inherit;opacity:.6;font-weight:400}
+.kb-chip .x:hover{opacity:1}
+/* 新建剧本 - 能力雷达设置：关联能力雷达表 */
+.as-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.as-card{display:flex;flex-direction:column;background:#F9FBFE;border:1px solid var(--bd);border-radius:11px;padding:14px 15px 15px}
+.as-head{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.as-head b{font-size:13px;font-weight:650}
+.as-tag{font-size:10.5px;color:var(--t3);background:#fff;border:1px solid var(--bd-2);border-radius:5px;padding:1px 6px;white-space:nowrap}
+.as-go{margin-left:auto;font-size:11.5px;color:var(--primary);cursor:pointer;white-space:nowrap}
+.as-go:hover{text-decoration:underline}
+.as-sel{width:100%;height:34px;border:1px solid var(--bd-2);border-radius:8px;padding:0 10px;font-size:12.5px;background:#fff;color:var(--t1);outline:none;transition:border-color .15s,box-shadow .15s}
+.as-sel:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-ring)}
+.as-meta{font-size:11.5px;color:var(--t3);line-height:1.7;margin-top:7px}
+.as-body{margin-top:11px;padding-top:11px;border-top:1px dashed var(--bd);flex:1}
+.as-sub{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--t2);font-weight:600;margin-bottom:8px}
+.as-alg{background:#fff;border:1px solid var(--bd);border-radius:8px;padding:9px 11px;margin-bottom:12px}
+.as-alg div{display:flex;gap:8px;font-size:11.5px;line-height:1.8}
+.as-alg div+div{margin-top:1px}
+.as-alg span{color:var(--t3);width:56px;flex-shrink:0}
+.as-alg b{color:var(--t1);font-weight:600;flex:1}
+.as-alg b.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--primary-d)}
+.as-dim{display:flex;align-items:center;gap:9px;font-size:11.5px;color:var(--t2);margin-bottom:7px}
+.as-dim .n{width:62px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.as-dim .bar{flex:1;height:6px;background:#E9EEF7;border-radius:99px;overflow:hidden}
+.as-dim .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#1B5BF0,#5B93FF)}
+.as-dim .w{width:34px;text-align:right;font-weight:650;color:var(--t1)}
+/* 评分管理 · 编辑抽屉维度行 */
+.sc-dim-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+/* 能力雷达 · 新建页 AI 生成框 */
+.rd-ai-box{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#F5F2FF,#FAF8FF);border:1px solid #DCD2FF;border-radius:10px;padding:10px 12px;margin-bottom:14px}
+.rd-ai-box input{flex:1;min-width:0;height:34px;border:1px solid var(--bd);border-radius:8px;padding:0 10px;font-size:12.5px;color:var(--t1);background:#fff}
+.rd-ai-box input:focus{outline:none;border-color:#7C5CFC;box-shadow:0 0 0 3px rgba(124,92,252,.15)}
+/* 能力雷达 · 维度卡片（含评分提示词） */
+.sc-dim-row.rd-dim-card{flex-direction:column;align-items:stretch;gap:0;background:#F9FAFC;border:1px solid var(--bd);border-radius:10px;padding:9px 10px;margin-bottom:8px}
+.rd-dim-top{display:flex;align-items:center;gap:8px}
+.rd-dim-ps-tag{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t2);margin-top:7px}
+.rd-dim-ps{margin-top:5px;width:100%;border:1px solid var(--bd);border-radius:8px;padding:7px 10px;font-size:12px;color:var(--t1);line-height:1.5;resize:vertical;min-height:52px;background:#fff;font-family:inherit;box-sizing:border-box}
+.rd-dim-ps:focus{outline:none;border-color:#7C5CFC;box-shadow:0 0 0 3px rgba(124,92,252,.15)}
+.rd-ps-view{font-size:11px;color:var(--t3);line-height:1.5;margin:-3px 0 8px 71px}
+/* 能力雷达 · 详情页（整页，结构参考模拟客户详情） */
+.rd-dgrid{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
+.rd-dradar{background:#F9FBFE;border:1px solid var(--bd);border-radius:11px;padding:8px;display:flex;align-items:center;justify-content:center}
+.rd-dradar .as-radar{border:none;padding:0;background:transparent}
+.rd-ddims{padding-top:2px}
+.rd-ddims .as-dim{font-size:12px;margin-bottom:5px}
+.rd-ddims .as-dim .n{width:110px;color:var(--t1);font-weight:500}
+.rd-ddims .as-dim .w{width:42px;font-size:12px}
+.rd-ddims .rd-ps-view{margin:0 0 12px 119px;background:#F7F9FC;border:1px solid var(--bd);border-radius:7px;padding:6px 9px;font-size:11.5px;color:var(--t2)}
+.rd-dused{padding-bottom:2px}
+/* 剧本详情：场景配置 / 模拟客户 / 会话阶段 / 调用素材 */
+.sd-config{background:#F9FBFE;border:1px solid var(--bd);border-radius:9px;padding:11px 13px;font-size:12.5px;color:var(--t2);line-height:1.85;white-space:pre-wrap}
+.sd-custs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;padding-bottom:2px}
+.sd-cust{display:flex;gap:10px;align-items:center;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#FCFDFF}
+.sd-cust .pav{width:34px;height:34px;border-radius:9px;background:#EAF1FF;color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex-shrink:0}
+.sd-cust .nm{font-size:13px;font-weight:600;color:var(--t1)}
+.sd-cust .mt{font-size:11.5px;color:var(--t3);margin-top:2px;line-height:1.5}
+.sd-empty{font-size:12px;color:var(--t3);padding:4px 0}
+.sd-theme{background:#F7F9FC;border:1px solid var(--bd);border-left:3px solid var(--primary);border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--t2);line-height:1.8;margin:0 0 14px}
+.sd-theme b{color:var(--t1);font-size:12px}
+.sd-stage{border:1px solid var(--bd);border-radius:10px;padding:11px 13px;margin-bottom:10px;background:#fff}
+.sd-stage-hd{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.sd-stage-no{width:19px;height:19px;border-radius:6px;background:#EAF1FF;color:var(--primary);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sd-stage-nm{font-size:13px;font-weight:600;color:var(--t1)}
+.sd-stage-w{margin-left:auto;font-size:11px;color:var(--primary);background:#F0F5FF;border:1px solid var(--primary-bd);border-radius:6px;padding:2px 8px}
+.sd-lab{font-size:11px;color:var(--t3);margin:6px 0 2px}
+.sd-txt{font-size:12px;color:var(--t2);line-height:1.8}
+.sd-pts{margin:0;padding:0;list-style:none}
+.sd-pts li{font-size:11.8px;color:var(--t2);line-height:1.75}
+.sd-stage-row{display:flex;gap:8px;font-size:12px;line-height:1.75;margin-top:3px}
+.sd-stage-row span{color:var(--t3);width:56px;flex-shrink:0;font-size:11px;padding-top:1px}
+.sd-stage-row b{font-weight:400;color:var(--t2);flex:1}
+.sd-qa{background:#F9FBFE;border:1px solid var(--bd);border-radius:8px;padding:8px 10px;margin-top:9px}
+.sd-qa .q{font-size:11.8px;color:var(--t2);line-height:1.7}
+.sd-qa .a{font-size:11.8px;color:var(--t1);line-height:1.7;margin-top:2px}
+.sd-stage-sum{font-size:11.5px;color:var(--t3);margin:-2px 0 2px}
+.sd-mats{display:flex;flex-wrap:wrap;gap:8px;padding-bottom:2px}
+.sd-mat{display:flex;align-items:center;gap:6px;border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:12px;color:var(--t2);background:#FCFDFF}
+.sd-mat svg{color:var(--t3)}
+.sd-mat .ext{font-size:9.5px;color:var(--primary);background:#F0F5FF;border-radius:4px;padding:1px 5px;text-transform:uppercase;letter-spacing:.3px}
+.sc-dim-row .sc-dim-n{flex:1;height:34px;border:1px solid var(--bd);border-radius:8px;padding:0 10px;font-size:12.5px;color:var(--t1);min-width:0}
+.sc-dim-row .sc-dim-n:focus{outline:none;border-color:var(--primary)}
+.sc-dim-row .sc-dim-w{width:72px;height:34px;border:1px solid var(--bd);border-radius:8px;padding:0 8px;font-size:12.5px;color:var(--t1);text-align:right}
+.sc-dim-row .sc-dim-w:focus{outline:none;border-color:var(--primary)}
+.sc-warn{color:#E5484D}
+.as-pass{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:12px;font-size:12px;color:var(--t2)}
+.as-pass input{width:66px;height:30px;border:1px solid var(--bd-2);border-radius:7px;padding:0 9px;font-size:12.5px;text-align:center;color:var(--t1);background:#fff;outline:none}
+.as-pass input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-ring)}
+.as-radar{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:4px}
+.as-radar.rd-noborder{border:none}
+.as-legend{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.as-legend .lg{font-size:10.5px;color:var(--t2);background:#fff;border:1px solid var(--bd);border-radius:99px;padding:2px 8px}
+.as-legend .rd-empty{display:block;width:100%;text-align:center;color:var(--t3);font-size:12px;padding:8px 0}
+.as-legend .lg.cur{color:var(--primary);border-color:var(--primary-bd);background:#F0F5FF}
 /* 新建剧本 - 右侧「实时模拟训练」入口卡片 */
 .pn-sim .pn-sim-desc{font-size:12px;color:var(--t2);line-height:1.7;margin:0 0 12px}
 .btn-block{width:100%;justify-content:center}
@@ -1068,6 +1215,75 @@ body.chpwd .chpwd-page{display:flex}
   </div>
 </div>
 
+<!-- 新建分组弹窗（剧本管理） -->
+<div class="lmodal-mask" id="scGroupMask">
+  <div class="modal">
+    <span class="close-x" onclick="closeScGroupAdd()">✕</span>
+    <h3>新建分组</h3>
+    <div class="mg-form">
+      <div class="mg-row">
+        <label>分组名称<span class="req">*</span></label>
+        <input class="m-inp" id="scGNameInp" placeholder="请输入分组名称" maxlength="20" oninput="scGNameInput()">
+      </div>
+      <div class="mg-row">
+        <label>上级分组</label>
+        <select class="mg-sel" id="scGParentSel" onchange="scGParentChange()"></select>
+      </div>
+      <div class="mu-err" id="scGErr"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="l-btn-g" onclick="closeScGroupAdd()">取消</button>
+      <button class="btn-primary" style="flex:1" onclick="doScGroupAdd()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 新建分组弹窗（能力雷达管理） -->
+<div class="lmodal-mask" id="rdGroupMask">
+  <div class="modal">
+    <span class="close-x" onclick="closeRdGroupAdd()">✕</span>
+    <h3>新建分组</h3>
+    <div class="mg-form">
+      <div class="mg-row">
+        <label>分组名称<span class="req">*</span></label>
+        <input class="m-inp" id="rdGNameInp" placeholder="请输入分组名称" maxlength="20" oninput="rdGNameInput()">
+      </div>
+      <div class="mg-row">
+        <label>上级分组</label>
+        <select class="mg-sel" id="rdGParentSel" onchange="rdGParentChange()"></select>
+      </div>
+      <div class="mu-err" id="rdGErr"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="l-btn-g" onclick="closeRdGroupAdd()">取消</button>
+      <button class="btn-primary" style="flex:1" onclick="doRdGroupAdd()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 新建分组弹窗（模拟客户管理） -->
+<div class="lmodal-mask" id="pgGroupMask">
+  <div class="modal">
+    <span class="close-x" onclick="closePgGroupAdd()">✕</span>
+    <h3>新建分组</h3>
+    <div class="mg-form">
+      <div class="mg-row">
+        <label>分组名称<span class="req">*</span></label>
+        <input class="m-inp" id="pgGNameInp" placeholder="请输入分组名称" maxlength="20" oninput="pgGNameInput()">
+      </div>
+      <div class="mg-row">
+        <label>上级分组</label>
+        <select class="mg-sel" id="pgGParentSel" onchange="pgGParentChange()"></select>
+      </div>
+      <div class="mu-err" id="pgGErr"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="l-btn-g" onclick="closePgGroupAdd()">取消</button>
+      <button class="btn-primary" style="flex:1" onclick="doPgGroupAdd()">确定</button>
+    </div>
+  </div>
+</div>
+
 <!-- 删除组织二次确认弹窗 -->
 <div class="lmodal-mask" id="orgConfirmMask">
   <div class="modal">
@@ -1091,7 +1307,7 @@ body.chpwd .chpwd-page{display:flex}
     <header class="topbar">
       <div class="crumbs" id="crumbs"></div>
       <div class="top-right">
-        <a class="stu-link" href="app-1104-1.html" target="_blank" rel="noopener" title="在新标签页打开学员端首页">
+        <a class="stu-link" href="app-merged.html" target="_blank" rel="noopener" title="在新标签页打开学员端首页">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>
           进入学员端
         </a>
@@ -1168,6 +1384,8 @@ const IC = {
   help:'<circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4M12 17h.01"/>',
   task:'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18M9 15l2 2 4-4"/>',
   chart:'<path d="M3 3v18h18"/><path d="M8 16v-5M13 16V8M18 16v-8"/>',
+  list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+  star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
   radar:'<circle cx="12" cy="12" r="3"/><path d="M12 2v7M12 15v7M2 12h7M15 12h7M4.9 4.9l4.9 4.9M14.2 14.2l4.9 4.9M19.1 4.9l-4.9 4.9M9.8 14.2l-4.9 4.9"/>',
   screen:'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
   org:'<path d="M17 21v-8H7v8M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M9 13h.01"/>',
@@ -1177,6 +1395,7 @@ const IC = {
   gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
   kb:'<path d="M2 6s1.5-2 5-2 5 2 5 2v14s-1.5-1-5-1-5 1-5 1zM12 6s1.5-2 5-2 5 2 5 2v14s-1.5-1-5-1-5-1-5-1z"/>',
   plus:'<path d="M12 5v14M5 12h14"/>',
+  minus:'<path d="M5 12h14"/>',
   lock:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
   download:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
   cloud:'<path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6 1.6A4 4 0 0 0 6 19z"/>',
@@ -1186,7 +1405,9 @@ const IC = {
   spark:'<path d="M12 3l1.9 5.3L19 10l-5.1 1.7L12 17l-1.9-5.3L5 10l5.1-1.7z"/>',
   up:'<path d="M12 19V5M5 12l7-7 7 7"/>',
   back:'<path d="M19 12H5M12 19l-7-7 7-7"/>',
-  search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>'
+  search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+  refresh:'<path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>',
+  trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/>'
 };
 function icon(k,w){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"'+(w?' style="width:'+w+'px;height:'+w+'px"':'')+'>'+IC[k]+'</svg>';}
 
@@ -1199,12 +1420,17 @@ const NAV=[
    {k:'lexicons',t:'词库管理',ic:'book',lock:1},
    {k:'courses',t:'课程管理',ic:'play'},
    {k:'questions',t:'题库管理',ic:'help'}]},
- {g:'AI训练管理',items:[
+ {g:'AI培训管理',items:[
    {k:'scripts',t:'剧本管理',ic:'script'},
-   {k:'personas',t:'模拟客户管理',ic:'face'}]},
- {g:'考核管理',items:[
-   {k:'assessments',t:'考核管理',ic:'exam'}]},
- {g:'任务管理',items:[{k:'tasks',t:'任务列表',ic:'task'}]},
+   {k:'personas',t:'模拟客户库',ic:'face'},
+   {k:'radar',t:'能力雷达',ic:'radar'},
+   {k:'sop',t:'陪练SOP',ic:'book',lock:1}]},
+ {g:'培训中心',items:[
+   {k:'tasks',t:'培训任务',ic:'task'},
+   {k:'taskCourse',t:'课程学习任务',ic:'play',todo:1},
+   {k:'taskPractice',t:'陪练任务',ic:'face',todo:1},
+   {k:'examDialog',t:'对话考试',ic:'spark',todo:1},
+   {k:'examPaper',t:'试题考试',ic:'exam',todo:1}]},
  {g:'训练与数据分析',items:[
    {k:'rlearn',t:'学习记录',ic:'book'},
    {k:'rpractice',t:'陪练记录',ic:'script'},
@@ -1223,20 +1449,22 @@ const GROUP_OF={}; NAV.forEach(g=>g.items.forEach(i=>GROUP_OF[i.k]=g.g||'工作�
 const TITLE_OF={}; NAV.forEach(g=>g.items.forEach(i=>TITLE_OF[i.k]=i.t));
 TITLE_OF.roleDetail='角色详情'; GROUP_OF.roleDetail='组织与系统管理';
 TITLE_OF.roleNew='新增角色'; GROUP_OF.roleNew='组织与系统管理';
-TITLE_OF.personaNew='新建模拟客户'; GROUP_OF.personaNew='AI训练管理';
-TITLE_OF.scriptNew='新建剧本'; GROUP_OF.scriptNew='AI训练管理';
+TITLE_OF.personaNew='新建模拟客户'; GROUP_OF.personaNew='AI培训管理';
+TITLE_OF.scriptNew='新建剧本'; GROUP_OF.scriptNew='AI培训管理';
+TITLE_OF.radarNew='新建能力雷达表'; GROUP_OF.radarNew='AI培训管理';
+TITLE_OF.radarDetail='能力雷达表详情'; GROUP_OF.radarDetail='AI培训管理';
 TITLE_OF.orgNew='新增组织'; GROUP_OF.orgNew='组织与系统管理';
 TITLE_OF.staffDetail='员工详情'; GROUP_OF.staffDetail='组织与系统管理';
 TITLE_OF.staffNew='新增员工'; GROUP_OF.staffNew='组织与系统管理';
-TITLE_OF.personaDetail='模拟客户详情'; GROUP_OF.personaDetail='AI训练管理';
-TITLE_OF.scriptDetail='剧本详情'; GROUP_OF.scriptDetail='AI训练管理';
+TITLE_OF.personaDetail='模拟客户详情'; GROUP_OF.personaDetail='AI培训管理';
+TITLE_OF.scriptDetail='剧本详情'; GROUP_OF.scriptDetail='AI培训管理';
 
 function renderNav(cur){
-  const alias={roleNew:'roles',roleDetail:'roles',personaNew:'personas',scriptNew:'scripts',orgNew:'orgs',staffDetail:'staff',staffNew:'staff',personaDetail:'personas',scriptDetail:'scripts'};
+  const alias={roleNew:'roles',roleDetail:'roles',personaNew:'personas',scriptNew:'scripts',orgNew:'orgs',staffDetail:'staff',staffNew:'staff',personaDetail:'personas',scriptDetail:'scripts',radarNew:'radar',radarDetail:'radar'};
   const active=alias[cur]||cur;
   document.getElementById('nav').innerHTML = NAV.map(g=>
     (g.g?'<div class="nav-group">'+g.g+'</div>':'')+
-    g.items.map(i=>'<button class="nav-item'+(i.k===active?' on':'')+(i.lock?' lock':'')+'"'+(i.lock?'':' onclick="go(\''+i.k+'\')"')+'>'+icon(i.ic)+'<span>'+i.t+'</span>'+(i.lock?'<span class="tag-r">预留</span>':'')+'</button>').join('')
+    g.items.map(i=>'<button class="nav-item'+(i.k===active?' on':'')+((i.lock||i.todo)?' lock':'')+'"'+((i.lock||i.todo)?'':' onclick="go(\''+i.k+'\')"')+'>'+icon(i.ic)+'<span>'+i.t+'</span>'+(i.lock?'<span class="tag-r">预留</span>':'')+'</button>').join('')
   ).join('');
 }
 
@@ -1278,7 +1506,7 @@ const DB={
    ['老客户置换升级邀约','情景对话','销售顾问','集团本部','—',ST('草稿',INFO),'0'],
    ['交付环节客户关怀','情景对话','售后','西南大区','—',ST('已停用',GRAY),'1']],
   detail:['剧本名称','剧本类型','对练角色','适用组织','主机厂预设','关联知识库','状态','更新时间'],
-  dsec:[['模拟客户（本场会话任选一位）',[['王先生 · 38岁 私营业主 · 强势精明','李女士 · 29岁 白领 · 犹豫细致'],['张老师 · 45岁 教师 · 谨慎理性','']]],['评分维度',[['开场破冰 15%','需求挖掘 25%'],['产品介绍 25%','异议处理 20%'],['促成邀约 15%','']]]]},
+  dsec:[]},
 
  assessments:{filters:['方式:全部|AI实训|试卷','状态:全部|已发布|草稿'],
   cols:[['考核名称',1],['方式',0],['关联资源',0],['及格分',0],['状态',0],['引用任务',0]],
@@ -1381,11 +1609,12 @@ const DB={
 /* ============ 路由与渲染 ============ */
 let CUR='dashboard';
 let PERSONA_EDIT=-1;
-function go(k){ CUR=k; document.body.classList.remove('chpwd'); render(); }
+function go(k){ if(k==='scoring'||k==='scoreNew')k='radar'; CUR=k; document.body.classList.remove('chpwd'); render(); }
 function headBtns(k){
   if(['rlearn','rpractice','rexam','logs','ability'].includes(k)) return '<button class="btn btn-g">'+icon('download',13)+'导出</button>';
   if(['courses','assessments','tasks'].includes(k)) return '<button class="btn btn-p">'+icon('plus',13)+'新建</button>';
   if(k==='scripts') return '<button class="btn btn-p" onclick="go(\'scriptNew\')">'+icon('plus',13)+'新建</button>';
+  if(k==='radar') return '<button class="btn btn-p" onclick="radarEdit(-1)">'+icon('plus',13)+'新建能力雷达表</button>';
   if(k==='personas') return '<button class="btn btn-g" onclick="openImportDrawer()">'+icon('download',13)+'一键导入</button><button class="btn btn-p" onclick="go(\'personaNew\')">'+icon('plus',13)+'新建</button>';
   if(k==='questions') return '<button class="btn btn-g">批量导入</button><button class="btn btn-p">'+icon('plus',13)+'新增题目</button>';
   if(k==='staff') return '<button class="btn btn-g">导出</button><button class="btn btn-p" onclick="go(\'staffNew\')">'+icon('plus',13)+'新增员工</button>';
@@ -1406,6 +1635,10 @@ function render(){
   else if(CUR==='settings') c.innerHTML=pgSettings();
   else if(CUR==='personas') c.innerHTML=pgPersonas();
   else if(CUR==='knowledge') c.innerHTML=pgMaterial();
+  else if(CUR==='scripts') c.innerHTML=pgScripts();
+  else if(CUR==='radar'){ c.innerHTML=pgRadar(); initRadarList(); }
+  else if(CUR==='radarNew'){ c.innerHTML=pgRadarNew(); initRadarNew(); }
+  else if(CUR==='radarDetail'){ c.innerHTML=pgRadarDetail(); }
   else if(CUR==='personaNew'){ c.innerHTML=pgPersonaNew(); initPersonaNew(); }
   else if(CUR==='scriptNew'){ c.innerHTML=pgScriptNew(); initScriptNew(); }
   else if(CUR==='orgNew'){ c.innerHTML=pgOrgNew(); initOrgNew(); }
@@ -1447,6 +1680,581 @@ function pgList(key){
     '<div class="tbl-foot">共 '+p.rows.length+' 条 · 每页 10 条<div class="pgs"><button>‹</button><button class="on">1</button><button>2</button><button>›</button></div></div></div>';
 }
 
+/* ---- 剧本分组（分组规则与素材管理一致：三级分组 / 未分组 / 新建·删除） ---- */
+let SC_GROUPS=[
+ {id:'scUngrouped',name:'未分组',fixed:true,parent:null},
+ {id:'scg1',name:'销售接待',parent:null},
+ {id:'scg2',name:'售后交付',parent:null}];
+let SC_EXPAND=new Set(); /* 已展开的分组 */
+let SC_GROUP='all';      /* 当前分组：all / scUngrouped / 分组 id */
+/* 剧本 → 分组映射（未映射的剧本归入「未分组」；列表列内容保持不变） */
+const SC_ROW_GROUPS={'进店首次接待·犹豫型客户':'scg1','竞品对比价格谈判':'scg1','金融分期异议处理':'scg1','试驾邀约电话演练':'scg1','老客户置换升级邀约':'scg2','交付环节客户关怀':'scg2'};
+function scRowGroup(name){ return SC_ROW_GROUPS[name]||'scUngrouped'; }
+function scGroupChildren(pid){ return SC_GROUPS.filter(g=>g.parent===pid&&g.id!=='scUngrouped'); }
+function scGroupDepth(id){ let d=0,g=SC_GROUPS.find(x=>x.id===id); while(g&&g.parent){ d++; g=SC_GROUPS.find(x=>x.id===g.parent); } return d; }
+function scDescendants(id){ const out=[id],q=[id]; while(q.length){ const cur=q.shift(); scGroupChildren(cur).forEach(c=>{ out.push(c.id); q.push(c.id); }); } return out; }
+function scGName(id){ const g=SC_GROUPS.find(x=>x.id===id); return g?g.name:'未分组'; }
+function scCount(g){
+  const rows=DB.scripts.rows;
+  if(g==='all') return rows.length;
+  const ids=g==='scUngrouped'?['scUngrouped']:scDescendants(g);
+  return rows.filter(r=>ids.includes(scRowGroup(r[0]))).length;
+}
+function scToggle(id){ if(SC_EXPAND.has(id))SC_EXPAND.delete(id); else SC_EXPAND.add(id); render(); }
+function scPick(g){ SC_GROUP=g; render(); }
+function scGroupTreeHtml(pid,depth){
+  return scGroupChildren(pid).map(g=>{
+    const kids=scGroupChildren(g.id), has=kids.length>0, open=SC_EXPAND.has(g.id), sel=SC_GROUP===g.id;
+    let h='<div class="tree-node'+(sel?' on':'')+'" data-g="'+esc(g.name)+'" style="padding-left:'+(8+depth*16)+'px" onclick="scPick(\''+g.id+'\')">';
+    if(has) h+='<span class="tree-toggle'+(open?' open':'')+'" onclick="event.stopPropagation();scToggle(\''+g.id+'\')">▸</span>';
+    h+='<span class="tname">'+esc(g.name)+'</span><span class="cnt">('+scCount(g.id)+')</span>';
+    if(!g.fixed) h+='<span class="mat-gdel" onclick="event.stopPropagation();scGroupDelAsk(\''+g.id+'\')">删除</span>';
+    h+='</div>';
+    if(has&&open) h+=scGroupTreeHtml(g.id,depth+1);
+    return h;
+  }).join('');
+}
+function scGSearch(v){
+  v=(v||'').trim().toLowerCase();
+  if(!v){ render(); return; }
+  /* 展开所有含子节点的分组，确保嵌套匹配可见 */
+  SC_GROUPS.forEach(g=>{ if(scGroupChildren(g.id).length) SC_EXPAND.add(g.id); });
+  document.querySelectorAll('#scGroupList .tree-node').forEach(n=>{
+    n.style.display=(!v||n.dataset.g.toLowerCase().includes(v))?'':'none';
+  });
+}
+/* 上级分组下拉：顶级分组 + 分组树（不含「未分组」），最多建到三级 */
+function scGroupOptionsTop(selId){
+  let out='<option value=""'+(selId===''?' selected':'')+'>顶级分组</option>';
+  (function rec(pid,depth){
+    scGroupChildren(pid).forEach(g=>{
+      out+='<option value="'+g.id+'"'+(g.id===selId?' selected':'')+'>'+'  '.repeat(depth)+esc(g.name)+'</option>';
+      rec(g.id,depth+1);
+    });
+  })(null,0);
+  return out;
+}
+function openScGroupAdd(){
+  /* 默认上级分组 = 当前选中的真实分组；选中全部剧本/未分组时默认顶级 */
+  let def='';
+  if(SC_GROUP&&SC_GROUP!=='all'&&SC_GROUP!=='scUngrouped') def=SC_GROUP;
+  $('scGParentSel').innerHTML=scGroupOptionsTop(def);
+  $('scGNameInp').value='';
+  const e=$('scGErr'); e.style.display='none';
+  if(def&&scGroupDepth(def)>=2){
+    e.textContent='「'+scGName(def)+'」已是三级分组，无法再创建下级，请重新选择上级分组';
+    e.style.display='block';
+  }
+  $('scGroupMask').classList.add('on');
+  setTimeout(()=>{ try{$('scGNameInp').focus();}catch(_){} },50);
+}
+function closeScGroupAdd(){ $('scGroupMask').classList.remove('on'); }
+function scGNameInput(){ const e=$('scGErr'); if(e.style.display!=='none'&&$('scGNameInp').value.trim()) e.style.display='none'; }
+function scGParentChange(){
+  const pid=$('scGParentSel').value, e=$('scGErr');
+  if(pid&&scGroupDepth(pid)>=2){ e.textContent='所选上级分组已是三级，无法再创建下级'; e.style.display='block'; }
+  else e.style.display='none';
+}
+function doScGroupAdd(){
+  const name=$('scGNameInp').value.trim();
+  const parent=$('scGParentSel').value||null;
+  const e=$('scGErr');
+  if(!name){ e.textContent='请输入分组名称'; e.style.display='block'; try{$('scGNameInp').focus();}catch(_){} return; }
+  if(parent){
+    if(scGroupDepth(parent)>=2){ e.textContent='最多支持三级分组，所选上级分组下无法再创建'; e.style.display='block'; return; }
+    if(SC_GROUPS.some(g=>g.parent===parent&&g.name===name)){ e.textContent='「'+scGName(parent)+'」下已存在分组「'+name+'」'; e.style.display='block'; return; }
+  }else if(SC_GROUPS.some(g=>g.parent===null&&g.name===name)){ e.textContent='已存在顶级分组「'+name+'」'; e.style.display='block'; return; }
+  const id='scg'+Date.now();
+  SC_GROUPS.push({id,name,parent});
+  if(parent) SC_EXPAND.add(parent);
+  toast('已在「'+(parent?scGName(parent):'顶级')+'」下创建分组：'+name);
+  closeScGroupAdd(); render();
+}
+function scGroupDelAsk(id){
+  const g=SC_GROUPS.find(x=>x.id===id); if(!g) return;
+  const ids=scDescendants(id);
+  const n=DB.scripts.rows.filter(r=>ids.includes(scRowGroup(r[0]))).length;
+  if(n){ toast('该分组下仍有 '+n+' 个剧本，请先调整剧本分组'); return; }
+  const sub=ids.length>1?'（含 '+(ids.length-1)+' 个子分组）':'';
+  matAsk('删除分组','确定删除分组「'+g.name+'」'+sub+'？删除后不可恢复。',()=>{
+    SC_GROUPS=SC_GROUPS.filter(x=>!ids.includes(x.id));
+    ids.forEach(i=>SC_EXPAND.delete(i));
+    if(ids.includes(SC_GROUP)) SC_GROUP='all';
+    toast('已删除分组：'+g.name); render();
+  });
+}
+/* ---- 剧本管理（左侧分组面板 + 原列表内容不变） ---- */
+function pgScripts(){
+  const p=DB.scripts;
+  /* 按左侧分组过滤剧本行；行数据与列定义保持与原列表完全一致 */
+  let rows=p.rows.map((r,i)=>({r,i}));
+  if(SC_GROUP!=='all'){
+    const ids=SC_GROUP==='scUngrouped'?['scUngrouped']:scDescendants(SC_GROUP);
+    rows=rows.filter(x=>ids.includes(scRowGroup(x.r[0])));
+  }
+  const filters=p.filters.map(f=>{
+    const [label,opts]=f.split(':');
+    return '<div class="f-item"><span>'+label+'</span><select>'+opts.split('|').map(o=>'<option>'+o+'</option>').join('')+'</select></div>';
+  }).join('');
+  const head=p.cols.map(c=>'<th>'+c[0]+'</th>').join('');
+  const body=rows.map(({r,i})=>{
+    let tds=r.map((cell,ci)=>{
+      const col=p.cols[ci];
+      if(col[1]===1) return '<td><span class="lk" onclick="viewScript('+i+')">'+cell+'</span></td>';
+      return '<td>'+cell+'</td>';
+    }).join('');
+    return '<tr>'+tds+'</tr>';
+  }).join('');
+  /* 左侧分组面板：全部剧本 / 分组搜索 / 未分组+分组树 / 新建分组（结构与样式同素材管理） */
+  const side='<div class="mat-side">'+
+    '<div class="tree-node'+(SC_GROUP==='all'?' on':'')+'" onclick="scPick(\'all\')"><span class="tname">全部剧本</span><span class="cnt all-b">'+DB.scripts.rows.length+'</span></div>'+
+    '<input class="side-search" placeholder="请输入分组名称" oninput="scGSearch(this.value)">'+
+    '<div class="tree-node'+(SC_GROUP==='scUngrouped'?' on':'')+'" onclick="scPick(\'scUngrouped\')"><span class="tname">未分组</span><span class="cnt">('+scCount('scUngrouped')+')</span></div>'+
+    '<div id="scGroupList">'+scGroupTreeHtml(null,0)+'</div>'+
+    '<button class="side-add" onclick="openScGroupAdd()">+ 新建分组</button>'+
+  '</div>';
+  return '<div class="page-head"><h1>剧本管理</h1><span class="desc">共 '+rows.length+' 条</span><div class="btns">'+headBtns('scripts')+'</div></div>'+
+    '<div class="org-layout" style="grid-template-columns:230px 1fr">'+side+
+    '<div>'+
+    '<div class="filter-card"><div class="f-item"><span>关键词</span><input placeholder="搜索名称 / 学员 / 编号"></div>'+filters+
+    '<button class="btn btn-p btn-sm">查询</button><button class="btn btn-g btn-sm">重置</button></div>'+
+    '<div class="tbl-card"><div class="tbl-scroll"><table><thead><tr>'+head+'</tr></thead><tbody>'+(body||'<tr><td colspan="9"><div class="empty"><div class="ic">◌</div>暂无数据</div></td></tr>')+'</tbody></table></div>'+
+    '<div class="tbl-foot">共 '+rows.length+' 条 · 每页 10 条<div class="pgs"><button>‹</button><button class="on">1</button><button>2</button><button>›</button></div></div></div>'+
+    '</div></div>';
+}
+
+/* ---- 能力雷达管理（AI培训管理 · 能力雷达）：雷达表卡片列表 + 详情抽屉 + 新建/编辑整页（布局参考评分管理 / 新建剧本页） ---- */
+let RADAR_F={kw:'',st:'全部'};               /* 列表筛选状态 */
+let RADAR_EDIT=-1;                           /* 当前编辑的雷达表下标，-1 = 新建 */
+const RADAR_ST_CLS={'已发布':OK,'草稿':INFO,'已停用':GRAY};
+function radarFiltered(){
+  const kw=(RADAR_F.kw||'').toLowerCase();
+  let list=RADAR_TABLES.map((t,i)=>({t,i})).filter(({t})=>
+    (RADAR_F.st==='全部'||t.status===RADAR_F.st)&&
+    (!kw||t.name.toLowerCase().includes(kw)||t.id.toLowerCase().includes(kw)));
+  /* 左侧分组过滤（逻辑同剧本管理） */
+  if(RD_GROUP!=='all'){
+    const ids=RD_GROUP==='rdUngrouped'?['rdUngrouped']:rdDescendants(RD_GROUP);
+    list=list.filter(({t})=>ids.includes(rdRowGroup(t)));
+  }
+  return list;
+}
+function radarSetF(k,v){ RADAR_F[k]=v; render(); }
+/* ---- 能力雷达分组（层级与逻辑同剧本管理：三级分组 / 未分组 / 新建弹窗 / 删除校验） ---- */
+let RD_GROUPS=[
+ {id:'rdUngrouped',name:'未分组',fixed:true,parent:null},
+ {id:'rdg1',name:'销售能力',parent:null},
+ {id:'rdg2',name:'售后服务',parent:null},
+ {id:'rdg3',name:'新能源专项',parent:null}];
+let RD_EXPAND=new Set();  /* 已展开的分组 */
+let RD_GROUP='all';       /* 当前分组：all / rdUngrouped / 分组 id */
+function rdGroupChildren(pid){ return RD_GROUPS.filter(g=>g.parent===pid&&g.id!=='rdUngrouped'); }
+function rdGroupDepth(id){ let d=0,g=RD_GROUPS.find(x=>x.id===id); while(g&&g.parent){ d++; g=RD_GROUPS.find(x=>x.id===g.parent); } return d; }
+function rdDescendants(id){ const out=[id],q=[id]; while(q.length){ const cur=q.shift(); rdGroupChildren(cur).forEach(c=>{ out.push(c.id); q.push(c.id); }); } return out; }
+function rdGName(id){ const g=RD_GROUPS.find(x=>x.id===id); return g?g.name:'未分组'; }
+function rdRowGroup(t){ return RD_GROUPS.some(g=>g.id===t.grp)?t.grp:'rdUngrouped'; }
+function rdCount(g){
+  if(g==='all') return RADAR_TABLES.length;
+  const ids=g==='rdUngrouped'?['rdUngrouped']:rdDescendants(g);
+  return RADAR_TABLES.filter(t=>ids.includes(rdRowGroup(t))).length;
+}
+function rdToggle(id){ if(RD_EXPAND.has(id))RD_EXPAND.delete(id); else RD_EXPAND.add(id); render(); }
+function rdPick(g){ RD_GROUP=g; render(); }
+function rdGroupTreeHtml(pid,depth){
+  return rdGroupChildren(pid).map(g=>{
+    const kids=rdGroupChildren(g.id), has=kids.length>0, open=RD_EXPAND.has(g.id), sel=RD_GROUP===g.id;
+    let h='<div class="tree-node'+(sel?' on':'')+'" data-g="'+esc(g.name)+'" style="padding-left:'+(8+depth*16)+'px" onclick="rdPick(\''+g.id+'\')">';
+    if(has) h+='<span class="tree-toggle'+(open?' open':'')+'" onclick="event.stopPropagation();rdToggle(\''+g.id+'\')">▸</span>';
+    h+='<span class="tname">'+esc(g.name)+'</span><span class="cnt">('+rdCount(g.id)+')</span>';
+    if(!g.fixed) h+='<span class="mat-gdel" onclick="event.stopPropagation();rdGroupDelAsk(\''+g.id+'\')">删除</span>';
+    h+='</div>';
+    if(has&&open) h+=rdGroupTreeHtml(g.id,depth+1);
+    return h;
+  }).join('');
+}
+function rdGSearch(v){
+  v=(v||'').trim().toLowerCase();
+  if(!v){ render(); return; }
+  RD_GROUPS.forEach(g=>{ if(rdGroupChildren(g.id).length) RD_EXPAND.add(g.id); });
+  document.querySelectorAll('#rdGroupList .tree-node').forEach(n=>{
+    n.style.display=(!v||n.dataset.g.toLowerCase().includes(v))?'':'none';
+  });
+}
+/* 上级分组下拉：最多建到三级（逻辑同剧本） */
+function rdGroupOptionsTop(selId){
+  let out='<option value=""'+(selId===''?' selected':'')+'>顶级分组</option>';
+  (function rec(pid,depth){
+    rdGroupChildren(pid).forEach(g=>{
+      out+='<option value="'+g.id+'"'+(g.id===selId?' selected':'')+'>'+'  '.repeat(depth)+esc(g.name)+'</option>';
+      rec(g.id,depth+1);
+    });
+  })(null,0);
+  return out;
+}
+function openRdGroupAdd(){
+  let def='';
+  if(RD_GROUP&&RD_GROUP!=='all'&&RD_GROUP!=='rdUngrouped') def=RD_GROUP;
+  $('rdGParentSel').innerHTML=rdGroupOptionsTop(def);
+  $('rdGNameInp').value='';
+  const e=$('rdGErr'); e.style.display='none';
+  if(def&&rdGroupDepth(def)>=2){
+    e.textContent='「'+rdGName(def)+'」已是三级分组，无法再创建下级，请重新选择上级分组';
+    e.style.display='block';
+  }
+  $('rdGroupMask').classList.add('on');
+  setTimeout(()=>{ try{$('rdGNameInp').focus();}catch(_){} },50);
+}
+function closeRdGroupAdd(){ $('rdGroupMask').classList.remove('on'); }
+function rdGNameInput(){ const e=$('rdGErr'); if(e.style.display!=='none'&&$('rdGNameInp').value.trim()) e.style.display='none'; }
+function rdGParentChange(){
+  const pid=$('rdGParentSel').value, e=$('rdGErr');
+  if(pid&&rdGroupDepth(pid)>=2){ e.textContent='所选上级分组已是三级，无法再创建下级'; e.style.display='block'; }
+  else e.style.display='none';
+}
+function doRdGroupAdd(){
+  const name=$('rdGNameInp').value.trim();
+  const parent=$('rdGParentSel').value||null;
+  const e=$('rdGErr');
+  if(!name){ e.textContent='请输入分组名称'; e.style.display='block'; try{$('rdGNameInp').focus();}catch(_){} return; }
+  if(parent){
+    if(rdGroupDepth(parent)>=2){ e.textContent='最多支持三级分组，所选上级分组下无法再创建'; e.style.display='block'; return; }
+    if(RD_GROUPS.some(g=>g.parent===parent&&g.name===name)){ e.textContent='「'+rdGName(parent)+'」下已存在分组「'+name+'」'; e.style.display='block'; return; }
+  }else if(RD_GROUPS.some(g=>g.parent===null&&g.name===name)){ e.textContent='已存在顶级分组「'+name+'」'; e.style.display='block'; return; }
+  const id='rdg'+Date.now();
+  RD_GROUPS.push({id,name,parent});
+  if(parent) RD_EXPAND.add(parent);
+  toast('已在「'+(parent?rdGName(parent):'顶级')+'」下创建分组：'+name);
+  closeRdGroupAdd(); render();
+}
+function rdGroupDelAsk(id){
+  const g=RD_GROUPS.find(x=>x.id===id); if(!g) return;
+  const ids=rdDescendants(id);
+  const n=RADAR_TABLES.filter(t=>ids.includes(rdRowGroup(t))).length;
+  if(n){ toast('该分组下仍有 '+n+' 套能力雷达表，请先调整雷达表分组'); return; }
+  const sub=ids.length>1?'（含 '+(ids.length-1)+' 个子分组）':'';
+  matAsk('删除分组','确定删除分组「'+g.name+'」'+sub+'？删除后不可恢复。',()=>{
+    RD_GROUPS=RD_GROUPS.filter(x=>!ids.includes(x.id));
+    ids.forEach(i=>RD_EXPAND.delete(i));
+    if(ids.includes(RD_GROUP)) RD_GROUP='all';
+    toast('已删除分组：'+g.name); render();
+  });
+}
+function pgRadar(){
+  const list=radarFiltered();
+  const cards=list.map(({t,i})=>{
+    return '<div class="pc">'+
+      '<div class="hd"><div class="pav" style="background:linear-gradient(135deg,#5B8DEF,#1B5BF0)">'+icon('radar',15)+'</div>'+
+        '<div style="min-width:0;flex:1"><div class="nm">'+esc(t.name)+'</div>'+
+        '<div class="mt">'+t.id+' · 更新人 '+esc(t.owner||'—')+' · 更新于 '+t.updated+'</div></div>'+
+        ST(t.status,RADAR_ST_CLS[t.status]||INFO)+'</div>'+
+      '<div class="desc">'+esc(t.note||'')+'</div>'+
+      '<div class="as-radar" id="rtCard'+i+'" style="margin-bottom:10px"></div>'+
+      '<div class="pkv">'+
+        '<div class="it"><span>被引用</span><b>'+(t.refs||0)+' 个剧本</b></div>'+
+      '</div>'+
+      '<div class="acts">'+
+        '<span class="lk" onclick="openRadarDetail('+i+')">详情</span>'+
+        '<span class="lk" onclick="radarEdit('+i+')">编辑</span>'+
+        '<span class="lk" onclick="radarCopy('+i+')">复制</span>'+
+        (t.status==='已停用'?'<span class="lk" onclick="radarToggle('+i+')">启用</span>':'<span class="lk danger" onclick="radarToggle('+i+')">停用</span>')+
+        '<span class="lk danger" onclick="radarDelAsk('+i+')">删除</span>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  /* 左侧分组面板：全部雷达表 / 分组搜索 / 未分组+分组树 / 新建分组（结构与逻辑同剧本管理） */
+  const side='<div class="mat-side">'+
+    '<div class="tree-node'+(RD_GROUP==='all'?' on':'')+'" onclick="rdPick(\'all\')"><span class="tname">全部雷达表</span><span class="cnt all-b">'+RADAR_TABLES.length+'</span></div>'+
+    '<input class="side-search" placeholder="请输入分组名称" oninput="rdGSearch(this.value)">'+
+    '<div class="tree-node'+(RD_GROUP==='rdUngrouped'?' on':'')+'" onclick="rdPick(\'rdUngrouped\')"><span class="tname">未分组</span><span class="cnt">('+rdCount('rdUngrouped')+')</span></div>'+
+    '<div id="rdGroupList">'+rdGroupTreeHtml(null,0)+'</div>'+
+    '<button class="side-add" onclick="openRdGroupAdd()">+ 新建分组</button>'+
+  '</div>';
+  return '<div class="page-head"><h1>能力雷达管理</h1><span class="desc">共 '+list.length+' 套能力雷达表</span><div class="btns">'+headBtns('radar')+'</div></div>'+
+    '<div class="org-layout" style="grid-template-columns:230px 1fr">'+side+
+    '<div>'+
+    '<div class="filter-card">'+
+      '<div class="f-item"><span>关键词</span><input placeholder="搜索雷达表名称 / 编号" value="'+esc(RADAR_F.kw)+'" oninput="RADAR_F.kw=this.value;render()"></div>'+
+      '<div class="f-item"><span>状态</span><select onchange="radarSetF(\'st\',this.value)">'+['全部','已发布','草稿','已停用'].map(o=>'<option'+(RADAR_F.st===o?' selected':'')+'>'+o+'</option>').join('')+'</select></div>'+
+      '<button class="btn btn-p btn-sm" onclick="toast(\'Demo：条件已生效\')">查询</button><button class="btn btn-g btn-sm" onclick="RADAR_F={kw:\'\',st:\'全部\'};render()">重置</button>'+
+    '</div>'+
+    '<div class="pc-grid">'+(cards||'<div class="empty" style="grid-column:1/-1;background:#fff;border:1px solid var(--bd);border-radius:10px;padding:38px 0"><div class="ic">◌</div>暂无符合条件的能力雷达表</div>')+'</div>'+
+    '<div class="tbl-foot" style="margin-top:12px;background:#fff;border:1px solid var(--bd);border-radius:10px">共 '+list.length+' 条 · 每页 9 条<div class="pgs"><button>‹</button><button class="on">1</button><button>›</button></div></div>'+
+    '</div></div>';
+}
+/* 卡片雷达缩略图：render 后补绘 */
+function initRadarList(){
+  radarFiltered().forEach(({t,i})=>drawRadarDims('rtCard'+i,t.dims,t.ws||[],132));
+}
+/* 能力雷达表详情：整页（结构参考模拟客户详情页，字段对齐新建能力雷达表页） */
+let RADAR_VIEW=-1;
+function openRadarDetail(i){ RADAR_VIEW=i; go('radarDetail'); }
+function pgRadarDetail(){
+  const t=RADAR_TABLES[RADAR_VIEW];
+  if(!t){ go('radar'); return ''; }
+  const total=radarWSumOf(t.ws||[]);
+  const kv=(l,val)=>'<div class="kv"><span>'+l+'</span><b>'+((val&&val!=='—')?val:'—')+'</b></div>';
+  const pills=arr=>(arr&&arr.length)?arr.map(x=>'<span class="pill">'+esc(x)+'</span>').join(''):'<span style="color:var(--t3);font-size:12px">暂未被剧本引用</span>';
+  const N=[];
+  N.push('<div class="page-head"><h1>能力雷达表详情</h1><span class="desc">'+esc(t.name)+' · '+esc(t.id)+' · 更新人 '+esc(t.owner||'—')+' · 更新于 '+esc(t.updated)+'</span><div class="btns">'+
+    '<button class="btn btn-g" onclick="go(\'radar\')">'+icon('back',13)+'返回</button>'+
+    '<button class="btn btn-p" onclick="radarEdit('+RADAR_VIEW+')">编辑</button>'+
+    '<button class="btn btn-g" onclick="radarCopy('+RADAR_VIEW+');go(\'radar\')">复制</button></div></div>');
+  N.push(ST(t.status,RADAR_ST_CLS[t.status]||INFO)+' <span class="src-t src-a">'+esc(rdGName(t.grp))+'</span>');
+  N.push('<div class="pn-wrap"><div class="pn-card">');
+  /* 基础信息：字段与新建页基础信息一致 */
+  N.push('<div class="fsec"><h3>基础信息</h3></div>');
+  N.push('<div class="kv-list">'+
+    kv('雷达表编号',esc(t.id))+kv('状态',esc(t.status))+kv('所属分组',esc(rdGName(t.grp)))+kv('更新人',esc(t.owner||'—'))+
+    kv('更新时间',esc(t.updated))+kv('能力维度',t.dims.length+' 个')+kv('权重合计',total+'%')+kv('被引用',(t.refs||0)+' 个剧本')+
+    '<div class="kv" style="grid-column:1/-1"><span>适用说明</span><b style="font-weight:400;color:var(--t2);line-height:1.6">'+esc(t.note||'—')+'</b></div>'+
+  '</div>');
+  /* 能力维度：雷达图 + 各维度权重与评分提示词 */
+  N.push('<div class="fsec"><h3>能力维度</h3></div>');
+  N.push('<div class="rd-dgrid">'+
+    '<div class="rd-dradar"><div class="as-radar" id="rdDetailRadar"></div></div>'+
+    '<div class="rd-ddims">'+t.dims.map((d,j)=>'<div class="as-dim"><span class="n">'+esc(d)+'</span><div class="bar"><i style="width:'+Math.min(100,t.ws[j]||0)+'%"></i></div><span class="w">'+(t.ws[j]||0)+'%</span></div>'+((t.ps&&t.ps[j])?'<div class="rd-ps-view">评分提示词：'+esc(t.ps[j])+'</div>':'')).join('')+'</div>'+
+  '</div>');
+  /* 综合得分算法 */
+  N.push('<div class="fsec"><h3>综合得分算法</h3></div>');
+  N.push('<div class="as-alg" style="margin-bottom:0">'+
+    '<div><span>维度满分</span><b>每个能力维度 0-100 分</b></div>'+
+    '<div><span>合成公式</span><b class="mono">综合得分 = Σ（维度得分 × 权重%）</b></div>'+
+    '<div><span>权重校验</span><b>全部维度权重合计须为 100%（当前 '+total+'%）</b></div>'+
+  '</div>');
+  /* 被引用剧本 */
+  N.push('<div class="fsec"><h3>被引用剧本</h3></div>');
+  N.push('<div class="rd-dused">'+pills(t.used)+'</div>');
+  N.push('</div></div>');
+  setTimeout(()=>drawRadarDims('rdDetailRadar',t.dims,t.ws||[],262),30);
+  return N.join('');
+}
+/* 新建 / 编辑能力雷达表：整页（布局参考新建剧本页） */
+function radarEdit(i){
+  RADAR_EDIT=i;
+  go('radarNew');
+}
+function radarCancelNew(){ RADAR_EDIT=-1; go('radar'); }
+function pgRadarNew(){
+  const isEdit=RADAR_EDIT>=0;
+  const t=isEdit?RADAR_TABLES[RADAR_EDIT]:{name:'',note:'',dims:['','',''],ws:['','',''],id:'自动编号',status:'待保存'};
+  const N=[];
+  N.push('<div class="page-head ph-fix"><h1>'+(isEdit?'编辑能力雷达表':'新建能力雷达表')+'</h1><span class="desc">'+(isEdit?'修改能力维度与权重 · 保存后更新该雷达表':'定义能力维度与权重 · 保存后进入能力雷达列表')+'</span>'+
+    '<div class="btns"><span class="pn-prog" id="pnProg">必填项：雷达表名称 / 能力维度（≥3）*</span>'+
+    '<button class="btn btn-g" onclick="radarCancelNew()">取消</button>'+
+    '<button class="btn btn-g" onclick="radarSaveNew(1)">保存草稿</button>'+
+    '<button class="btn btn-p" onclick="radarSaveNew(0)">保存并发布</button></div></div>');
+  N.push('<div class="pn-nav" id="pnNav">'+
+    '<a data-id="fsecBase" class="on" onclick="pnNavTo(\'fsecBase\')">基础信息</a>'+
+    '<a data-id="fsecDims" onclick="pnNavTo(\'fsecDims\')">能力维度</a></div>');
+  N.push('<div class="pn-wrap">'+
+    '<div class="pn-card" id="pnForm">');
+  N.push(fsec('基础信息','fsecBase'));
+  N.push('<div class="rd-ai-box"><input id="rdAIPrompt" maxlength="60" placeholder="描述业务场景或能力盘点方向，AI 按场景生成整表。如：试乘试驾专项、新能源产品讲解、电话邀约、售后接待…"><button type="button" class="btn btn-ai btn-sm" onclick="radarAIGen()">'+icon('spark',14)+'AI 生成</button></div>');
+  N.push('<div class="form-item" style="margin-bottom:4px"><label>雷达表名称<i>*</i><span class="cnt" id="rdNameCnt">'+(t.name||'').length+'/50</span></label><input id="rdFName" maxlength="50" placeholder="如：销售能力雷达表（六维）" value="'+esc(t.name)+'"></div>');
+  N.push('<div class="form-err" id="rdNameErr">雷达表名称为必填项，请填写后再保存</div>');
+  N.push('<div class="form-item" style="margin-bottom:16px"><label>适用说明<span class="cnt" id="rdNoteCnt">'+(t.note||'').length+' 字</span></label><textarea id="rdFNote" rows="3" placeholder="说明本雷达表的适用场景与能力盘点重点">'+esc(t.note||'')+'</textarea></div>');
+  N.push(fsec('能力维度','fsecDims'));
+  N.push('<div class="form-item"><label>维度列表<i>*</i></label>'+
+    '<div id="rdDims">'+t.dims.map((d,j)=>radarDimRow(d,t.ws!=null?t.ws[j]:'',(t.ps||[])[j])).join('')+'</div>'+
+    '<button type="button" class="ref-new" onclick="radarDimAdd()">'+icon('plus',13)+'添加维度</button></div>');
+  N.push('</div>');
+  N.push('<div class="pn-aside">'+
+    '<div class="pn-card pn-pv">'+
+      '<h3 class="pn-pv-title">实时雷达预览<span class="live">实时</span></h3>'+
+      '<div class="as-radar" id="pvRadar"></div>'+
+      '<div class="as-legend" id="pvLg"></div>'+
+    '</div>');
+  N.push('</div>');
+  N.push('<button class="pn-totop" id="pnTotop" title="返回顶部" onclick="pnScrollTop()">'+icon('up',18)+'</button>');
+  return N.join('');
+}
+function initRadarNew(){
+  const form=document.getElementById('pnForm');if(!form)return;
+  form.addEventListener('input',updateRadarPreview);
+  form.addEventListener('change',updateRadarPreview);
+  /* 滚动反馈：吸顶浮起投影 + 回到顶部按钮（同新建剧本页） */
+  const c=document.querySelector('.content');
+  if(c){if(!c.dataset.pnScroll){c.addEventListener('scroll',pnScroll,{passive:true});c.dataset.pnScroll='1';}pnScroll();}
+  const fh=document.querySelector('.page-head.ph-fix'),nv=document.getElementById('pnNav'),asd=document.querySelector('.pn-aside');
+  let stick=56;
+  if(fh&&nv){
+    const hh=fh.offsetHeight,nh=nv.offsetHeight;
+    nv.style.top=hh+'px';
+    if(asd)asd.style.top=(hh+nh)+'px';
+    stick=hh+nh+8;
+    document.querySelectorAll('.fsec[id]').forEach(s=>s.style.scrollMarginTop=stick+'px');
+  }
+  const links=[...document.querySelectorAll('#pnNav a')];
+  const obs=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(e.isIntersecting){const id=e.target.id;links.forEach(a=>a.classList.toggle('on',a.dataset.id===id));}});
+  },{rootMargin:'-'+stick+'px 0px -65% 0px',threshold:0});
+  document.querySelectorAll('.fsec[id]').forEach(s=>obs.observe(s));
+  updateRadarPreview();
+}
+function updateRadarPreview(){
+  const name=((document.getElementById('rdFName')||{}).value||'').trim();
+  const cnt=document.getElementById('rdNameCnt');if(cnt)cnt.textContent=name.length+'/50';
+  const note=((document.getElementById('rdFNote')||{}).value||'').trim();
+  const nCnt=document.getElementById('rdNoteCnt');if(nCnt)nCnt.textContent=note.length+' 字';
+  const {dims,ws}=radarDimsRead();
+  /* 空维度：不绘制雷达（无边框网格），显示灰色引导文案 */
+  const radarEl=document.getElementById('pvRadar');
+  if(radarEl){
+    if(dims.length){ radarEl.classList.remove('rd-noborder'); drawRadarDims('pvRadar',dims,ws,168); }
+    else{ radarEl.innerHTML=''; radarEl.classList.add('rd-noborder'); }
+  }
+  const maxW=dims.length?Math.max(...ws):0;
+  const lg=document.getElementById('pvLg');
+  if(lg)lg.innerHTML=dims.length?dims.map((d,j)=>'<span class="lg'+(ws[j]===maxW?' cur':'')+'">'+esc(d)+' '+ws[j]+'%</span>').join(''):'<span class="rd-empty">请在左侧添加能力维度</span>';
+}
+function radarSaveNew(draft){
+  draft=draft!==0?1:0;
+  const name=((document.getElementById('rdFName')||{}).value||'').trim();
+  const err=document.getElementById('rdNameErr');
+  if(!name){ if(err)err.classList.add('show'); toast('请填写雷达表名称'); return; }
+  if(err)err.classList.remove('show');
+  const {dims,ws,ps}=radarDimsRead();
+  if(dims.length<3){toast('能力维度至少 3 个，当前 '+dims.length+' 个');return;}
+  const wsum=radarWSumOf(ws);
+  if(wsum!==100){toast('全部维度权重合计须为 100%，当前 '+wsum+'%');return;}
+  const note=((document.getElementById('rdFNote')||{}).value||'').trim();
+  const today=new Date().toISOString().slice(0,10);
+  if(RADAR_EDIT>=0){
+    const t=RADAR_TABLES[RADAR_EDIT];
+    Object.assign(t,{name,short:name,note,dims,ws,ps,updated:today,status:draft?'草稿':'已发布'});
+    if(RADAR_TBL_SEL===RADAR_EDIT)asRadarRender();
+  }else{
+    const id='RT-'+String(RADAR_TABLES.length+1).padStart(2,'0');
+    RADAR_TABLES.push({id,name,short:name,updated:today,refs:0,note,status:draft?'草稿':'已发布',owner:'我',used:[],grp:'rdUngrouped',dims,ws,ps});
+  }
+  toast(draft?'已保存草稿：':'已创建并发布：'+name);
+  RADAR_EDIT=-1;
+  go('radar');
+}
+/* 维度卡片：名称 + 权重%（全部维度合计须 100%） + 评分提示词（供 AI 陪练按维度评分时调用） */
+function radarDimRow(d,v,p){
+  return '<div class="sc-dim-row rd-dim-card">'+
+    '<div class="rd-dim-top"><input class="sc-dim-n" maxlength="20" placeholder="维度名称，如：开场破冰" value="'+esc(d||'')+'" oninput="updateRadarPreview()">'+
+    '<input class="sc-dim-w" type="number" min="0" max="100" value="'+(v!=null&&v!==''?v:'')+'" oninput="updateRadarPreview()" title="权重 %，全部维度合计须为 100%">'+
+    '<span style="color:var(--t3);font-size:12px;flex-shrink:0">%</span>'+
+    '<button type="button" class="fn-ic danger" title="删除该维度" onclick="radarDimDel(this)">'+icon('trash',13)+'</button></div>'+
+    '<div class="rd-dim-ps-tag">评分提示词 '+icon('help',12)+'<span style="color:var(--t3)">该维度满分 100 分；说明怎么打分，AI 陪练按此提示词对该维度评分</span></div>'+
+    '<textarea class="rd-dim-ps" rows="2" maxlength="200" placeholder="例：围绕用车场景与预算分层提问，能追问深层动机，每次提问后结合客户回答调整。" oninput="updateRadarPreview()">'+esc(p||'')+'</textarea>'+
+    '</div>';
+}
+function radarDimAdd(){
+  const box=document.getElementById('rdDims');if(!box)return;
+  box.insertAdjacentHTML('beforeend',radarDimRow('','',''));
+  const rows=box.querySelectorAll('.sc-dim-row');const last=rows[rows.length-1];
+  const n=last.querySelector('.sc-dim-n');if(n)n.focus();
+  updateRadarPreview();
+}
+function radarDimDel(btn){
+  const box=document.getElementById('rdDims');if(!box)return;
+  if(box.querySelectorAll('.sc-dim-row').length<=3){toast('能力维度至少保留 3 个');return;}
+  const row=btn.closest('.sc-dim-row');if(row)row.remove();
+  updateRadarPreview();
+}
+function radarDimsRead(){
+  const dims=[],ws=[],ps=[];
+  [...document.querySelectorAll('#rdDims .sc-dim-row')].forEach(r=>{
+    const n=(r.querySelector('.sc-dim-n').value||'').trim();
+    if(!n)return;
+    const v=+r.querySelector('.sc-dim-w').value||0;
+    dims.push(n);ws.push(Math.max(0,Math.min(100,v)));
+    ps.push(((r.querySelector('.rd-dim-ps')||{}).value||'').trim());
+  });
+  return {dims,ws,ps};
+}
+function radarWSumOf(ws){ return ws.reduce((a,b)=>a+(+b||0),0); }
+/* AI 生成整表：按场景关键词命中模板池，未命中则按通用能力池随机组合；已有内容时先确认覆盖 */
+const RADAR_AI_TPLS=[
+ {kw:['试乘试驾','试驾'],name:'试乘试驾能力雷达表（五维）',
+  note:'试驾全流程专项能力盘点，突出车辆讲解与动态体验引导，适用于试乘试驾类陪练剧本。',
+  dims:['邀约到店','手续合规','车辆讲解','动态体验','回店总结'],
+  ps:['主动致电并确认到店时间，邀约理由与客户关注点匹配。','试驾登记流程讲解清晰，主动提示阅读关键条款。','围绕客户关注点讲解车辆，有数据与场景支撑。','试驾前安全提示到位，路线与体验重点说明清晰。','回店后总结体验感受，自然推进下一步商谈。']},
+ {kw:['新能源','电车','电动'],name:'新能源产品讲解雷达表（五维）',
+  note:'新能源品类专项能力盘点，突出产品卖点讲解与竞品对比，适用于新能源产品介绍类剧本。',
+  dims:['产品卖点讲解','竞品对比','政策解读','试驾引导','促成转化'],
+  ps:['围绕三电、智驾等核心卖点讲解，结合客户场景举例。','竞品对比客观有数据支撑，不贬低竞品。','购置税、置换补贴等政策解释准确，口径一致。','试驾前安全提示到位，路线讲解清晰。','把握试驾后热度窗口，推进留资或下订。']},
+ {kw:['售后','维修','保养','服务接待'],name:'售后服务能力雷达表（五维）',
+  note:'售后接待与工单沟通场景能力盘点，侧重问题诊断与客户安抚，适用于售后服务类剧本。',
+  dims:['接待礼仪','问题诊断','方案沟通','客户安抚','闭环回访'],
+  ps:['接待用语规范礼貌，主动确认客户信息与来意。','通过提问准确定位车辆问题，复述确认客户描述。','维修方案与费用解释清晰，主动说明工期与注意事项。','对客户情绪先安抚再解决，避免推诿和生硬拒绝。','约定回访节点并主动留资，服务承诺具体可执行。']},
+ {kw:['金融','分期','贷款'],name:'金融分期顾问雷达表（六维）',
+  note:'金融方案讲解与分期话术专项盘点，强调合规意识与风险提示，适用于金融分期类剧本。',
+  dims:['合规意识','方案测算','风险提示','客户匹配','异议处理','沟通表达'],
+  ps:['不承诺违规收益，话术符合金融销售合规要求。','首付、月供、利率等测算准确，能现场粗估。','主动说明提前还款、逾期等关键条款，不隐瞒不误导。','根据客户资质推荐合适方案，不过度推销高息产品。','对利率、月供异议能给出对比与解释，不贬低同业。','专业术语解释通俗，关键数字复述确认。']},
+ {kw:['电话','邀约'],name:'电话邀约能力雷达表（五维）',
+  note:'电话邀约场景专项盘点，突出开场白与异议应对，适用于电话邀约、回访类陪练剧本。',
+  dims:['开场破冰','邀约理由','异议应对','信息确认','促成到店'],
+  ps:['开场白简洁清晰，30 秒内说明来意并确认接听意愿。','邀约理由与客户上次关注点呼应，价值感明确。','对「没时间/不考虑」等异议先认同再给替代方案。','时间、门店、联系人等信息确认准确并复述。','以明确时间与行动建议收尾，推进客户到店。']},
+ {kw:['交付','交车'],name:'交付交车能力雷达表（五维）',
+  note:'交付环节专项盘点，突出交车仪式与告知讲解，适用于交付交车类陪练剧本。',
+  dims:['交车准备','仪式流程','功能讲解','权益告知','转介绍引导'],
+  ps:['交车前车辆与资料准备到位，流程预告清晰。','交车仪式有仪式感，客户体验被重视。','核心功能逐项演示讲解，客户上手可操作。','质保、保养、保险等权益告知完整准确。','自然引导客户转介绍，不生硬不强求。']}
+];
+const RADAR_AI_POOL=['开场破冰','需求挖掘','产品介绍','异议处理','促成邀约','沟通表达','客户洞察','合规意识','方案测算','风险提示','服务礼仪','闭环回访','竞品应对','成交促成'];
+function radarAIGen(){
+  const prompt=((document.getElementById('rdAIPrompt')||{}).value||'').trim();
+  /* 已有内容（名称或任一维度）时先确认覆盖 */
+  const curName=((document.getElementById('rdFName')||{}).value||'').trim();
+  const hasContent=curName||radarDimsRead().dims.length;
+  const doGen=()=>{
+    const tpl=RADAR_AI_TPLS.find(t=>t.kw.some(k=>prompt.includes(k)));
+    let name,note,dims;
+    if(tpl){ name=tpl.name;note=tpl.note;dims=tpl.dims.slice(); }
+    else{
+      const scene=prompt||'综合销售';
+      const pool=[...RADAR_AI_POOL].sort(()=>Math.random()-.5).slice(0,5);
+      dims=pool;
+      name=scene+'能力雷达表（五维）';
+      note='面向「'+scene+'」场景的能力盘点，维度由 AI 依据场景特征自动选取，可按实际考核口径调整。';
+    }
+    /* 随机分配权重：合计 100%，单项不低于 5% */
+    let ws=dims.map(()=>5+Math.round(Math.random()*20));
+    let s0=ws.reduce((a,b)=>a+b,0);
+    ws=ws.map(w=>Math.max(5,Math.round(w*100/s0)));
+    ws[ws.length-1]+=100-ws.reduce((a,b)=>a+b,0);
+    if(ws[ws.length-1]<5){ws[0]+=ws[ws.length-1]-5;ws[ws.length-1]=5;}
+    const ps=tpl&&tpl.ps?tpl.ps.slice():dims.map(d=>'围绕「'+d+'」评分：评估要点覆盖度、表达准确性与客户回应质量，结合场景举例说明可加分。');
+    document.getElementById('rdFName').value=name;
+    document.getElementById('rdFNote').value=note;
+    document.getElementById('rdDims').innerHTML=dims.map((d,i)=>radarDimRow(d,ws[i],ps[i])).join('');
+    const err=document.getElementById('rdNameErr');if(err)err.classList.remove('show');
+    updateRadarPreview();
+    toast('AI 已按场景生成能力雷达表，可继续编辑调整');
+  };
+  if(hasContent)matAsk('重新生成','AI 将按当前场景描述重新生成整表，已填写的名称、说明与维度会被覆盖。',doGen);
+  else doGen();
+}
+function radarCopy(i){
+  const t=RADAR_TABLES[i];if(!t)return;
+  const c=JSON.parse(JSON.stringify(t));
+  c.id='RT-'+String(RADAR_TABLES.length+1).padStart(2,'0');
+  c.name=t.name+' 副本';c.short=c.name;c.status='草稿';c.refs=0;c.used=[];c.owner='我';
+  c.updated=new Date().toISOString().slice(0,10);
+  RADAR_TABLES.push(c);
+  toast('已复制为草稿：'+c.name);
+  render();
+}
+function radarToggle(i){
+  const t=RADAR_TABLES[i];if(!t)return;
+  t.status=t.status==='已停用'?'已发布':'已停用';
+  toast(t.status==='已停用'?'能力雷达表已停用':'能力雷达表已启用');
+  render();
+}
+function radarDelAsk(i){
+  const t=RADAR_TABLES[i];if(!t)return;
+  const n=t.refs||0;
+  matAsk('删除能力雷达表','确定删除「'+t.name+'」吗？删除后不可恢复。',
+    ()=>{ RADAR_TABLES.splice(i,1);
+      if(RADAR_TBL_SEL>=RADAR_TABLES.length)RADAR_TBL_SEL=0;
+      toast('能力雷达表已删除'); render(); },
+    n?('该雷达表已被 <b>'+n+' 个剧本</b> 引用，删除后相关剧本需重新关联能力雷达表。'):'');
+}
+
+
 /* ---- 素材库管理（V1.2：素材分组 + 类型/名称筛选 + 批量选择/移动/删除 + 存储用量，参考截图页面结构） ---- */
 let MAT_GROUPS=[
  {id:'ungrouped',name:'未分组',fixed:true,parent:null},
@@ -1459,15 +2267,23 @@ let MATS=[
  {id:2,name:'1400x1880_autocemar_C9',type:'图片',group:'g1',kb:342.1,up:'李娜',time:'2026-11-09 18:02'},
  {id:3,name:'银河E5 外观-front',type:'图片',group:'g2',kb:512.8,up:'张伟',time:'2026-11-08 10:11'},
  {id:4,name:'银河E5 内饰-cockpit',type:'图片',group:'g2',kb:486.2,up:'张伟',time:'2026-11-08 10:12'},
- {id:5,name:'竞品价格对比表 11月版',type:'文档',group:'g2',kb:88.4,up:'王芳',time:'2026-11-07 16:40',cited:['课程「竞品应对策略精讲」']},
+ {id:5,name:'竞品价格对比表 11月版',type:'文档',ext:'xlsx',group:'g2',kb:88.4,up:'王芳',time:'2026-11-07 16:40',cited:['课程「竞品应对策略精讲」']},
  {id:6,name:'试驾邀约话术示范',type:'视频',group:'g3',kb:86500,up:'马店长',time:'2026-11-06 09:30',cited:['剧本「进店首次接待·犹豫型客户」','任务「10月银河E5上市冲刺培训」']},
  {id:7,name:'金融分期政策解读录音',type:'音频',group:'g3',kb:12400,up:'李娜',time:'2026-11-05 15:22'},
- {id:8,name:'交车仪式流程 SOP',type:'文档',group:'ungrouped',kb:76.9,up:'陈强',time:'2026-11-04 11:05'},
- {id:9,name:'门店晨会开场示范',type:'视频',group:'ungrouped',kb:52300,up:'马店长',time:'2026-11-03 08:48'}];
+ {id:8,name:'交车仪式流程 SOP',type:'文档',ext:'docx',group:'ungrouped',kb:76.9,up:'陈强',time:'2026-11-04 11:05'},
+ {id:9,name:'门店晨会开场示范',type:'视频',group:'ungrouped',kb:52300,up:'马店长',time:'2026-11-03 08:48'},
+ {id:10,name:'银河E5车型手册',type:'文档',ext:'pdf',group:'g2',kb:4200,up:'张伟',time:'2026-10-28 09:15'},
+ {id:11,name:'核心卖点十讲',type:'文档',ext:'pptx',group:'g2',kb:15600,up:'王芳',time:'2026-10-26 15:40'},
+ {id:12,name:'试驾话术SOP',type:'文档',ext:'docx',group:'g3',kb:320.6,up:'马店长',time:'2026-10-22 11:08'},
+ {id:13,name:'售后保养指南',type:'文档',ext:'pdf',group:'g3',kb:2800,up:'陈强',time:'2026-10-18 16:22'},
+ {id:14,name:'金融分期政策解读2026',type:'文档',ext:'docx',group:'g3',kb:540.2,up:'李娜',time:'2026-10-15 10:30'},
+ {id:15,name:'竞品参数对比表',type:'文档',ext:'xlsx',group:'g2',kb:96.3,up:'王芳',time:'2026-10-12 14:05'}];
 let MAT_GROUP='all';          /* 当前分组：all / ung / 分组 id */
 let MAT_TYPE='全部类型';
 let MAT_NAME='';
 let MAT_CHECK=new Set();
+let MAT_PAGE=1;              /* 当前页码（素材网格分页，样式参考员工管理 tbl-foot） */
+const MAT_PAGE_SIZE=36;      /* 每页素材卡片数（按交互规范放大） */
 const MAT_TYPE_ICON={'图片':'kb','视频':'play','文档':'db','音频':'spark'};
 const MAT_TYPE_BG={'图片':'linear-gradient(135deg,#4E8CFF,#2E6BFF)','视频':'linear-gradient(135deg,#8E6EFF,#5B3EEA)','文档':'linear-gradient(135deg,#FFB35C,#F08A1D)','音频':'linear-gradient(135deg,#3ECFB2,#0E9C86)'};
 const MAT_CAP_KB=50*1024*1024; /* 存储空间 50GB */
@@ -1515,6 +2331,12 @@ function matGName(id){ const g=MAT_GROUPS.find(x=>x.id===id); return g?g.name:'�
 function pgMaterial(){
   const used=matUsedKB(), pct=(used/MAT_CAP_KB*100).toFixed(2);
   const vis=matFiltered();
+  /* 分页：每页 MAT_PAGE_SIZE 条，页码越界时自动收敛到最后一页 */
+  const total=vis.length;
+  const pages=Math.max(1,Math.ceil(total/MAT_PAGE_SIZE));
+  if(MAT_PAGE>pages) MAT_PAGE=pages;
+  if(MAT_PAGE<1) MAT_PAGE=1;
+  const pageItems=vis.slice((MAT_PAGE-1)*MAT_PAGE_SIZE,MAT_PAGE*MAT_PAGE_SIZE);
   const allSel=vis.length>0&&vis.every(m=>MAT_CHECK.has(m.id));
   /* 顶部工具栏：全选 / 清空已选 / 类型筛选 / 名称搜索 / 查询 + 右侧存储用量（参考截图） */
   const toolbar='<div class="mat-toolbar">'+
@@ -1541,9 +2363,9 @@ function pgMaterial(){
   '</div>';
   /* 素材卡片网格 */
   let grid;
-  if(!vis.length){ grid='<div class="mat-grid"><div class="mat-empty">◌ 暂无素材，可点击右上角「上传素材」添加</div></div>'; }
+  if(!total){ grid='<div class="mat-grid"><div class="mat-empty">◌ 暂无素材，可点击右上角「上传素材」添加</div></div>'; }
   else{
-    grid='<div class="mat-grid">'+vis.map(m=>{
+    grid='<div class="mat-grid">'+pageItems.map(m=>{
       const sel=MAT_CHECK.has(m.id);
       return '<div class="mat-card'+(sel?' sel':'')+'" onclick="matCardToggle('+m.id+')">'+
         '<div class="mat-thumb" style="background:'+MAT_TYPE_BG[m.type]+'">'+icon(MAT_TYPE_ICON[m.type],34)+
@@ -1554,13 +2376,25 @@ function pgMaterial(){
       '</div>';
     }).join('')+'</div>';
   }
+  /* 翻页条：样式与「员工管理」列表底部分页一致（共 N 条 · 每页 X 条 + 页码按钮） */
+  let pager='';
+  if(total){
+    const pbtn=(p,txt,on,dis)=>'<button'+(dis?' disabled':'')+(on?' class="on"':'')+' onclick="matGoPage('+p+')">'+txt+'</button>';
+    const winSet=new Set([1,pages,MAT_PAGE-1,MAT_PAGE,MAT_PAGE+1].filter(p=>p>=1&&p<=pages));
+    const arr=[...winSet].sort((a,b)=>a-b);
+    const nums=[]; let prev=0;
+    arr.forEach(p=>{ if(p-prev>1) nums.push('<span style="align-self:center;color:var(--t3);font-size:12px">…</span>'); nums.push(pbtn(p,p,p===MAT_PAGE)); prev=p; });
+    pager='<div class="tbl-foot" style="margin-top:12px;background:#fff;border:1px solid var(--bd);border-radius:10px">共 '+total+' 条 · 每页 '+MAT_PAGE_SIZE+' 条'+
+      '<div class="pgs">'+pbtn(MAT_PAGE-1,'‹',false,MAT_PAGE<=1)+nums.join('')+pbtn(MAT_PAGE+1,'›',false,MAT_PAGE>=pages)+'</div></div>';
+  }
   return '<div class="page-head"><h1>素材管理</h1><span class="desc">素材分组管理 · 图片 / 视频 / 文档 / 音频 · 支持批量选择与移动</span><div class="btns">'+
     '<button class="btn btn-p" onclick="matUpload()">'+icon('up',13)+'上传素材</button></div></div>'+
     '<div class="org-layout" style="grid-template-columns:230px 1fr">'+side+
-    '<div>'+toolbar+batchBar+grid+'</div></div>';
+    '<div>'+toolbar+batchBar+grid+pager+'</div></div>';
 }
 /* 交互：分组切换 / 搜索 / 新建 / 删除 */
-function matPick(g){ MAT_GROUP=g; MAT_CHECK.clear(); render(); }
+function matGoPage(p){ MAT_PAGE=p; render(); }
+function matPick(g){ MAT_GROUP=g; MAT_CHECK.clear(); MAT_PAGE=1; render(); }
 function matGSearch(v){
   v=(v||'').trim().toLowerCase();
   if(!v){ render(); return; }
@@ -1637,8 +2471,8 @@ function matGroupDelAsk(id){
 function matCardToggle(id){ if(MAT_CHECK.has(id))MAT_CHECK.delete(id); else MAT_CHECK.add(id); render(); }
 function matCheckAll(on){ matFiltered().forEach(m=>on?MAT_CHECK.add(m.id):MAT_CHECK.delete(m.id)); render(); }
 function matClearSel(){ MAT_CHECK.clear(); render(); }
-function matTypeChange(v){ MAT_TYPE=v; render(); }
-function matQuery(){ render(); }
+function matTypeChange(v){ MAT_TYPE=v; MAT_PAGE=1; render(); }
+function matQuery(){ MAT_PAGE=1; render(); }
 function matMove(){
   const g=$('matMoveSel')?$('matMoveSel').value:''; if(!g){ toast('请选择目标分组'); return; }
   MATS.forEach(m=>{ if(MAT_CHECK.has(m.id)) m.group=g; });
@@ -1847,46 +2681,45 @@ function matAsk(title,msg,ok,warn){
 function matConfirmCancel(){ MAT_CONFIRM=null; $('matConfirmMask').classList.remove('on'); }
 function matConfirmOk(){ const f=MAT_CONFIRM; MAT_CONFIRM=null; $('matConfirmMask').classList.remove('on'); if(f)f(); }
 
-/* ---- 模拟客户管理（卡片视图） ---- */
+/* ---- 模拟客户管理（卡片视图 + 左侧客户分组） ---- */
 const SRC_CLS={'自建':'src-a','主机厂预置':'src-b','久智数联':'src-c','学员自建':'src-d','CRM系统':'src-e'};
-const DIFF_CLS={'普通':'info','进阶':'warn','困难':'bad'};
 const PERSONAS=[
- {name:'王先生',meta:'38岁 · 成都 · 私营企业主',src:'主机厂预置',status:'已发布',cited:3,voice:'男声-沉稳',
+ {name:'王先生',grp:'pgg1',meta:'38岁 · 成都 · 私营企业主',src:'主机厂预置',status:'已发布',cited:3,voice:'男声-沉稳',
   desc:'二孩家庭，有意置换现有 SUV，计划换购新能源 SUV；关注冬季续航、补能便利、保值率和家人乘坐安全性。',
   tags:['家庭购车','关注油耗','保养车'],scene:'产品讲解',diff:'普通',touch:'家里换购 / 到店咨询',cost:'进店对比',focus:'竞品对比 / 价格异议',
   style:'强势主导型',needs:'置换 + 家用 SUV',budget:'15-20 万',
   behaviors:['开场直接问最低价、反复砍价','对销售套话不耐心，喜欢听数据','被过度推销时会明显冷淡'],
   scripts:['进店首次接待·犹豫型客户','竞品对比价格谈判','老客户置换升级邀约'],
   fields:{sex:'男',age:'35–44岁',job:'个体经营者',fam:'已婚有孩',mood:'不耐烦',brand:['国产品牌','合资品牌'],qual:['性价比优先','耐用性优先'],disc:'逐步透露',cmp:'喜欢多方比较',push:'反感主动推销',len:'简短',init:'主动提问',vg:'男声',vt:'浑厚',spd:'正常',tone:'严肃'}},
- {name:'李女士',meta:'31岁 · 杭州 · 首次购车客户',src:'久智数联',status:'已发布',cited:4,voice:'女声-温和',
+ {name:'李女士',grp:'pgg1',meta:'31岁 · 杭州 · 首次购车客户',src:'久智数联',status:'已发布',cited:4,voice:'女声-温和',
   desc:'本次购车预算有限，容易受亲友和家人反馈影响价格判断；希望销售用简单话术说明配置差异、用车成本和保险权益。',
   tags:['首次购车','续航敏感','配置对比'],scene:'邀约试驾',diff:'普通',touch:'线上留资 / 官网咨询',cost:'首次到店',focus:'价格敏感 / 权益讲解',
   style:'谨慎犹豫型',needs:'家庭首购代步车',budget:'10-15 万',
   behaviors:['决策周期长，需要多次跟进','容易被专业术语问住','对赠品和权益敏感'],
   scripts:['进店首次接待·犹豫型客户','试驾邀约电话演练'],
   fields:{sex:'女',age:'25–34岁',job:'企业职员',fam:'单身',mood:'平和',brand:['国产品牌'],qual:['性价比优先','服务优先'],disc:'逐步透露',cmp:'喜欢多方比较',push:'接受适度推荐',len:'适中',init:'被动回答',vg:'女声',vt:'温和',spd:'正常',tone:'温和'}},
- {name:'王总',meta:'45岁 · 北京 · 企业采购负责人',src:'自建',status:'已发布',cited:2,voice:'男声-干练',
+ {name:'王总',grp:'pgg2',meta:'45岁 · 北京 · 企业采购负责人',src:'自建',status:'已发布',cited:2,voice:'男声-干练',
   desc:'公司计划采购商务用车，关注批量采购成本、维保政策、交付周期、金融融资方案和售后响应；决策链长，重视账期与发票。',
   tags:['企业采购','商务接待','金融方案'],scene:'金融方案',diff:'困难',touch:'展会名片 / 转介绍',cost:'批量采购评估',focus:'交付周期 / 售后网络',
   style:'爽快直接型',needs:'企业商务用车批量采购',budget:'20-30 万 / 辆',
   behaviors:['开场即要求报价方案','关注开票与账期细节','决策需上报，节奏由他控制'],
   scripts:['金融分期异议处理','竞品对比价格谈判'],
   fields:{sex:'男',age:'45–54岁',job:'企业管理者',fam:'已婚有孩',mood:'平和',brand:['国际品牌','合资品牌'],qual:['品质优先','服务优先'],disc:'被动询问才透露',cmp:'不喜欢比较',push:'接受主动推荐',len:'简短',init:'主动提问',vg:'男声',vt:'成熟',spd:'慢速',tone:'严肃'}},
- {name:'陈女士',meta:'42岁 · 上海 · 增换购客户',src:'学员自建',status:'已发布',cited:1,voice:'女声-知性',
+ {name:'陈女士',grp:'pggUngrouped',meta:'42岁 · 上海 · 增换购客户',src:'学员自建',status:'已发布',cited:1,voice:'女声-知性',
   desc:'对现有车型不满意，到店要求比较空间、智能座舱、价格优惠和售后保障；如果销售介绍空洞，会转向竞品对比和价格异议。',
   tags:['竞品对比','价格异议','增换购'],scene:'竞品应对',diff:'困难',touch:'老客户转介绍',cost:'增换购评估',focus:'竞品对比 / 价格异议',
   style:'价格敏感型',needs:'增换购升级车型',budget:'18-25 万',
   behaviors:['主动报出竞品报价施压','对品牌忠诚度话术免疫','关注旧车残值'],
   scripts:['竞品对比价格谈判','老客户置换升级邀约'],
   fields:{sex:'女',age:'35–44岁',job:'自由职业者',fam:'已婚有孩',mood:'冷淡',brand:['合资品牌','国产品牌'],qual:['性价比优先','设计优先'],disc:'主动透露',cmp:'喜欢多方比较',push:'反感主动推销',len:'详细',init:'主动提问',vg:'女声',vt:'成熟',spd:'快速',tone:'平稳'}},
- {name:'赵先生',meta:'28岁 · 武汉 · 线上线索客户',src:'久智数联',status:'已发布',cited:3,voice:'男声-随和',
+ {name:'赵先生',grp:'pgg3',meta:'28岁 · 武汉 · 线上线索客户',src:'久智数联',status:'已发布',cited:3,voice:'男声-随和',
   desc:'在短视频看到智能驾驶相关内容被种草，但购车意愿不强，容易与其他品牌横向比较；需要电话邀约到店试驾体验。',
   tags:['公域获客','电话邀约','到店转化'],scene:'电话邀约',diff:'普通',touch:'公域线索 / 电话触达',cost:'线上意向',focus:'公域获客 / 电话邀约',
   style:'感性体验型',needs:'首购代步 + 尝鲜智驾',budget:'10-15 万',
   behaviors:['电话里不轻易承诺到店','喜欢拿直播间价格做参照','对试驾权益反应积极'],
   scripts:['试驾邀约电话演练'],
   fields:{sex:'男',age:'25–34岁',job:'企业职员',fam:'单身',mood:'平和',brand:['国产品牌'],qual:['设计优先'],disc:'逐步透露',cmp:'喜欢多方比较',push:'接受适度推荐',len:'适中',init:'被动回答',vg:'男声',vt:'青年',spd:'正常',tone:'活泼'}},
- {name:'孙女士',meta:'36岁 · 西安 · 通勤车主',src:'自建',status:'草稿',cited:0,voice:'女声-亲切',
+ {name:'孙女士',grp:'pgg1',meta:'36岁 · 西安 · 通勤车主',src:'自建',status:'草稿',cited:0,voice:'女声-亲切',
   desc:'已完成订购，准备交付培训相关；关注上牌流程、交付检查、质保政策、首保时间和售后联系方式等。',
   tags:['交车培训','售后保养','用车指导'],scene:'交付流程',diff:'普通',touch:'转介绍 / 老客户',cost:'交付培训',focus:'交车培训 / 售后保养',
   style:'谨慎犹豫型',needs:'已订购等待交付',budget:'12-18 万',
@@ -1902,23 +2735,132 @@ function pView(p){
   const job=f.job || '—';
   const fam=f.fam || '未知';
   const style=f.style || p.style || '—';
-  const diff=f.diff || p.diff || '—';
-  const mood=f.mood || '—';
-  const brand=f.brand || [];
-  const qual=f.qual || [];
-  const disc=f.disc || '—', cmp=f.cmp || '—', push=f.push || '—';
   const len=f.len || '—', init=f.init || '—';
   const vg=f.vg || (p.voice?p.voice.split('-')[0]:'—');
   const vt=f.vt || (p.voice?p.voice.split('-')[1]:'—');
   const spd=f.spd || '正常', tone=f.tone || '平稳';
-  return {sex,age,job,fam,style,diff,mood,brand,qual,disc,cmp,push,len,init,vg,vt,spd,tone,
+  return {sex,age,job,fam,style,len,init,vg,vt,spd,tone,
     voice:vg+'-'+vt, desc:p.desc||'', name:p.name, src:p.src, status:p.status, cited:p.cited};
 }
 function sec(t,body){return '<div class="sec"><h4>'+t+'</h4><div class="kv-list">'+body+'</div></div>';}
+/* ---- 客户分组（层级与逻辑同能力雷达：三级分组 / 未分组 / 新建弹窗 / 删除校验） ---- */
+let PG_GROUPS=[
+ {id:'pggUngrouped',name:'未分组',fixed:true,parent:null},
+ {id:'pgg1',name:'家庭用车客户',parent:null},
+ {id:'pgg2',name:'商务与企业客户',parent:null},
+ {id:'pgg3',name:'年轻客群',parent:null}];
+let PG_EXPAND=new Set();  /* 已展开的分组 */
+let PG_GROUP='all';       /* 当前分组：all / pggUngrouped / 分组 id */
+let PERSONA_F={kw:'',st:'全部',src:'全部'};  /* 列表筛选条件 */
+function pgGroupChildren(pid){ return PG_GROUPS.filter(g=>g.parent===pid&&g.id!=='pggUngrouped'); }
+function pgGroupDepth(id){ let d=0,g=PG_GROUPS.find(x=>x.id===id); while(g&&g.parent){ d++; g=PG_GROUPS.find(x=>x.id===g.parent); } return d; }
+function pgDescendants(id){ const out=[id],q=[id]; while(q.length){ const cur=q.shift(); pgGroupChildren(cur).forEach(c=>{ out.push(c.id); q.push(c.id); }); } return out; }
+function pgGName(id){ const g=PG_GROUPS.find(x=>x.id===id); return g?g.name:'未分组'; }
+function pgRowGroup(p){ return PG_GROUPS.some(g=>g.id===p.grp)?p.grp:'pggUngrouped'; }
+function pgCount(g){
+  if(g==='all') return PERSONAS.length;
+  const ids=g==='pggUngrouped'?['pggUngrouped']:pgDescendants(g);
+  return PERSONAS.filter(p=>ids.includes(pgRowGroup(p))).length;
+}
+function pgToggle(id){ if(PG_EXPAND.has(id))PG_EXPAND.delete(id); else PG_EXPAND.add(id); render(); }
+function pgPick(g){ PG_GROUP=g; render(); }
+function pgGroupTreeHtml(pid,depth){
+  return pgGroupChildren(pid).map(g=>{
+    const kids=pgGroupChildren(g.id), has=kids.length>0, open=PG_EXPAND.has(g.id), sel=PG_GROUP===g.id;
+    let h='<div class="tree-node'+(sel?' on':'')+'" data-g="'+esc(g.name)+'" style="padding-left:'+(8+depth*16)+'px" onclick="pgPick(\''+g.id+'\')">';
+    if(has) h+='<span class="tree-toggle'+(open?' open':'')+'" onclick="event.stopPropagation();pgToggle(\''+g.id+'\')">▸</span>';
+    h+='<span class="tname">'+esc(g.name)+'</span><span class="cnt">('+pgCount(g.id)+')</span>';
+    if(!g.fixed) h+='<span class="mat-gdel" onclick="event.stopPropagation();pgGroupDelAsk(\''+g.id+'\')">删除</span>';
+    h+='</div>';
+    if(has&&open) h+=pgGroupTreeHtml(g.id,depth+1);
+    return h;
+  }).join('');
+}
+function pgGSearch(v){
+  v=(v||'').trim().toLowerCase();
+  if(!v){ render(); return; }
+  PG_GROUPS.forEach(g=>{ if(pgGroupChildren(g.id).length) PG_EXPAND.add(g.id); });
+  document.querySelectorAll('#pgGroupList .tree-node').forEach(n=>{
+    n.style.display=(!v||n.dataset.g.toLowerCase().includes(v))?'':'none';
+  });
+}
+/* 上级分组下拉：最多建到三级（逻辑同能力雷达） */
+function pgGroupOptionsTop(selId){
+  let out='<option value=""'+(selId===''?' selected':'')+'>顶级分组</option>';
+  (function rec(pid,depth){
+    pgGroupChildren(pid).forEach(g=>{
+      out+='<option value="'+g.id+'"'+(g.id===selId?' selected':'')+'>'+'  '.repeat(depth)+esc(g.name)+'</option>';
+      rec(g.id,depth+1);
+    });
+  })(null,0);
+  return out;
+}
+function openPgGroupAdd(){
+  let def='';
+  if(PG_GROUP&&PG_GROUP!=='all'&&PG_GROUP!=='pggUngrouped') def=PG_GROUP;
+  $('pgGParentSel').innerHTML=pgGroupOptionsTop(def);
+  $('pgGNameInp').value='';
+  const e=$('pgGErr'); e.style.display='none';
+  if(def&&pgGroupDepth(def)>=2){
+    e.textContent='「'+pgGName(def)+'」已是三级分组，无法再创建下级，请重新选择上级分组';
+    e.style.display='block';
+  }
+  $('pgGroupMask').classList.add('on');
+  setTimeout(()=>{ try{$('pgGNameInp').focus();}catch(_){} },50);
+}
+function closePgGroupAdd(){ $('pgGroupMask').classList.remove('on'); }
+function pgGNameInput(){ const e=$('pgGErr'); if(e.style.display!=='none'&&$('pgGNameInp').value.trim()) e.style.display='none'; }
+function pgGParentChange(){
+  const pid=$('pgGParentSel').value, e=$('pgGErr');
+  if(pid&&pgGroupDepth(pid)>=2){ e.textContent='所选上级分组已是三级，无法再创建下级'; e.style.display='block'; }
+  else e.style.display='none';
+}
+function doPgGroupAdd(){
+  const name=$('pgGNameInp').value.trim();
+  const parent=$('pgGParentSel').value||null;
+  const e=$('pgGErr');
+  if(!name){ e.textContent='请输入分组名称'; e.style.display='block'; try{$('pgGNameInp').focus();}catch(_){} return; }
+  if(parent){
+    if(pgGroupDepth(parent)>=2){ e.textContent='最多支持三级分组，所选上级分组下无法再创建'; e.style.display='block'; return; }
+    if(PG_GROUPS.some(g=>g.parent===parent&&g.name===name)){ e.textContent='「'+pgGName(parent)+'」下已存在分组「'+name+'」'; e.style.display='block'; return; }
+  }else if(PG_GROUPS.some(g=>g.parent===null&&g.name===name)){ e.textContent='已存在顶级分组「'+name+'」'; e.style.display='block'; return; }
+  const id='pgg'+Date.now();
+  PG_GROUPS.push({id,name,parent});
+  if(parent) PG_EXPAND.add(parent);
+  toast('已在「'+(parent?pgGName(parent):'顶级')+'」下创建分组：'+name);
+  closePgGroupAdd(); render();
+}
+function pgGroupDelAsk(id){
+  const g=PG_GROUPS.find(x=>x.id===id); if(!g) return;
+  const ids=pgDescendants(id);
+  const n=PERSONAS.filter(p=>ids.includes(pgRowGroup(p))).length;
+  if(n){ toast('该分组下仍有 '+n+' 位模拟客户，请先调整客户分组'); return; }
+  const sub=ids.length>1?'（含 '+(ids.length-1)+' 个子分组）':'';
+  matAsk('删除分组','确定删除分组「'+g.name+'」'+sub+'？删除后不可恢复。',()=>{
+    PG_GROUPS=PG_GROUPS.filter(x=>!ids.includes(x.id));
+    ids.forEach(i=>PG_EXPAND.delete(i));
+    if(ids.includes(PG_GROUP)) PG_GROUP='all';
+    toast('已删除分组：'+g.name); render();
+  });
+}
+/* 列表数据：关键词 / 状态 / 创建来源 / 左侧分组 四重过滤（保留原下标） */
+function personaFiltered(){
+  const kw=(PERSONA_F.kw||'').toLowerCase();
+  let list=PERSONAS.map((p,i)=>({p,i})).filter(({p})=>
+    (PERSONA_F.st==='全部'||p.status===PERSONA_F.st)&&
+    (PERSONA_F.src==='全部'||p.src===PERSONA_F.src)&&
+    (!kw||(p.name||'').toLowerCase().includes(kw)||(p.meta||'').toLowerCase().includes(kw)));
+  if(PG_GROUP!=='all'){
+    const ids=PG_GROUP==='pggUngrouped'?['pggUngrouped']:pgDescendants(PG_GROUP);
+    list=list.filter(({p})=>ids.includes(pgRowGroup(p)));
+  }
+  return list;
+}
+function pgPersonaSetF(k,v){ PERSONA_F[k]=v; render(); }
 function pgPersonas(){
-  const cards=PERSONAS.map((p,i)=>{
+  const list=personaFiltered();
+  const cards=list.map(({p,i})=>{
    const v=pView(p);
-   const diffCls=DIFF_CLS[v.diff]||'info';
    return '<div class="pc">'+
     '<div class="hd"><div class="pav">'+esc(p.name[0])+'</div>'+
      '<div style="min-width:0;flex:1"><div class="nm">'+esc(p.name)+'<span class="src-t '+SRC_CLS[p.src]+'">'+p.src+'</span></div><div class="mt">'+esc(p.meta)+'</div></div>'+
@@ -1927,10 +2869,6 @@ function pgPersonas(){
     '<div class="ptags">'+(p.tags&&p.tags.length?p.tags.map(t=>'<span class="ptag">'+esc(t)+'</span>').join(''):'')+'</div>'+
     '<div class="pkv">'+
      '<div class="it"><span>客户风格</span><b>'+esc(v.style)+'</b></div>'+
-     '<div class="it"><span>沟通难度</span><b><span class="st '+diffCls+'" style="font-size:10.5px;padding:1px 8px">'+esc(v.diff)+'</span></b></div>'+
-     '<div class="it"><span>初始情绪</span><b>'+esc(v.mood)+'</b></div>'+
-     '<div class="it"><span>品牌偏好</span><b>'+esc(v.brand.length?v.brand.join(' · '):'—')+'</b></div>'+
-     '<div class="it"><span>品质偏好</span><b>'+esc(v.qual.length?v.qual.join(' · '):'—')+'</b></div>'+
      '<div class="it"><span>语音设置</span><b>'+esc(v.voice)+'</b></div>'+
     '</div>'+
     '<div class="acts">'+
@@ -1941,36 +2879,24 @@ function pgPersonas(){
     '</div>'+
    '</div>';
   }).join('');
-  return '<div class="page-head"><h1>模拟客户管理</h1><span class="desc">共 '+PERSONAS.length+' 位</span><div class="btns">'+headBtns('personas')+'</div></div>'+
-   '<div class="filter-card"><div class="f-item"><span>关键词</span><input placeholder="搜索客户名称 / 身份"></div>'+
-   '<div class="f-item"><span>状态</span><select><option>全部</option><option>已发布</option><option>草稿</option></select></div>'+
-   '<div class="f-item"><span>创建来源</span><select><option>全部</option><option>自建</option><option>主机厂预置</option><option>久智数联</option><option>学员自建</option><option>CRM系统</option></select></div>'+
-   '<button class="btn btn-p btn-sm">查询</button><button class="btn btn-g btn-sm">重置</button></div>'+
-   '<div class="pc-grid">'+cards+'</div>'+
-   '<div class="tbl-foot" style="margin-top:12px;background:#fff;border:1px solid var(--bd);border-radius:10px">共 '+PERSONAS.length+' 条 · 每页 12 条<div class="pgs"><button>‹</button><button class="on">1</button><button>›</button></div></div>';
-}
-function openPersona(i){
-  const p=PERSONAS[i], v=pView(p);
-  const kv=(l,val)=>'<div class="kv"><span>'+l+'</span><b>'+(val&&val!=='—'?val:'—')+'</b></div>';
-  const pills=arr=>(arr&&arr.length)?arr.map(t=>'<span class="pill">'+esc(t)+'</span>').join(''):'<span style="color:var(--t3);font-size:12px">未设置</span>';
-  let extra='';
-  if(p.behaviors&&p.behaviors.length) extra+=sec('行为特点','<div style="font-size:12.5px;color:var(--t2);line-height:1.8">'+p.behaviors.map(b=>'· '+esc(b)).join('<br>')+'</div>');
-  if(p.scripts&&p.scripts.length) extra+=sec('关联剧本',pills(p.scripts));
-  openDrawerHtml('<span class="st info">模拟客户</span> '+esc(p.name)+' <span class="src-t '+SRC_CLS[p.src]+'">'+p.src+'</span>',
-   '<div class="kv-list">'+
-    kv('创建来源',p.src)+kv('状态',p.status)+kv('被引用',(p.cited||0)+' 个剧本')+
-   '</div>'+
-   sec('基础属性',
-     kv('客户名称',esc(p.name))+kv('性别',v.sex)+kv('年龄段',v.age)+kv('职业类型',v.job)+kv('家庭结构',v.fam)+
-     '<div class="kv" style="grid-column:1/-1"><span>客户简介</span><b style="font-weight:400;color:var(--t2);line-height:1.6">'+esc(p.desc||'—')+'</b></div>')+
-   sec('性格特征', kv('客户风格',v.style)+kv('沟通难度',v.diff)+kv('初始情绪',v.mood))+
-   sec('消费特征', kv('品牌偏好',v.brand.join(' · '))+kv('品质偏好',v.qual.join(' · ')))+
-   sec('行为特征', kv('信息透露习惯',v.disc)+kv('比较习惯',v.cmp)+kv('对推销接受度',v.push))+
-   sec('互动表达', kv('回答长度',v.len)+kv('对话主动性',v.init))+
-   sec('语音设置', kv('声音性别',v.vg)+kv('音色类型',v.vt)+kv('语速',v.spd)+kv('语调',v.tone))+
-   sec('其他', '<div class="kv" style="grid-column:1/-1"><span>特征标签</span><b>'+pills(p.tags)+'</b></div>')+
-   extra+
-   '<div class="sec" style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-p" onclick="editPersona('+i+')">编辑</button><button class="btn btn-g">复制</button><button class="btn btn-g">查看引用关系</button></div>');
+  /* 左侧客户分组面板：全部客户 / 分组搜索 / 未分组+分组树 / 新建分组（结构与逻辑同能力雷达） */
+  const side='<div class="mat-side">'+
+    '<div class="tree-node'+(PG_GROUP==='all'?' on':'')+'" onclick="pgPick(\'all\')"><span class="tname">全部客户</span><span class="cnt all-b">'+PERSONAS.length+'</span></div>'+
+    '<input class="side-search" placeholder="请输入分组名称" oninput="pgGSearch(this.value)">'+
+    '<div class="tree-node'+(PG_GROUP==='pggUngrouped'?' on':'')+'" onclick="pgPick(\'pggUngrouped\')"><span class="tname">未分组</span><span class="cnt">('+pgCount('pggUngrouped')+')</span></div>'+
+    '<div id="pgGroupList">'+pgGroupTreeHtml(null,0)+'</div>'+
+    '<button class="side-add" onclick="openPgGroupAdd()">+ 新建分组</button>'+
+  '</div>';
+  return '<div class="page-head"><h1>模拟客户管理</h1><span class="desc">共 '+list.length+' 位</span><div class="btns">'+headBtns('personas')+'</div></div>'+
+   '<div class="org-layout" style="grid-template-columns:230px 1fr">'+side+
+   '<div>'+
+   '<div class="filter-card"><div class="f-item"><span>关键词</span><input placeholder="搜索客户名称 / 身份" value="'+esc(PERSONA_F.kw)+'" oninput="PERSONA_F.kw=this.value;render()"></div>'+
+   '<div class="f-item"><span>状态</span><select onchange="pgPersonaSetF(\'st\',this.value)">'+['全部','已发布','草稿'].map(o=>'<option'+(PERSONA_F.st===o?' selected':'')+'>'+o+'</option>').join('')+'</select></div>'+
+   '<div class="f-item"><span>创建来源</span><select onchange="pgPersonaSetF(\'src\',this.value)">'+['全部','自建','主机厂预置','久智数联','学员自建','CRM系统'].map(o=>'<option'+(PERSONA_F.src===o?' selected':'')+'>'+o+'</option>').join('')+'</select></div>'+
+   '<button class="btn btn-p btn-sm" onclick="toast(\'Demo：条件已生效\')">查询</button><button class="btn btn-g btn-sm" onclick="PERSONA_F={kw:\'\',st:\'全部\',src:\'全部\'};render()">重置</button></div>'+
+   '<div class="pc-grid">'+(cards||'<div class="empty" style="grid-column:1/-1;background:#fff;border:1px solid var(--bd);border-radius:10px;padding:38px 0"><div class="ic">◌</div>暂无符合条件的模拟客户</div>')+'</div>'+
+   '<div class="tbl-foot" style="margin-top:12px;background:#fff;border:1px solid var(--bd);border-radius:10px">共 '+list.length+' 条 · 每页 12 条<div class="pgs"><button>‹</button><button class="on">1</button><button>›</button></div></div>'+
+   '</div></div>';
 }
 
 /* ---- 模拟客户详情（整页，参考角色详情页） ---- */
@@ -1984,24 +2910,21 @@ function pgPersonaDetail(){
   const kv=(l,val)=>'<div class="kv"><span>'+l+'</span><b>'+((val&&val!=='—')?val:'—')+'</b></div>';
   const pills=arr=>(arr&&arr.length)?arr.map(t=>'<span class="pill">'+esc(t)+'</span>').join(''):'<span style="color:var(--t3);font-size:12px">未设置</span>';
   let extra='';
-  if(p.behaviors&&p.behaviors.length) extra+=sec('行为特点','<div style="font-size:12.5px;color:var(--t2);line-height:1.8">'+p.behaviors.map(b=>'· '+esc(b)).join('<br>')+'</div>');
   if(p.scripts&&p.scripts.length) extra+=sec('关联剧本',pills(p.scripts));
   const N=[];
-  N.push('<div class="page-head"><h1>模拟客户详情</h1><span class="desc">'+esc(p.meta)+'</span><div class="btns">'+
+  N.push('<div class="page-head"><h1>模拟客户详情</h1><span class="desc">'+esc(p.name)+' · '+esc(p.meta)+'</span><div class="btns">'+
     '<button class="btn btn-g" onclick="go(\'personas\')">'+icon('back',13)+'返回</button>'+
     '<button class="btn btn-p" onclick="editPersona('+i+')">编辑</button>'+
-    '<button class="btn btn-g">复制</button><button class="btn btn-g">查看引用关系</button></div></div>');
-  N.push((p.status==='已发布'?ST('已发布',OK):ST('草稿',INFO))+' <span class="src-t '+SRC_CLS[p.src]+'">'+p.src+'</span>');
+    '<button class="btn btn-g">复制</button></div></div>');
+  N.push((p.status==='已发布'?ST('已发布',OK):ST('草稿',INFO))+' <span class="src-t '+SRC_CLS[p.src]+'">'+p.src+'</span> <span class="src-t src-b">'+esc(pgGName(pgRowGroup(p)))+'</span>');
   N.push('<div class="pn-wrap"><div class="pn-card">');
   N.push('<div class="fsec"><h3>基本信息</h3></div>');
   N.push('<div class="kv-list">'+
-    kv('创建来源',p.src)+kv('状态',p.status)+kv('被引用',(p.cited||0)+' 个剧本')+'</div>');
+    kv('创建来源',p.src)+kv('状态',p.status)+kv('所属分组',esc(pgGName(pgRowGroup(p))))+kv('被引用',(p.cited||0)+' 个剧本')+'</div>');
   N.push(sec('基础属性',
     kv('客户名称',esc(p.name))+kv('性别',v.sex)+kv('年龄段',v.age)+kv('职业类型',v.job)+kv('家庭结构',v.fam)+
     '<div class="kv" style="grid-column:1/-1"><span>客户简介</span><b style="font-weight:400;color:var(--t2);line-height:1.6">'+esc(p.desc||'—')+'</b></div>'));
-  N.push(sec('性格特征', kv('客户风格',v.style)+kv('沟通难度',v.diff)+kv('初始情绪',v.mood)));
-  N.push(sec('消费特征', kv('品牌偏好',v.brand.join(' · '))+kv('品质偏好',v.qual.join(' · '))));
-  N.push(sec('行为特征', kv('信息透露习惯',v.disc)+kv('比较习惯',v.cmp)+kv('对推销接受度',v.push)));
+  N.push(sec('性格特征', kv('客户风格',v.style)));
   N.push(sec('互动表达', kv('回答长度',v.len)+kv('对话主动性',v.init)));
   N.push(sec('语音设置', kv('声音性别',v.vg)+kv('音色类型',v.vt)+kv('语速',v.spd)+kv('语调',v.tone)));
   N.push(sec('其他', '<div class="kv" style="grid-column:1/-1"><span>特征标签</span><b>'+pills(p.tags)+'</b></div>'));
@@ -2155,13 +3078,6 @@ function pgPersonaNew(){
   const JOB=['企业管理者','企业职员','公务员','个体经营者','自由职业者','退休人员','学生','其他','未知'];
   const FAM=['单身','已婚无孩','已婚有孩','三代同堂','其他','未知'];
   const STYLE=['理性分析型','价格敏感型','谨慎犹豫型','爽快直接型','强势主导型','感性体验型','健谈互动型','沉默被动型'];
-  const DIFF=['简单','普通','困难'];
-  const MOOD=['平和','热情','冷淡','焦虑','不耐烦','容易激动'];
-  const BRAND=['国际品牌','合资品牌','国产品牌','豪华品牌','无明显偏好'];
-  const QUAL=['品质优先','性价比优先','耐用性优先','设计优先','服务优先'];
-  const DISC=['主动透露','逐步透露','被动询问才透露','刻意隐瞒'];
-  const CMP=['喜欢多方比较','偶尔比较','不喜欢比较'];
-  const PUSH=['接受主动推荐','接受适度推荐','反感主动推销'];
   const LEN=['简短','适中','详细'];
   const INIT=['主动提问','被动回答','主动与被动结合'];
   const VG=['男声','女声'];
@@ -2177,8 +3093,6 @@ function pgPersonaNew(){
   N.push('<div class="pn-nav" id="pnNav">'+
     '<a data-id="fsecBase" class="on" onclick="pnNavTo(\'fsecBase\')">基础属性</a>'+
     '<a data-id="fsecChar" onclick="pnNavTo(\'fsecChar\')">性格特征</a>'+
-    '<a data-id="fsecCons" onclick="pnNavTo(\'fsecCons\')">消费特征</a>'+
-    '<a data-id="fsecBehav" onclick="pnNavTo(\'fsecBehav\')">行为特征</a>'+
     '<a data-id="fsecInter" onclick="pnNavTo(\'fsecInter\')">互动表达</a>'+
     '<a data-id="fsecVoice" onclick="pnNavTo(\'fsecVoice\')">语音设置</a>'+
     '<a data-id="fsecOther" onclick="pnNavTo(\'fsecOther\')">其他</a></div>');
@@ -2191,13 +3105,6 @@ function pgPersonaNew(){
   N.push('<div class="form-row">'+sel('pFam','家庭结构',FAM,'已婚有孩')+'<div class="form-item" style="flex:2"><label>客户简介<span class="cnt" id="pDescCnt">0 字</span></label><textarea id="pDesc" placeholder="一句话描述该客户的购车背景、关注点与对话风格"></textarea></div></div>');
   N.push(fsec('性格特征','fsecChar'));
   N.push('<div class="form-item" style="margin-bottom:16px"><label>客户风格</label><div class="rchips">'+rOpt('pStyle',STYLE,'理性分析型')+'</div></div>');
-  N.push('<div class="form-row">'+sel('pDiff','沟通难度',DIFF,'普通')+sel('pMood','初始情绪',MOOD,'平和')+'</div>');
-  N.push(fsec('消费特征','fsecCons'));
-  N.push('<div class="form-item" style="margin-bottom:16px"><label>品牌偏好（多选）</label>'+cOpt('pBrand',BRAND)+'</div>');
-  N.push('<div class="form-item" style="margin-bottom:16px"><label>品质偏好（多选）</label>'+cOpt('pQual',QUAL)+'</div>');
-  N.push(fsec('行为特征','fsecBehav'));
-  N.push('<div class="form-row">'+sel('pDisc','信息透露习惯',DISC,'逐步透露')+sel('pCmp','比较习惯',CMP,'偶尔比较')+'</div>');
-  N.push('<div class="form-row">'+sel('pPush','对推销的接受度',PUSH,'接受适度推荐')+'<div class="form-item"><label>&nbsp;</label><span style="font-size:12px;color:var(--t3)">上述行为特征将影响 AI 客户在对话中的应对方式</span></div></div>');
   N.push(fsec('互动表达','fsecInter'));
   N.push('<div class="form-row">'+sel('pLen','回答长度',LEN,'适中')+sel('pInit','对话主动性',INIT,'主动与被动结合')+'</div>');
   N.push(fsec('语音设置','fsecVoice'));
@@ -2215,7 +3122,7 @@ function pgPersonaNew(){
       '<div class="ptags" id="pvTags"></div>'+
       '<div class="pkv" id="pvKv"></div></div>'+
     '</div>'+
-    '<div class="pn-tip"><b>填写提示</b><br>· 客户名称、风格与语音为陪练体验关键项，建议优先填写。<br>· 行为特征将直接决定 AI 客户在对话中的应对方式，影响训练真实度。<br>· 保存草稿可稍后继续编辑，发布后进入待发布池供剧本引用。</div>'+
+    '<div class="pn-tip"><b>填写提示</b><br>· 客户名称、风格与语音为陪练体验关键项，建议优先填写。<br>· 客户风格与互动表达将影响 AI 客户在对话中的应对方式，影响训练真实度。<br>· 保存草稿可稍后继续编辑，发布后进入待发布池供剧本引用。</div>'+
     '</div>');
   N.push('</div>');
   N.push('<button class="pn-totop" id="pnTotop" title="返回顶部" onclick="pnScrollTop()">'+icon('up',18)+'</button>');
@@ -2237,11 +3144,6 @@ function personaPrefill(p){
   set('pAge', f.age|| (p.meta? mapAge(p.meta.split(' · ')[0]) : '25–34岁'));
   set('pJob', f.job||'企业职员');
   set('pFam', f.fam||'未知');
-  set('pDiff', f.diff||p.diff||'普通');
-  set('pMood', f.mood||'平和');
-  set('pDisc', f.disc||'逐步透露');
-  set('pCmp', f.cmp||'偶尔比较');
-  set('pPush', f.push||'接受适度推荐');
   set('pLen', f.len||'适中');
   set('pInit', f.init||'主动与被动结合');
   set('pVg', f.vg||(p.voice?p.voice.split('-')[0]:'男声'));
@@ -2249,8 +3151,6 @@ function personaPrefill(p){
   set('pSpd', f.spd||'正常');
   set('pTone', f.tone||'平稳');
   setRadio('pStyle', st);
-  setChk('pBrand', f.brand);
-  setChk('pQual', f.qual);
 }
 function editPersona(i){ PERSONA_EDIT=i; closeDrawer(); go('personaNew'); }
 function personaCancelNew(){ PERSONA_EDIT=-1; go('personas'); }
@@ -2266,24 +3166,21 @@ function personaSaveNew(draft){
   }
   err.classList.remove('show');nameEl.style.borderColor='';
   const tags=(document.getElementById('pTags').value||'').split(/[,，]/).map(x=>x.trim()).filter(Boolean);
-  const brand=[...document.querySelectorAll('input[name=pBrand]:checked')].map(i=>i.value);
-  const qual=[...document.querySelectorAll('input[name=pQual]:checked')].map(i=>i.value);
   const style=document.querySelector('input[name=pStyle]:checked').value;
-  const mood=document.getElementById('pMood').value;
   const age=document.getElementById('pAge').value, job=document.getElementById('pJob').value, fam=document.getElementById('pFam').value, sex=document.getElementById('pSex').value;
   const desc=document.getElementById('pDesc').value||'（暂无简介）';
   const vg=document.getElementById('pVg').value, vt=document.getElementById('pVt').value;
-  const fields={sex,age,job,fam,mood,brand,qual,
-    disc:document.getElementById('pDisc').value,cmp:document.getElementById('pCmp').value,push:document.getElementById('pPush').value,
+  const fields={sex,age,job,fam,style,
     len:document.getElementById('pLen').value,init:document.getElementById('pInit').value,vg,vt,
     spd:document.getElementById('pSpd').value,tone:document.getElementById('pTone').value};
   const base={name, meta:age+' · '+job, src:'自建', status:draft?'草稿':'已发布', cited:0,
-    voice:vg+'-'+vt, desc, tags:tags.length?tags:['自建客户'], scene:'自选', diff:document.getElementById('pDiff').value,
-    touch:'自建', cost:'自建', focus:style+' / '+mood, style, needs:'—', budget:'—', behaviors:[], scripts:[], fields};
+    voice:vg+'-'+vt, desc, tags:tags.length?tags:['自建客户'],
+    touch:'自建', cost:'自建', focus:style, style, needs:'—', budget:'—', behaviors:[], scripts:[], fields,
+    grp:(PG_GROUP==='all'||PG_GROUP==='pggUngrouped')?'pggUngrouped':PG_GROUP};
   if(PERSONA_EDIT>=0){
     const old=PERSONAS[PERSONA_EDIT]||{};
     base.src=old.src||'自建'; base.cited=old.cited||0; base.scripts=old.scripts||[]; base.behaviors=old.behaviors||[];
-    base.needs=old.needs||'—'; base.budget=old.budget||'—';
+    base.needs=old.needs||'—'; base.budget=old.budget||'—'; base.grp=old.grp||base.grp;
     PERSONAS[PERSONA_EDIT]=base;
     toast('已更新客户：'+name); PERSONA_EDIT=-1;
   } else {
@@ -2320,15 +3217,10 @@ function updatePersonaPreview(){
   const tagArr=(g('pTags').value||'').split(/[,，]/).map(x=>x.trim()).filter(Boolean);
   g('pvTags').innerHTML=tagArr.map(t=>'<span class="ptag">'+esc(t)+'</span>').join('');
   const style=document.querySelector('input[name=pStyle]:checked');
-  const brand=[...document.querySelectorAll('input[name=pBrand]:checked')].map(i=>i.value);
-  const qual=[...document.querySelectorAll('input[name=pQual]:checked')].map(i=>i.value);
   const kv=(l,v)=>'<div class="it"><span>'+l+'</span><b>'+esc(v)+'</b></div>';
   g('pvKv').innerHTML=
     kv('客户风格',style?style.value:'—')+
-    kv('沟通难度',g('pDiff').value)+
-    kv('初始情绪',g('pMood').value)+
-    kv('品牌偏好',brand.length?brand.join(' · '):'—')+
-    kv('品质偏好',qual.length?qual.join(' · '):'—')+
+    kv('回答长度',g('pLen').value)+
     kv('语音音色',g('pVg').value+'-'+g('pVt').value);
   g('pDescCnt').textContent=desc.length+' 字';
   g('pTagsCnt').textContent=tagArr.length+' 个标签';
@@ -2363,31 +3255,51 @@ function initPersonaNew(){
 }
 
 /* ---- 新建剧本（样式与布局参考"新建模拟客户"） ---- */
-let SCORE_DIMS=['开场破冰','需求挖掘','产品介绍','异议处理','促成邀约'];
+/* 能力雷达表：由「能力雷达」管理页维护，新建剧本页只做关联与预览 */
+const RADAR_TABLES=[
+ {id:'RT-01',grp:'rdg1',name:'销售能力雷达表（六维）',short:'销售能力雷达（六维）',updated:'2026-10-12',owner:'张伟',status:'已发布',refs:9,
+  used:['进店首次接待·犹豫型客户','试乘试驾体验剧本','电话邀约专项剧本'],
+  note:'销售六维能力标准雷达，适用于展厅接待、电话邀约等情景对话类剧本，作为团队能力基线参考。',
+  dims:['开场破冰','需求挖掘','产品介绍','异议处理','促成邀约','沟通表达'],ws:[15,25,20,20,10,10],
+  ps:['是否主动问候并自我介绍，30 秒内明确本次沟通目的，营造轻松氛围。','围绕用车场景、预算区间与关注点分层提问，能追问深层动机。','结合客户关注点讲解卖点，有数据与场景支撑，避免照本宣科。','先认同再引导，回应有理有据，不与客户争辩、不贬低竞品。','在合适时机提出明确行动建议（试驾/下单/留资），推进自然不逼迫。','表达清晰有条理，语速适中，用语专业且通俗易懂。']},
+ {id:'RT-02',grp:'rdg2',name:'售后服务能力雷达表（五维）',short:'售后服务雷达（五维）',updated:'2026-09-26',owner:'李娜',status:'已发布',refs:4,
+  used:['售后保养推荐剧本','投诉安抚处理剧本'],
+  note:'售后接待与工单沟通场景雷达，侧重问题诊断与客户安抚，用于售后专员能力盘点。',
+  dims:['接待礼仪','问题诊断','方案沟通','客户安抚','闭环回访'],ws:[15,25,25,20,15],
+  ps:['接待用语规范礼貌，主动确认客户信息与来意。','通过提问准确定位车辆问题，复述确认客户描述。','维修方案与费用解释清晰，主动说明工期与注意事项。','对客户情绪先安抚再解决，避免推诿和生硬拒绝。','约定回访节点并主动留资，服务承诺具体可执行。']},
+ {id:'RT-03',grp:'rdg1',name:'金融保险顾问雷达表（六维）',short:'金融保险雷达（六维）',updated:'2026-09-18',owner:'王芳',status:'已发布',refs:2,
+  used:['金融分期话术剧本'],
+  note:'金融方案讲解与分期话术雷达，强调合规意识与风险提示，用于金融专员专项辅导。',
+  dims:['合规意识','方案测算','风险提示','客户匹配','异议处理','沟通表达'],ws:[20,25,20,15,10,10],
+  ps:['不承诺违规收益，话术符合金融销售合规要求。','首付、月供、利率等测算准确，能现场粗估。','主动说明提前还款、逾期等关键条款，不隐瞒不误导。','根据客户资质推荐合适方案，不过度推销高息产品。','对利率、月供异议能给出对比与解释，不贬低同业。','专业术语解释通俗，关键数字复述确认。']},
+ {id:'RT-04',grp:'rdg3',name:'新能源产品讲解雷达表（五维）',short:'新能源讲解雷达（五维）',updated:'2026-11-08',owner:'我',status:'草稿',refs:0,used:[],
+  note:'新能源品类专项雷达，突出产品卖点讲解与竞品对比，试驾引导数据待补齐后发布。',
+  dims:['产品卖点讲解','竞品对比','政策解读','试驾引导','促成转化'],ws:[25,20,20,15,20],
+  ps:['围绕三电、智驾等核心卖点讲解，结合客户场景举例。','竞品对比客观有数据支撑，不贬低竞品。','购置税、置换补贴等政策解释准确，口径一致。','试驾前安全提示到位，路线讲解清晰。','把握试驾后热度窗口，推进留资或下订。']}
+];
+let RADAR_TBL_SEL=0;
 let scriptCustSel=new Set();
 let SCRIPT_CUST_PRESERVE=null;
-const SPEECH_LIB=[
- '银河E5 续航扎实，冬季有智能热管理，三电终身质保让您无忧。',
- '可享低息分期与旧车置换补贴，月供更轻松。',
- '全速域 ACC + 车道保持，新手也安心。',
- '首保免费，质保期长，网点覆盖广，养车省心。',
- '这车空间宽敞，后排能装下全家出行行李。',
- '现在下定享限时权益，错过再等半年。'
-];
 function pgScriptNew(){
   const N=[];
   N.push('<div class="page-head ph-fix"><h1>新建剧本</h1><span class="desc">填写剧本配置 · 保存后进入待发布池</span><div class="btns"><span class="pn-prog" id="pnProg">必填项：剧本名称 *</span><button class="btn btn-g" onclick="scriptCancelNew()">取消</button><button class="btn btn-g" onclick="scriptSaveNew(1)">保存草稿</button><button class="btn btn-p" onclick="scriptSaveNew(0)">保存并发布</button></div></div>');
-  N.push(`<div class="pn-nav" id="pnNav"><a data-id="fsecBase" class="on" onclick="pnNavTo('fsecBase')">基础信息</a><a data-id="fsecCust" onclick="pnNavTo('fsecCust')">模拟客户配置</a><a data-id="fsecFlow" onclick="pnNavTo('fsecFlow')">对话流程</a><a data-id="fsecScore" onclick="pnNavTo('fsecScore')">评分设置</a></div>`);
+  N.push(`<div class="pn-nav" id="pnNav"><a data-id="fsecBase" class="on" onclick="pnNavTo('fsecBase')">基础信息</a><a data-id="fsecCust" onclick="pnNavTo('fsecCust')">模拟客户配置</a><a data-id="fsecFlow" onclick="pnNavTo('fsecFlow')">对话流程</a><a data-id="fsecRadar" onclick="pnNavTo('fsecRadar')">能力雷达设置</a><a data-id="fsecTarget" onclick="pnNavTo('fsecTarget')">适用对象</a><a data-id="fsecMats" onclick="pnNavTo('fsecMats')">调用素材</a></div>`);
   N.push('<div class="pn-wrap"><div class="pn-main"><div class="pn-card" id="pnForm">');
   /* 1 · 基础信息 */
   N.push('<div class="fsec" id="fsecBase"><h3>基础信息</h3></div>');
-  N.push('<div class="form-row"><div class="form-item" style="flex:2"><label>剧本名称<i>*</i></label><input id="sName" placeholder="示例：进店首次接待·犹豫型客户"></div>'+sel('sType','剧本类型',['情景对话','朗读','背诵','演讲','产品讲解'],'情景对话')+'</div>');
+  /* 剧本类型一期固定为「情景对话」，类型字段隐藏，仅保留隐藏值供逻辑读取 */
+  N.push('<div class="form-row"><div class="form-item" style="flex:2"><label>剧本名称<i>*</i></label><input id="sName" placeholder="示例：进店首次接待·犹豫型客户"><input type="hidden" id="sType" value="情景对话"></div></div>');
   N.push('<div class="form-err" id="sNameErr">剧本名称为必填项，请填写后再保存</div>');
-  N.push('<div class="form-row">'+sel('sRole','对练角色',['销售顾问','客服','售后'],'销售顾问')+sel('sDiff','训练难度',['简单','普通','困难'],'普通')+'</div>');
-  N.push('<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>适用组织</label><span class="org-cnt">已选择<b id="orgCntN">0</b>家门店</span></div><div class="org-box"><div class="org-search">'+icon('search',15)+'<input id="orgSearch" placeholder="请输入搜索关键词" oninput="orgRender()"></div><div class="org-tree" id="orgTree"></div></div></div>');
-  N.push('<div class="form-row"><div class="form-item" style="flex:2"><label>场景设定</label><input id="sScene" placeholder="示例：到店首次接待 · 工作日午间"></div></div>');
-  N.push('<div class="form-item" style="margin-bottom:16px"><div class="ai-row"><label>训练目标 / 核心关注</label><button class="btn btn-ai btn-sm" type="button" onclick="scriptPolishGoal()">'+icon('spark',14)+'AI 润色</button></div><textarea id="sGoal" placeholder="一句话描述本剧本重点训练的能力与目标（将驱动 AI 客户与评分侧重点）"></textarea></div>');
-  N.push('<div class="form-item"><div class="ai-row"><label>剧本介绍<span class="cnt" id="sDescCnt">0 字</span></label><button class="btn btn-ai btn-sm" type="button" onclick="scriptGenDesc()">'+icon('spark',14)+'AI 生成</button></div><textarea id="sDesc" placeholder="简要描述剧本背景、适用场景与训练价值"></textarea></div>');
+  N.push('<div class="form-item" style="margin-bottom:16px">'+
+    '<div class="ai-row"><label>剧本场景配置 '+icon('help',13)+'</label></div>'+
+    '<div id="scCfgBody">'+
+      '<div class="sc-chips" id="scChips">'+scriptSceneChips()+'</div>'+
+      '<div class="sc-result"><div class="sc-rhead"><span>帮你生成的：<span class="cnt" style="margin-left:4px">点模板可重新生成，内容也可直接编辑</span></span>'+
+        '<span class="sc-rhead-ops"><button class="btn btn-ai btn-sm" type="button" onclick="scriptScenePolish()">'+icon('spark',14)+'帮我润色</button>'+
+        '<span class="sc-clear" title="清空" onclick="scriptSceneClear()">'+icon('trash',14)+'</span></span></div>'+
+      '<textarea id="sSceneCfg" maxlength="10000" placeholder="点击上方预置模板一键生成；也可直接输入场景设定、训练目标与剧本介绍"></textarea>'+
+      '<div class="sc-foot"><span id="scCfgCnt">0/10000</span></div></div>'+
+    '</div></div>');
   /* 2 · 模拟客户配置 */
   N.push(fsec('模拟客户配置','fsecCust'));
   const _styles=[...new Set(PERSONAS.map(p=>(pView(p).style||'').trim()).filter(Boolean))];
@@ -2395,19 +3307,33 @@ function pgScriptNew(){
   N.push('<div class="im-intro"><div class="im-intro-ic">'+icon('user',16)+'</div><div><b>选择本场陪练的模拟客户</b><p>已选 <span id="custCnt">0</span> 位 · 支持多选，学员进入陪练后从所选客户中任选一位；也可先新增客户再选择。</p></div><button class="btn btn-p btn-sm" type="button" style="margin-left:auto" onclick="scriptNewCustomer()">'+icon('plus',14)+'新增模拟客户</button></div>');
   N.push('<div class="cuc-filter"><span class="cff-label">筛选</span><div class="rchips">'+rOpt('fSex',['全部','男','女'],'全部')+'</div><div class="rchips">'+rOpt('fStyle',['全部'].concat(_styles),'全部')+'</div><div class="rchips">'+rOpt('fAge',['全部'].concat(_ages),'全部')+'</div></div>');
   N.push('<div class="cuc-switch"><button type="button" class="cuc-arrow" onclick="custScroll(-1)" aria-label="上一个">‹</button><div class="cuc-track" id="custGrid">'+scriptCustCards()+'</div><button type="button" class="cuc-arrow" onclick="custScroll(1)" aria-label="下一个">›</button></div>');
-  /* 3 · 对话流程 */
+  /* 3 · 对话流程（会话框架：约束 AI 陪练中模拟客户的会话内容） */
   N.push(fsec('对话流程','fsecFlow'));
-  N.push('<div class="form-row"><div class="form-item"><label>谁先开口</label><div class="rchips">'+rOpt('sFirst',['学员先开口','客户先开口','AI引导'],'学员先开口')+'</div></div><div class="form-item" style="flex:2"><label>相关知识（可多选，关联的知识库将作为陪练参考）</label><div class="kb-chips" id="kbChips">'+scriptKbChips()+'</div></div></div>');
-  N.push('<div class="form-item" style="margin-bottom:6px"><div class="ai-row"><label>对话框架设置</label><button class="btn btn-ai btn-sm" type="button" onclick="scriptGenNodes()">'+icon('spark',14)+'AI 生成</button></div></div>');
-  N.push('<div class="flow-empty" id="flowEmpty">暂未添加对话节点，点击“添加对话节点”或“AI 生成”开始搭建对话框架。</div>');
+  N.push('<div class="fh-head"><span class="fh-title">会话框架</span><button type="button" class="btn btn-ai btn-sm" onclick="scriptGenNodes()">'+icon('spark',14)+'AI 生成</button></div>');
+  N.push('<div class="fh-theme-box"><textarea id="flowTheme" rows="2" placeholder="一句话描述本次会话的总体目标，将作为模拟客户对话主线与阶段划分的约束。例如：汽车销售代表品牌方，客户为有购车意向的潜在用户，双方在线下门店进行面对面的试乘试驾沟通…"></textarea></div>');
   N.push('<div id="flowNodes"></div>');
-  N.push('<button class="btn btn-g btn-sm flow-add" type="button" onclick="addFlowNode()">'+icon('plus',14)+'添加对话节点</button>');
-  N.push('<div class="form-row"><div class="form-item"><label>总体时长（按节点自动估算区间）</label><input id="sDur" readonly placeholder="添加对话节点后自动估算时段"></div><div class="form-item" style="flex:2"><label style="border:0;padding:0;color:var(--t3);font-size:12px">按节点数估算时长区间（如 8-10 / 10-15 分钟），每节点约 2 分钟</label></div></div>');
-  /* 4 · 评分设置 */
-  N.push(fsec('评分设置','fsecScore'));
-  N.push('<div class="form-row"><div class="form-item"><label>合格分数（分）</label><input id="sPass" type="number" min="0" max="100" value="60"></div><div class="form-item" style="flex:2"><label style="border:0;padding:0;color:var(--t3);font-size:12px">学员综合得分达到合格分数即通过本剧本训练</label></div></div>');
-  const dimHtml=SCORE_DIMS.map(d=>dimRowHtml(d,20)).join('');
-  N.push('<div class="form-item" style="margin-bottom:16px"><label>评分维度（可直接修改名称，可增加 / 删除，所有维度均参与评分并分配权重）</label><div class="dim-list" id="dimList">'+dimHtml+'</div><button type="button" class="btn btn-g btn-sm dim-add" onclick="dimAdd()">'+icon('plus',14)+'添加评分维度</button><div class="dim-sum" id="dimSum"><span class="ds-val" id="dsVal">权重合计 100%</span><div class="ds-bar"><i id="dsBar" style="width:100%"></i></div></div></div>');
+  N.push('<div class="flow-foot"><span class="flow-empty" id="flowEmpty">暂未添加会话阶段，点击「添加阶段」或「AI 生成」开始搭建会话框架。</span><span class="fh-sum" id="fhSum"></span><button class="btn btn-g btn-sm flow-add" type="button" onclick="addFlowNode()">'+icon('plus',14)+'添加阶段</button></div>');
+  /* 4 · 能力雷达设置 */
+  N.push(fsec('能力雷达设置','fsecRadar'));
+  N.push('<div class="as-grid">');
+  N.push('<div class="as-card">'+
+    '<div class="as-head"><b>关联能力雷达表</b><span class="as-tag">来自「能力雷达」管理</span><span class="as-go" onclick="toast(\'Demo：能力雷达表在「能力雷达」管理页维护\')">去维护 →</span></div>'+
+    '<select class="as-sel" id="sRadarTbl" onchange="scriptRadarTblChange()">'+RADAR_TABLES.map((t,i)=>'<option value="'+i+'"'+(i===RADAR_TBL_SEL?' selected':'')+'>'+esc(t.name)+'</option>').join('')+'</select>'+
+    '<div class="as-body"><div class="as-radar" id="asRadar"></div></div>'+
+  '</div>');
+  N.push('</div>');
+  /* 5 · 适用对象（对练角色 / 训练难度 / 适用组织 / 谁先开口） */
+  N.push(fsec('适用对象','fsecTarget'));
+  N.push('<div class="form-row">'+sel('sRole','对练角色',['销售顾问','客服','售后'],'销售顾问')+sel('sDiff','训练难度',['简单','普通','困难'],'普通')+'</div>');
+  N.push('<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>适用组织</label><span class="org-cnt">已选择<b id="orgCntN">0</b>家门店</span></div><div class="org-box"><div class="org-search">'+icon('search',15)+'<input id="orgSearch" placeholder="请输入搜索关键词" oninput="orgRender()"></div><div class="org-tree" id="orgTree"></div></div></div>');
+  N.push('<div class="form-row"><div class="form-item"><label>谁先开口</label><div class="rchips">'+rOpt('sFirst',['学员先开口','客户先开口'],'学员先开口')+'</div></div></div>');
+  /* 6 · 调用素材（独立模块：按分组从素材库选用可文字识别的文档类素材，支持多选） */
+  N.push(fsec('调用素材','fsecMats'));
+  N.push('<div class="form-item" style="margin-bottom:16px"><label>调用素材（可多选，仅支持 doc / docx / xls / xlsx / ppt / pptx / pdf 类型，便于文字识别后作为陪练参考）</label>'+
+    '<div class="kb2-wrap"><div class="kb2-side"><div class="kb2-side-h">按分组筛选</div><div id="kb2Tree">'+kbTreeHtml()+'</div></div>'+
+    '<div class="kb2-main"><div class="kb2-search">'+icon('search',14)+'<input id="kb2Search" placeholder="搜索素材名称" value="'+esc(kbSearch)+'" oninput="kbSearchInput(this.value)"></div>'+
+    '<div class="kb2-list" id="kb2List">'+kbListHtml()+'</div></div></div>'+
+    '<div class="kb-sel-h" id="kbSelHead"></div><div class="kb-chips" id="kbChips"></div></div>');
   N.push('</div></div>');
   /* 右侧实时预览 */
   N.push('<div class="pn-aside">'+
@@ -2415,15 +3341,13 @@ function pgScriptNew(){
       '<h3 class="pn-pv-title">实时剧本预览<span class="live">实时</span></h3>'+
       '<div class="ai-card" id="aiReason" style="display:none"></div>'+
       '<div class="pc"><div class="hd"><div class="pav" id="pvAv">剧</div><div style="min-width:0;flex:1"><div class="nm"><span id="pvNameTxt">未命名剧本</span><span class="src-t src-a" id="pvSrc">自建</span></div><div class="mt" id="pvMeta">— · —</div></div><span class="st gray" id="pvStatus">待保存</span></div>'+
-      '<div class="desc" id="pvDesc">（填写剧本名称与介绍后在此实时预览）</div>'+
       '<div class="pkv" id="pvKv"></div></div>'+
     '</div>'+
     '<div class="pn-card pn-sim">'+
       '<h3 class="pn-pv-title">实时模拟训练<span class="live">即用</span></h3>'+
-      '<p class="pn-sim-desc">用当前左侧配置（模拟客户 / 对话流程 / 评分维度）在右侧即时演练一遍训练效果。</p>'+
+      '<p class="pn-sim-desc">用当前左侧配置（模拟客户 / 对话流程 / 关联能力雷达表）在右侧即时演练一遍训练效果。</p>'+
       '<button class="btn btn-p btn-block" type="button" onclick="openSimTrain()">'+icon('play',14)+'进入实时模拟训练</button>'+
     '</div>'+
-    '<div class="pn-tip"><b>填写提示</b><br>· 剧本名称、类型为陪练体验关键项，建议优先填写。<br>· 模拟客户支持多选，学员可在所选客户中任选一位。<br>· 对话节点越多，总体时长自动延长；评分维度权重建议合计 100%。<br>· 保存草稿可稍后继续编辑，发布后进入待发布池供任务引用。</div>'+
     '</div>');
   N.push('</div>');
   N.push('<button class="pn-totop" id="pnTotop" title="返回顶部" onclick="pnScrollTop()">'+icon('up',18)+'</button>');
@@ -2451,7 +3375,7 @@ function scriptCustCards(){
       '<div class="cuc-tags">'+
         '<span class="ptag">职业：'+(v.job||'—')+'</span>'+
         '<span class="ptag">风格：'+(v.style||'—')+'</span>'+
-        '<span class="ptag">难度：'+(v.diff||'—')+'</span>'+
+        '<span class="ptag">家庭：'+(v.fam||'—')+'</span>'+
         '<span class="ptag">性别：'+(v.sex||'—')+'</span>'+
         '<span class="ptag">年龄：'+(v.age||'—')+'</span>'+
       '</div></div>'+
@@ -2470,135 +3394,357 @@ function custScroll(dir){
   const t=document.getElementById('custGrid');if(!t)return;
   t.scrollBy({left:dir*260,behavior:'smooth'});
 }
-/* 评分维度：单行模板（名称直接可编辑 + 权重 + 删除；无勾选框，所有维度均参与评分） */
-function dimRowHtml(name, w){
-  return '<div class="dim-row">'+
-    '<input class="dim-name" type="text" value="'+esc(name)+'" placeholder="评分维度名称" oninput="updateScriptPreview()">'+
-    '<div class="dim-w">权重 <input class="dim-wt" type="number" min="0" max="100" value="'+w+'"> %</div>'+
-    '<div class="dim-ops"><button type="button" class="dim-del" onclick="dimDel(this)">删除</button></div></div>';
+/* 能力雷达设置：关联能力雷达表（展示雷达图） */
+function scriptRadarTbl(){
+  const v=document.getElementById('sRadarTbl');
+  if(v!==null&&v&&v.value!=='')RADAR_TBL_SEL=+v.value||0;
+  return RADAR_TABLES[RADAR_TBL_SEL]||RADAR_TABLES[0];
 }
-function dimDel(btn){
-  const row=btn.closest('.dim-row');
-  row.remove();
+function asRadarRender(){
+  const t=RADAR_TABLES[RADAR_TBL_SEL]||RADAR_TABLES[0];
+  drawRadarDims('asRadar',t.dims,t.ws||[],214);
+}
+function scriptRadarTblChange(){
+  scriptRadarTbl();asRadarRender();
+}
+/* 调用素材：按分组从素材库选用文档类素材（doc/docx/xls/xlsx/ppt/pptx/pdf），支持搜索与多选 */
+const KB_OK_EXT=['doc','docx','xls','xlsx','ppt','pptx','pdf'];
+let scriptKbSel=new Set();   /* 已选素材 id 集合 */
+let kbGroup='all';           /* 选择器当前分组：all / ungrouped / 分组 id */
+let kbSearch='';             /* 选择器搜索关键词 */
+function kbMats(){ return MATS.filter(m=>m.type==='文档'&&KB_OK_EXT.includes(m.ext)); }
+function kbCount(gid){
+  const ids=gid==='all'?null:gid==='ungrouped'?['ungrouped']:matDescendants(gid);
+  return kbMats().filter(m=>ids?ids.includes(m.group):true).length;
+}
+function kbTreeHtml(pid,depth){
+  if(pid===undefined){ /* 顶层：全部素材 / 未分组 / 分组树 */
+    return '<div class="kb2-node'+(kbGroup==='all'?' on':'')+'" onclick="kbPick(\'all\')"><span class="tname">全部素材</span><span class="cnt">'+kbCount('all')+'</span></div>'+
+      '<div class="kb2-node'+(kbGroup==='ungrouped'?' on':'')+'" onclick="kbPick(\'ungrouped\')"><span class="tname">未分组</span><span class="cnt">'+kbCount('ungrouped')+'</span></div>'+
+      matGroupChildren(null).map(g=>kbTreeHtml(g.id,0)).join('');
+  }
+  const kids=matGroupChildren(pid), cnt=kbCount(pid);
+  if(!cnt&&!kids.length)return '';
+  let h='<div class="kb2-node'+(kbGroup===pid?' on':'')+(depth?' sub':'')+'" onclick="kbPick(\''+pid+'\')"><span class="tname">'+esc(matGName(pid))+'</span><span class="cnt">'+cnt+'</span></div>';
+  if(kids.length)h+=kids.map(g=>kbTreeHtml(g.id,depth+1)).join('');
+  return h;
+}
+function kbListHtml(){
+  const ids=kbGroup==='all'?null:kbGroup==='ungrouped'?['ungrouped']:matDescendants(kbGroup);
+  const list=kbMats().filter(m=>(ids?ids.includes(m.group):true)&&(!kbSearch||m.name.toLowerCase().includes(kbSearch.toLowerCase())));
+  if(!list.length)return '<div class="kb2-empty">当前分组下暂无可调用的文档类素材</div>';
+  return list.map(m=>{
+    const on=scriptKbSel.has(m.id);
+    return '<div class="kb2-item'+(on?' on':'')+'" data-id="'+m.id+'" onclick="kbToggle('+m.id+')">'+
+      '<div class="kb2-ic">'+icon('db',15)+'</div>'+
+      '<div class="kb2-bd"><div class="kb2-nm">'+esc(m.name)+'</div><div class="kb2-meta">'+esc(matGName(m.group))+' · '+(m.kb>=1024?(m.kb/1024).toFixed(1)+' MB':m.kb+' KB')+' · '+esc(m.up)+'</div></div>'+
+      '<span class="kb2-ext">.'+esc(m.ext)+'</span>'+
+      '<span class="kb2-chk">'+(on?'✓':'')+'</span>'+
+    '</div>';
+  }).join('');
+}
+function scriptKbChips(){ /* 已选素材 chips（点击 × 移除） */
+  const list=[...scriptKbSel].map(id=>MATS.find(m=>m.id===id)).filter(Boolean);
+  const head=document.getElementById('kbSelHead');
+  if(head)head.innerHTML=list.length?'已选择 <b>'+list.length+'</b> 项素材（点击标签可移除）':'';
+  return list.map(m=>'<span class="kb-chip on" data-id="'+m.id+'" onclick="kbRemove('+m.id+')">'+esc(m.name)+'<span class="x">×</span></span>').join('');
+}
+function kbRender(){
+  const tree=document.getElementById('kb2Tree'),list=document.getElementById('kb2List'),chips=document.getElementById('kbChips'),si=document.getElementById('kb2Search');
+  if(tree)tree.innerHTML=kbTreeHtml();
+  if(list)list.innerHTML=kbListHtml();
+  if(chips)chips.innerHTML=scriptKbChips();
+  if(si&&si.value!==kbSearch)si.value=kbSearch;
+}
+function kbPick(g){ kbGroup=g; kbRender(); }
+function kbSearchInput(v){ kbSearch=(v||'').trim(); kbRender(); }
+function kbToggle(id){
+  if(scriptKbSel.has(id))scriptKbSel.delete(id);else scriptKbSel.add(id);
+  kbRender();updateScriptPreview();
+}
+function kbRemove(id){
+  scriptKbSel.delete(id);
+  kbRender();updateScriptPreview();
+}
+/* 参考话术：Q(会话内容主题) + A(回复，可多条)，支持新建/删除/追加回复/AI生成 */
+function refItemHtml(r){
+  r=r||{};
+  const as=(r.a&&r.a.length?r.a:['']);
+  return '<div class="ref-item">'+
+    '<div class="ref-q-row"><span class="ref-tag q">Q</span>'+
+      '<input class="ref-q" maxlength="500" placeholder="会话内容主题(不超过500字)" value="'+esc(r.q||'')+'">'+
+      '<button type="button" class="ref-ic danger" title="删除该条话术" onclick="refDel(this)">'+icon('trash',13)+'</button></div>'+
+    as.map((a,i)=>'<div class="ref-a-row"><span class="ref-tag a">A</span>'+
+      '<input class="ref-a" maxlength="1000" placeholder="回复内容(不超过1000字)" value="'+esc(a||'')+'">'+
+      '<button type="button" class="ref-ic" title="追加一条回复" onclick="refAddA(this)">'+icon('plus',13)+'</button>'+
+      (as.length>1?'<button type="button" class="ref-ic danger" title="删除本条回复" onclick="refDelA(this)">'+icon('minus',13)+'</button>':'')+
+    '</div>').join('')+
+  '</div>';
+}
+function refListHtml(refs){return (refs&&refs.length?refs:[{}]).map(refItemHtml).join('');}
+function refSyncN(node){
   updateScriptPreview();
 }
-function dimAdd(){
-  const list=document.getElementById('dimList');if(!list)return;
-  const exist=[...list.querySelectorAll('.dim-row input[type=checkbox]')].map(r=>r.value);
-  let n=1;while(exist.indexOf('新维度'+n)>=0)n++;
-  list.insertAdjacentHTML('beforeend',dimRowHtml('新维度'+n,0));
+/* 参考话术开关：默认关闭（不创建话术）；开启后展开列表，可新建 / AI 生成；关闭则清空 */
+function refToggle(c){
+  const node=c.closest('.flow-node');if(!node)return;
+  const list=node.querySelector('.ref-list');if(!list)return;
+  if(c.checked){
+    list.style.display='block';
+    if(!list.querySelector('.ref-item'))refSyncN(node);
+    updateScriptPreview();
+  }else{
+    list.innerHTML='';
+    list.style.display='none';
+    refSyncN(node);
+  }
+}
+/* 开关辅助：新建 / AI 生成时自动开启开关 */
+function refSetOn(node){
+  const sw=node.querySelector('.ref-sw-c');
+  if(sw&&!sw.checked)sw.checked=true;
+}
+function refAdd(btn){
+  const node=btn.closest('.flow-node');if(!node)return;
+  const list=node.querySelector('.ref-list');if(!list)return;
+  refSetOn(node);
+  list.style.display='block';
+  list.insertAdjacentHTML('beforeend',refItemHtml());
+  refSyncN(node);
+  const q=list.lastElementChild.querySelector('.ref-q');if(q)q.focus();
+}
+function refDel(ic){
+  const node=ic.closest('.flow-node');if(!node)return;
+  const item=ic.closest('.ref-item');if(item)item.remove();
+  refSyncN(node);
+}
+function refAddA(ic){
+  const item=ic.closest('.ref-item');if(!item)return;
+  const last=item.querySelector('.ref-a-row:last-of-type');
+  const html='<div class="ref-a-row"><span class="ref-tag a">A</span><input class="ref-a" maxlength="1000" placeholder="回复内容(不超过1000字)">'+
+    '<button type="button" class="ref-ic" title="追加一条回复" onclick="refAddA(this)">'+icon('plus',13)+'</button>'+
+    '<button type="button" class="ref-ic danger" title="删除本条回复" onclick="refDelA(this)">'+icon('minus',13)+'</button></div>';
+  last.insertAdjacentHTML('afterend',html);
+  last.nextElementSibling.querySelector('.ref-a').focus();
+}
+function refDelA(ic){
+  const item=ic.closest('.ref-item');if(!item)return;
+  const row=ic.closest('.ref-a-row');if(row)row.remove();
+  if(!item.querySelector('.ref-a-row'))item.insertAdjacentHTML('beforeend','<div class="ref-a-row"><span class="ref-tag a">A</span><input class="ref-a" maxlength="1000" placeholder="回复内容(不超过1000字)"><button type="button" class="ref-ic" title="追加一条回复" onclick="refAddA(this)">'+icon('plus',13)+'</button></div>');
   updateScriptPreview();
 }
-/* 相关知识：多选 chips（参考模拟客户多选方法） */
-let scriptKbSel=new Set();
-const KB_LIST=['银河E5车型手册','核心卖点十讲','竞品参数对比表','试驾话术SOP','售后保养指南','金融分期政策'];
-function scriptKbChips(){
-  return KB_LIST.map(k=>'<span class="kb-chip'+(scriptKbSel.has(k)?' on':'')+'" data-k="'+esc(k)+'" onclick="toggleKb(this)">'+esc(k)+'</span>').join('');
+/* 参考话术 · AI 生成：结合本阶段 框架描述/目标/约束条件，每次生成 1 组 Q/A，只新增不覆盖 */
+const REF_TPLS=[
+ {q:'这个方案的价格还能再优惠一些吗？',a:['说明当前权益组合已接近政策上限，可通过金融方案或置换补贴进一步降低落地成本，避免随意让价。'],kw:'价格 优惠 让价 权益 金融 成交 商谈'},
+ {q:'我需要回去和家人商量一下。',a:['表示理解并尊重家庭决策节奏，主动提议家人一同到店体验或提供资料带看，不压迫成交。'],kw:'犹豫 考虑 商量 家人 决策 异议 推进'},
+ {q:'你们的服务跟别家比有什么优势？',a:['聚焦服务网络覆盖与响应时效，用具体数据做对比，注意不贬低竞品。'],kw:'服务 优势 对比 竞品 介绍 差异'},
+ {q:'现在下定有什么赠品或权益？',a:['介绍限时权益包内容与有效期限，强调与客户关注点的匹配度。'],kw:'下定 赠品 权益 限时 活动 总结 邀约'},
+ {q:'这车后期保养贵不贵？',a:['给出保养周期与大致费用区间，结合质保政策说明养车成本可控。'],kw:'保养 费用 售后 质保 养车 成本'},
+ {q:'试驾需要提前预约吗？现在可以直接试吗？',a:['说明预约与直接到店两种方式均可，快速核对信息后安排专人对接。'],kw:'试驾 预约 开场 接待 来意'},
+ {q:'试驾路线大概多久？能体验加速和刹车吗？',a:['介绍路线时长与路况构成，说明可体验加速与制动的路段，安全前提下可按需求微调。'],kw:'路线 手续 路况 加速 刹车 体验'},
+ {q:'这些驾驶功能实际开起来差别大吗？',a:['在安全路段边演示边讲解功能逻辑与适用场景，引导客户亲身体验验证。'],kw:'驾驶 功能 模式 演示 体验 安全'}
+];
+function refGen(btn){
+  const node=btn.closest('.flow-node');if(!node)return;
+  const list=node.querySelector('.ref-list');if(!list)return;
+  refSetOn(node);list.style.display='block';
+  /* 上下文 = 本阶段 名称 + 框架描述 + 目标 + 约束条件（+ 会话目标） */
+  const themeEl=document.getElementById('flowTheme');
+  const ctx=['.fn-name','.flow-desc','.flow-goal','.flow-limit'].map(s=>{const e=node.querySelector(s);return e?(e.value||''):'';}).join(' ')
+    +' '+(themeEl?(themeEl.value||''):'');
+  const used=[...list.querySelectorAll('.ref-q')].map(i=>(i.value||'').trim());
+  /* 随机打散后按关键词命中数排序，优先返回与阶段上下文最匹配且未出现过的一条 */
+  const scored=[...REF_TPLS].sort(()=>Math.random()-.5).map(t=>{
+    const hit=(t.kw||'').split(/\s+/).reduce((n,k)=>n+(k&&ctx.includes(k)?1:0),0);
+    return {t,hit};
+  }).sort((x,y)=>y.hit-x.hit);
+  const pick=(scored.find(s=>!used.includes(s.t.q))||scored[0]).t;
+  list.insertAdjacentHTML('beforeend',refItemHtml({q:pick.q,a:pick.a}));
+  refSyncN(node);
+  toast('AI 已生成 1 条参考话术（结合本阶段框架 · 目标 · 约束）');
 }
-function toggleKb(el){
-  const k=el.dataset.k;
-  if(scriptKbSel.has(k)){scriptKbSel.delete(k);el.classList.remove('on');}
-  else{scriptKbSel.add(k);el.classList.add('on');}
-  updateScriptPreview();
-}
-function spOptions(){
-  return '<option value="">+ 从话术库选择…</option>'+SPEECH_LIB.map(p=>'<option value="'+esc(p)+'">'+esc(p.length>26?p.slice(0,26)+'…':p)+'</option>').join('');
-}
-function spRender(node){
-  if(!node)return;
-  const hid=node.querySelector('.flow-t');
-  const chips=node.querySelector('.sp-chips');
-  const arr=(hid.value||'').split('|').filter(Boolean);
-  chips.innerHTML=arr.length?arr.map(p=>'<span class="sp-chip" data-v="'+esc(p)+'">'+esc(p)+'<i onclick="spRemove(this)">×</i></span>').join(''):'<span class="sp-empty">尚未选择话术</span>';
-}
-function spPick(sel){
-  const v=sel.value;if(!v)return;
-  const box=sel.closest('.sp');const hid=box.querySelector('.flow-t');
-  const arr=(hid.value||'').split('|').filter(Boolean);
-  if(arr.indexOf(v)<0)arr.push(v);
-  hid.value=arr.join('|');sel.value='';
-  spRender(box);updateScriptPreview();
-}
-function spAddNew(btn){
-  const box=btn.closest('.sp');const inp=box.querySelector('.sp-new');
-  const v=(inp.value||'').trim();if(!v)return;
-  if(SPEECH_LIB.indexOf(v)<0)SPEECH_LIB.push(v);
-  const hid=box.querySelector('.flow-t');
-  const arr=(hid.value||'').split('|').filter(Boolean);
-  if(arr.indexOf(v)<0)arr.push(v);
-  hid.value=arr.join('|');
-  inp.value='';
-  spRender(box);updateScriptPreview();
-  toast('已保存到话术库');
-}
-function spRemove(ic){
-  const chip=ic.closest('.sp-chip');const v=chip.dataset.v;
-  const box=chip.closest('.sp');const hid=box.querySelector('.flow-t');
-  const arr=(hid.value||'').split('|').filter(Boolean).filter(x=>x!==v);
-  hid.value=arr.join('|');
-  spRender(box);updateScriptPreview();
-}
-function addFlowNode(q,a,t){
+/* 会话框架：阶段卡片（阶段名称 / 框架描述 / 评价指标+权重 / 详情[目标·约束条件·参考话术Q/A]） */
+function addFlowNode(o){
+  o=o||{};
   const box=document.getElementById('flowNodes');if(!box)return;
   const i=box.children.length+1;
-  box.insertAdjacentHTML('beforeend',flowNodeHtml(i,q,a,t));
-  spRender(box.lastElementChild);
-  updateScriptPreview();
+  const html=flowNodeHtml(i,o);
+  if(o.afterEl){o.afterEl.insertAdjacentHTML('afterend',html);}
+  else box.insertAdjacentHTML('beforeend',html);
+  const el=o.afterEl?o.afterEl.nextElementSibling:box.lastElementChild;
+  flowRenumber();updateScriptPreview();
 }
-function flowNodeHtml(i,q,a,t){
+function flowNodeHtml(i,o){
+  o=o||{};
+  const refs=(o.refs&&o.refs.length)?o.refs:[];
   return '<div class="flow-node" data-i="'+i+'">'+
-    '<div class="fn-hd"><span class="fn-no">节点 '+i+'</span><button type="button" class="fn-del" onclick="delFlowNode(this)">删除</button></div>'+
-    '<div class="form-item" style="margin-bottom:8px"><label>客户关键问题</label><input class="flow-q" placeholder="该节点客户最可能提出的疑问或诉求" value="'+(q||'')+'"></div>'+
-    '<div class="form-item" style="margin-bottom:8px"><label>销售应解答的重点</label><textarea class="flow-a" placeholder="销售需覆盖的核心知识点与应对逻辑">'+(a||'')+'</textarea></div>'+
-    '<div class="form-item"><label>推荐话术（可选，可多选）</label>'+
-    '<div class="sp"><div class="sp-chips" id="spChips_'+i+'"></div>'+
-    '<div class="sp-bar"><select class="sp-sel" onchange="spPick(this)">'+spOptions()+'</select>'+
-    '<input class="sp-new" placeholder="输入新话术，保存到话术库">'+
-    '<button type="button" class="btn btn-g btn-sm" onclick="spAddNew(this)">保存并添加</button></div>'+
-    '<input type="hidden" class="flow-t" value="'+(t||'')+'"></div></div>'+
+    '<div class="fn-hd"><span class="fn-no">'+i+'.</span>'+
+      '<input class="fn-name" placeholder="阶段名称，如：开场阶段" value="'+(o.name||'')+'">'+
+      '<button type="button" class="fn-ic fn-add" title="在此阶段后插入阶段" onclick="insertFlowAfter(this)">'+icon('plus',14)+'</button>'+
+      '<button type="button" class="fn-ic" title="删除阶段" onclick="delFlowNode(this)">'+icon('trash',14)+'</button></div>'+
+    '<div class="form-item" style="margin-bottom:8px"><label>框架描述</label><textarea class="flow-desc" rows="2" placeholder="描述本阶段的沟通目标与推进要点">'+(o.desc||'')+'</textarea></div>'+
+    '<div class="form-item"><div class="fn-lr"><label>评价指标</label><span class="fn-w">权重 <input class="fn-wt" type="number" min="0" max="100" step="0.1" value="'+(o.w!=null?o.w:'')+'" oninput="updateScriptPreview()"> %</span></div>'+
+    '<textarea class="flow-pts" rows="3" placeholder="每行一条核心点，将按「核心点 1/2/3…」编号展示">'+(o.pts||'')+'</textarea></div>'+
+    '<div class="fn-body">'+
+      '<div class="form-item" style="margin-bottom:8px"><label>目标</label><input class="flow-goal" maxlength="500" placeholder="本阶段要达成的沟通目标" value="'+(o.goal||'')+'"></div>'+
+        '<div class="form-item" style="margin-bottom:8px"><label>约束条件</label><input class="flow-limit" maxlength="500" placeholder="本阶段需遵守的限制，如：不主动约定下次具体见面时间" value="'+(o.limit||'')+'"></div>'+
+        '<div class="form-item">'+
+          '<div class="ref-hd"><label>参考话术</label>'+
+            '<label class="sw"><input type="checkbox" class="ref-sw-c"'+(o.refOn?' checked':'')+' onchange="refToggle(this)" title="开启后可为本阶段创建参考话术"><i></i></label>'+
+            '<span class="ref-ops"><button type="button" class="btn btn-ai btn-sm" onclick="refGen(this)">'+icon('spark',13)+'AI 生成</button><button type="button" class="ref-new" onclick="refAdd(this)">'+icon('plus',13)+'新建</button></span></div>'+
+          '<div class="ref-list" style="display:'+(o.refOn?'block':'none')+'">'+(o.refOn?refListHtml(refs):'')+'</div>'+
+        '</div>'+
+      '</div>'+
   '</div>';
+}
+function flowRenumber(){
+  document.querySelectorAll('#flowNodes .flow-node').forEach((el,idx)=>{el.dataset.i=idx+1;const no=el.querySelector('.fn-no');if(no)no.textContent=(idx+1)+'.';});
 }
 function delFlowNode(btn){
   const n=btn.closest('.flow-node');if(n)n.remove();
-  document.querySelectorAll('#flowNodes .flow-node').forEach((el,idx)=>{el.dataset.i=idx+1;el.querySelector('.fn-no').textContent='节点 '+(idx+1);});
-  updateScriptPreview();
+  flowRenumber();updateScriptPreview();
+}
+function insertFlowAfter(btn){
+  const n=btn.closest('.flow-node');if(!n)return;
+  addFlowNode({afterEl:n});
+}
+function flowWeightSum(){
+  return [...document.querySelectorAll('#flowNodes .fn-wt')].reduce((a,e)=>a+(+e.value||0),0);
 }
 function scriptGenNodes(){
   const box=document.getElementById('flowNodes');if(!box)return;
   box.innerHTML='';
-  const type=document.getElementById('sType').value, role=document.getElementById('sRole').value;
-  const base=[
-    ['您这款车标称续航多少？冬天会不会打折？','讲清 CLTC 与真实续航差异，强调三电质保与冬季热管理策略','银河E5 续航扎实，冬季有智能热管理，三电终身质保让您无忧。'],
-    ['除了车价，现在买有什么金融或置换政策？','介绍低息分期与旧车置换补贴，降低决策门槛','可享低息分期与旧车置换补贴，月供更轻松。'],
-    ['这车智能驾驶好用吗？适不适合新手？','演示 L2 辅助驾驶与主动安全，建立专业信任','全速域 ACC + 车道保持，新手也安心。'],
-    ['售后保养贵不贵？附近有没有服务网点？','说明保养周期、质保政策与网点覆盖','首保免费，质保期长，网点覆盖广，养车省心。']
+  const role=document.getElementById('sRole').value;
+  const stages=[
+    {name:'开场阶段',w:25,
+     desc:'见到工作人员主动上前表明自己是来试驾的，核对预约信息或直接说明想看的车型；确认对方是负责试驾的销售后，简单说下自己最关心的几个点，比如动力或者空间。',
+     pts:'销售需主动识别并接待表明试驾来意的客户，快速核对预约信息或确认意向车型；\n引导客户阐述最关心的车辆性能点（例如动力表现或空间布局），以便后续针对性展示；\n在确认身份和来意后，明确告知将全程陪同试乘试驾，同时避免在此阶段主动探听客户具体预算上限。',
+     goal:'完成接待破冰，确认客户来意与试驾意向',limit:'不主动探听客户具体预算上限'},
+    {name:'试驾手续办理与路线介绍',w:25,
+     desc:'配合出示驾照并核对信息，签字前看一眼文件内容；听销售讲路线时，问清楚会不会经过拥堵路段或快速路，确认能不能体验到加速和刹车性能，如果有特殊路况需求提前提出来。',
+     pts:'销售需高效完成驾照核验与文件签署流程，并主动提示客户阅读关键条款；\n详细介绍试驾路线规划，明确说明是否包含拥堵路段、快速路等能体验加速与刹车性能的路；\n主动询问客户是否有特殊路况体验需求，并在安全允许范围内调整路线以满足客户对车辆性能的验证目标。',
+     goal:'完成试驾登记与路线沟通，明确本次体验重点',limit:'签署前主动提示阅读关键条款'},
+    {name:'动态试驾体验',w:25,
+     desc:'按既定路线驾驶，重点体验起步加速、中段再加速、刹车与过弯表现；销售在副驾适时讲解对应功能，如驾驶模式切换、辅助驾驶等，随时提问不影响安全驾驶。',
+     pts:'销售需在安全前提下引导客户分段体验动力、制动与转向表现，并同步讲解对应功能；\n主动演示驾驶模式切换、辅助驾驶等核心功能，帮助客户建立直观认知；\n关注客户驾驶反馈与情绪变化，及时调整讲解重点与试驾节奏。',
+     goal:'安全前提下完成动力、制动与智能功能的分段体验',limit:'讲解与演示不影响安全驾驶'},
+    {name:'试驾回店与总结邀约',w:25,
+     desc:'回店停车入位后简单回顾本次试驾感受，确认体验是否与预期匹配；听销售结合试驾感受介绍价格、权益与下一步流程，明确后续商谈或二次到店安排。',
+     pts:'销售需引导客户总结试驾感受，将动态体验与客户核心需求逐项对应；\n结合试驾反馈介绍价格、金融方案与限时权益，推进下一步商谈意向；\n明确后续安排（二次到店 / 家人陪同试驾 / 直接送办理资料），并留存跟进方式。',
+     goal:'总结试驾感受并推进下一步商谈安排',limit:'不主动约定下次具体见面时间，不索要额外承诺'}
   ];
-  base.forEach(n=>addFlowNode(n[0],n[1],n[2]));
-  toast('AI 已生成 '+base.length+' 个对话节点（'+type+' · '+role+'）');
+  stages.forEach(s=>addFlowNode(s));
+  const th=document.getElementById('flowTheme');
+  if(th&&!th.value.trim())th.value='汽车销售代表品牌方，客户为有购车意向的潜在用户，双方在线下门店进行面对面的试乘试驾沟通，旨在通过实车体验验证车辆性能与需求匹配度';
+  toast('AI 已生成 '+stages.length+' 个会话阶段（'+role+'），已按会话目标约束模拟客户方向生成');
   updateScriptPreview();
 }
-function scriptPolishGoal(){
-  const g=document.getElementById('sGoal');if(!g)return;
-  const type=document.getElementById('sType').value, role=document.getElementById('sRole').value;
-  let cur=(g.value||'').trim();
-  const scene=(type==='产品讲解'?'产品讲解':(type==='演讲'?'演讲':(type==='朗读'||type==='背诵'?'基础表达':'情景对话')));
-  if(!cur){
-    cur='训练'+role+'在'+scene+'场景下的专业表达、需求洞察与异议化解能力，达成自然推进成交的目标。';
-  }else{
-    cur='围绕「'+cur+'」，重点训练'+role+'在'+scene+'中的破冰建信、精准提问、利益呈现与促成闭环。';
-  }
-  g.value=cur;g.dispatchEvent(new Event('input',{bubbles:true}));
-  toast('AI 已润色训练目标');
-  updateScriptPreview();
+/* ---- 剧本场景配置：行业模板 + AI生成 / 帮我润色 分离 ---- */
+/* 生成规则：AI生成 = 选模板一键生成（已有内容时先确认覆盖）；帮我润色 = 在现有内容上追加/替换润色要点，不整段覆盖 */
+const SCENE_TABS=['证券开户','证券营销','保险','金融','汽车','教育','零售'];
+let SC_POLISH_N=0;
+const SCENE_TPLS={
+ '证券开户':[
+  {name:'新客开户沟通',scene:'证券客户新开立账户的首次电话沟通',place:'电话沟通',
+   cust:['对投资感兴趣但经验较少的年轻客户','有炒股经验、对比多家券商的中年客户'],
+   task:['介绍开户流程与佣金优势，解答客户对新平台的顾虑，引导客户完成线上开户预约。',
+         '了解客户投资需求，推荐适合的入门服务，并邀约客户到营业部面谈办理。']},
+  {name:'休眠客户激活',scene:'唤醒长期未交易的存量证券客户',place:'电话沟通',
+   cust:['账户闲置一年以上、对市场观望的客户','曾活跃但近期流失的老客户'],
+   task:['结合近期市场机会说明激活账户的价值，化解客户对风险的担忧，邀约客户重新参与。']},
+ ],
+ '证券营销':[
+  {name:'投顾服务推介',scene:'向客户推介投顾签约服务',place:'电话沟通',
+   cust:['想提升收益但缺乏指导的客户','对付费服务持观望态度的客户'],
+   task:['讲解投顾服务的策略与过往业绩，处理客户对服务费的异议，促成签约意向。']},
+  {name:'活动促邀约',scene:'理财沙龙 / 直播活动的客户邀约',place:'电话沟通',
+   cust:['对活动主题有兴趣的客户','需多次邀请才愿意参加的客户'],
+   task:['说明活动亮点与参与收益，处理客户「没时间」的推脱，确定到场或线上参会时间。']},
+ ],
+ '保险':[
+  {name:'车险续保沟通',scene:'车险到期前的续保沟通',place:'电话沟通',
+   cust:['纠结价格、比价多家报价的客户','关注保障范围与服务网络的客户'],
+   task:['对比说明续保方案与增值服务，处理客户对保费的异议，促成续保确认。']},
+  {name:'重疾险意向沟通',scene:'重疾险产品需求挖掘与讲解',place:'电话沟通',
+   cust:['家庭责任感强、有保障意识的客户','认为保险「不着急」的年轻客户'],
+   task:['通过提问了解家庭保障缺口，讲解产品核心责任，邀约客户面谈详细方案。']},
+ ],
+ '金融':[
+  {name:'分期金融方案',scene:'购车 / 购机分期贷款方案的沟通',place:'电话沟通',
+   cust:['关注月供压力的客户','对比银行利率、犹豫不决的客户'],
+   task:['介绍分期方案与利率优势，处理客户对利息的顾虑，邀约客户到店办理评估。']},
+  {name:'经营贷需求沟通',scene:'小微企业主经营性贷款需求沟通',place:'电话沟通',
+   cust:['有扩大经营资金需求的企业主','对贷款手续繁琐有顾虑的客户'],
+   task:['了解经营与资金缺口，介绍额度与放款时效，预约客户带资料到网点面签。']},
+ ],
+ '汽车':[
+  {name:'电话邀约试驾',scene:'XXX汽车邀约试驾营销',place:'电话沟通',
+   cust:['对购车有兴趣但较为谨慎的客户','对比多个品牌、尚未到店的潜在客户'],
+   task:['在接到邀约电话时，一开始表现出犹豫和不确定；但经过销售的耐心解释和多次邀请后，最终不再犹豫，同意到店试驾，和销售约好试驾时间并结束对话。']},
+  {name:'汽车营销',scene:'XXX汽车 4S 店到店接待与产品营销',place:'门店展厅',
+   cust:['首次到店、对车型了解不深的客户','带着明确预算与竞品对比到店的客户'],
+   task:['完成接待破冰与需求了解，围绕车型亮点做产品介绍，处理价格与竞品异议，促成试驾与二次到店。']},
+  {name:'售后服务回访',scene:'保养 / 维修完成后的售后服务回访',place:'电话沟通',
+   cust:['对维修费用有疑问的客户','对服务体验满意的忠诚客户'],
+   task:['确认服务满意度，解释费用构成，推荐季节性养护项目并邀约下次进店。']},
+ ],
+ '教育':[
+  {name:'课程试听邀约',scene:'培训课程的试听课邀约',place:'电话沟通',
+   cust:['为孩子教育规划但拿不定主意的家长','希望提升技能但时间不确定的职场人'],
+   task:['介绍试听课安排与师资亮点，处理「再考虑一下」的拖延，确定试听时间。']},
+  {name:'家长学情沟通',scene:'学员阶段性学习情况的家长沟通',place:'电话沟通',
+   cust:['关注成绩提升的家长','对学习效果有质疑的家长'],
+   task:['反馈阶段学习成果与问题，给出改进计划，处理家长对效果的质疑，促成续费意向。']},
+ ],
+ '零售':[
+  {name:'会员促活沟通',scene:'会员权益与大促活动的客户触达',place:'电话沟通',
+   cust:['有一定消费频次但近期未消费的会员','对积分权益不敏感的会员'],
+   task:['告知会员专属权益与活动力度，处理「不需要」的拒绝，引导客户到店或线上下单。']},
+  {name:'大额订单跟进',scene:'大额 / 团购订单的售前跟进',place:'电话沟通',
+   cust:['有采购需求但需多方决策的客户','对价格与交付周期敏感的客户'],
+   task:['确认需求细节与决策进度，给出阶梯报价方案，邀约客户到店看样并锁定订单。']},
+ ],
+};
+function scriptSceneChips(){
+  /* 行业页签已去掉：平铺展示全部行业的预置模板 */
+  return SCENE_TABS.map(tab=>SCENE_TPLS[tab].map(t=>'<button type="button" class="sc-chip" onclick="scriptSceneGen(\''+t.name+'\')">'+icon('refresh',13)+esc(t.name)+'</button>').join('')).join('');
 }
-function scriptGenDesc(){
-  const d=document.getElementById('sDesc');if(!d)return;
-  const type=document.getElementById('sType').value, role=document.getElementById('sRole').value;
-  const goal=(document.getElementById('sGoal').value||'').trim();
-  d.value='本剧本为'+(type==='产品讲解'?'产品讲解':type)+'类型，由'+role+'与 AI 模拟客户开展沉浸式对练。'+(goal?('聚焦：'+goal+'。'):'')+'覆盖从开场到促成的完整对话链路，帮助学员在低风险环境中反复打磨话术与应变能力。';
-  d.dispatchEvent(new Event('input',{bubbles:true}));
-  toast('AI 已生成剧本介绍');
-  updateScriptPreview();
+function sceneCfgText(tpl){
+  const roleEl=document.getElementById('sRole');
+  const role=roleEl&&roleEl.value?roleEl.value:'销售顾问';
+  const pick=a=>a[Math.floor(Math.random()*a.length)];
+  return '【场景】'+tpl.scene+'\n【角色】学员扮演'+role+'；对方扮演'+pick(tpl.cust)+'\n【沟通地点】'+tpl.place+'\n【任务】'+pick(tpl.task);
+}
+function sceneFindTpl(name){
+  for(const tab of SCENE_TABS){ const t=SCENE_TPLS[tab].find(x=>x.name===name); if(t) return t; }
+  return null;
+}
+/* AI生成：点击预置模板生成；已有内容时二次确认（覆盖原内容） */
+function scriptSceneGen(name){
+  const ta=document.getElementById('sSceneCfg');if(!ta)return;
+  const tpl=sceneFindTpl(name);if(!tpl)return;
+  const doGen=()=>{ ta.value=sceneCfgText(tpl); ta.dispatchEvent(new Event('input',{bubbles:true})); toast('已按模板「'+name+'」生成剧本场景配置'); };
+  if((ta.value||'').trim()) matAsk('重新生成','将按模板「'+name+'」重新生成剧本场景配置，当前内容会被覆盖。',doGen);
+  else doGen();
+}
+/* 帮我润色：保留原内容，仅追加/替换润色要点，可反复润色 */
+const SC_POLISH=['沟通中注意保持亲和、专业的语气，及时确认客户理解并推进下一步动作。','过程中主动倾听客户顾虑，针对异议给出具体方案，并明确下一步时间与动作安排。'];
+function scriptScenePolish(){
+  const ta=document.getElementById('sSceneCfg');if(!ta)return;
+  const v=(ta.value||'').trim();
+  if(!v){ toast('请先点击上方模板生成，或直接填写场景配置后再润色'); return; }
+  SC_POLISH_N++;
+  const s=SC_POLISH[SC_POLISH_N%SC_POLISH.length];
+  let out=v;
+  SC_POLISH.forEach(p=>{ out=out.replace('\n【润色要点】'+p,''); }); /* 替换上一轮润色要点，避免堆叠 */
+  ta.value=out+'\n【润色要点】'+s;
+  ta.dispatchEvent(new Event('input',{bubbles:true}));
+  toast('AI 已润色剧本场景配置（原内容保留）');
+}
+function scriptSceneClear(){
+  const ta=document.getElementById('sSceneCfg');if(!ta)return;
+  ta.value='';ta.dispatchEvent(new Event('input',{bubbles:true}));
+  toast('已清空剧本场景配置');
 }
 function scriptNewCustomer(){
   SCRIPT_CUST_PRESERVE=new Set(scriptCustSel);
@@ -2629,23 +3775,16 @@ function initScriptNew(){
   if(window.SCRIPT_NEW_CUST){scriptCustSel.add(window.SCRIPT_NEW_CUST);window.SCRIPT_NEW_CUST=null;}
   const grid=document.getElementById('custGrid');
   if(grid)grid.innerHTML=scriptCustCards();
-  scriptKbSel=new Set();
-  const kbc=document.getElementById('kbChips');if(kbc)kbc.innerHTML=scriptKbChips();
+  scriptKbSel=new Set();kbGroup='all';kbSearch='';
+  kbRender();
   orgSel=new Set();orgOpen=new Set(['总部','华北','北京','河北','长久集团']);
   const osi=document.getElementById('orgSearch');if(osi)osi.value='';
   orgRender();
   document.querySelectorAll('.cuc-filter input[type=radio]').forEach(r=>{
     r.addEventListener('change',()=>{const g2=document.getElementById('custGrid');if(g2)g2.innerHTML=scriptCustCards();});
   });
+  asRadarRender();
   updateScriptPreview();
-}
-/* 总体时长：按节点数估算区间分钟（每节点约 2 分钟，最少 3 分钟起算，给出 ± 浮动区间） */
-function durEstimate(n){
-  if(!n||n<=0)return '—';
-  const total=n*2;
-  const low=Math.max(3,total-2);
-  const high=total+3;
-  return low+'-'+high+' 分钟';
 }
 /* 适用组织：树形多选（勾选联动父子 / 搜索过滤 / 折叠展开） */
 const ORG_TREE=[
@@ -2726,12 +3865,11 @@ function updateScriptPreview(){
   const name=(g('sName').value||'').trim();
   const type=g('sType').value, role=g('sRole').value, org=orgSummary(), diff=g('sDiff').value;
   const cust=[...document.querySelectorAll('input[name=sCust]:checked')].map(i=>i.value);
-  const dims=[...document.querySelectorAll('#dimList .dim-name')].map(i=>(i.value||'').trim()).filter(Boolean);
-  const kb=[...document.querySelectorAll('#kbChips .kb-chip.on')].map(e=>e.dataset.k);
-  const goal=(g('sGoal').value||'').trim();
-  const desc=(g('sDesc').value||'').trim();
+  const kb=[...scriptKbSel].map(id=>{const m=MATS.find(x=>x.id===id);return m?m.name:'';}).filter(Boolean);
+  const cfgEl=g('sSceneCfg');
+  const cfg=cfgEl?(cfgEl.value||'').trim():'';
+  const scCnt=g('scCfgCnt');if(scCnt&&cfgEl)scCnt.textContent=cfgEl.value.length+'/10000';
   const nodes=document.querySelectorAll('#flowNodes .flow-node').length;
-  const pass=g('sPass').value;
   const first=document.querySelector('input[name=sFirst]:checked').value;
   g('pvNameTxt').textContent=name||'未命名剧本';
   g('pvAv').textContent=name?name[0]:'剧';
@@ -2739,25 +3877,25 @@ function updateScriptPreview(){
   const srcEl=g('pvSrc');
   if(orgIsPreset()){srcEl.textContent='主机厂预设';srcEl.className='src-t src-b';}
   else{srcEl.textContent='自建';srcEl.className='src-t src-a';}
-  g('pvDesc').textContent=desc||'（填写剧本介绍后在此实时预览）';
   const kv=(l,v)=>'<div class="it"><span>'+l+'</span><b>'+esc(v||'—')+'</b></div>';
   g('pvKv').innerHTML=
     kv('适用组织',org)+
     kv('训练难度',diff)+
     kv('谁先开口',first)+
-    kv('相关知识',kb.length?kb.join(' · '):'不关联')+
+    kv('调用素材',kb.length?kb.join(' · '):'不调用')+
     kv('模拟客户',cust.length?cust.length+' 位':'未选择')+
-    kv('对话节点',nodes+' 个')+
-    kv('总体时长',g('sDur').value||'—')+
-    kv('合格分数',pass+' 分')+
-    kv('评分维度',dims.length?dims.join(' · '):'未设置');
-  g('sDescCnt').textContent=(g('sDesc').value||'').length+' 字';
+    kv('会话阶段',nodes+' 个')+
+    kv('关联能力雷达',(RADAR_TABLES[RADAR_TBL_SEL]||RADAR_TABLES[0]).short);
   const cc=g('custCnt');if(cc)cc.textContent=cust.length;
-  const wsum=[...document.querySelectorAll('#dimList .dim-wt')].reduce((a,e)=>a+(+e.value||0),0);
-  const ds=document.getElementById('dimSum'),dv=document.getElementById('dsVal'),db=document.getElementById('dsBar');
-  if(ds){const okw=wsum===100;ds.classList.toggle('warn',!okw);dv.textContent='权重合计 '+wsum+'%'+(okw?' ✓':'（建议 100%）');if(db)db.style.width=Math.min(100,wsum)+'%';}
   const fe=g('flowEmpty');if(fe)fe.style.display=nodes?'none':'block';
-  g('sDur').value=durEstimate(nodes);
+  const fhs=g('fhSum');
+  if(fhs){
+    if(nodes){
+      const wsum=flowWeightSum();
+      fhs.textContent='阶段权重合计 '+wsum+'%'+(wsum===100?' ✓':'（建议 100%）');
+      fhs.classList.toggle('warn',wsum!==100);
+    }else fhs.textContent='';
+  }
   const prog=g('pnProg');
   if(name){prog.textContent='✓ 必填已填写，可保存';prog.classList.add('ok');}
   else{prog.textContent='必填项：剧本名称 *';prog.classList.remove('ok');}
@@ -2792,14 +3930,12 @@ function scriptAISuggest(){
   orgSel=new Set(['北京奥迪门店','汽车示范站','北京比亚迪']);orgOpen=new Set(['总部','华北','北京']);
   const osi=document.getElementById('orgSearch');if(osi)osi.value='';
   orgRender();
-  set('sScene','到店首次接待 · 工作日午间');
+  set('sSceneCfg','【场景】到店首次接待 · 工作日午间\n【角色】学员扮演销售顾问；对方扮演首次到店、对购车有兴趣但较为犹豫的客户\n【沟通地点】门店展厅\n【任务】完成接待破冰与需求了解，介绍车型亮点并处理客户异议，最终邀请客户参与试驾并约定到店时间。');
   setChk('sCust',['王先生','李女士']);
   set('sFirst','学员先开口');
-  scriptKbSel=new Set(['银河E5车型手册']);const kbc=document.getElementById('kbChips');if(kbc)kbc.innerHTML=scriptKbChips();
-  set('sGoal','训练学员在到店首接场景下的破冰、需求挖掘与异议应对能力');
-  set('sDesc','面向首次到店客户的接待标准流程演练，覆盖破冰、需求挖掘、产品介绍、异议处理与促成邀约全流程。');
-  set('sPass','60');
-  const box=document.getElementById('flowNodes');if(box){box.innerHTML='';[['您这款车标称续航多少？冬天会不会打折？','讲清 CLTC 与真实续航差异，强调三电质保','银河E5 续航扎实，冬季有智能热管理，三电终身质保。'],['除了车价，现在买有什么金融或置换政策？','介绍低息分期与旧车置换补贴','可享低息分期与旧车置换补贴，月供更轻松。'],['这车智能驾驶好用吗？适不适合新手？','演示 L2 辅助驾驶与主动安全','全速域 ACC+车道保持，新手也安心。']].forEach(n=>addFlowNode(n[0],n[1],n[2]));}
+  scriptKbSel=new Set([10]);kbGroup='all';kbSearch='';kbRender();
+  const box=document.getElementById('flowNodes');
+  if(box){box.innerHTML='';scriptGenNodes();}
   const pc=document.querySelector('.pn-pv .pc');
   if(pc){pc.classList.add('flash');setTimeout(()=>pc.classList.remove('flash'),900);}
   toast('AI 已生成示例剧本，可在此基础上调整');
@@ -2813,11 +3949,21 @@ function openSimTrain(){
   const g=id=>document.getElementById(id);
   const custs=[...scriptCustSel];
   const nodeEls=[...document.querySelectorAll('#flowNodes .flow-node')];
-  const nodes=nodeEls.map(el=>({q:(el.querySelector('.flow-q').value||'').trim(),a:(el.querySelector('.flow-a').value||'').trim(),t:(el.querySelector('.flow-t').value||'')}));
-  const dimEls=[...document.querySelectorAll('#dimList .dim-row')];
-  const dims=dimEls.map(r=>({name:(r.querySelector('.dim-name').value||'').trim()||'未命名',w:(+r.querySelector('.dim-wt').value||0)}));
+  const nodes=nodeEls.map(el=>{
+    const refs=[...el.querySelectorAll('.ref-item')].map(r=>({
+      q:(r.querySelector('.ref-q').value||'').trim(),
+      a:[...r.querySelectorAll('.ref-a')].map(x=>(x.value||'').trim()).filter(Boolean)}));
+    return {q:(refs[0]&&refs[0].q)||'',
+      a:refs.flatMap(r=>r.a).join('\n'),
+      desc:(el.querySelector('.flow-desc').value||'').trim(),
+      goal:(el.querySelector('.flow-goal').value||'').trim(),
+      limit:(el.querySelector('.flow-limit').value||'').trim(),
+      refs};
+  });
+  const rt=RADAR_TABLES[RADAR_TBL_SEL]||RADAR_TABLES[0];
+  const dims=rt.dims.map((n,i)=>({name:n,w:(rt.ws||[])[i]||0}));
   const first=(g('sFirst')?g('sFirst').value:'学员先开口');
-  const pass=(+g('sPass').value||60);
+  const pass=60;
   const name=((g('sName')?g('sName').value:'')||'').trim()||'未命名剧本';
   const type=(g('sType')?g('sType').value:'—');
   SIM={cust:null,nodes,dims,first,pass,idx:0,phase:'pick',name,type};
@@ -2849,7 +3995,7 @@ function simRenderCust(){
   const p=PERSONAS.find(x=>x.name===S.cust); const v=p?pView(p):null;
   const card=document.getElementById('simCustCard'); if(!card)return;
   if(!v){card.innerHTML='<div class="sim-cust"><div class="pav">'+esc(S.cust[0])+'</div><div><b>'+esc(S.cust)+'</b></div></div>';return;}
-  card.innerHTML='<div class="sim-cust"><div class="pav">'+esc(S.cust[0])+'</div><div style="min-width:0;flex:1"><div class="nm"><b>'+esc(S.cust)+'</b></div><div class="mt" style="font-size:12px;color:var(--t2)">'+esc(v.style)+' · '+esc(v.diff)+' · '+esc(v.sex)+' · '+esc(v.age)+'</div></div></div>';
+  card.innerHTML='<div class="sim-cust"><div class="pav">'+esc(S.cust[0])+'</div><div style="min-width:0;flex:1"><div class="nm"><b>'+esc(S.cust)+'</b></div><div class="mt" style="font-size:12px;color:var(--t2)">'+esc(v.style)+' · '+esc(v.sex)+' · '+esc(v.age)+'</div></div></div>';
 }
 function simStart(){
   const S=SIM; if(!S||!S.cust)return;
@@ -2858,7 +4004,6 @@ function simStart(){
     simAppend('ai','（学员先开口）请主动发起对话，先作破冰与开场，建立信任。');
     simCtrl('<label class="sim-lbl">你的开场白</label><textarea id="simInput" placeholder="例如：您好，欢迎到店，我是销售顾问 XX，今天想看哪类车？"></textarea><div class="row"><button class="btn btn-p" onclick="simSend()">发送开场 ▶</button></div>');
   } else {
-    if(S.first==='AI引导') simAppend('ai','（AI 引导）建议：先确认客户到店目的，再自然切入产品话题。');
     S.phase='answer';
     simAppend('cust', S.nodes[0].q||'（客户沉默地看着你…）');
     simCtrl('<label class="sim-lbl">你的回应</label><textarea id="simInput" placeholder="请输入你对客户此问题的回应…"></textarea><div class="row"><button class="btn btn-p" onclick="simSend()">提交回应 ▶</button></div>');
@@ -2886,9 +4031,12 @@ function simSend(){
     return;
   }
   const node=S.nodes[S.idx];
-  let ref='<div class="sim-ref"><h5>销售应解答的重点</h5><div class="t">'+(esc(node.a)||'（未配置）')+'</div>';
-  const ts=(node.t||'').split('|').map(x=>x.trim()).filter(Boolean);
-  if(ts.length){ref+='<h5 style="margin-top:8px">推荐话术</h5>'+ts.map(t=>'<div class="t">· '+esc(t)+'</div>').join('');}
+  let ref='<div class="sim-ref"><h5>阶段框架（约束模拟客户）</h5><div class="t">'+(esc(node.desc)||'（未配置）')+'</div>';
+  ref+='<h5 style="margin-top:8px">本阶段目标</h5><div class="t">'+(esc(node.goal)||'（未配置）')+'</div>';
+  if(node.limit){ref+='<h5 style="margin-top:8px">约束条件</h5><div class="t">'+esc(node.limit)+'</div>';}
+  const rs=node.refs||[];
+  ref+='<h5 style="margin-top:8px">参考话术</h5>';
+  ref+=rs.length?rs.map((r,i)=>'<div class="t"><b>Q'+(i+1)+'：</b>'+esc(r.q||'—')+'</div>'+(r.a.length?'<div class="t" style="color:var(--t2)">A：'+esc(r.a.join(' / '))+'</div>':'')).join(''):'<div class="t">（未配置）</div>';
   ref+='</div>';
   const log=document.getElementById('simLog'); if(log)log.insertAdjacentHTML('beforeend',ref);
   if(S.idx>=S.nodes.length-1){
@@ -2933,32 +4081,24 @@ function simRestart(){
 /* ---- 新建模拟客户 · AI 生成 ---- */
 const AI_STYLE=['理性分析型','价格敏感型','谨慎犹豫型','爽快直接型','强势主导型','感性体验型','健谈互动型','沉默被动型'];
 const AI_KEY={'理性分析型':'理性','价格敏感型':'价格','谨慎犹豫型':'谨慎','爽快直接型':'直接','强势主导型':'强势','感性体验型':'感性','健谈互动型':'健谈','沉默被动型':'沉默'};
-const AI_DIFF=['简单','普通','困难'];
 const AI_AGE=['18–24岁','25–34岁','35–44岁','45–54岁','55–64岁','65岁以上','未知'];
-const AI_BRAND=['国际品牌','合资品牌','国产品牌','豪华品牌','无明显偏好'];
-const AI_QUAL=['品质优先','性价比优先','耐用性优先','设计优先','服务优先'];
-const AI_SCENE=['产品讲解','邀约试驾','金融方案','竞品应对','电话邀约','交付流程'];
-const AI_MISS={style:AI_STYLE,diff:AI_DIFF,age:AI_AGE,brand:AI_BRAND,qual:AI_QUAL,scene:AI_SCENE};
+/* 画像缺口分析口径：与新建页字段一致（客户风格 / 年龄段） */
+const AI_MISS={style:AI_STYLE,age:AI_AGE};
 function aiSeen(){
-  const s={style:new Set(),diff:new Set(),scene:new Set(),age:new Set(),brand:new Set(),qual:new Set()};
+  const s={style:new Set(),age:new Set()};
   PERSONAS.forEach(p=>{
     const f=p.fields||{};
     if(f.style) s.style.add(f.style);
     else if(p.style){ AI_STYLE.forEach(a=>{ if(p.style.indexOf(AI_KEY[a])>=0) s.style.add(a); }); }
-    s.diff.add(f.diff||p.diff);
-    s.scene.add(f.scene||p.scene);
     if(f.age) s.age.add(f.age);
-    if(f.brand&&f.brand.length) f.brand.forEach(b=>s.brand.add(b));
-    if(f.qual&&f.qual.length) f.qual.forEach(q=>s.qual.add(q));
   });
   return s;
 }
 const AI_ARCH=[
- {dim:'diff',gapVal:'简单',name:'热心张姐',sex:'女',age:'45–54岁',job:'公务员',fam:'已婚有孩',
+ {dim:'style',gapVal:'感性体验型',name:'热心张姐',sex:'女',age:'45–54岁',job:'公务员',fam:'已婚有孩',
   desc:'性格开朗、目标明确、对销售信任度高，进店后很快表达购车意向，几乎不砍价，是理想的低压力练手对象。',
-  style:'感性体验型',diff:'简单',mood:'热情',brand:['国产品牌'],qual:['服务优先'],
-  disc:'主动透露',cmp:'不喜欢比较',push:'接受主动推荐',len:'简短',init:'主动提问',vg:'女声',vt:'温和',spd:'正常',tone:'温和',tags:'热心爽快, 低压力练手, 首购代步',
-  reason:'当前模拟客户库以「普通 / 困难」难度为主，缺少「简单」难度的低压力客户。新人需要先从配合度高、异议少的客户练手，建立基础接待与破冰节奏后，再挑战高难度客户。'},
+  style:'感性体验型',len:'简短',init:'主动提问',vg:'女声',vt:'温和',spd:'正常',tone:'温和',tags:'热心爽快, 低压力练手, 首购代步',
+  reason:'当前模拟客户库中缺少「感性体验型」客户。这类客户重感受、看氛围，销售需练习用场景化描述与体验引导推进沟通，而不是只讲参数。'},
  {dim:'style',gapVal:'沉默被动型',name:'技术宅小林',sex:'男',age:'25–34岁',job:'企业职员',fam:'单身',
   desc:'内向不善表达，问一句答一句，很少主动透露需求，需要销售不断提问才能挖掘真实意图；适合训练主动挖掘与开放式提问。',
   style:'沉默被动型',diff:'普通',mood:'平和',brand:['合资品牌'],qual:['品质优先'],
@@ -2979,11 +4119,10 @@ const AI_ARCH=[
   style:'感性体验型',diff:'普通',mood:'平和',brand:['国产品牌'],qual:['设计优先','性价比优先'],
   disc:'逐步透露',cmp:'喜欢多方比较',push:'接受适度推荐',len:'适中',init:'主动与被动结合',vg:'男声',vt:'青年',spd:'正常',tone:'活泼',tags:'年轻客群, 智能配置, 社交种草',
   reason:'库中缺少 18–24 岁年轻客群。年轻用户决策路径与年长用户差异大，是新能源品牌的重点人群，需要专项训练。'},
- {dim:'brand',gapVal:'豪华品牌',name:'企业主吴总',sex:'男',age:'45–54岁',job:'企业管理者',fam:'已婚有孩',
+ {dim:'style',gapVal:'强势主导型',name:'企业主吴总',sex:'男',age:'45–54岁',job:'企业管理者',fam:'已婚有孩',
   desc:'预算充足、看重品牌调性与专属服务，对价格不敏感但要求尊重与隐私，适合训练高端客户的尊享式服务话术。',
-  style:'强势主导型',diff:'困难',mood:'平和',brand:['豪华品牌'],qual:['品质优先','服务优先'],
-  disc:'被动询问才透露',cmp:'不喜欢比较',push:'反感主动推销',len:'简短',init:'主动提问',vg:'男声',vt:'浑厚',spd:'慢速',tone:'严肃',tags:'豪华品牌, 尊享服务, 高端客户',
-  reason:'缺少偏好「豪华品牌」的客户。高端客户在意尊贵感与隐私，话术逻辑与大众品牌完全不同，需要单独训练尊享式服务。'}
+  style:'强势主导型',len:'简短',init:'主动提问',vg:'男声',vt:'浑厚',spd:'慢速',tone:'严肃',tags:'豪华品牌, 尊享服务, 高端客户',
+  reason:'缺少「强势主导型」客户。此类客户习惯掌控节奏、直接质疑价格与方案，谈判与异议处理的难度远高于普通客户，需要单独训练。'}
 ];
 let AI_LAST=-1;
 function aiSetForm(a){
@@ -2991,15 +4130,15 @@ function aiSetForm(a){
   const setRadio=(name,v)=>{document.querySelectorAll('input[name="'+name+'"]').forEach(e=>{e.checked=(e.value===v);e.dispatchEvent(new Event('change',{bubbles:true}));});};
   const setChk=(name,vs)=>{document.querySelectorAll('input[name="'+name+'"]').forEach(e=>{e.checked=vs.indexOf(e.value)>=0;e.dispatchEvent(new Event('change',{bubbles:true}));});};
   set('pName',a.name);set('pSex',a.sex);set('pAge',a.age);set('pJob',a.job);set('pFam',a.fam);
-  set('pDesc',a.desc);set('pDiff',a.diff);set('pMood',a.mood);set('pDisc',a.disc);set('pCmp',a.cmp);set('pPush',a.push);
+  set('pDesc',a.desc);
   set('pLen',a.len);set('pInit',a.init);set('pVg',a.vg);set('pVt',a.vt);set('pSpd',a.spd);set('pTone',a.tone);set('pTags',a.tags);
-  setRadio('pStyle',a.style);setChk('pBrand',a.brand);setChk('pQual',a.qual);
+  setRadio('pStyle',a.style);
   updatePersonaPreview();
   const pc=document.querySelector('.pn-pv .pc');if(pc){pc.classList.remove('flash');void pc.offsetWidth;pc.classList.add('flash');}
 }
 function aiGapTags(chosenDim,chosenVal){
   const s=aiSeen();
-  const L={style:'客户风格',diff:'沟通难度',age:'年龄段',brand:'品牌偏好',qual:'品质偏好',scene:'训练场景'};
+  const L={style:'客户风格',age:'年龄段'};
   let tags=[];
   Object.keys(L).forEach(d=>{(AI_MISS[d]||[]).filter(v=>!s[d].has(v)).slice(0,3).forEach(v=>tags.push({d:d,v:v,hot:d===chosenDim&&v===chosenVal}));});
   tags=tags.slice(0,6);
@@ -3007,7 +4146,7 @@ function aiGapTags(chosenDim,chosenVal){
 }
 function personaAISuggest(){
   const s=aiSeen();
-  const miss={style:AI_STYLE.filter(v=>!s.style.has(v)),diff:AI_DIFF.filter(v=>!s.diff.has(v)),age:AI_AGE.filter(v=>!s.age.has(v)),brand:AI_BRAND.filter(v=>!s.brand.has(v))};
+  const miss={style:AI_STYLE.filter(v=>!s.style.has(v)),age:AI_AGE.filter(v=>!s.age.has(v))};
   let cand=AI_ARCH.filter(a=>(miss[a.dim]||[]).indexOf(a.gapVal)>=0);
   if(!cand.length) cand=AI_ARCH;
   AI_LAST=(AI_LAST+1)%cand.length;
@@ -3047,33 +4186,197 @@ function dimBars(){
   return d.map(x=>'<div class="dim-row"><label>'+x[0]+'</label><div class="bar"><i style="width:'+x[1]+'%'+(x[1]<60?';background:var(--warn)':'')+'"></i></div><b>'+x[1]+'</b></div>').join('');
 }
 
-/* ---- 剧本详情（整页，参考角色详情页；复用通用详情字段与雷达） ---- */
+/* ---- 剧本详情（整页；字段与「新建剧本」一一对应：基础信息 / 模拟客户 / 对话流程 / 能力雷达 / 适用对象 / 调用素材） ---- */
 let SCRIPT_VIEW=-1;
+const SCRIPT_XTRA={
+ '进店首次接待·犹豫型客户':{
+  updated:'2026-10-12',diff:'普通',first:'学员先开口',radar:0,custs:['王先生','李女士'],mats:[10,15],
+  scene:'【场景】到店首次接待 · 工作日午间\n【角色】学员扮演销售顾问；对方扮演首次到店、对购车有兴趣但较为犹豫的客户\n【沟通地点】门店展厅\n【任务】完成接待破冰与需求了解，介绍车型亮点并处理客户异议，最终邀请客户参与试驾并约定到店时间。',
+  theme:'汽车销售代表品牌方，客户为有购车意向的潜在用户，双方在线下门店进行面对面的首次接待沟通，旨在通过需求挖掘与车型讲解建立信任并推进试驾。',
+  stages:[
+   {n:'开场接待与破冰',w:20,desc:'客户进店后先在展车旁自行观察，销售需主动上前接待，通过寒暄与自我介绍降低客户防备，营造轻松的沟通氛围。',
+    pts:['主动问候并自我介绍，30 秒内说明来意与服务范围','观察客户停留的展车，用开放式问题引出关注点','递上名片与茶水，避免一上来就追问预算'],
+    goal:'完成接待破冰，建立初步信任',limit:'不追问预算与付款方式',qa:[['您好，我先随便看看。','好的，您先看，我就在旁边，有需要随时叫我。这台是刚到店的展车，需要我帮您打开车门看看内饰吗？']]},
+   {n:'需求挖掘',w:25,desc:'在客户放松后逐步了解用车场景、家庭成员、通勤距离与换购原因，判断真实需求与决策链。',
+    pts:['围绕用车场景、通勤距离、家庭成员分层提问','确认是否首次购车、是否有旧车置换','识别决策人及决策时间，记录关键信息'],
+    goal:'摸清用车场景、预算区间与决策链',limit:'单次提问不超过两个问题，避免连环追问',qa:[['我主要是接送孩子，偶尔跑跑长途。','接送孩子的话，后排空间和上下车便利性会很重要。平时长途大概多久一次？我可以帮您重点看下续航和座椅的舒适性。']]},
+   {n:'车型讲解与竞品应对',w:30,desc:'结合客户关注点讲解车型卖点，客户提到竞品时不贬低对手，用数据与场景做客观对比。',
+    pts:['围绕客户关注点讲解，避免配置单式罗列','用试驾体验、真实案例与数据支撑卖点','客户提竞品时先认同再客观对比，不贬低'],
+    goal:'让客户认可 2-3 个核心卖点并建立对比优势',limit:'不贬低竞品，不做无依据的绝对化承诺',qa:[['这个车跟XX品牌比怎么样？','您关注的这个点确实也是很多客户会对比的。两个车各有优势，我按您刚才说的通勤和后排需求，帮您把关键几项拉出来对比一下。']]},
+   {n:'促成邀约',w:25,desc:'在客户表达兴趣后提出明确的下一步行动建议，把意向转化为试驾或二次到店安排。',
+    pts:['捕捉兴趣信号后主动提出试驾邀请','给出具体可选时间，降低客户决策成本','离店前留存联系方式并约定跟进节点'],
+    goal:'约定试驾时间或二次到店安排',limit:'不强行逼单，不承诺未获批的价格政策',qa:[['我再考虑考虑吧。','完全理解，买车确实要多看看。要不这样，您先试驾感受一下动力和空间，试完再考虑会更直观。这周六上午还是周日下午方便？']]}
+  ]},
+ '竞品对比价格谈判':{
+  updated:'2026-10-10',diff:'困难',first:'客户先开口',radar:0,custs:['王先生','王总'],mats:[15,11],
+  scene:'【场景】客户已完成两家竞品试驾，回到门店直接以竞品报价施压\n【角色】学员扮演销售顾问；对方扮演已掌握竞品底价、擅长比价的理性客户\n【沟通地点】门店洽谈区\n【任务】澄清对比口径，重构产品价值，在不破价的前提下推进成交或保留跟进空间。',
+  theme:'客户手持竞品报价单到店议价，销售需在不损害价格体系的前提下回应比价、讲清价值差异，并推动客户做出下一步决定。',
+  stages:[
+   {n:'异议开场',w:20,desc:'客户直接抛出竞品低价并要求对标，销售先承接情绪、确认对比口径，避免正面否认。',
+    pts:['先认同客户比价行为的合理性','复述客户给出的竞品价格与配置，确认口径','不急于解释，先问清对方报价包含的项目'],
+    goal:'承接价格异议并确认对比口径',limit:'不直接否认竞品价格，不承诺对标',qa:[['人家那边比你便宜一万五，你怎么说？','您能谈到这个价格确实做了功课。我先确认一下，这个一万五是在同样的配置和金融方案下比的吗？']]},
+   {n:'竞品对比澄清',w:30,desc:'把总价拆解为配置、金融方案、权益与残值几个维度，让客户看到价格差异的实际来源。',
+    pts:['拆解报价构成：车价、金融、保险、精品、权益','用表格或纸笔现场对比关键差异项','指出竞品低价可能对应的配置缩减或附加条件'],
+    goal:'让客户理解价格差异的构成',limit:'不做无依据的贬低，数据须可查',qa:[['配置我看着差不多啊。','表面上接近，我按您刚说的三项关键配置逐条对一下，您看差异主要在这两处。']]},
+   {n:'价值重构',w:25,desc:'回到客户最初关注的用车需求，用服务、残值、用车成本把话题从价格拉回价值。',
+    pts:['把话题拉回客户的真实需求与长期用车成本','用保值率、保养成本、服务网络量化差异','给出可验证的承诺（试驾、延保、服务权益）'],
+    goal:'建立价值优势认知，弱化单纯价格比较',limit:'不承诺未获批的权益',qa:[['说这些我还是看价格。','价格我理解，咱们把三年用车成本一起算一下，您可能会看到不一样的数字。']]},
+   {n:'价格与权益谈判',w:25,desc:'在权限范围内组合权益方案，给出有条件的价格方案并换取客户承诺。',
+    pts:['明确自身权限边界，不做越权承诺','用权益组合替代直接降价','每个让步都换取客户的对等承诺（今日定/转介绍/全款）'],
+    goal:'达成成交或锁定高意向跟进',limit:'不破价、不承诺未审批政策',qa:[['再少五千我今天就定。','五千我确实申请不到，但我可以帮您争取几次保养和延保。如果您今天能定，我现在就去跟经理申请。']]}
+  ]},
+ '金融分期异议处理':{
+  updated:'2026-09-18',diff:'普通',first:'学员先开口',radar:2,custs:['赵先生','陈女士'],mats:[14],
+  scene:'【场景】客户对分期方案提出利率与手续费异议\n【角色】学员扮演金融专员；对方扮演对利率敏感、担心被套路的客户\n【沟通地点】门店洽谈区\n【任务】解释方案构成与合规要求，回应利率异议，帮助客户选择匹配的分期方案。',
+  theme:'客户对分期利率与手续费存在疑虑，金融专员需讲清方案构成、合规边界与总成本，并推荐匹配客户资质的分期方案。',
+  stages:[
+   {n:'方案讲解',w:25,desc:'先讲清分期方案的构成要素，让客户理解首付、月供、利率之间的关系。',
+    pts:['讲清首付比例、期限、月供与利率的关系','主动说明手续费与保险要求','避免只讲月供不讲总成本'],
+    goal:'让客户理解方案构成与总成本',limit:'不做零利率等违规表述',qa:[['月供怎么比别家高？','月供受首付和期限影响，我按同样的首付帮您算一遍，您看总利息其实更少。']]},
+   {n:'异议处理',w:30,desc:'客户质疑利率偏高或手续费不合理，销售先认同顾虑再给出对比与解释。',
+    pts:['先认同客户对成本的关注','用不同首付/期限方案做对比','解释手续费对应的服务内容'],
+    goal:'化解利率与手续费异议',limit:'不贬低同业，不隐瞒费用',qa:[['这个利率有点高吧。','您的顾虑很合理。利率和您的首付比例、期限都相关，我给您算一版首付多两成的方案，总利息能降不少。']]},
+   {n:'资质匹配与合规提示',w:25,desc:'根据客户资质推荐合适方案，主动提示提前还款、逾期等关键条款。',
+    pts:['根据客户收入与征信情况推荐方案','主动说明提前还款、逾期违约责任','关键条款复述确认，留存告知记录'],
+    goal:'推荐匹配方案并完成合规告知',limit:'不误导客户隐瞒负债情况',qa:[['能不能不写这个逾期条款？','这个条款是合同固定内容，我必须跟您说明清楚，避免后续产生不必要的费用。']]},
+   {n:'促成办理',w:20,desc:'在客户认可方案后推进资料准备与办理流程，明确时间节点。',
+    pts:['列出所需资料清单并逐项确认','明确审批时长与放款节点','约定资料提交时间'],
+    goal:'推进资料提交与审批',limit:'不承诺审批结果与放款时间',qa:[['资料我明天再准备吧。','可以，那我先把清单发您。审批一般要一到两个工作日，您明天下午提交的话，这周就能走完。']]}
+  ]},
+ '试驾邀约电话演练':{
+  updated:'2026-10-06',diff:'简单',first:'客户先开口',radar:0,custs:['李女士','孙女士'],mats:[12,10],
+  scene:'【场景】电话邀约 · 线上留资客户首次回访\n【角色】学员扮演销售顾问；对方扮演留资但未到店、时间不确定的客户\n【沟通地点】电话沟通\n【任务】在 3 分钟内完成身份确认、需求确认、邀约理由说明与到店时间锁定。',
+  theme:'销售通过电话回访线上留资客户，需在有限时间内建立信任、确认需求并成功锁定到店试驾时间。',
+  stages:[
+   {n:'开场确认',w:20,desc:'自报身份与来源，确认对方是否方便通话，避免引起反感。',
+    pts:['自报门店、姓名与来电目的','确认客户当前是否方便通话','提及客户留资来源，建立合理性'],
+    goal:'完成身份确认并获得继续沟通许可',limit:'不在客户明确表示不方便时强行继续',qa:[['我现在有点忙。','好的，不打扰您，我这边是XX门店的销售顾问，您之前在线上看过银河E5，我五分钟后再打给您方便吗？']]},
+   {n:'需求确认',w:25,desc:'围绕留资信息确认车型、预算与购车时间，判断意向等级。',
+    pts:['确认关注车型与配置','了解购车时间与是否已有对比车型','判断是否需要家人共同决策'],
+    goal:'确认需求与购车时间窗',limit:'单次提问不超过两个问题',qa:[['我还在看，没定时间。','理解，买车确实要多看看。您目前主要对比哪几款？我帮您把差异点整理一下，到店看车会更省时间。']]},
+   {n:'邀约理由说明',w:30,desc:'给出具体到店理由（新车到店、试驾活动、限时权益），降低客户到店的心理成本。',
+    pts:['给出具体、限时的到店理由','强调试驾只需 30 分钟，降低时间顾虑','说明到店可获得的具体价值'],
+    goal:'让客户认可到店的理由与价值',limit:'不虚构活动与政策',qa:[['到店有必要吗？网上看看就行。','网上看配置确实方便，但动力和空间还是得坐进去感受。这周刚好有试驾车在店，试一圈 30 分钟就够。']]},
+   {n:'时间锁定',w:25,desc:'给出两个具体时间选项，锁定到店时间并完成提醒安排。',
+    pts:['提供两个具体时间选项而非开放式提问','确认同行人与交通方式','挂机前发送短信确认并约定提醒'],
+    goal:'锁定具体到店时间',limit:'不约定无法保障的车源与权益',qa:[['再说吧，我有空就过去。','行，那我先帮您留个位置。周六上午十点或者周日下午三点，哪个更合适？我提前把车准备好。']]}
+  ]},
+ '老客户置换升级邀约':{
+  updated:'2026-11-02',diff:'普通',first:'学员先开口',radar:0,custs:['陈女士','王总'],mats:[10],
+  scene:'【场景】老客户置换回访 · 购车满三年客户\n【角色】学员扮演销售顾问；对方扮演对现有车辆满意但无明确换购计划的客户\n【沟通地点】电话沟通\n【任务】结合车况与置换补贴政策，唤起换购意愿并邀约到店评估。',
+  theme:'针对购车满三年的老客户进行置换回访，销售需结合车况残值、置换补贴与新款卖点唤起换购意愿，并邀约到店评估。',
+  stages:[
+   {n:'关系维护开场',w:25,desc:'以用车关怀切入，避免一上来就推销，先了解当前车况与用车感受。',
+    pts:['回顾客户购车时间与车型','关心近期用车情况与保养记录','不急于提置换，先建立对话氛围'],
+    goal:'建立关怀语境，了解当前车况',limit:'不在开场阶段直接推销新车',qa:[['车子挺好的，没什么问题。','那就好，您这台车保养记录一直很规范。最近跑长途多吗？三年车龄刚好是残值比较合适的时候。']]},
+   {n:'置换价值说明',w:35,desc:'讲清当前残值、置换补贴与新款升级点，让客户看到换购的实际成本。',
+    pts:['说明当前车况对应的残值区间','介绍置换补贴政策与叠加权益','对比新款在空间、智驾、能耗上的升级'],
+    goal:'让客户明确换购的实际成本与收益',limit:'残值估价须说明以到店评估为准',qa:[['换车还得再贴不少钱吧。','按您现在这台的车况，残值加上置换补贴，实际补差比您想的小。具体数字得到店评估才准，我可以先帮您算个区间。']]},
+   {n:'到店评估邀约',w:20,desc:'把置换转化为一次低门槛的到店评估，明确所需材料与时长。',
+    pts:['强调评估免费且不影响用车','说明需携带的证件与材料','约定具体到店时间'],
+    goal:'约定到店评估时间',limit:'不承诺未经评估的置换价格',qa:[['改天有空再去吧。','评估大概二十分钟，不耽误您用车。这周三下午或者周六上午，您哪个方便？']]}
+  ]},
+ '交付环节客户关怀':{
+  updated:'2026-09-12',diff:'简单',first:'客户先开口',radar:1,custs:['陈女士','孙女士'],mats:[13,8],
+  scene:'【场景】交车当日 · 交付区\n【角色】学员扮演交付专员；对方扮演提车当天既兴奋又焦虑、问题较多的客户\n【沟通地点】门店交付区\n【任务】完成交车仪式与功能讲解，回应客户疑问，安排后续回访节点。',
+  theme:'交车当日客户对新车功能与后续服务存在疑问，交付专员需完成仪式、讲清功能与保养节点，并建立后续回访联系。',
+  stages:[
+   {n:'交车仪式与验车',w:30,desc:'按流程完成外观内饰验车与随车物品清点，营造仪式感。',
+    pts:['陪同客户逐项验车，说明检查要点','清点随车物品与证件资料','完成交车仪式并留影'],
+    goal:'完成验车与仪式，建立良好体验',limit:'不催促客户，不省略验车环节',qa:[['这个划痕是怎么回事？','我马上帮您确认，如果是运输造成的，我们现在就记录并安排处理，不会影响您提车。']]},
+   {n:'功能讲解',w:40,desc:'围绕客户日常使用场景讲解车机、辅助驾驶、充电与保养要点，避免功能罗列。',
+    pts:['按客户日常场景讲解高频功能','现场演示车机绑定与辅助驾驶开启','说明充电/加油与保养节点'],
+    goal:'让客户掌握高频功能并知道保养节点',limit:'不做超出说明书的操作承诺',qa:[['这个辅助驾驶怎么用？','我帮您绑定好账号，示范一次开启方式。注意它只是辅助，手还是要放在方向盘上。']]},
+   {n:'后续回访安排',w:30,desc:'约定交车后回访节点，明确服务顾问与救援联系方式。',
+    pts:['约定 3 日与首保前的回访节点','告知服务顾问与 24 小时救援电话','邀请客户加入车主服务群'],
+    goal:'建立交付后的服务联系',limit:'不承诺未开通的服务权益',qa:[['以后有问题找谁？','这是您的专属服务顾问联系方式，群里也能直接找到我。三天后我会主动联系您，看看用车情况。']]}
+  ]}
+};
+function scriptXtraOf(name){
+  return SCRIPT_XTRA[name]||{updated:'—',diff:'普通',first:'学员先开口',radar:0,custs:[],mats:[],scene:'—',theme:'—',stages:[]};
+}
 function viewScript(i){ SCRIPT_VIEW=i; go('scriptDetail'); }
 function pgScriptDetail(){
   const p=DB.scripts, row=p.rows[SCRIPT_VIEW];
   if(!row){ go('scripts'); return ''; }
-  const kv=p.detail.map((d,i)=>'<div class="kv"><span>'+d+'</span><b>'+(row[i]&&row[i].replace(/<[^>]+>/g,'')||'—')+'</b></div>').join('');
-  let secs='';
-  (p.dsec||[]).forEach(s=>{
-    const items=s[1].map(it=>{
-      if(Array.isArray(it)) return '<div style="margin-bottom:6px">'+it.filter(x=>x).map(x=>'<span class="pill">'+x+'</span>').join('')+'</div>';
-      return '<div style="margin-bottom:6px">'+it+'</div>';
-    }).join('');
-    secs+='<div class="sec"><h4>'+s[0]+'</h4>'+(s[0]==='评分维度'?dimBars():items)+'</div>';
-  });
-  const radar='<div class="sec"><h4>示例 · 本次会话能力雷达</h4><div id="dRadar"></div></div>';
+  const strip=s=>String(s||'').replace(/<[^>]+>/g,'').trim();
+  const name=strip(row[0]), type=strip(row[1]), org=strip(row[3]), refs=strip(row[6]);
+  const status=strip(row[5]);
+  const preset=strip(row[4])!=='—';
+  const xt=scriptXtraOf(name);
+  const rt=RADAR_TABLES[xt.radar]||RADAR_TABLES[0];
+  const stCls=status==='已发布'?OK:(status==='草稿'?INFO:GRAY);
+  const kv=(l,val)=>'<div class="kv"><span>'+l+'</span><b>'+((val&&val!=='—')?esc(val):'—')+'</b></div>';
   const N=[];
-  N.push('<div class="page-head"><h1>剧本详情</h1><span class="desc">'+esc(row[0].replace(/<[^>]+>/g,''))+'</span><div class="btns">'+
+  /* 页头：返回 / 编辑（去掉「查看引用关系」） */
+  N.push('<div class="page-head"><h1>剧本详情</h1><span class="desc">'+esc(name)+' · '+esc(type)+' · 更新于 '+esc(xt.updated)+'</span><div class="btns">'+
     '<button class="btn btn-g" onclick="go(\'scripts\')">'+icon('back',13)+'返回</button>'+
-    '<button class="btn btn-p" onclick="toast(\'Demo：编辑剧本\')">编辑</button>'+
-    '<button class="btn btn-g">查看引用关系</button></div></div>');
+    '<button class="btn btn-p" onclick="toast(\'Demo：编辑剧本\')">编辑</button></div></div>');
+  N.push(ST(status,stCls)+' <span class="src-t '+(preset?'src-b':'src-a')+'">'+(preset?'主机厂预设':'自建')+'</span>');
   N.push('<div class="pn-wrap"><div class="pn-card">');
-  N.push('<div class="kv-list">'+kv+'</div>');
-  N.push(radar+secs);
-  N.push('<div class="sec" style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-p" onclick="toast(\'Demo：编辑剧本\')">编辑</button><button class="btn btn-g">查看引用关系</button></div>');
+
+  /* 1 · 基础信息（对应新建页：剧本名称 / 剧本类型 / 剧本场景配置） */
+  N.push('<div class="fsec"><h3>基础信息</h3></div>');
+  N.push('<div class="kv-list">'+
+    kv('剧本名称',name)+kv('剧本类型',type)+kv('状态',status)+kv('创建来源',preset?'主机厂预设':'自建')+
+    kv('被引用',refs+' 个任务')+kv('更新时间',xt.updated)+
+    '<div class="kv" style="grid-column:1/-1;display:block"><span style="display:block;margin-bottom:6px">剧本场景配置</span>'+
+      '<div class="sd-config">'+esc(xt.scene)+'</div></div>'+
+  '</div>');
+
+  /* 2 · 模拟客户配置（对应新建页：可选多位，学员任选一位） */
+  N.push('<div class="fsec"><h3>模拟客户配置</h3></div>');
+  if(xt.custs.length){
+    N.push('<div class="sd-custs">'+xt.custs.map(cn=>{
+      const pe=PERSONAS.find(x=>x.name===cn); const v=pe?pView(pe):null;
+      return '<div class="sd-cust"><div class="pav">'+esc(cn[0])+'</div><div style="min-width:0">'+
+        '<div class="nm">'+esc(cn)+'</div>'+
+        '<div class="mt">'+(v?esc([v.sex,v.age,v.job].filter(Boolean).join(' · ')):'—')+'</div>'+
+        '<div class="mt">'+(v?esc([v.style,v.voice].filter(Boolean).join(' · ')):'—')+'</div>'+
+      '</div></div>';
+    }).join('')+'</div>');
+  } else {
+    N.push('<div class="sd-empty">未配置模拟客户</div>');
+  }
+
+  /* 3 · 对话流程（对应新建页：会话框架目标 + 阶段 / 权重 / 框架描述 / 评价指标 / 目标 / 约束 / 参考话术） */
+  N.push('<div class="fsec"><h3>对话流程</h3></div>');
+  N.push('<div class="sd-theme"><b>会话框架目标</b><br>'+esc(xt.theme)+'</div>');
+  const wsum=xt.stages.reduce((a,s)=>a+(+s.w||0),0);
+  N.push('<div class="sd-stages">'+xt.stages.map((s,si)=>
+    '<div class="sd-stage">'+
+      '<div class="sd-stage-hd"><span class="sd-stage-no">'+(si+1)+'</span><span class="sd-stage-nm">'+esc(s.n)+'</span><span class="sd-stage-w">权重 '+(+s.w||0)+'%</span></div>'+
+      '<div class="sd-lab">框架描述</div><div class="sd-txt">'+esc(s.desc)+'</div>'+
+      '<div class="sd-lab">评价指标</div><ul class="sd-pts">'+s.pts.map(t=>'<li>· '+esc(t)+'</li>').join('')+'</ul>'+
+      '<div class="sd-stage-row"><span>目标</span><b>'+esc(s.goal)+'</b></div>'+
+      '<div class="sd-stage-row"><span>约束条件</span><b>'+esc(s.limit)+'</b></div>'+
+      (s.qa&&s.qa.length?'<div class="sd-lab">参考话术</div><div class="sd-qa">'+s.qa.map(qa=>'<div class="q">Q：'+esc(qa[0])+'</div><div class="a">A：'+esc(qa[1])+'</div>').join('')+'</div>':'')+
+    '</div>').join('')+'</div>');
+  N.push('<div class="sd-stage-sum">共 '+xt.stages.length+' 个会话阶段 · 阶段权重合计 '+wsum+'%'+(wsum===100?' ✓':'')+'</div>');
+
+  /* 4 · 能力雷达设置（对应新建页：关联能力雷达表 + 雷达图） */
+  N.push('<div class="fsec"><h3>能力雷达设置</h3></div>');
+  N.push('<div class="kv-list">'+kv('关联能力雷达表',rt.name)+kv('能力维度',rt.dims.length+' 个 · 权重合计 '+radarWSumOf(rt.ws||[])+'%')+'</div>');
+  N.push('<div class="rd-dgrid" style="margin-top:4px">'+
+    '<div class="rd-dradar"><div class="as-radar" id="sdRadar"></div></div>'+
+    '<div class="rd-ddims">'+rt.dims.map((d,j)=>'<div class="as-dim"><span class="n">'+esc(d)+'</span><div class="bar"><i style="width:'+Math.min(100,rt.ws[j]||0)+'%"></i></div><span class="w">'+(rt.ws[j]||0)+'%</span></div>'+((rt.ps&&rt.ps[j])?'<div class="rd-ps-view">评分提示词：'+esc(rt.ps[j])+'</div>':'')).join('')+'</div>'+
+  '</div>');
+
+  /* 5 · 适用对象（对应新建页：对练角色 / 训练难度 / 适用组织 / 谁先开口） */
+  N.push('<div class="fsec"><h3>适用对象</h3></div>');
+  N.push('<div class="kv-list">'+kv('对练角色',strip(row[2]))+kv('训练难度',xt.diff)+kv('适用组织',org)+kv('谁先开口',xt.first)+'</div>');
+
+  /* 6 · 调用素材（对应新建页：仅文档类，支持多选） */
+  N.push('<div class="fsec"><h3>调用素材</h3></div>');
+  const mats=xt.mats.map(id=>MATS.find(m=>m.id===id)).filter(Boolean);
+  if(mats.length){
+    N.push('<div class="sd-mats">'+mats.map(m=>'<span class="sd-mat">'+icon('script',13)+'<span>'+esc(m.name)+'</span><span class="ext">'+(m.ext||'')+'</span></span>').join('')+'</div>');
+  } else {
+    N.push('<div class="sd-empty">本剧本未调用素材</div>');
+  }
+
   N.push('</div></div>');
-  setTimeout(()=>drawRadar('dRadar',[85,72,66,58,45,88],260),50);
+  setTimeout(()=>drawRadarDims('sdRadar',rt.dims,rt.ws||[],262),30);
   return N.join('');
 }
 function openDrawerHtml(title,body){
@@ -3102,6 +4405,21 @@ function drawRadar(elId,vals,size){
   h+='<polygon points="'+vals.map((v,i)=>pt(i,R*v/100).join(',')).join(' ')+'" fill="rgba(27,91,240,.15)" stroke="#1B5BF0" stroke-width="2"/>';
   vals.forEach((v,i)=>{const [x,y]=pt(i,R*v/100);h+='<circle cx="'+x+'" cy="'+y+'" r="3" fill="#fff" stroke="#1B5BF0" stroke-width="2"/>';});
   el.innerHTML='<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" style="display:block;margin:0 auto">'+h+'</svg>';
+}
+/* 动态维度雷达图（新建剧本 · 关联能力雷达表预览）：任意维度数 + 60 分基准虚线 */
+function drawRadarDims(elId,dims,vals,size){
+  const el=document.getElementById(elId); if(!el||!dims||!dims.length)return;
+  const n=dims.length, pad=30, cv=size+pad*2, cx=cv/2, cy=cv/2, R=size*0.32, base=60;
+  const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/n;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];};
+  let h='';
+  [0.25,0.5,0.75,1].forEach(k=>{h+='<polygon points="'+dims.map((_,i)=>pt(i,R*k).join(',')).join(' ')+'" fill="'+(k===1?'#FAFCFF':'none')+'" stroke="#E5E9F2"/>';});
+  dims.forEach((d,i)=>{const [x,y]=pt(i,R);h+='<line x1="'+cx+'" y1="'+cy+'" x2="'+x+'" y2="'+y+'" stroke="#E5E9F2"/>';
+    const [lx,ly]=pt(i,R+21);const an=lx>cx+4?'start':(lx<cx-4?'end':'middle');
+    h+='<text x="'+lx+'" y="'+(ly+4)+'" font-size="10.5" fill="#5B6478" text-anchor="'+an+'" font-family="-apple-system,PingFang SC,sans-serif">'+esc(d)+'</text>';});
+  h+='<polygon points="'+dims.map((_,i)=>pt(i,R*base/100).join(',')).join(' ')+'" fill="none" stroke="#C4D6FF" stroke-width="1.5" stroke-dasharray="4 3"/>';
+  h+='<polygon points="'+vals.map((v,i)=>pt(i,R*Math.min(100,v)/100).join(',')).join(' ')+'" fill="rgba(27,91,240,.15)" stroke="#1B5BF0" stroke-width="2"/>';
+  vals.forEach((v,i)=>{const [x,y]=pt(i,R*Math.min(100,v)/100);h+='<circle cx="'+x+'" cy="'+y+'" r="3" fill="#fff" stroke="#1B5BF0" stroke-width="2"/>';});
+  el.innerHTML='<svg viewBox="0 0 '+cv+' '+cv+'" style="display:block;width:100%;max-width:'+cv+'px;height:auto;margin:0 auto">'+h+'</svg>';
 }
 
 /* ---- 工作台 ---- */
