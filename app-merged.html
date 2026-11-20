@@ -511,6 +511,100 @@ button{font-family:inherit;border:none;background:none;cursor:pointer;color:inhe
 .homebar{flex-shrink:0;height:22px;display:flex;align-items:center;justify-content:center;background:transparent}
 .homebar i{width:130px;height:5px;border-radius:99px;background:#12182B;opacity:.9}
 
+
+/* ===== 课程中心 / 学习页（对齐后台新建课程字段，纯课程不掺杂任务） ===== */
+.course-thumb{position:relative;overflow:hidden;background:var(--grad)}
+.item .thumb.course-thumb{width:60px;height:40px}
+.course-cover{aspect-ratio:3/2;display:flex;flex-direction:column;justify-content:flex-end}
+.course-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.course-thumb .ct-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;filter:drop-shadow(0 1px 3px rgba(0,0,0,.35))}
+.course-detail-cover{padding:0;background:var(--grad)}
+.course-detail-cover .course-cover-img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+.course-thumb .ct-badge{position:absolute;left:5px;top:5px;font-size:9.5px;font-weight:700;color:#fff;background:rgba(0,0,0,.26);border-radius:5px;padding:1px 5px}
+.course-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.course-tags .ctag{font-size:10.5px;color:var(--primary);background:var(--p-bg);border-radius:99px;padding:2px 8px}
+.course-meta{padding:13px 14px}
+.course-meta .course-tags{margin:0 0 6px}
+.course-meta .info-kv{padding:8px 0}
+.course-meta .bar{margin-top:8px}
+.cover .cover-tags{margin-top:9px}
+.cover .cover-tags .pill{margin:0 6px 5px 0}
+.cover .cover-desc{font-size:12px;opacity:.92;line-height:1.6;margin:6px 0 0}
+.sec-inline{display:flex;align-items:center;justify-content:space-between}
+.sec-inline small{font-size:11px;color:var(--t3)}
+.chapter-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px dashed var(--bd);cursor:pointer}
+.chapter-item:last-child{border-bottom:none}
+.chapter-item .ch-ic{width:30px;height:30px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--p-bg);color:var(--primary)}
+.chapter-item .ch-main{flex:1;min-width:0}
+.chapter-item .ch-main b{display:block;font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chapter-item .ch-main span{font-size:11px;color:var(--t3)}
+.chapter-item .ch-st{flex-shrink:0}
+.chapter-item.cur .ch-main b{color:var(--primary)}
+.learn-video{height:186px;border-radius:14px;background:radial-gradient(120% 100% at 80% 0,rgba(255,255,255,.22),transparent 60%),linear-gradient(135deg,#175EF5,#04C6EE);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;gap:8px;position:relative}
+.learn-video .lv-cap{position:absolute;left:12px;bottom:10px;font-size:11px;opacity:.9}
+.learn-video .lv-type{position:absolute;right:12px;top:10px;font-size:10.5px;background:rgba(0,0,0,.24);border-radius:99px;padding:2px 9px}
+.learn-doc{padding:16px;font-size:13px;line-height:1.85;color:var(--t2);background:#fff;border-radius:14px}
+.learn-doc p{margin:0 0 10px}
+.learn-doc p:last-child{margin-bottom:0}
+.learn-nav{display:flex;gap:9px;margin-top:12px}
+.learn-nav .btn{flex:1;height:42px;font-size:13.5px}
+.learn-nav .btn.grow2{flex:1.7}
+.chapter-dots{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.chapter-dots i{width:16px;height:5px;border-radius:3px;background:#E7EAF1;display:block}
+.chapter-dots i.done{background:var(--ok)}
+.chapter-dots i.cur{background:var(--primary)}
+
+/* ===== 课程学习页 · 按内容类型细化（视频 / PPT / PDF / 图文 / 音频） ===== */
+.ls-media{border-radius:14px;overflow:hidden;background:#fff}
+.ls-tag{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:99px;color:#fff;background:var(--primary)}
+.ls-tag.ppt{background:#E8960C}.ls-tag.pdf{background:#E0453F}.ls-tag.article{background:#12A760}.ls-tag.audio{background:#7C5CFC}
+/* 视频 */
+.ls-video{background:linear-gradient(135deg,#0E1B3D,#1B3A6E);color:#fff}
+.ls-video-stage{height:196px;position:relative;display:flex;align-items:center;justify-content:center;background:radial-gradient(120% 100% at 80% 0,rgba(255,255,255,.16),transparent 60%)}
+.ls-playbig{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.94);color:#175EF5;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.28)}
+.ls-corner{position:absolute;right:12px;top:12px;font-size:10.5px;background:rgba(0,0,0,.34);border-radius:99px;padding:3px 9px}
+.ls-vbar{display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(0,0,0,.22)}
+.ls-vbar .ls-pg{flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.25);overflow:hidden}
+.ls-vbar .ls-pg i{display:block;height:100%;background:#fff;border-radius:3px;width:0}
+.ls-vbar small{font-size:10.5px;opacity:.85;font-variant-numeric:tabular-nums}
+.ls-fs{position:absolute;right:12px;bottom:12px;width:30px;height:30px;border-radius:8px;background:rgba(0,0,0,.34);color:#fff;display:flex;align-items:center;justify-content:center}
+.ls-fs-dark{right:12px;bottom:12px;background:rgba(20,31,74,.10);color:var(--t2)}
+.ls-fileline{font-size:11.5px;color:var(--t3);padding:0 2px 2px}
+/* PPT */
+.ls-ppt{background:var(--surface-2,#F3F5FA);padding:14px}
+.ls-slide{aspect-ratio:16/9;background:#fff;border-radius:10px;box-shadow:0 4px 16px rgba(20,31,74,.12);padding:20px;display:flex;flex-direction:column;justify-content:center;position:relative;border:1px solid var(--bd)}
+.ls-slide .ls-sno{position:absolute;right:14px;top:12px;font-size:10px;letter-spacing:1px;color:var(--t3)}
+.ls-slide b{font-size:17px;color:var(--t1);line-height:1.5}
+.ls-slide .ls-ul{margin-top:14px;display:flex;flex-direction:column;gap:9px}
+.ls-slide .ls-ul span{font-size:12px;color:var(--t2);padding-left:14px;position:relative}
+.ls-slide .ls-ul span:before{content:'';position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--warn)}
+.ls-ppt-nav{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:12px}
+.ls-ppt-nav button{width:34px;height:30px;border-radius:8px;border:1px solid var(--bd2);background:#fff;color:var(--t2)}
+.ls-ppt-nav span{font-size:11.5px;color:var(--t3);font-variant-numeric:tabular-nums}
+/* PDF */
+.ls-pdf{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:14px}
+.ls-pdf-head{display:flex;align-items:center;gap:8px;padding-bottom:11px;border-bottom:1px solid var(--bd)}
+.ls-pdf-head b{font-size:12.5px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ls-pdf-head small{font-size:11px;color:var(--t3)}
+.ls-paper{padding:14px 2px;font-size:12.5px;line-height:1.9;color:var(--t2)}
+.ls-paper h4{font-size:14px;color:var(--t1);margin-bottom:9px}
+.ls-paper p{margin-bottom:8px}
+.ls-pdf-foot{text-align:center;font-size:11px;color:var(--t3);padding-top:10px;border-top:1px dashed var(--bd)}
+/* 图文 */
+/* 音频 */
+.ls-audio{background:linear-gradient(135deg,#3B2A7A,#7C5CFC);border-radius:14px;padding:16px;color:#fff}
+.ls-audio-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.ls-audio-ic{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex:none}
+.ls-audio-head b{font-size:13.5px;display:block}
+.ls-audio-head span{font-size:11px;opacity:.8}
+.ls-wave{height:54px;display:flex;align-items:center;gap:3px;overflow:hidden}
+.ls-wave i{flex:1;min-width:3px;border-radius:3px;background:rgba(255,255,255,.7);display:block}
+.ls-wave i.on{background:#fff}
+.ls-audio-bar{display:flex;align-items:center;gap:11px;margin-top:14px}
+.ls-audio-play{width:38px;height:38px;flex:none;border-radius:50%;background:#fff;color:#7C5CFC;display:flex;align-items:center;justify-content:center}
+.ls-audio-bar .ls-pg{flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.28);overflow:hidden}
+.ls-audio-bar .ls-pg i{display:block;height:100%;width:0;background:#fff}
+.ls-audio-bar small{font-size:10.5px;opacity:.85;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -724,11 +818,116 @@ const SCRIPTS=[
  {id:6,name:'客户接待标准流程话术朗读',type:'情景对话',time:'5-8 分钟',nodes:1,diff:'新手',cnt:'已完成 6 次 · 平均 84',
   roles:['客服','售后'],orgs:['全部组织'],from:'后台',
   desc:'朗读展厅接待标准话术，纠正语速、停顿与称呼规范。',goal:'语速平稳、称呼得体、关键节点零遗漏',personas:['张老师 · 中学教师']}];
+/* 课程数据：字段与 admin 后台「新建课程」一致（名称/分类/标签/简介/封面/章节/适用对象/适用组织/学习规则），只含已发布课程，不含任务来源 */
 const COURSES=[
- {id:0,name:'新车销售六步法',ch:8,prog:100,cate:'销售流程',from:'任务'},
- {id:1,name:'银河E5产品卖点精讲',ch:6,prog:50,cate:'产品知识',from:'任务'},
- {id:2,name:'客户异议处理二十讲',ch:12,prog:45,cate:'销售技巧',from:'自主'},
- {id:3,name:'试驾邀约与体验设计',ch:5,prog:0,cate:'销售流程',from:'自主'}];
+ {id:0,name:'新车销售六步法',cate:'销售流程',tags:['新员工','销售流程','标准动作'],
+  desc:'面向新入职销售顾问的标准化销售流程课程，覆盖从进店接待到成交送客六个关键步骤，配合情景案例快速掌握标准动作。',
+  cover:'', role:'销售顾问、客服',org:'全集团',rule:'按顺序解锁',status:'已发布',prog:100,
+  chapters:[
+   {t:'01 认识你的客户：进店意图识别',type:'音频',dur:'12min',file:'01_认识客户.mp3',size:'15.8 MB'},
+   {t:'02 需求挖掘：三种提问方式',type:'视频',dur:'18min',file:'02_需求挖掘.mp4',size:'214 MB'},
+   {t:'03 产品介绍：FABE法则',type:'视频',dur:'22min',file:'03_FABE法则.mp4',size:'263 MB'},
+   {t:'04 试驾体验设计',type:'图文',dur:'15min',file:'04_试驾体验.pdf',size:'3.5 MB'},
+   {t:'05 报价与金融方案',type:'视频',dur:'20min',file:'05_报价金融.mp4',size:'238 MB'},
+   {t:'06 促成与告别送客',type:'图文',dur:'10min',file:'06_促成送客.pdf',size:'2.3 MB'},
+   {t:'07 全流程串讲与常见误区',type:'PPT',dur:'14min',file:'07_流程串讲.pptx',size:'8.4 MB'},
+   {t:'08 阶段测验：流程关键点',type:'PDF',dur:'8min',file:'08_阶段测验.pdf',size:'1.6 MB'}]},
+ {id:1,name:'银河E5产品卖点精讲',cate:'产品知识',tags:['产品知识','银河E5'],
+  desc:'围绕银河 E5 核心产品力展开，帮助销售顾问建立结构化的产品介绍逻辑，并能应对常见客户疑问。',
+  cover:'', role:'销售顾问',org:'全集团',rule:'自由学习',status:'已发布',prog:80,done:4,curProg:80,
+  chapters:[
+   {t:'01 车型定位与目标人群',type:'图文',dur:'10min',file:'01_车型定位.pdf',size:'2.1 MB'},
+   {t:'02 三电系统与续航',type:'视频',dur:'24min',file:'02_三电续航.mp4',size:'286 MB'},
+   {t:'03 智能座舱与配置',type:'视频',dur:'20min',file:'03_智能座舱.mp4',size:'241 MB'},
+   {t:'04 核心卖点话术演练',type:'PPT',dur:'18min',file:'04_卖点话术.pptx',size:'10.8 MB'},
+   {t:'05 竞品差异对比',type:'图文',dur:'14min',file:'05_竞品对比.pdf',size:'3.1 MB'},
+   {t:'06 常见异议回应',type:'视频',dur:'16min',file:'06_异议回应.mp4',size:'192 MB'}]},
+ {id:2,name:'客户异议处理二十讲',cate:'销售技巧',tags:['销售技巧','异议处理'],
+  desc:'系统梳理价格、竞品、配置等高频异议，配合实战话术帮助顾问从容应对。',
+  cover:'', role:'销售顾问',org:'全集团',rule:'自由学习',status:'已发布',prog:45,
+  chapters:[
+   {t:'01 异议的本质与分类',type:'视频',dur:'14min',file:'01_异议分类.mp4',size:'168 MB'},
+   {t:'02 价格异议应对',type:'视频',dur:'26min',file:'02_价格异议.mp4',size:'312 MB'},
+   {t:'03 竞品对比应对',type:'视频',dur:'24min',file:'03_竞品应对.mp4',size:'286 MB'},
+   {t:'04 拖延决策应对',type:'图文',dur:'16min',file:'04_拖延决策.pdf',size:'3.4 MB'},
+   {t:'05 综合实战演练',type:'PPT',dur:'20min',file:'05_实战演练.pptx',size:'12.6 MB'},
+   {t:'06 配置与权益类异议',type:'图文',dur:'13min',file:'06_配置权益.pdf',size:'2.8 MB'},
+   {t:'07 交付周期类异议',type:'图文',dur:'11min',file:'07_交付周期.pdf',size:'2.2 MB'},
+   {t:'08 金融方案类异议',type:'视频',dur:'19min',file:'08_金融异议.mp4',size:'226 MB'},
+   {t:'09 高频异议话术模板',type:'PDF',dur:'12min',file:'09_话术模板.pdf',size:'2.6 MB'},
+   {t:'10 异议处理综合测验',type:'PDF',dur:'9min',file:'10_综合测验.pdf',size:'1.8 MB'},
+   {t:'11 复盘：典型失败案例',type:'视频',dur:'17min',file:'11_失败复盘.mp4',size:'203 MB'},
+   {t:'12 课程总结与行动清单',type:'图文',dur:'8min',file:'12_总结清单.pdf',size:'1.9 MB'}]},
+ {id:3,name:'试驾邀约与体验设计',cate:'销售流程',tags:['销售流程','邀约技巧'],
+  desc:'从电话邀约到试驾路线设计，帮助顾问提升试驾到场率与体验转化。',
+  cover:'', role:'销售顾问',org:'华北区域',rule:'自由学习',status:'已发布',prog:0,
+  chapters:[
+   {t:'01 邀约话术设计',type:'视频',dur:'16min',file:'01_邀约话术.mp4',size:'191 MB'},
+   {t:'02 试驾路线规划',type:'图文',dur:'12min',file:'02_路线规划.pdf',size:'2.7 MB'},
+   {t:'03 体验中的价值传递',type:'视频',dur:'20min',file:'03_价值传递.mp4',size:'239 MB'},
+   {t:'04 试驾后跟进',type:'图文',dur:'10min',file:'04_试驾跟进.pdf',size:'2.1 MB'},
+   {t:'05 常见问题应对',type:'PDF',dur:'8min',file:'05_常见问题.pdf',size:'1.7 MB'}]}];
+COURSES.forEach(c=>{c.ch=c.chapters.length;if(c.done==null)c.done=Math.round(c.ch*c.prog/100);});
+function courseDoneCh(c){return c.done||0;}
+function courseChDone(c,i){return i<courseDoneCh(c);}
+function courseTypeIcon(t){return t==='视频'?'play':t==='音频'?'mic':t==='图文'?'book':'doc';}
+function courseTotalMin(c){return c.chapters.reduce((a,x)=>a+(parseInt(x.dur,10)||0),0);}
+function courseRuleText(r){return r==='按顺序解锁'?'按顺序解锁':'自由学习';}
+/* 按章节内容类型生成学习页主体，五种类型各有独立版式 */
+const FS_IC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>';
+function courseLessonBody(c,ch,i){
+  const t=ch.type, dur=esc(ch.dur||'—'), file=esc(ch.file||''), size=esc(ch.size||'');
+  const title=esc(ch.t), idx=i+1, total=c.chapters.length;
+  if(t==='视频'){
+    return '<div class="ls-media ls-video">'+
+      '<div class="ls-video-stage"><span class="ls-playbig">'+ic('play',28)+'</span><span class="ls-corner">'+dur+'</span><span class="ls-fs" title="全屏">'+FS_IC+'</span></div>'+
+      '<div class="ls-vbar"><small>00:00</small><span class="ls-pg"><i></i></span><small>'+dur+'</small></div></div>'+
+      '<div class="ls-fileline" style="margin-top:8px">'+file+' · '+size+'</div>';
+  }
+  if(t==='PPT'){
+    return '<div class="ls-ppt">'+
+      '<div class="ls-slide"><span class="ls-sno">SLIDE 01</span><b>'+title+'</b>'+
+      '<div class="ls-ul"><span>核心概念与关键定义</span><span>要点拆解与场景示例</span><span>常见误区与注意事项</span></div>'+
+      '<span class="ls-fs ls-fs-dark" title="全屏">'+FS_IC+'</span></div>'+
+      '<div class="ls-ppt-nav"><button>‹</button><span>1 / 12</span><button>›</button></div></div>'+
+      '<div class="ls-fileline" style="margin-top:8px">'+file+' · '+size+' · '+dur+'</div>';
+  }
+  if(t==='PDF'||t==='图文'){
+    return '<div class="ls-pdf">'+
+      '<div class="ls-pdf-head"><span class="ls-tag '+(t==='图文'?'article':'pdf')+'">'+t+'</span><b>'+file+'</b><small>'+size+'</small></div>'+
+      '<div class="ls-paper"><h4>'+title+'</h4>'+
+      '<p>本章节为课程「'+esc(c.name)+'」的第 '+idx+' 章学习内容，围绕岗位实战场景展开，帮助学员建立可复用的方法论。</p>'+
+      '<p>学习要点：理解核心概念，掌握标准动作，并能结合真实客户场景灵活运用。建议在学习过程中记录关键结论，便于后续复盘。</p>'+
+      '<p>完成学习后，点击下方「返回课程」结束本章学习。</p></div>'+
+      '<div class="ls-pdf-foot">第 1 页 / 共 8 页</div></div>';
+  }
+  /* 音频 */
+  const wave=Array.from({length:30},(_,x)=>'<i style="height:'+(8+((x*17)%40))+'px" class="'+(x<10?'on':'')+'"></i>').join('');
+  return '<div class="ls-audio">'+
+    '<div class="ls-audio-head"><span class="ls-audio-ic">'+ic('mic',22)+'</span><span><b>'+title+'</b><span>'+file+' · '+size+'</span></span></div>'+
+    '<div class="ls-wave">'+wave+'</div>'+
+    '<div class="ls-audio-bar"><span class="ls-audio-play">'+ic('play',18)+'</span><small>02:10</small><span class="ls-pg"><i></i></span><small>'+dur+'</small></div>'+
+    '</div>';
+}
+const COURSE_COVER_PAL={'销售流程':['#175EF5','#04C6EE'],'产品知识':['#2E7BFF','#5FB8FF'],'金融保险':['#0E9C86','#3ED9B0'],'销售技巧':['#7C5CFC','#B08CFF'],'门店管理':['#E8960C','#FFC054']};
+function courseCoverSvg(c){
+  const pal=COURSE_COVER_PAL[c.cate]||COURSE_COVER_PAL['销售流程'];
+  const nm=String(c.name||''), title=nm.length>12?nm.slice(0,12)+'…':nm;
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">'+
+    '<defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+pal[0]+'"/><stop offset="1" stop-color="'+pal[1]+'"/></linearGradient></defs>'+
+    '<rect width="600" height="400" fill="url(#cg)"/>'+
+    '<circle cx="505" cy="78" r="150" fill="#fff" opacity=".10"/>'+
+    '<circle cx="562" cy="342" r="92" fill="#fff" opacity=".08"/>'+
+    '<path d="M0 300 Q150 250 300 320 T600 278" fill="none" stroke="#fff" stroke-width="2" opacity=".18"/>'+
+    '<circle cx="470" cy="150" r="74" fill="#fff" opacity=".16"/>'+
+    '<circle cx="470" cy="150" r="46" fill="#fff" opacity=".22"/>'+
+    '<path d="M456 126 L456 174 L500 150 Z" fill="#fff" opacity=".92"/>'+
+    '<text x="34" y="326" fill="#fff" font-size="42" font-weight="700" font-family="sans-serif">'+esc(title)+'</text>'+
+    '<text x="34" y="366" fill="#fff" font-size="17" font-family="sans-serif" opacity=".86">AI陪练 · '+c.chapters.length+' 章 · '+courseTotalMin(c)+' 分钟</text>'+
+    '</svg>';
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
+function courseCoverSrc(c){return c.cover||courseCoverSvg(c);}
 const TASKS=[
  {id:0,name:'新车型销售能力培训',type:'培训任务',dl:'11-30',prog:25,status:'ing',flow:['课程 1/2','陪练 1/2','考核 0/1'],
   desc:'通过产品课程学习、客户沟通陪练和最终考核，提升新车型销售技能。'},
@@ -775,6 +974,7 @@ function render(){
   if(!isRoot) head='<div class="subhead"><button class="bk" onclick="back()">'+ic('back',16)+'</button><b>'+TITLES[s]+'</b><span class="r">'+(SRIGHT[s]||'')+'</span></div>';
   const body=SCREENS[s]();
   app.innerHTML=(head?body.replace(/(<div class="(?:page|chatpage)[^"]*">)/,'$1'+head):body)+(!hideTab?TABBAR(s):'');
+  if(s==='courses') courseFilter();
   app.classList.toggle('dark',false);
   const p=app.querySelector('.page'); if(p)p.scrollTop=samePage?keepSt:0;
   LAST_SCREEN=s;LAST_DEPTH=STACK.length;
@@ -833,7 +1033,7 @@ SCREENS.home=()=>'<div class="page bleed" style="padding-bottom:0">'+
   '<div class="q" onclick="navTo(\'diag\')"><div class="ic ic-g">'+ic('target',18)+'</div><b>能力诊断</b></div>'+
   '<div class="q" onclick="navTo(\'qa\')"><div class="ic ic-c">'+ic('chat',18)+'</div><b>AI问答</b></div></div>'+
  '<div class="sec-t"><b>继续学习</b><a onclick="navTo(\'courses\')">全部课程 ›</a></div>'+
- '<div class="item" onclick="navTo(\'learn\')"><div class="thumb ic-b">'+ic('play',20)+'</div><div class="tt"><b>银河E5产品卖点精讲</b><span>第 3 章 · 动力与续航 · 已学 50%</span></div><button class="btn btn-p" style="height:32px;padding:0 14px;font-size:12.5px;border-radius:9px" onclick="event.stopPropagation();navTo(\'learn\')">继续</button></div>'+
+ '<div class="item" onclick="SET_COURSE(1);navTo(\'courseDetail\')"><div class="thumb ic-b">'+ic('play',20)+'</div><div class="tt"><b>'+COURSES[1].name+'</b><span>'+COURSES[1].chapters[Math.min(courseDoneCh(COURSES[1]),COURSES[1].chapters.length-1)].t+' · 已学 '+COURSES[1].prog+'%</span></div><button class="btn btn-p" style="height:32px;padding:0 14px;font-size:12.5px;border-radius:9px" onclick="event.stopPropagation();SET_COURSE(1);navTo(\'courseDetail\')">继续</button></div>'+
  '<div class="sec-t"><b>推荐剧本</b><a onclick="goTab(\'scripts\')">更多 ›</a></div>'+
  SCRIPTS.filter(scriptVisible).slice(0,2).map(s=>'<div class="item" onclick="PRAC.taskId=null;navTo(\'scriptDetail\');SET_SCRIPT('+s.id+')"><div class="thumb" style="background:linear-gradient(135deg,#6E4EEA,#9F7CFF)">'+ic('sword',18)+'</div><div class="tt"><b>'+s.name+'</b><span>情景对话 · '+scTime(s)+' · '+pracStats(s.name)+'</span></div>'+ic('right',15)+'</div>').join('')+
  '<div style="height:8px"></div></div>';
@@ -880,31 +1080,87 @@ SCREENS.qa=()=>{qaInit();
   :'<div class="composer"><input id="qaInput" placeholder="向 AI 提问…" onkeydown="if(event.key===\'Enter\')qaPush()"><button class="micb gray" onclick="QAMODE=\'voice\';render()" title="切换为语音提问">'+ic('mic',17)+'</button><button class="micb" onclick="qaPush()">'+ic('send',17)+'</button></div>';
  return '<div class="chatpage"><div class="qa-tip">'+ic('book',12)+'回答调取企业知识库 · 产品 / 政策 / 话术 / 流程 · 仅供参考</div><div class="chat" id="qachat">'+body+quick+'</div>'+comp+'</div>';};
 
-/* ---- 课程 ---- */
-SCREENS.courses=()=>'<div class="page">'+
- '<div style="height:12px"></div><div class="search">'+ic('doc',14)+'<input placeholder="搜索课程名称"></div>'+
- '<div class="chips">'+['全部','销售流程','产品知识','金融保险','销售技巧'].map((c,i)=>'<button class="chip'+(i===0?' on':'')+'">'+c+'</button>').join('')+'</div>'+
- COURSES.map(c=>'<div class="item" onclick="navTo(\'courseDetail\');SET_COURSE('+c.id+')"><div class="thumb" style="background:linear-gradient(135deg,#175EF5,#04C6EE)">'+ic('play',18)+'</div><div class="tt"><b>'+c.name+'</b><span>'+c.cate+' · '+c.ch+' 章 · '+c.from+'</span><div style="display:flex;gap:8px;align-items:center;margin-top:6px"><div class="bar" style="flex:1"><i class="'+(c.prog===100?'g':c.prog>0&&c.prog<50?'w':'')+'" style="width:'+c.prog+'%"></i></div><span style="font-size:11px;color:var(--t3)">'+c.prog+'%</span></div></div></div>').join('')+
- '<div class="note" style="margin-top:4px">仅展示已授权课程；未授权课程不可见。</div></div>';
+/* ---- 课程：列表 / 详情 / 学习 / 完成（仅课程，不含任务） ---- */
+let COURSE_STATUS='全部', COURSE_Q='';
+function courseSetStatus(v){COURSE_STATUS=v;courseFilter();}
+function courseQuery(v){COURSE_Q=(v||'').trim();courseFilter();}
+function courseFilter(){
+  const kw=COURSE_Q.toLowerCase();
+  document.querySelectorAll('#courseList .course-item').forEach(el=>{
+    const done=el.dataset.done==='1';
+    const stOk=COURSE_STATUS==='全部'||(COURSE_STATUS==='已完成'?done:!done);
+    const ok=stOk&&(!kw||el.dataset.kw.indexOf(kw)>=0);
+    el.style.display=ok?'':'none';
+  });
+  document.querySelectorAll('#courseCats .chip').forEach(b=>b.classList.toggle('on',b.dataset.st===COURSE_STATUS));
+  const empty=document.getElementById('courseEmpty');
+  if(empty)empty.style.display=[...document.querySelectorAll('#courseList .course-item')].some(e=>e.style.display!=='none')?'none':'block';
+}
+SCREENS.courses=()=>{
+  const cats=['全部','未完成','已完成'];
+  return '<div class="page">'+
+   '<div style="height:12px"></div><div class="search">'+ic('doc',14)+'<input id="courseSearch" placeholder="搜索课程名称 / 标签" value="'+esc(COURSE_Q)+'" oninput="courseQuery(this.value)"></div>'+
+   '<div class="chips" id="courseCats">'+cats.map(c=>'<button class="chip'+(c===COURSE_STATUS?' on':'')+'" data-st="'+c+'" onclick="courseSetStatus(\''+c+'\')">'+c+'</button>').join('')+'</div>'+
+   '<div id="courseList">'+COURSES.map(c=>{
+     const done=courseDoneCh(c);
+     return '<div class="item course-item" data-done="'+(c.prog===100?'1':'0')+'" data-kw="'+esc((c.name+' '+c.cate+' '+c.tags.join(' ')).toLowerCase())+'" onclick="SET_COURSE('+c.id+');navTo(\'courseDetail\')">'+
+      '<div class="thumb course-thumb"><img class="course-cover-img" src="'+courseCoverSrc(c)+'" alt="课程封面"><span class="ct-play">'+ic('play',16)+'</span><span class="ct-badge">'+c.ch+' 章</span></div>'+
+      '<div class="tt"><b>'+esc(c.name)+'</b><span>'+esc(c.cate)+' · '+courseTotalMin(c)+' 分钟 · '+c.chapters.length+' 章</span>'+
+       '<div class="course-tags">'+c.tags.map(t=>'<span class="ctag">'+esc(t)+'</span>').join('')+'</div>'+
+       '<div style="display:flex;gap:8px;align-items:center;margin-top:7px"><div class="bar" style="flex:1"><i class="'+(c.prog===100?'g':c.prog>0&&c.prog<50?'w':'')+'" style="width:'+c.prog+'%"></i></div><span style="font-size:11px;color:var(--t3)">'+c.prog+'%</span></div></div></div>';
+   }).join('')+'</div>'+
+   '<div class="note" id="courseEmpty" style="margin-top:4px;display:none">没有符合条件的课程，试试更换筛选或关键词。</div></div>';
+};
 
-let COURSE=1;
+let COURSE=1, LEARN_CH=0;
 function SET_COURSE(i){COURSE=i;}
-SCREENS.courseDetail=()=>{const c=COURSES[COURSE];
- return '<div class="page"><div class="cover"><h1>'+c.name+'</h1><p>讲师：集团培训中心 · 张伟</p><span class="pill">'+c.cate+'</span><span class="pill">'+c.ch+' 章</span><span class="pill">'+(c.from==='任务'?'来源：10月银河E5上市冲刺培训':'自主学习')+'</span></div>'+
- '<div class="card mt"><div class="sec-t" style="margin:0 0 8px"><b>章节目录</b></div>'+
-  Array.from({length:c.ch},(_,i)=>'<div class="info-kv"><span>0'+(i+1)+' 章节名称</span>'+(i<c.ch*c.prog/100?stTag('已完成','ok'):stTag('未学习','gray'))+'</div>').join('')+'</div>'+
- '<div class="card mt"><div class="info-kv"><span>学习要求</span><b>全部章节完成即计课程完成</b></div><div class="info-kv"><span>当前进度</span><b>'+c.prog+'%</b></div></div>'+
- '<button class="btn btn-p mt" onclick="navTo(\'learn\')">'+(c.prog>0?'继续学习':'开始学习')+'</button></div>';};
-SCREENS.learn=()=>{const c=COURSES[COURSE];
- return '<div class="page"><div class="card" style="padding:0;overflow:hidden"><div style="height:180px;background:linear-gradient(135deg,#175EF5,#04C6EE);display:flex;align-items:center;justify-content:center;color:#fff">'+ic('play',44)+'</div>'+
- '<div style="padding:14px"><b style="font-size:15px">第 3 章 · 动力与续航</b><p style="font-size:12.5px;color:var(--t2);line-height:1.75;margin-top:8px">银河E5 提供 430/530km 两种 CLTC 续航版本，全系标配神盾短刀电池……讲解时优先结合客户每日通勤里程介绍，避免堆参数。</p></div></div>'+
- '<div class="card mt"><div class="info-kv"><span>学习进度</span><b>'+c.prog+'% → 完成本章 +17%</b></div></div>'+
- '<div style="display:flex;gap:10px" class="mt"><button class="btn btn-g" style="flex:1">上一章</button><button class="btn btn-p" style="flex:2" onclick="navTo(\'courseDone\')">完成本章</button></div></div>';};
-SCREENS.courseDone=()=>
- '<div class="page" style="justify-content:center;text-align:center"><div style="font-size:52px">🎉</div><b style="font-size:19px;margin:12px 0 6px">「'+COURSES[COURSE].name+'」已完成</b>'+
- '<p style="font-size:12.5px;color:var(--t3)">完成时间 2026-10-28 17:42 · 进度已同步</p>'+
- '<div class="card mt" style="text-align:left"><div class="info-kv"><span>学习成果</span><b>8 章 · 96 分钟</b></div><div class="info-kv"><span>任务同步</span><b>课程阶段 2/2 完成</b></div><div class="info-kv"><span>下一阶段</span><b>'+stTag('陪练已解锁','ok')+'</b></div></div>'+
- '<button class="btn btn-p mt" onclick="navTo(\'taskDetail\')">返回任务详情</button><button class="btn btn-g mt" style="margin-top:10px" onclick="back()">返回课程</button></div>';
+function openLearn(idx){
+  const c=COURSES[COURSE];
+  LEARN_CH=(typeof idx==='number')?idx:Math.min(courseDoneCh(c),c.chapters.length-1);
+  navTo('learn');
+}
+/* 学习页内切换章节：同页重绘，不新增导航层级（保持 列表→详情→学习 三级） */
+function switchChapter(idx){
+  const c=COURSES[COURSE];
+  LEARN_CH=Math.max(0,Math.min(idx,c.chapters.length-1));
+  render();
+}
+SCREENS.courseDetail=()=>{const c=COURSES[COURSE],done=courseDoneCh(c);
+ return '<div class="page"><div class="cover course-detail-cover">'+
+  '<img class="course-cover-img" src="'+courseCoverSrc(c)+'" alt="课程封面">'+
+  '</div>'+
+ '<div class="card mt course-meta">'+
+   '<div class="course-tags">'+c.tags.map(t=>'<span class="ctag">'+esc(t)+'</span>').join('')+'</div>'+
+   '<div class="info-kv"><span>学习规则</span><b>'+esc(courseRuleText(c.rule))+'</b></div>'+
+   '<div class="info-kv"><span>当前进度</span><b>'+c.prog+'%</b></div>'+
+   '<div class="bar"><i class="'+(c.prog===100?'g':c.prog>0&&c.prog<50?'w':'')+'" style="width:'+c.prog+'%"></i></div>'+
+ '</div>'+
+ '<button class="btn btn-p mt" onclick="openLearn()">'+(c.prog>0?'继续学习':'开始学习')+'</button>'+
+ '<div class="card mt"><div class="sec-t" style="margin:0 0 4px"><b>章节目录</b><span style="margin-left:auto;font-size:11px;color:var(--t3)">已完成 '+done+'/'+c.chapters.length+'</span></div>'+
+  c.chapters.map((ch,i)=>'<div class="chapter-item'+(i===done?' cur':'')+'" onclick="openLearn('+i+')">'+
+   '<span class="ch-ic">'+ic(courseTypeIcon(ch.type),16)+'</span><span class="ch-main"><b>'+esc(ch.t)+'</b><span>'+esc(ch.type)+' · '+esc(ch.dur)+'</span></span>'+
+   '<span class="ch-st">'+(courseChDone(c,i)?stTag('已完成','ok'):(i===done&&c.curProg?stTag('学习中 '+c.curProg+'%','info'):stTag('未学习','gray')))+'</span></div>').join('')+'</div>'+
+ '</div>';};
+SCREENS.learn=()=>{const c=COURSES[COURSE],i=Math.max(0,Math.min(LEARN_CH,c.chapters.length-1)),ch=c.chapters[i],isVideo=ch.type==='视频';
+ const step=Math.round(100/c.chapters.length);
+ return '<div class="page">'+
+  '<div class="sec-inline" style="margin:12px 0 10px"><b style="font-size:13.5px">'+esc(ch.t)+'</b><small>第 '+(i+1)+' / '+c.chapters.length+' 章</small></div>'+
+  courseLessonBody(c,ch,i)+
+  '<div class="card mt"><div class="info-kv"><span>课程进度</span><b>'+c.prog+'% · 已完成 '+courseDoneCh(c)+'/'+c.chapters.length+' 章</b></div><div class="info-kv"><span>完成可得</span><b>进度 +'+step+'%</b></div></div>'+
+  '<div class="learn-nav"><button class="btn btn-g'+(i===0?' btn-dis':'')+'" '+(i===0?'':'onclick="switchChapter('+(i-1)+')"')+'>上一章</button>'+
+   (i<c.chapters.length-1?'<button class="btn btn-g" onclick="switchChapter('+(i+1)+')">下一章</button>':'')+
+   '<button class="btn btn-p grow2" onclick="chapterFinish()">返回课程</button></div></div>';};
+function chapterFinish(){
+  const c=COURSES[COURSE],i=Math.max(0,Math.min(LEARN_CH,c.chapters.length-1));
+  if(!courseChDone(c,i)){c.done=Math.max(c.done||0,i+1);c.prog=Math.round(c.done/c.chapters.length*100);}
+  toast('第 '+(i+1)+' 章已完成');
+  back();
+}
+SCREENS.courseDone=()=>{const c=COURSES[COURSE];
+ return '<div class="page" style="justify-content:center;text-align:center"><div style="font-size:52px">🎉</div><b style="font-size:19px;margin:12px 0 6px">「'+esc(c.name)+'」已完成</b>'+
+ '<p style="font-size:12.5px;color:var(--t3)">全部 '+c.chapters.length+' 章已学完 · 课程进度 100%</p>'+
+ '<div class="card mt" style="text-align:left"><div class="info-kv"><span>学习成果</span><b>'+c.chapters.length+' 章 · '+courseTotalMin(c)+' 分钟</b></div><div class="info-kv"><span>课程分类</span><b>'+esc(c.cate)+'</b></div><div class="info-kv"><span>学习规则</span><b>'+esc(c.rule)+'</b></div><div class="info-kv"><span>完成状态</span><b>'+stTag('已完成','ok')+'</b></div></div>'+
+ '<button class="btn btn-p mt" onclick="goTab(\'courses\')">返回课程中心</button><button class="btn btn-g mt" style="margin-top:10px" onclick="navTo(\'courseDetail\')">查看课程详情</button></div>';};
 
 /* ---- 陪练链路 ---- */
 let SCRIPT=0;
@@ -2316,7 +2572,7 @@ SCREENS.taskDetail=()=>{const t=TASKS[TASK];
  '</div>';};
 SCREENS.taskCourses=()=>
  '<div class="page"><div style="height:12px"></div><div class="note" style="margin-bottom:10px">完成全部课程后解锁陪练阶段（2/2 → 1/2）</div>'+
- COURSES.slice(0,2).map(c=>'<div class="item" onclick="navTo(\'courseDetail\')"><div class="thumb ic-b">'+ic('play',18)+'</div><div class="tt"><b>'+c.name+'</b><span>'+c.ch+' 章</span><div style="display:flex;gap:8px;align-items:center;margin-top:5px"><div class="bar" style="flex:1"><i class="'+(c.prog===100?'g':'')+'" style="width:'+c.prog+'%"></i></div><span style="font-size:11px;color:var(--t3)">'+c.prog+'%</span></div></div>'+(c.prog===100?stTag('已完成','ok'):stTag('继续','info'))+'</div>').join('')+'</div>';
+ COURSES.slice(0,2).map(c=>'<div class="item" onclick="SET_COURSE('+c.id+');navTo(\'courseDetail\')"><div class="thumb ic-b">'+ic('play',18)+'</div><div class="tt"><b>'+c.name+'</b><span>'+c.ch+' 章</span><div style="display:flex;gap:8px;align-items:center;margin-top:5px"><div class="bar" style="flex:1"><i class="'+(c.prog===100?'g':'')+'" style="width:'+c.prog+'%"></i></div><span style="font-size:11px;color:var(--t3)">'+c.prog+'%</span></div></div>'+(c.prog===100?stTag('已完成','ok'):stTag('继续','info'))+'</div>').join('')+'</div>';
 SCREENS.taskScripts=()=>
  '<div class="page"><div style="height:12px"></div><div class="note" style="margin-bottom:10px">每个剧本独立完成；完成 1/2 只显示 1/2，不会自动完成任务。</div>'+
  SCRIPTS.slice(0,2).map((s,i)=>'<div class="item"><div class="thumb" style="background:linear-gradient(135deg,#6E4EEA,#9F7CFF)">'+ic('sword',18)+'</div><div class="tt"><b>'+s.name+'</b><span>'+(i===0?'已完成 1 次 · 最高 86 分':'未开始')+'</span></div><button class="btn btn-p" style="height:30px;padding:0 13px;font-size:12px;border-radius:9px" onclick="PRAC.scriptId='+s.id+';PRAC.persona=0;PRAC.taskId=1;'+(i===0?'navTo(\'report\')':'startPractice()')+'">'+(i===0?'查看报告':'开始')+'</button></div>').join('')+'</div>';
