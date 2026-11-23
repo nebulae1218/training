@@ -1132,23 +1132,22 @@ body.chpwd .chpwd-page{display:flex}
 .crs-hero-meta{font-size:12px;color:var(--t3);margin-top:5px}
 .crs-desc{font-size:12.5px;color:var(--t2);line-height:1.9;margin-top:6px}
 .crs-chap-tbl td,.crs-chap-tbl th{padding:8px 10px}
-/* ===== 题库管理 · 新增试题（参考「新增试题」表单：左标签 + 右控件） ===== */
-.qb-wrap{max-width:980px;margin:0 auto;background:#fff;border:1px solid var(--bd);border-radius:10px;overflow:hidden}
-.qb-head{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--bd)}
-.qb-head h1{font-size:16px;font-weight:650;color:var(--t1)}
-.qb-x{border:0;background:none;font-size:17px;color:var(--t3);cursor:pointer;line-height:1;padding:2px 6px}
-.qb-x:hover{color:var(--t1)}
-.qb-card{padding:26px 28px 30px}
-.qb-row{display:flex;gap:14px;align-items:flex-start;margin-bottom:22px}
-.qb-lab{width:84px;flex:none;text-align:right;font-size:13px;color:var(--t2);padding-top:8px}
-.qb-lab i{color:var(--bad);font-style:normal;margin-right:2px}
-.qb-help{display:inline-flex;width:13px;height:13px;border-radius:50%;border:1px solid var(--bd-2);color:var(--t3);font-size:9px;align-items:center;justify-content:center;margin-left:3px;vertical-align:1px;cursor:help}
-.qb-ctl{flex:1;min-width:0}
-.qb-radios{display:flex;gap:28px;flex-wrap:wrap;padding-top:7px}
-.qb-radios label{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--t1);cursor:pointer}
-.qb-radios input,.qb-ans input,.qb-tagpop-list input{width:15px;height:15px;margin:0;accent-color:var(--primary);cursor:pointer;flex:none}
+/* ===== 题库管理 · 题目详情页（样式对齐课程详情：crs-hero + 分区卡片 + 右侧答题预览） ===== */
+.qb-d-opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.qb-d-opt{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t1)}
+.qb-d-opt b{flex:none;font-weight:600;color:var(--t2)}
+.qb-d-opt .st{flex:none}
+.qb-d-answer{font-size:13px;color:var(--t1);line-height:1.8;background:var(--surface-2);border-radius:8px;padding:10px 12px;margin-top:4px;word-break:break-all}
+.qb-d-kw{display:flex;align-items:center;gap:12px;padding:9px 0;border-top:1px dashed var(--bd)}
+.qb-d-kw:first-of-type{border-top:none}
+.qb-d-kw .ptags{flex:1;min-width:0}
+.qb-d-kw b{flex:none;font-size:12.5px;color:var(--primary);font-weight:600}
+/* ===== 题库管理 · 新建题目（系统风格：page-head 操作区 + pn-nav 分区导航 + 右侧实时预览，同新增剧本/课程） ===== */
+.qb-ans input{width:15px;height:15px;margin:0;accent-color:var(--primary);cursor:pointer;flex:none}
 .qb-ta{position:relative}
 .qb-ta textarea,.qb-answer-ta{width:100%;min-height:72px;border:1px solid var(--bd-2);border-radius:8px;padding:9px 11px;font-size:13px;font-family:inherit;outline:none;resize:vertical;color:var(--t1)}
+.qb-ta input.qb-line{width:100%;height:38px;box-sizing:border-box;border:1px solid var(--bd-2);border-radius:8px;padding:0 11px;font-size:13px;font-family:inherit;outline:none;color:var(--t1);background:#fff}
+.qb-ta input.qb-line:focus{border-color:var(--primary)}
 .qb-ta textarea:focus,.qb-answer-ta:focus,.qb-opt-txt:focus{border-color:var(--primary)}
 .qb-cnt{position:absolute;right:10px;bottom:7px;font-size:11.5px;color:var(--t3);background:#fff;padding-left:8px;pointer-events:none}
 .qb-addimg{display:inline-block;margin-top:9px;color:var(--primary);font-size:12.5px;cursor:pointer}
@@ -1158,39 +1157,121 @@ body.chpwd .chpwd-page{display:flex}
 .qb-img img{width:100%;height:100%;object-fit:cover}
 .qb-img .qb-imgx{position:absolute;right:0;top:0;background:rgba(0,0,0,.45);color:#fff;font-size:11px;line-height:16px;width:16px;text-align:center;cursor:pointer;z-index:1}
 .qb-img .qb-imgname{font-size:10px;color:var(--t3);padding:4px;word-break:break-all;text-align:center;line-height:1.3}
+/* 素材库引用卡片：图标在上、素材名在下 */
+.qb-img.qb-img-ref{flex-direction:column;gap:2px;padding:6px 4px}
+.qb-img.qb-img-ref .qb-imgic{color:var(--primary);display:flex}
+.qb-img.qb-img-ref .qb-imgname{color:var(--t2);max-height:28px;overflow:hidden;padding:0 2px}
 .qb-opt{display:flex;align-items:center;gap:12px;margin-bottom:4px}
 .qb-ans{width:16px;flex:none;display:inline-flex}
 .qb-opt-letter{width:14px;flex:none;font-size:13px;color:var(--t2)}
+.qb-opt-fixed{flex:1;font-size:13px;font-weight:600;color:var(--t1);line-height:38px;padding:0 11px;min-width:0}
 .qb-opt-txt{flex:1;height:38px;border:1px solid var(--bd-2);border-radius:8px;padding:0 11px;font-size:13px;font-family:inherit;outline:none;min-width:0;color:var(--t1);background:#fff}
-.qb-opt-txt:disabled{background:var(--surface-2);color:var(--t2)}
 .qb-opt-x{color:var(--t3);font-size:16px;cursor:pointer;width:18px;text-align:center;flex:none;line-height:1}
 .qb-opt-x:hover{color:var(--bad)}
 .qb-opt-sub{margin:2px 0 14px 28px}
 .qb-opt-sub .qb-addimg{margin-top:0}
 .qb-addopt{background:var(--primary);color:#fff;border:0;border-radius:7px;padding:9px 18px;font-size:13px;cursor:pointer;margin-top:4px}
 .qb-addopt:hover{background:var(--primary-d)}
-.qb-tagbox{display:flex;align-items:flex-start;gap:12px;background:#F5F8FF;border:1px solid #E3ECFF;border-radius:10px;padding:14px 16px}
-.qb-tagbox .qb-hash{width:34px;height:34px;flex:none;border-radius:8px;background:#E6EEFF;color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700}
-.qb-tagbox .qb-tx{flex:1;min-width:0}
-.qb-tagbox b{font-size:13px;color:var(--t1)}
-.qb-tagbox p{font-size:12px;color:var(--t3);margin-top:4px;line-height:1.6}
-.qb-taggen{flex:none;border:1px solid var(--primary);background:#fff;color:var(--primary);border-radius:99px;padding:6px 16px;font-size:12.5px;cursor:pointer;margin-top:2px}
-.qb-taggen:hover{background:var(--primary-bg)}
-.qb-tagsel{display:inline-flex;align-items:center;gap:6px;margin-top:12px;color:var(--primary);font-size:12.5px;cursor:pointer}
-.qb-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.qb-tag{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--primary);background:#F0F5FF;border:1px solid #DCE7FF;border-radius:99px;padding:4px 10px}
-.qb-tag span{cursor:pointer;color:var(--t3);font-size:13px;line-height:1}
-.qb-tagpop{border:1px solid var(--bd);border-radius:10px;box-shadow:0 8px 24px rgba(31,42,68,.12);background:#fff;padding:14px 16px;margin-top:10px;max-width:560px}
-.qb-tagpop-h{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:650;margin-bottom:12px}
-.qb-tagpop-h span{cursor:pointer;color:var(--t3);font-weight:400}
-.qb-tagpop-list{display:flex;flex-wrap:wrap;gap:10px 18px;margin-bottom:12px}
-.qb-tagpop-list label{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--t2);cursor:pointer}
-.qb-tagpop-add{display:flex;gap:8px;margin-bottom:12px}
-.qb-tagpop-add input{flex:1;height:32px;border:1px solid var(--bd-2);border-radius:7px;padding:0 10px;font-size:12.5px;outline:none;font-family:inherit}
-.qb-tagpop-add button{border:1px solid var(--primary);background:#fff;color:var(--primary);border-radius:7px;padding:0 14px;font-size:12.5px;cursor:pointer}
-.qb-tagpop-foot{display:flex;justify-content:flex-end;gap:8px}
-.qb-foot{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid var(--bd);background:#fff}
 .qb-tip{font-size:12px;color:var(--t3);margin-top:6px}
+/* 答案识别 · 方式单选（参考真实后台「智能阅卷」圆形 radio 行） */
+.qb-recog{display:flex;align-items:center;gap:26px;flex-wrap:wrap;padding:4px 0 2px}
+.qb-recog label{display:inline-flex;align-items:center;gap:8px;margin:0;font-size:13px;color:var(--t2);cursor:pointer}
+.qb-recog label input{width:15px;height:15px;margin:0;accent-color:var(--primary);cursor:pointer;flex:none}
+.qb-recog label.on,.qb-recog label:has(input:checked){color:var(--primary);font-weight:650}
+.qb-help{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#8C94A8;color:#fff;font-size:10px;font-weight:700;line-height:1;cursor:help;margin-left:2px}
+/* 评分规则（大模型判断） */
+.qb-rule{display:flex;gap:14px;align-items:flex-start;margin-top:14px}
+.qb-rule-lab{width:64px;flex:none;text-align:right;font-size:12.5px;color:var(--t2);padding-top:13px}
+.qb-rule-lab i{color:var(--bad);font-style:normal;margin-left:2px}
+.qb-rule-box{flex:1;min-width:0;position:relative;border:1px solid var(--bd-2);border-radius:9px;background:#fff;overflow:hidden}
+.qb-rule-box:focus-within{border-color:var(--primary)}
+.qb-rule-box textarea{display:block;width:100%;height:150px;border:0;outline:none;resize:vertical;padding:14px 16px;font-size:13px;font-family:inherit;color:var(--t1);background:transparent;box-sizing:border-box}
+.qb-rule-box .qb-cnt{right:14px;bottom:50px}
+.qb-rule-eg{border-top:1px dashed var(--bd-2);padding:11px 16px;font-size:12px;color:var(--t3);display:flex;align-items:center;gap:6px;background:#fff}
+.qb-rule-eg b{color:var(--t2);font-weight:600}
+/* 得分关键词组（关键词） */
+.qb-kw{margin-top:14px;border:1px solid var(--bd);border-radius:9px;overflow:hidden}
+.qb-kw-head{display:grid;grid-template-columns:1fr 130px 60px;gap:14px;background:var(--surface-2);border-bottom:1px solid var(--bd);padding:12px 16px;font-size:12.5px;font-weight:650;color:var(--t1)}
+.qb-kw-head span:nth-child(2),.qb-kw-head span:nth-child(3){text-align:center}
+.qb-kw-row{display:grid;grid-template-columns:1fr 130px 60px;gap:14px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--bd)}
+.qb-kw-row:last-of-type{border-bottom:0}
+.qb-kw-words{display:flex;align-items:center;gap:7px;flex-wrap:wrap;min-height:40px;box-sizing:border-box;border:1px solid var(--bd-2);border-radius:8px;padding:5px 9px;background:#fff}
+.qb-kw-words:focus-within{border-color:var(--primary)}
+.qb-kw-chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--bd);border-radius:5px;padding:4px 8px;font-size:12.5px;color:var(--t1);white-space:nowrap}
+.qb-kw-chip span{color:var(--t3);font-size:13px;line-height:1;cursor:pointer}
+.qb-kw-chip span:hover{color:var(--bad)}
+.form-item .qb-kw-inp{flex:1;min-width:110px;height:26px;border:0;outline:none;padding:0;font-size:12.5px;color:var(--t1);background:transparent;font-family:inherit}
+.qb-kw-ratio{display:flex;align-items:center;height:40px;box-sizing:border-box;border:1px solid var(--bd-2);border-radius:8px;overflow:hidden;background:#fff}
+.form-item .qb-kw-ratio input{flex:1;min-width:0;width:100%;height:38px;border:0;outline:none;padding:0 10px;font-size:13px;color:var(--t1);background:transparent;font-family:inherit;text-align:right}
+.qb-kw-ratio em{width:34px;flex:none;font-style:normal;font-size:12.5px;color:var(--t2);text-align:center;line-height:38px;background:var(--surface-2);border-left:1px solid var(--bd-2)}
+.qb-kw-del{border:0;background:none;color:var(--bad);font-size:12.5px;cursor:pointer;padding:0;text-align:center;font-family:inherit}
+.qb-kw-del:hover{text-decoration:underline}
+.qb-kw-add{display:inline-flex;align-items:center;gap:7px;margin-top:14px;border:0;border-radius:7px;background:var(--primary-bg);color:var(--primary);font-size:12.5px;font-weight:600;padding:9px 14px;cursor:pointer;font-family:inherit}
+.qb-kw-add:hover{background:var(--primary-bd)}
+.qb-kw-add i{width:16px;height:16px;border-radius:50%;background:var(--primary);color:#fff;font-style:normal;font-size:13px;line-height:16px;text-align:center;font-weight:400}
+.qb-kw-sum{font-size:12px;color:var(--t3);margin-top:9px}
+.qb-kw-sum b{color:var(--primary)}
+.qb-kw-sum.ok b{color:var(--ok)}
+.qb-kw-sum.bad b{color:var(--bad)}
+.qb-kw-sum .hint{font-weight:600}
+.qb-pv-kwrow{font-size:12px;color:var(--t2);padding:5px 0;border-top:1px dashed var(--bd)}
+.qb-pv-kwrow b{color:var(--primary);font-weight:600;margin-left:6px}
+/* 新建题目 · 右侧实时预览（同课程/剧本预览卡） */
+.qb-pv-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.qb-pv-badge{font-size:11.5px;padding:3px 10px;border-radius:99px;background:var(--primary-bg);color:var(--primary);font-weight:600}
+.qb-pv-badge.lv{background:var(--surface-2);color:var(--t2);font-weight:500}
+.qb-pv-stem{font-size:13px;color:var(--t1);line-height:1.7;word-break:break-all;padding-bottom:12px;border-bottom:1px dashed var(--bd)}
+.qb-pv-stem.empty{color:var(--t3)}
+.qb-pv-opts{padding:12px 0;display:flex;flex-direction:column;gap:7px;border-bottom:1px dashed var(--bd)}
+.qb-pv-opt{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--t2)}
+.qb-pv-opt b{flex:none;font-weight:600;color:var(--t1)}
+.qb-pv-opt .mark{margin-left:auto;font-size:11.5px;color:var(--ok);font-weight:600;flex:none}
+.qb-pv-ans{padding:10px 0;font-size:12.5px;color:var(--t2);line-height:1.7;word-break:break-all;border-bottom:1px dashed var(--bd)}
+.qb-pv-ans b{color:var(--t1)}
+.qb-pv-recog{font-size:12.5px;color:var(--t2);padding:10px 0}
+.qb-pv-recog b{color:var(--t1)}
+.qb-pv-recog .ok{margin-left:6px;font-size:11.5px;color:var(--ok);font-weight:600}
+.qb-pv-recog .none{margin-left:6px;font-size:11.5px;color:var(--t3)}
+/* ===== 培训中心 · 试题考试（列表 + 新建试题考试组卷配置页） ===== */
+.ex-qtbl{width:100%;border:1px solid var(--bd);border-radius:10px;overflow:hidden;border-collapse:separate;border-spacing:0;background:#fff}
+.ex-qtbl th{background:var(--surface-2);font-size:12px;color:var(--t3);font-weight:600;padding:9px 12px;text-align:left}
+.ex-qtbl td{padding:8px 12px;border-top:1px solid var(--bd);font-size:13px}
+.ex-qtbl input{width:130px;height:34px;border:1px solid var(--bd-2);border-radius:7px;padding:0 10px;font-size:13px;font-family:inherit;outline:none;color:var(--t1);background:#fff}
+.ex-qtbl input:focus{border-color:var(--primary)}
+.ex-qtbl .sub{color:var(--t2)}
+.ex-sum{display:flex;gap:20px;align-items:center;margin-top:10px;font-size:13px;color:var(--t2)}
+.ex-sum b{color:var(--primary)}
+.ex-note{font-size:12px;color:var(--t3);margin-top:6px;line-height:1.6}
+.ex-diff{background:#F5F8FF;border:1px solid #E3ECFF;border-radius:10px;padding:14px 16px;margin-top:14px}
+.ex-diff-hd{display:flex;align-items:center;gap:14px;font-size:13px;font-weight:650;color:var(--t1)}
+.ex-diff-hd .ex-swrow{margin:0 0 0 auto}
+.ex-diff-ratios{display:flex;gap:12px;font-weight:600;font-size:12px}
+.ex-r1{color:#18a058}.ex-r2{color:#e6a23c}.ex-r3{color:#e34d59}
+.ex-bar{display:flex;height:10px;border-radius:99px;overflow:hidden;margin:12px 0 10px;background:#fff}
+.ex-bar i{display:block;height:100%;transition:width .15s}
+.ex-bar .s1{background:#2fbf71}.ex-bar .s2{background:#f5a623}.ex-bar .s3{background:#e34d59}
+.ex-slider{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.ex-slider input[type=range]{flex:1;accent-color:var(--primary);min-width:0}
+.ex-slider .tags{display:flex;gap:10px;font-size:12px;color:var(--t3);flex:none}
+.ex-presets{display:flex;gap:8px;margin-top:12px}
+.ex-presets button{border:1px solid var(--bd-2);background:#fff;border-radius:99px;padding:5px 14px;font-size:12.5px;color:var(--t2);cursor:pointer}
+.ex-presets button:hover{border-color:var(--primary);color:var(--primary)}
+.ex-swrow{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-size:13px;color:var(--t1);flex-wrap:wrap}
+.ex-swrow .lab{font-weight:600;flex:none}
+.ex-swrow .tip{font-size:12px;color:var(--t3);font-weight:400}
+.ex-paper-tip{display:flex;align-items:center;gap:10px;background:#FFF7E8;border:1px solid #FFE4B8;border-radius:10px;padding:12px 14px;font-size:12.5px;color:#8a6116;margin-bottom:12px}
+.ex-qp-item{display:flex;align-items:center;gap:10px;padding:9px 6px;border-bottom:1px solid var(--bd-2);font-size:12.5px;cursor:pointer}
+.ex-qp-item:hover{background:var(--surface-2)}
+.ex-qp-item input{width:15px;height:15px;margin:0;accent-color:var(--primary);cursor:pointer;flex:none}
+.ex-qp-item .tp{flex:none;font-size:11px;padding:2px 8px;border-radius:99px;background:var(--primary-bg);color:var(--primary)}
+.ex-qp-item .tp.lv{background:var(--surface-2);color:var(--t3)}
+.ex-qp-item .stem{flex:1;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.ex-pv-row{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:7px 0;border-bottom:1px dashed var(--bd)}
+.ex-pv-row .k{color:var(--t3);flex:none}
+.ex-pv-row .v{color:var(--t1);text-align:right;word-break:break-all}
+.ex-pv-dots{display:flex;flex-wrap:wrap;gap:6px;padding-top:10px}
+.ex-dot{font-size:11.5px;padding:2px 9px;border-radius:99px;background:var(--surface-2);color:var(--t3)}
+.ex-dot.on{background:#EAF7EF;color:var(--ok);font-weight:600}
 </style>
 </head>
 <body>
@@ -1462,6 +1543,126 @@ body.chpwd .chpwd-page{display:flex}
   </div>
 </div>
 
+<!-- 新建分组弹窗（试题考试） -->
+<div class="lmodal-mask" id="exGroupMask">
+  <div class="modal">
+    <span class="close-x" onclick="closeExGroupAdd()">✕</span>
+    <h3>新建分组</h3>
+    <div class="mg-form">
+      <div class="mg-row">
+        <label>分组名称<span class="req">*</span></label>
+        <input class="m-inp" id="exGNameInp" placeholder="请输入分组名称" maxlength="20" oninput="exGNameInput()">
+      </div>
+      <div class="mg-row">
+        <label>上级分组</label>
+        <select class="mg-sel" id="exGParentSel" onchange="exGParentChange()"></select>
+      </div>
+      <div class="mu-err" id="exGErr"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="l-btn-g" onclick="closeExGroupAdd()">取消</button>
+      <button class="btn-primary" style="flex:1" onclick="doExGroupAdd()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 转移 / 批量修改分组弹窗（试题考试） -->
+<div class="lmodal-mask" id="exMoveMask">
+  <div class="modal">
+    <span class="close-x" onclick="closeExMove()">✕</span>
+    <h3 id="exMoveTitle">转移分组</h3>
+    <div class="mg-form">
+      <div class="mg-row">
+        <label>所选任务</label>
+        <div class="m-inp" id="exMoveName" style="display:flex;align-items:center;background:var(--surface-2);color:var(--t2)"></div>
+      </div>
+      <div class="mg-row">
+        <label>目标分组</label>
+        <select class="mg-sel" id="exMoveSel"></select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="l-btn-g" onclick="closeExMove()">取消</button>
+      <button class="btn-primary" style="flex:1" onclick="doExMove()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 从题库选择试题（试题组卷） -->
+<div class="lmodal-mask" id="exQPickMask">
+  <div class="modal" style="max-width:660px">
+    <span class="close-x" onclick="exQClose()">✕</span>
+    <h3>从题库选择试题</h3>
+    <div class="ex-note" style="margin:0 0 10px">勾选试题组成试卷，提交后学员按试卷作答；题目编辑后将默认自动同步至试题库。</div>
+    <div id="exQPickList" style="max-height:380px;overflow:auto"></div>
+    <div class="modal-actions">
+      <button class="l-btn-g" onclick="exQClose()">取消</button>
+      <button class="btn-primary" style="flex:1" onclick="exQConfirm()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 新建分组弹窗（题库管理） -->
+<div class="lmodal-mask" id="qbGroupMask">
+  <div class="modal">
+    <span class="close-x" onclick="closeQbGroupAdd()">✕</span>
+    <h3>新建分组</h3>
+    <div class="mg-form">
+      <div class="mg-row">
+        <label>分组名称<span class="req">*</span></label>
+        <input class="m-inp" id="qbGNameInp" placeholder="请输入分组名称" maxlength="20" oninput="qbGNameInput()">
+      </div>
+      <div class="mg-row">
+        <label>上级分组</label>
+        <select class="mg-sel" id="qbGParentSel" onchange="qbGParentChange()"></select>
+      </div>
+      <div class="mu-err" id="qbGErr"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="l-btn-g" onclick="closeQbGroupAdd()">取消</button>
+      <button class="btn-primary" style="flex:1" onclick="doQbGroupAdd()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 转移分组弹窗（题库管理） -->
+<div class="lmodal-mask" id="qbMoveMask">
+  <div class="modal">
+    <span class="close-x" onclick="closeQbMove()">✕</span>
+    <h3>转移分组</h3>
+    <div class="mg-form">
+      <div class="mg-row">
+        <label>题目</label>
+        <div class="m-inp" id="qbMoveName" style="display:flex;align-items:center;background:var(--surface-2);color:var(--t2)"></div>
+      </div>
+      <div class="mg-row">
+        <label>目标分组</label>
+        <select class="mg-sel" id="qbMoveSel"></select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="l-btn-g" onclick="closeQbMove()">取消</button>
+      <button class="btn-primary" style="flex:1" onclick="doQbMove()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 从素材库引用图片（新建题目） -->
+<div class="lmodal-mask" id="qbImgMask">
+  <div class="modal modal-wide">
+    <span class="close-x" onclick="qbImgClose()">✕</span>
+    <h3>从素材库引用图片</h3>
+    <div class="ex-note" style="margin:0 0 10px">仅可选择素材管理中「图片」类型素材；素材更新后题目自动同步引用最新版本。</div>
+    <div class="kb2-wrap">
+      <div class="kb2-side"><div class="kb2-side-h">按分组筛选</div><div id="qbImgTree"></div></div>
+      <div class="kb2-main"><div class="kb2-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="qbImgSearch" placeholder="搜索素材名称" oninput="qbImgSearchInput(this.value)"></div>
+      <div class="kb2-list" id="qbImgList"></div></div>
+    </div>
+    <div class="kb-sel-h" id="qbImgSelHead"></div><div id="qbImgChips"></div>
+    <div class="modal-actions"><button class="l-btn-g" onclick="qbImgClose()">取消</button><button class="btn-primary" style="flex:1" onclick="qbImgConfirm()">确定</button></div>
+  </div>
+</div>
+
 <!-- 新建分组弹窗（能力雷达管理） -->
 <div class="lmodal-mask" id="rdGroupMask">
   <div class="modal">
@@ -1654,7 +1855,7 @@ const NAV=[
    {k:'taskCourse',t:'课程学习任务',ic:'play',todo:1},
    {k:'taskPractice',t:'陪练任务',ic:'face',todo:1},
    {k:'examDialog',t:'对话考试',ic:'spark',todo:1},
-   {k:'examPaper',t:'试题考试',ic:'exam',todo:1}]},
+   {k:'examPaper',t:'试题考试',ic:'exam'}]},
  {g:'训练与数据分析',items:[
    {k:'rlearn',t:'学习记录',ic:'book'},
    {k:'rpractice',t:'陪练记录',ic:'script'},
@@ -1684,10 +1885,12 @@ TITLE_OF.personaDetail='模拟客户详情'; GROUP_OF.personaDetail='AI培训管
 TITLE_OF.scriptDetail='剧本详情'; GROUP_OF.scriptDetail='AI培训管理';
 TITLE_OF.courseNew='新建课程'; GROUP_OF.courseNew='知识库管理';
 TITLE_OF.courseDetail='课程详情'; GROUP_OF.courseDetail='知识库管理';
-TITLE_OF.questionNew='新增试题'; GROUP_OF.questionNew='知识库管理';
+TITLE_OF.questionNew='新建题目'; GROUP_OF.questionNew='知识库管理';
+TITLE_OF.questionDetail='题目详情'; GROUP_OF.questionDetail='知识库管理';
+TITLE_OF.examNew='新建试题考试'; GROUP_OF.examNew='培训中心';
 
 function renderNav(cur){
-  const alias={roleNew:'roles',roleDetail:'roles',personaNew:'personas',scriptNew:'scripts',orgNew:'orgs',staffDetail:'staff',staffNew:'staff',personaDetail:'personas',scriptDetail:'scripts',radarNew:'radar',radarDetail:'radar',courseNew:'courses',courseDetail:'courses',questionNew:'questions'};
+  const alias={roleNew:'roles',roleDetail:'roles',personaNew:'personas',scriptNew:'scripts',orgNew:'orgs',staffDetail:'staff',staffNew:'staff',personaDetail:'personas',scriptDetail:'scripts',radarNew:'radar',radarDetail:'radar',courseNew:'courses',courseDetail:'courses',questionNew:'questions',questionDetail:'questions',examNew:'examPaper'};
   const active=alias[cur]||cur;
   document.getElementById('nav').innerHTML = NAV.map(g=>
     (g.g?'<div class="nav-group">'+g.g+'</div>':'')+
@@ -1745,17 +1948,26 @@ const DB={
   detail:['考核名称','考核方式','关联资源','限时','及格分','考核机会','状态','发布时间'],
   dsec:[['考核对象（来自任务下发）',[['10月银河E5上市冲刺培训 · 184人','竞品应对专项陪练 · 52人']]]]},
 
- questions:{filters:['题型:全部|单选|多选|判断|填空|简答','难度:全部|简单|中等|困难'],
-  cols:[['题目（点击查看）',1],['题型',0],['难度',0],['分类',0],['状态',0],['创建时间',0]],
+/* 题库管理列表：字段与「新建题目」对齐（题型 / 分组设置 / 答案识别），难度系数与标签已随新建页移除；
+   分组为题库独立分组树（QB_GROUPS），列表页样式与课程管理一致（左侧分组面板 + 筛选卡片 + 表格） */
+ questions:{filters:['题型:全部|单选|多选|判断|填空|简答','分组设置:全部|未分组|产品知识|销售流程|金融保险|销售技巧','状态:全部|已发布|草稿|已停用'],
+  cols:[['题目（点击查看）',1],['题型',0],['分组设置',0],['答案识别',0],['状态',0],['更新时间',0]],
   rows:[
-   ['银河E5 CLTC 纯电续航是多少公里？','单选','简单','产品知识',ST('已发布',OK),'2026-10-11'],
-   ['客户提出"我再对比一下其他品牌"时，哪种应对最合适？','单选','中等','销售技巧',ST('已发布',OK),'2026-10-11'],
-   ['以下哪些属于试驾前必须确认的项目？（多选）','多选','中等','销售流程',ST('已发布',OK),'2026-10-05'],
-   ['分期购车贷款手续必须由客户本人办理。','判断','简单','金融保险',ST('已发布',OK),'2026-09-28'],
-   ['客户抱怨到店等待时间过长，正确的第一时间动作是？','单选','中等','服务规范',ST('已发布',OK),'2026-09-20'],
-   ['关于置换补贴的申请条件，以下说法正确的是？（多选）','多选','困难','金融保险',ST('草稿',INFO),'2026-09-18']],
-  detail:['题干','题型','难度','分类','正确答案','选项','解析','被试卷引用'],
-  dsec:[['试卷引用',[['10月产品知识月考（正式）','金融专员上岗考核（草稿）']]]]},
+   ['银河E5 CLTC 纯电续航是多少公里？','单选','产品知识','—',ST('已发布',OK),'2026-11-20'],
+   ['客户提出"我再对比一下其他品牌"时，哪种应对最合适？','单选','销售技巧','—',ST('已发布',OK),'2026-11-18'],
+   ['以下哪些属于试驾前必须确认的项目？','多选','销售流程','—',ST('已发布',OK),'2026-11-15'],
+   ['分期购车贷款手续必须由客户本人办理。','判断','金融保险','—',ST('已发布',OK),'2026-11-12'],
+   ['银河E5 的 CLTC 纯电续航是______公里。','填空','产品知识','关键词识别',ST('已发布',OK),'2026-11-10'],
+   ['请简述客户试驾后的邀约回访要点。','简答','销售流程','大模型识别',ST('草稿',INFO),'2026-11-08'],
+   ['客户抱怨到店等待时间过长，正确的第一时间动作是？','单选','未分组','—',ST('已发布',OK),'2026-11-05'],
+   ['关于置换补贴的申请条件，以下说法正确的是？','多选','金融保险','—',ST('草稿',INFO),'2026-11-02']]},
+
+ examTasks:{filters:['状态:全部|未开始|进行中|已结束|已停用'],
+  cols:[['任务名称',1],['类型',0],['参与学员',0],['题数',0],['总分数',0],['通过分数',0],['任务时间',0],['通过率',0],['状态',0],['更新时间',0]],
+  rows:[
+   ['11月产品知识月考','考试','184','50','100.0','60','11-01 ~ 11-05','—',ST('未开始',GRAY),'2026-10-28 09:12'],
+   ['销售流程通关练习','考试','52','30','100.0','70','10-22 ~ 11-22','42%',ST('进行中',INFO),'2026-10-22 10:05'],
+   ['银河E5产品知识周练','考试','184','20','100.0','60','10-20 ~ 10-27','86%',ST('已结束',GRAY),'2026-10-20 15:40']]},
 
  tasks:{filters:['类型:全部|培训任务|学习任务|陪练任务|考试任务','状态:全部|未开始|进行中|已结束'],
   cols:[['任务名称',1],['类型',0],['创建组织',0],['起止时间',0],['状态',0],['下发门店',0],['覆盖学员',0],['完成率',0],['执行跟踪',0]],
@@ -1844,7 +2056,8 @@ function headBtns(k){
   if(k==='scripts') return '<button class="btn btn-p" onclick="SCRIPT_EDIT=-1;go(\'scriptNew\')">'+icon('plus',13)+'新建</button>';
   if(k==='radar') return '<button class="btn btn-p" onclick="radarEdit(-1)">'+icon('plus',13)+'新建能力雷达表</button>';
   if(k==='personas') return '<button class="btn btn-g" onclick="openImportDrawer()">'+icon('download',13)+'一键导入（预留）</button><button class="btn btn-p" onclick="go(\'personaNew\')">'+icon('plus',13)+'新建</button>';
-  if(k==='questions') return '<button class="btn btn-g">批量导入</button><button class="btn btn-p" onclick="qbReset();go(\'questionNew\')">'+icon('plus',13)+'新增题目</button>';
+  if(k==='questions') return '<button class="btn btn-g" onclick="qbImportDrawer()">'+icon('download',13)+'一键导入</button><button class="btn btn-p" onclick="qbReset();go(\'questionNew\')">'+icon('plus',13)+'新增题目</button>';
+  if(k==='examPaper') return '<button class="btn btn-g" onclick="exBatchGroup()">批量修改分组</button><button class="btn btn-p" onclick="exReset();go(\'examNew\')">'+icon('plus',13)+'新建试题考试</button>';
   if(k==='staff') return '<button class="btn btn-g">导出</button><button class="btn btn-p" onclick="go(\'staffNew\')">'+icon('plus',13)+'新增员工</button>';
   if(k==='roles') return '<button class="btn btn-p" onclick="go(\'roleNew\')">'+icon('plus',13)+'新增角色</button>';
   return '';
@@ -1866,7 +2079,11 @@ function render(){
   else if(CUR==='courses') c.innerHTML=pgCourses();
   else if(CUR==='courseNew'){ c.innerHTML=pgCourseNew(); initCourseNew(); }
   else if(CUR==='courseDetail'){ c.innerHTML=pgCourseDetail(); }
-  else if(CUR==='questionNew'){ c.innerHTML=pgQuestionNew(); }
+  else if(CUR==='questions') c.innerHTML=pgQuestions();
+  else if(CUR==='questionDetail'){ c.innerHTML=pgQuestionDetail(); }
+  else if(CUR==='questionNew'){ c.innerHTML=pgQuestionNew(); initQuestionNew(); }
+  else if(CUR==='examPaper'){ c.innerHTML=pgExamPaper(); }
+  else if(CUR==='examNew'){ c.innerHTML=pgExamNew(); initExamNew(); }
   else if(CUR==='scripts') c.innerHTML=pgScripts();
   else if(CUR==='radar'){ c.innerHTML=pgRadar(); initRadarList(); }
   else if(CUR==='radarNew'){ c.innerHTML=pgRadarNew(); initRadarNew(); }
@@ -7368,37 +7585,456 @@ function pgCourseDetail(){
 }
 /* ================== 课程管理模块结束 ================== */
 
-/* ================== 题库管理：新增试题（参考「新增试题」表单） ================== */
+/* ================== 题库管理：新建题目（表单） ================== */
 const QB_TYPES=['单选题','多选题','判断题','填空题','简答题'];
 const QB_TYPE_MAP={'单选题':'单选','多选题':'多选','判断题':'判断','填空题':'填空','简答题':'简答'};
-const QB_LV_MAP={'易':'简单','中':'中等','难':'困难'};
-const QB_CATES=['产品知识','销售技巧','销售流程','金融保险','服务规范'];
-const QB_TAG_LIB=['产品知识','银河E5','销售技巧','销售流程','金融保险','服务规范','试驾体验','客户异议','话术','新员工'];
-const QB_TAG_KW={
-  '产品知识':['产品','参数','配置','电池'],
-  '银河E5':['银河','E5','续航','CLTC'],
-  '销售技巧':['异议','话术','应对','沟通','谈判','抱怨'],
-  '销售流程':['接待','试驾','邀约','进店','交车','六步'],
-  '金融保险':['分期','金融','贷款','保险','置换','补贴'],
-  '服务规范':['服务','投诉','等待','礼仪'],
-  '试驾体验':['试驾'],
-  '客户异议':['异议','抱怨'],
-  '新员工':['新员工','入职'],
-  '话术':['话术']
-};
-let QB_TYPE='单选题',QB_LEVEL='中',QB_STEM='',QB_POINT='',QB_ANALYSIS='',QB_ANSWER='';
+let QB_TYPE='单选题',QB_STEM='',QB_POINT='',QB_ANALYSIS='',QB_ANSWER='',QB_GROUP='ungrouped';   /* QB_GROUP：分组设置，复用素材管理分组树 */
+let QB_RECOG='大模型识别',QB_PROMPT='',QB_KW_GROUPS=qbKwDefaults();   /* 大模型=评分规则；关键词=得分关键词组（词语+得分比例） */
+/* ===== 答案识别 · 大模型评分规则 / 得分关键词组（配置对齐真实后台「智能阅卷」） ===== */
+function qbKwDefaults(){ return [{words:[],ratio:'',draft:''},{words:[],ratio:'',draft:''}]; }
+function qbKwSplit(s){ return (s||'').split(/[;；]/).map(function(x){return x.trim();}).filter(Boolean); }
+function qbKwWords(g){
+  const seen={},out=[];
+  g.words.concat(qbKwSplit(g.draft)).forEach(function(w){ if(!seen[w]){seen[w]=1;out.push(w);} });
+  return out;
+}
+function qbKwTotal(){ return Math.round(QB_KW_GROUPS.reduce(function(s,g){ return s+(parseFloat(g.ratio)||0); },0)*100)/100; }
+function qbKwSumOk(){ return QB_KW_GROUPS.length>0 && Math.abs(qbKwTotal()-100)<0.0001; }
+function qbKwSumHtml(){
+  const tot=qbKwTotal(), ok=qbKwSumOk();
+  return '当前得分比例合计 <b>'+tot+'%</b> · <span class="hint">'+(ok?'✓ 已满足 100% 要求':'需合计为 100%')+'</span> · 每组可设多个关键词，学员回答命中该组词语即得对应比例分数';
+}
+function qbKwReady(){
+  return QB_KW_GROUPS.length>0 && qbKwSumOk() && QB_KW_GROUPS.every(function(g){
+    const r=parseFloat(g.ratio); return qbKwWords(g).length>0 && r>0 && r<=100;
+  });
+}
+function qbKwValidate(){
+  if(!QB_KW_GROUPS.length)return '请至少添加一组得分关键词';
+  for(let i=0;i<QB_KW_GROUPS.length;i++){
+    const g=QB_KW_GROUPS[i], r=parseFloat(g.ratio);
+    if(!qbKwWords(g).length)return '请为第 '+(i+1)+' 组填写得分关键词';
+    if(!(r>0)||r>100)return '请为第 '+(i+1)+' 组填写有效的得分比例（1–100）';
+  }
+  if(!qbKwSumOk())return '得分比例合计须等于 100%（当前 '+qbKwTotal()+'%）';
+  return '';
+}
+function qbKwHtml(){
+  let h='<div class="qb-kw" id="qbKwTbl">'+
+    '<div class="qb-kw-head"><span>得分关键词组</span><span>得分比例</span><span>操作</span></div>';
+  QB_KW_GROUPS.forEach(function(g,i){
+    const chips=g.words.map(function(w,wi){
+      return '<span class="qb-kw-chip">'+esc(w)+'<span data-i="'+i+'" data-wi="'+wi+'" onclick="qbKwDelWord(+this.dataset.i,+this.dataset.wi)" title="移除该词语">×</span></span>';
+    }).join('');
+    h+='<div class="qb-kw-row">'+
+      '<div class="qb-kw-words">'+chips+
+        '<input class="qb-kw-inp" data-i="'+i+'" value="'+esc(g.draft||'')+'" placeholder="请输入词语，多个用英文分号隔开，Enter键快捷添加" onkeydown="qbKwKey(event,+this.dataset.i)">'+
+      '</div>'+
+      '<div class="qb-kw-ratio"><input type="number" min="1" max="100" data-i="'+i+'" value="'+esc(g.ratio||'')+'" placeholder="0"><em>%</em></div>'+
+      '<button class="qb-kw-del" data-i="'+i+'" onclick="qbKwDelRow(+this.dataset.i)">删除</button>'+
+    '</div>';
+  });
+  h+='</div>'+
+    '<button class="qb-kw-add" onclick="qbKwAddRow()"><i>+</i> 添加</button>'+
+    '<div class="qb-kw-sum '+(qbKwSumOk()?'ok':'bad')+'" id="qbKwSum">'+qbKwSumHtml()+'</div>';
+  return h;
+}
+function qbRecogHtml(){
+  const llm=QB_RECOG==='大模型识别';
+  const radios=['大模型识别','关键词识别'].map(function(o,i){
+    return '<label class="'+(o===QB_RECOG?'on':'')+'"><input type="radio" name="qbRecog" value="'+o+'"'+(o===QB_RECOG?' checked':'')+'>'+o+
+      (i===0?'<span class="qb-help" title="由大模型依据评分规则对学员作答进行语义判定">?</span>':'')+'</label>';
+  }).join('');
+  /* 填空题参考答案为单行文本；简答题保留多行文本框 */
+  const ansCtrl=QB_TYPE==='填空题'
+    ?'<input id="qbAnswer" class="qb-line" maxlength="500" placeholder="请输入参考答案" value="'+esc(QB_ANSWER)+'">'
+    :'<textarea id="qbAnswer" class="qb-answer-ta" maxlength="500" placeholder="请输入参考答案" oninput="qbCnt(this)">'+esc(QB_ANSWER)+'</textarea><span class="qb-cnt">'+QB_ANSWER.length+'/500</span>';
+  return '<div class="form-item" style="margin-bottom:16px"><label>参考答案<i>*</i></label>'+
+    '<div class="qb-ta">'+ansCtrl+'</div>'+
+    '<div class="qb-tip">'+(QB_TYPE==='填空题'?'填空题依据参考答案匹配判分。':'简答题由教师或 AI 依据参考答案要点评分。')+'</div>'+
+    '<div class="form-err" id="qbAnswerErr">参考答案为必填项，请填写后再保存</div></div>'+
+    '<div class="form-item" style="margin-bottom:16px"><label>答案识别<i>*</i></label>'+
+    '<div class="qb-recog">'+radios+'</div>'+
+    (llm
+      ?'<div class="qb-rule"><span class="qb-rule-lab">评分规则<i>*</i></span>'+
+        '<div class="qb-rule-box"><textarea id="qbPrompt" maxlength="500" placeholder="请输入评分规则，如：和参考答案相似60%以上判断正确" oninput="qbCnt(this)">'+esc(QB_PROMPT)+'</textarea>'+
+        '<span class="qb-cnt">'+QB_PROMPT.length+'/500</span>'+
+        '<div class="qb-rule-eg"><span>💡</span><b>示例：</b>提到优惠券的使用方法得5分，完整讲完的话得20分</div></div></div>'+
+        '<div class="qb-tip">学员提交作答后，由大模型依据评分规则对回答内容进行语义识别与判定。</div>'
+      :qbKwHtml())+
+    '<div class="form-err" id="qbRecogErr">'+(llm?'请填写评分规则':'请完善得分关键词组配置（关键词与得分比例合计须为 100%）')+'</div></div>';
+}
+function qbKwKey(e,i){
+  if(e.key!=='Enter')return;
+  e.preventDefault();
+  qbCollect();
+  const g=QB_KW_GROUPS[i]; if(!g)return;
+  const add=qbKwSplit(g.draft);
+  if(!add.length){ toast('请输入词语后再按 Enter 添加'); return; }
+  g.words=qbKwWords(g); g.draft='';
+  qbRenderOpts();
+}
+function qbKwDelWord(i,wi){
+  qbCollect();
+  const g=QB_KW_GROUPS[i]; if(!g)return;
+  g.words=g.words.filter(function(x,k){return k!==wi;});
+  qbRenderOpts();
+}
+function qbKwAddRow(){
+  qbCollect();
+  if(QB_KW_GROUPS.length>=10){ toast('最多支持 10 组关键词'); return; }
+  QB_KW_GROUPS.push({words:[],ratio:'',draft:''});
+  qbRenderOpts();
+}
+function qbKwDelRow(i){
+  qbCollect();
+  if(QB_KW_GROUPS.length<=1){ toast('至少保留 1 组关键词'); return; }
+  QB_KW_GROUPS.splice(i,1);
+  qbRenderOpts();
+}
 let QB_OPTS=[{t:'',img:null},{t:'',img:null},{t:'',img:null},{t:'',img:null}];
-let QB_ANS=[],QB_TAGS=[],QB_STEM_IMGS=[],QB_TAGPOP=false;
-const QB_META={};   /* 新增试题的完整答案 / 选项 / 解析，供后续编辑与详情扩展使用 */
+let QB_ANS=[],QB_STEM_IMGS=[];
+let QB_EDIT=-1,QB_EDIT_STEM='';   /* 编辑模式：当前编辑行索引与原题干 */
+const QB_META={};   /* 新建题目的完整答案 / 选项 / 解析，供后续编辑与详情扩展使用 */
+const QB_ROW_GROUPS={};   /* 题目题干 → 分组 id（题库独立分组树） */
+/* 题库专用分组树：规则与课程/剧本管理一致（三级分组 / 未分组 / 新建·删除），列表页左侧面板与「新建题目·分组设置」下拉共用 */
+let QB_GROUPS=[
+ {id:'qbgUngrouped',name:'未分组',fixed:true,parent:null},
+ {id:'qbg1',name:'产品知识',parent:null},
+ {id:'qbg2',name:'销售流程',parent:null},
+ {id:'qbg3',name:'金融保险',parent:null},
+ {id:'qbg4',name:'销售技巧',parent:null}];
+let QB_G_EXPAND=new Set();   /* 左侧分组树已展开的分组 */
+let QB_G_UID=1;
+let QB_F={kw:'',cat:'all',type:'全部',st:'全部'};   /* 列表筛选状态 */
+let QB_VIEW=-1,QB_MOVE_IDX=-1;   /* 详情页当前题目行 / 转移分组当前行 */
+function qbGName(id){ const g=QB_GROUPS.find(x=>x.id===id); return g?g.name:'未分组'; }
+function qbGIdByName(name){ const g=QB_GROUPS.find(x=>x.name===name); return g?g.id:'qbgUngrouped'; }
+function qbGChildren(pid){ return QB_GROUPS.filter(g=>g.parent===pid&&g.id!=='qbgUngrouped'&&g.id!==pid); }
+function qbGDepth(id){ let d=0,g=QB_GROUPS.find(x=>x.id===id); while(g&&g.parent){ d++; g=QB_GROUPS.find(x=>x.id===g.parent); } return d; }
+function qbGDescendants(id){
+  const out=new Set([id]),q=[id];
+  while(q.length){ const cur=q.shift(); qbGChildren(cur).forEach(c=>{ out.add(c.id); q.push(c.id); }); }
+  return out;
+}
+function qbRowGroupId(i){
+  const stem=String(DB.questions.rows[i][0]).replace(/<[^>]+>/g,'').trim();
+  const g=QB_ROW_GROUPS[stem]||(QB_SEED[stem]&&QB_SEED[stem].group);
+  return (g&&QB_GROUPS.some(x=>x.id===g))?g:'qbgUngrouped';
+}
+function qbGCount(g){
+  const rows=DB.questions.rows;
+  if(g==='all')return rows.length;
+  const ids=g==='qbgUngrouped'?new Set(['qbgUngrouped']):qbGDescendants(g);
+  return rows.filter((r,i)=>ids.has(qbRowGroupId(i))).length;
+}
+function qbGToggle(id){ QB_G_EXPAND.has(id)?QB_G_EXPAND.delete(id):QB_G_EXPAND.add(id); render(); }
+function qbGPick(g){ QB_F.cat=g; render(); }
+function qbGTreeHtml(pid,depth){
+  return qbGChildren(pid).map(g=>{
+    const kids=qbGChildren(g.id), has=kids.length>0, open=QB_G_EXPAND.has(g.id), sel=QB_F.cat===g.id;
+    let h='<div class="tree-node'+(sel?' on':'')+'" data-g="'+esc(g.name)+'" style="padding-left:'+(8+depth*16)+'px" onclick="qbGPick(\''+g.id+'\')">';
+    if(has) h+='<span class="tree-toggle'+(open?' open':'')+'" onclick="event.stopPropagation();qbGToggle(\''+g.id+'\')">▸</span>';
+    h+='<span class="tname">'+esc(g.name)+'</span><span class="cnt">('+qbGCount(g.id)+')</span>';
+    if(!g.fixed) h+='<span class="mat-gdel" onclick="event.stopPropagation();qbGroupDelAsk(\''+g.id+'\')">删除</span>';
+    h+='</div>';
+    if(has&&open) h+=qbGTreeHtml(g.id,depth+1);
+    return h;
+  }).join('');
+}
+function qbGSearch(v){
+  v=(v||'').trim().toLowerCase();
+  if(v) QB_GROUPS.forEach(g=>{ if(qbGChildren(g.id).length) QB_G_EXPAND.add(g.id); });
+  const box=document.getElementById('qbGroupList');
+  if(!box)return;
+  box.innerHTML=qbGTreeHtml(null,0);
+  box.querySelectorAll('.tree-node').forEach(n=>{
+    n.style.display=(!v||(n.dataset.g||'').toLowerCase().includes(v))?'':'none';
+  });
+}
+/* 上级分组下拉（顶级 + 分组树，不含「未分组」），最多建到三级 */
+function qbGOptsTop(selId){
+  let out='<option value=""'+(selId===''?' selected':'')+'>顶级分组</option>';
+  (function rec(pid,depth){
+    qbGChildren(pid).forEach(g=>{
+      out+='<option value="'+g.id+'"'+(g.id===selId?' selected':'')+'>'+'  '.repeat(depth)+esc(g.name)+'</option>';
+      rec(g.id,depth+1);
+    });
+  })(null,0);
+  return out;
+}
+function openQbGroupAdd(){
+  let def='';
+  if(QB_F.cat&&QB_F.cat!=='all'&&QB_F.cat!=='qbgUngrouped')def=QB_F.cat;
+  $('qbGParentSel').innerHTML=qbGOptsTop(def);
+  $('qbGNameInp').value='';
+  const e=$('qbGErr');e.style.display='none';
+  if(def&&qbGDepth(def)>=2){
+    e.textContent='「'+qbGName(def)+'」已是三级分组，无法再创建下级，请重新选择上级分组';e.style.display='block';
+  }
+  $('qbGroupMask').classList.add('on');
+  setTimeout(()=>{ try{$('qbGNameInp').focus();}catch(_){} },50);
+}
+function closeQbGroupAdd(){ $('qbGroupMask').classList.remove('on'); }
+function qbGNameInput(){ const e=$('qbGErr'); if(e.style.display!=='none'&&$('qbGNameInp').value.trim())e.style.display='none'; }
+function qbGParentChange(){
+  const pid=$('qbGParentSel').value,e=$('qbGErr');
+  if(pid&&qbGDepth(pid)>=2){ e.textContent='所选上级分组已是三级，无法再创建下级';e.style.display='block'; }
+  else e.style.display='none';
+}
+function doQbGroupAdd(){
+  const name=$('qbGNameInp').value.trim();
+  const parent=$('qbGParentSel').value||null;
+  const e=$('qbGErr');
+  if(!name){ e.textContent='请输入分组名称';e.style.display='block';try{$('qbGNameInp').focus();}catch(_){} return; }
+  if(parent){
+    if(qbGDepth(parent)>=2){ e.textContent='最多支持三级分组，所选上级分组下无法再创建';e.style.display='block';return; }
+    if(QB_GROUPS.some(g=>g.parent===parent&&g.name===name)){ e.textContent='「'+qbGName(parent)+'」下已存在分组「'+name+'」';e.style.display='block';return; }
+  }else if(QB_GROUPS.some(g=>g.parent===null&&g.name===name)){ e.textContent='已存在顶级分组「'+name+'」';e.style.display='block';return; }
+  const id='qbgN'+(QB_G_UID++)+'_'+Date.now();
+  QB_GROUPS.push({id,name,parent});
+  if(parent)QB_G_EXPAND.add(parent);
+  toast('已在「'+(parent?qbGName(parent):'顶级')+'」下创建分组：'+name);
+  closeQbGroupAdd();render();
+}
+function qbGroupDelAsk(id){
+  const g=QB_GROUPS.find(x=>x.id===id);if(!g)return;
+  const ids=[...qbGDescendants(id)];
+  const n=DB.questions.rows.filter((r,i)=>ids.includes(qbRowGroupId(i))).length;
+  if(n){ toast('该分组下仍有 '+n+' 道题目，请先调整题目分组');return; }
+  const sub=ids.length>1?'（含 '+(ids.length-1)+' 个子分组）':'';
+  matAsk('删除分组','确定删除分组「'+g.name+'」'+sub+'？删除后不可恢复。',()=>{
+    QB_GROUPS=QB_GROUPS.filter(x=>!ids.includes(x.id));
+    ids.forEach(i=>QB_G_EXPAND.delete(i));
+    if(ids.includes(QB_F.cat))QB_F.cat='all';
+    toast('已删除分组：'+g.name);render();
+  });
+}
+/* 「新建题目·分组设置」下拉：未分组 + 分组树（按层级缩进，最多三级），随题库分组管理实时更新 */
+function qbGroupOpts(selId){
+  const opt=(id,name,d)=>'<option value="'+id+'"'+(selId===id?' selected':'')+'>'+'\u3000'.repeat(d)+esc(name)+'</option>';
+  let out='<option value="qbgUngrouped"'+(selId==='qbgUngrouped'?' selected':'')+'>未分组</option>';
+  const walk=(pid,d)=>{ qbGChildren(pid).forEach(g=>{ out+=opt(g.id,g.name,d); walk(g.id,d+1); }); };
+  walk(null,0);
+  return out;
+}
+/* 列表/详情演示种子数据：字段与「新建题目」一致（题型 / 分组 / 选项 / 参考答案 / 答案识别 / 考点 / 解析） */
+const QB_SEED={
+ '银河E5 CLTC 纯电续航是多少公里？':{type:'单选题',group:'qbg1',answer:'B',options:['430 km','530 km','610 km','720 km'],point:'产品参数 · 续航',analysis:'银河E5 在 CLTC 工况下的纯电续航为 530 公里，讲解时注意与竞品续航口径区分。'},
+ '客户提出"我再对比一下其他品牌"时，哪种应对最合适？':{type:'单选题',group:'qbg4',answer:'C',options:['直接贬低竞品，突出自身优势','告知客户竞品质量不可靠','先认同再客观对比关键差异','直接询问客户预算'],point:'异议处理 · 竞品对比',analysis:'先认同客户比价行为，再用可验证的数据客观对比，避免贬低竞品。'},
+ '以下哪些属于试驾前必须确认的项目？':{type:'多选题',group:'qbg2',answer:'A、C、D',options:['驾驶证有效期','车辆保险到期日','试驾路线说明','车辆电量 / 油量'],point:'试驾流程 · 风险确认',analysis:'驾驶证、试驾路线与车辆状态为试驾前必确认项；保险到期日由展车管理统一维护。'},
+ '分期购车贷款手续必须由客户本人办理。':{type:'判断题',group:'qbg3',answer:'正确',options:['正确','错误'],point:'金融政策 · 贷款手续',analysis:'按金融公司规定，贷款申请、面签与抵押手续必须由客户本人办理。'},
+ '银河E5 的 CLTC 纯电续航是______公里。':{type:'填空题',group:'qbg1',answer:'530',recog:'关键词识别',kwGroups:[{words:['530','五百三十'],ratio:'60'},{words:['公里','续航'],ratio:'40'}],point:'产品参数 · 续航',analysis:'参考答案 530，学员作答命中关键词组即按对应比例得分。'},
+ '请简述客户试驾后的邀约回访要点。':{type:'简答题',group:'qbg2',answer:'24 小时内回访；确认试驾感受；邀约二次到店或试驾',recog:'大模型识别',prompt:'回答包含"24小时内回访、确认试驾感受、邀约二次到店"三个要点各得 30 分，表达自然流畅得 10 分。',point:'销售流程 · 回访',analysis:'回访三要点：时效性、感受确认、下一步邀约。'},
+ '客户抱怨到店等待时间过长，正确的第一时间动作是？':{type:'单选题',group:'qbgUngrouped',answer:'A',options:['先致歉并说明预计等待时长','请客户自行耐心等待','告知客户当前人手不足','建议客户改天再来'],point:'服务规范 · 等待安抚',analysis:'第一时间致歉并给出明确的等待时长与安排，先缓解客户情绪。'},
+ '关于置换补贴的申请条件，以下说法正确的是？':{type:'多选题',group:'qbg3',answer:'B、C',options:['任意品牌旧车均可享受','旧车需在客户名下满一定期限','需在活动期内完成置换','补贴可与任意优惠叠加'],point:'金融政策 · 置换补贴',analysis:'置换补贴要求旧车在客户名下满规定期限且在活动期内完成置换，叠加规则以当期政策为准。'}};
+const QB_PAPER_REF=['11月产品知识月考（正式）','销售流程通关练习（进行中）','银河E5产品知识周练（已结束）'];
+/* 题目详情：整页样式对齐课程详情（page-head + pn-wrap 卡片分区 + 右侧学员端答题预览） */
+function qbStatusOf(i){ return String(DB.questions.rows[i][4]).replace(/<[^>]+>/g,''); }
+function qbView(i){ QB_VIEW=i; go('questionDetail'); }
+function qbDisable(i){
+  const stem=String(DB.questions.rows[i][0]).replace(/<[^>]+>/g,'');
+  matAsk('停用题目','停用后「'+stem+'」将无法被组卷引用，确认停用？',()=>{
+    DB.questions.rows[i][4]=ST('已停用',GRAY); toast('已停用题目：'+stem); render();
+  });
+}
+function qbEnable(i){
+  DB.questions.rows[i][4]=ST('已发布',OK); toast('已启用题目'); render();
+}
+function qbDelRow(i){
+  const stem=String(DB.questions.rows[i][0]).replace(/<[^>]+>/g,'');
+  matAsk('删除题目','删除后「'+stem+'」将从题库移除。确认删除？',()=>{
+    DB.questions.rows.splice(i,1); delete QB_META[stem]; delete QB_ROW_GROUPS[stem];
+    QB_VIEW=-1;
+    toast('已删除题目：'+stem); render();
+  });
+}
+/* 行级「转移分组」：弹窗选择目标分组，写入映射并同步行内分组名（交互同课程管理） */
+function qbMoveGroup(i){
+  QB_MOVE_IDX=i;
+  const stem=String(DB.questions.rows[i][0]).replace(/<[^>]+>/g,'');
+  $('qbMoveName').textContent=stem;
+  $('qbMoveSel').innerHTML=qbGroupOpts(qbRowGroupId(i));
+  $('qbMoveMask').classList.add('on');
+}
+function closeQbMove(){ $('qbMoveMask').classList.remove('on'); QB_MOVE_IDX=-1; }
+function doQbMove(){
+  const i=QB_MOVE_IDX, g=$('qbMoveSel').value;
+  if(i<0||!DB.questions.rows[i]){ closeQbMove(); return; }
+  const stem=String(DB.questions.rows[i][0]).replace(/<[^>]+>/g,'');
+  QB_ROW_GROUPS[stem]=g; QB_ROW_GROUPS[esc(stem)]=g;
+  DB.questions.rows[i][2]=qbGName(g);
+  const m=QB_META[stem]||QB_SEED[stem]; if(m){ m.group=g; m.groupName=qbGName(g); }
+  closeQbMove();
+  toast('已将「'+stem+'」转移到分组「'+qbGName(g)+'」'); render();
+}
+function pgQuestionDetail(){
+  const row=DB.questions.rows[QB_VIEW];
+  if(!row) return '<div class="empty">题目不存在或已删除</div>';
+  const stem=String(row[0]).replace(/<[^>]+>/g,'');
+  const m=QB_META[stem]||QB_SEED[stem]||{};
+  const TYPE_TXT={'单选':'单选题','多选':'多选题','判断':'判断题','填空':'填空题','简答':'简答题'};
+  const type=m.type||TYPE_TXT[row[1]]||'单选题';
+  const hasOpts=(type==='单选题'||type==='多选题'||type==='判断题');
+  const fixed=(type==='判断题');
+  const group=qbGName(qbRowGroupId(QB_VIEW));
+  const recog=hasOpts?'—':String(m.recog||row[3]||'—');
+  const st=qbStatusOf(QB_VIEW);
+  const head='<div class="page-head"><h1>题目详情</h1><span class="desc">'+esc(stem)+'</span><div class="btns">'+
+    '<button class="btn btn-g" onclick="go(\'questions\')">'+icon('back',13)+'返回列表</button>'+
+    '<button class="btn btn-g" onclick="qbEditLoad('+QB_VIEW+')">编辑题目</button>'+
+    (st==='已发布'?'<button class="btn btn-g" onclick="qbDisable('+QB_VIEW+')">停用题目</button>':'')+
+    (st==='已停用'?'<button class="btn btn-p" onclick="qbEnable('+QB_VIEW+')">启用题目</button>':'')+
+    '</div></div>';
+  const ans=String(m.answer||'—'), ansArr=fixed?[ans]:ans.split('、');
+  let ansSec;
+  if(hasOpts){
+    ansSec='<div class="sec"><h4>选项与答案</h4><div class="qb-d-opts">'+
+      ((m.options||[]).map(function(t,i){
+        const on=fixed?ansArr.indexOf(String(t))>=0:ansArr.indexOf(qbLetter(i))>=0;
+        return '<div class="qb-d-opt">'+(fixed?'':'<b>'+qbLetter(i)+'</b>')+'<span>'+esc(String(t))+'</span>'+(on?'<span class="st ok">正确答案</span>':'')+'</div>';
+      }).join('')||'—')+'</div></div>';
+  }else{
+    ansSec='<div class="sec"><h4>参考答案</h4><div class="qb-d-answer">'+esc(ans)+'</div></div>';
+  }
+  let recogSec='';
+  if(!hasOpts){
+    if(recog==='大模型识别'){
+      recogSec='<div class="pn-card" style="margin-top:12px"><div class="sec"><h4>答案识别 · 大模型识别</h4>'+
+        '<div class="crs-desc">'+esc(String(m.prompt||'（未配置评分规则）'))+'</div></div></div>';
+    }else{
+      recogSec='<div class="pn-card" style="margin-top:12px"><div class="sec"><h4>答案识别 · 关键词识别</h4>'+
+        ((m.kwGroups||[]).map(function(g){
+          return '<div class="qb-d-kw"><div class="ptags">'+(g.words||[]).map(w=>'<span class="ptag">'+esc(w)+'</span>').join('')+'</div><b>'+esc(String(g.ratio||0))+'%</b></div>';
+        }).join('')||'<span style="font-size:12.5px;color:var(--t3)">（未配置得分关键词组）</span>')+'</div></div>';
+    }
+  }
+  const matImgChip=it=>'<span class="pill" title="引用素材库图片：'+esc(it.name||'')+'">[图片] '+esc(it.name||'图片')+'</span>';
+  const stemImgs=Array.isArray(m.stemImgs)?m.stemImgs:[];
+  const optImgs=Array.isArray(m.optImgs)?m.optImgs:[];
+  let imgSec='';
+  if(stemImgs.length||optImgs.some(x=>x&&x.name)){
+    imgSec='<div class="sec"><h4>题干 / 选项配图（引用素材库）</h4>'+
+      (stemImgs.length?'<div class="ptags" style="margin-bottom:6px"><span style="font-size:12px;color:var(--t3);margin-right:6px">题干</span>'+stemImgs.map(matImgChip).join('')+'</div>':'')+
+      (optImgs.some(x=>x&&x.name)?'<div class="ptags">'+optImgs.map(function(im,k){return im&&im.name?'<span style="font-size:12px;color:var(--t3);margin-right:6px">'+(hasOpts?qbLetter(k):'')+'</span>'+matImgChip(im):'';}).join('')+'</div>':'')+
+      '</div>';
+  }
+  const main=
+    '<div class="pn-card"><div class="crs-hero">'+
+      '<div class="crs-hero-cover">'+esc(type[0])+'</div>'+
+      '<div style="flex:1;min-width:0"><div class="crs-hero-title">'+esc(stem)+' '+row[4]+'</div>'+
+      '<div class="crs-hero-meta">'+esc(type)+' · 分组设置 '+esc(group)+(hasOpts?'':' · 答案识别 '+esc(recog))+' · 更新于 '+esc(row[5])+'</div></div></div>'+
+      imgSec+ansSec+'</div>'+
+    recogSec+
+    '<div class="pn-card" style="margin-top:12px"><div class="sec"><h4>考点与解析</h4><div class="kv-list">'+
+      '<div class="kv"><span>考点</span><b>'+esc(String(m.point||'—'))+'</b></div>'+
+      '<div class="kv"><span>解析</span><b>'+esc(String(m.analysis||'—'))+'</b></div></div></div></div>'+
+    '<div class="pn-card" style="margin-top:12px"><div class="sec"><h4>被试卷引用</h4><div class="ptags">'+
+      QB_PAPER_REF.map(x=>'<span class="pill">'+esc(x)+'</span>').join('')+'</div></div></div>';
+  /* 右侧：学员端答题效果预览（复用新建题目预览样式） */
+  const pvOpts=hasOpts
+    ?'<div class="qb-pv-opts">'+(m.options||[]).map(function(t,i){
+        const on=fixed?ansArr.indexOf(String(t))>=0:ansArr.indexOf(qbLetter(i))>=0;
+        return '<div class="qb-pv-opt'+(on?' on':'')+'">'+(fixed?'':'<b>'+qbLetter(i)+'.</b>')+'<span>'+esc(String(t))+'</span>'+(on?'<span class="mark">✓ 正确答案</span>':'')+'</div>';
+      }).join('')+'</div>'
+    :'<div class="qb-pv-ans"><b>学员作答区：</b>'+(type==='填空题'?'单行填写答案':'文本输入作答内容')+'（提交后按「'+esc(recog)+'」判分）</div>';
+  const aside='<div class="pn-aside"><div class="pn-card pn-pv"><h3 class="pn-pv-title">学员端答题效果<span class="live">预览</span></h3>'+
+    '<div><div class="qb-pv-badges"><span class="qb-pv-badge">'+esc(type)+'</span><span class="qb-pv-badge lv">分组：'+esc(group)+'</span></div>'+
+    '<div class="qb-pv-stem">'+esc(stem)+'</div>'+pvOpts+
+    '<div class="qb-pv-recog"><b>答案识别：</b>'+esc(hasOpts?'系统自动判分':recog)+'</div></div></div></div>';
+  return head+'<div class="pn-wrap"><div class="pn-main">'+main+'</div>'+aside+'</div>';
+}
+/* 题库管理列表页：样式对齐课程管理（左侧分组面板 + 筛选卡片 + 表格 + 行操作） */
+function pgQuestions(){
+  const scoped=DB.questions.rows.map((r,i)=>({r,i})).filter(({i})=>{
+    if(QB_F.cat==='all')return true;
+    if(QB_F.cat==='qbgUngrouped')return qbRowGroupId(i)==='qbgUngrouped';
+    return qbGDescendants(QB_F.cat).has(qbRowGroupId(i));
+  });
+  const rows=scoped.filter(({r,i})=>{
+    const stem=String(r[0]).replace(/<[^>]+>/g,'');
+    if(QB_F.kw&&stem.indexOf(QB_F.kw)<0)return false;
+    if(QB_F.type!=='全部'&&r[1]!==QB_F.type)return false;
+    if(QB_F.st!=='全部'&&qbStatusOf(i)!==QB_F.st)return false;
+    return true;
+  });
+  const side='<div class="mat-side">'+
+    '<div class="tree-node'+(QB_F.cat==='all'?' on':'')+'" onclick="qbGPick(\'all\')"><span class="tname">全部题目</span><span class="cnt all-b">'+qbGCount('all')+'</span></div>'+
+    '<input class="side-search" placeholder="请输入分组名称" oninput="qbGSearch(this.value)">'+
+    '<div class="tree-node'+(QB_F.cat==='qbgUngrouped'?' on':'')+'" onclick="qbGPick(\'qbgUngrouped\')"><span class="tname">未分组</span><span class="cnt">('+qbGCount('qbgUngrouped')+')</span></div>'+
+    '<div id="qbGroupList">'+qbGTreeHtml(null,0)+'</div>'+
+    '<button class="side-add" onclick="openQbGroupAdd()">+ 新建分组</button>'+
+  '</div>';
+  const head=['题目（点击查看）','题型','分组设置','答案识别','状态','更新时间'].map(t=>'<th>'+t+'</th>').join('')+'<th>操作</th>';
+  const body=rows.map(({r,i})=>{
+    const st=qbStatusOf(i);
+    const ops='<div class="row-ops">'+
+      '<span class="lk" onclick="qbView('+i+')">详情</span>'+
+      '<span class="lk" onclick="qbEditLoad('+i+')">编辑</span>'+
+      (st==='已发布'?'<span class="lk" onclick="qbDisable('+i+')">停用</span>':'')+
+      (st==='已停用'?'<span class="lk" onclick="qbEnable('+i+')">启用</span>':'')+
+      '<span class="lk" onclick="qbMoveGroup('+i+')">转移分组</span>'+
+      '<span class="lk danger" onclick="qbDelRow('+i+')">删除</span></div>';
+    return '<tr>'+
+      '<td><span class="lk" onclick="qbView('+i+')">'+r[0]+'</span></td>'+
+      '<td>'+r[1]+'</td>'+
+      '<td>'+esc(qbGName(qbRowGroupId(i)))+'</td>'+
+      '<td>'+r[3]+'</td>'+
+      '<td>'+r[4]+'</td>'+
+      '<td>'+r[5]+'</td>'+
+      '<td>'+ops+'</td></tr>';
+  }).join('');
+  const right=
+    '<div class="filter-card">'+
+      '<div class="f-item"><span>关键词</span><input id="qbFkw" placeholder="搜索题干关键词" value="'+esc(QB_F.kw)+'" onkeydown="if(event.key===\'Enter\')qbQuery()"></div>'+
+      '<div class="f-item"><span>题型</span><select id="qbFtype">'+['全部','单选','多选','判断','填空','简答'].map(o=>'<option'+(QB_F.type===o?' selected':'')+'>'+o+'</option>').join('')+'</select></div>'+
+      '<div class="f-item"><span>状态</span><select id="qbFst">'+['全部','已发布','草稿','已停用'].map(o=>'<option'+(QB_F.st===o?' selected':'')+'>'+o+'</option>').join('')+'</select></div>'+
+      '<button class="btn btn-p btn-sm" onclick="qbQuery()">查询</button><button class="btn btn-g btn-sm" onclick="qbFClear()">重置</button></div>'+
+    '<div class="tbl-card"><div class="tbl-scroll"><table><thead><tr>'+head+'</tr></thead><tbody>'+
+      (body||'<tr><td colspan="7"><div class="empty"><div class="ic">◌</div>暂无题目，点击右上角「新增题目」创建，或使用「一键导入」批量导入</div></td></tr>')+
+      '</tbody></table></div>'+
+      '<div class="tbl-foot">共 '+rows.length+' 条 · 每页 10 条<div class="pgs"><button>‹</button><button class="on">1</button><button>2</button><button>›</button></div></div></div>';
+  return '<div class="page-head"><h1>题库管理</h1><div class="btns">'+headBtns('questions')+'</div></div>'+
+    '<div class="org-layout" style="grid-template-columns:230px 1fr">'+side+'<div>'+right+'</div></div>';
+}
+function qbQuery(){ QB_F.kw=($('qbFkw').value||'').trim(); QB_F.type=$('qbFtype').value; QB_F.st=$('qbFst').value; render(); }
+function qbFClear(){ QB_F={kw:'',cat:'all',type:'全部',st:'全部'}; render(); }
+/* 编辑题目：回填「新建题目」表单状态（题干 / 题型 / 分组 / 选项 / 答案 / 识别配置） */
+function qbEditLoad(idx){
+  const row=DB.questions.rows[idx]; if(!row)return;
+  const stem=String(row[0]).replace(/<[^>]+>/g,'');
+  const m=QB_META[stem]||QB_SEED[stem]||{};
+  const TYPE_TXT={'单选':'单选题','多选':'多选题','判断':'判断题','填空':'填空题','简答':'简答题'};
+  QB_TYPE=m.type||TYPE_TXT[row[1]]||'单选题';
+  QB_STEM=stem; QB_POINT=m.point||''; QB_ANALYSIS=m.analysis||'';
+  const gn=String(row[2]||'未分组').replace(/<[^>]+>/g,'');
+  QB_GROUP=QB_ROW_GROUPS[stem]||qbGIdByName(gn);
+  QB_RECOG=m.recog||'大模型识别'; QB_PROMPT=m.prompt||'';
+  QB_KW_GROUPS=m.kwGroups?m.kwGroups.map(function(g){return {words:(g.words||[]).slice(),ratio:String(g.ratio||''),draft:''};}):qbKwDefaults();
+  QB_STEM_IMGS=Array.isArray(m.stemImgs)?m.stemImgs.map(function(it){return {name:it.name,matId:it.matId};}):[]; QB_ANS=[];
+  const optImgs=Array.isArray(m.optImgs)?m.optImgs:[];
+  if(QB_TYPE==='判断题')QB_OPTS=[{t:'正确',img:null},{t:'错误',img:null}];
+  else if(QB_TYPE==='填空题'||QB_TYPE==='简答题')QB_OPTS=[];
+  else QB_OPTS=((m.options&&m.options.length)?m.options:['','']).map(function(t,k){
+    const im=optImgs[k]; return {t:String(t),img:im?{name:im.name,matId:im.matId}:null};
+  });
+  const ans=String(m.answer||'');
+  if(QB_TYPE==='判断题')QB_ANS=ans==='正确'?[0]:ans==='错误'?[1]:[];
+  else if(QB_TYPE==='单选题'||QB_TYPE==='多选题')QB_ANS=ans.split('、').filter(function(L){return /^[A-H]$/.test(L);}).map(function(L){return L.charCodeAt(0)-65;});
+  QB_ANSWER=qbHasOpts()?'':ans;
+  QB_EDIT=idx; QB_EDIT_STEM=stem;
+  go('questionNew');
+}
 
 function qbLetter(i){ return String.fromCharCode(65+i); }
 function qbHasOpts(){ return QB_TYPE==='单选题'||QB_TYPE==='多选题'||QB_TYPE==='判断题'; }
 function qbMulti(){ return QB_TYPE==='多选题'; }
 function qbFixed(){ return QB_TYPE==='判断题'; }
 function qbReset(){
-  QB_TYPE='单选题';QB_LEVEL='中';QB_STEM='';QB_POINT='';QB_ANALYSIS='';QB_ANSWER='';
+  QB_TYPE='单选题';QB_STEM='';QB_POINT='';QB_ANALYSIS='';QB_ANSWER='';QB_GROUP='qbgUngrouped';
+  QB_RECOG='大模型识别';QB_PROMPT='';QB_KW_GROUPS=qbKwDefaults();
   QB_OPTS=[{t:'',img:null},{t:'',img:null},{t:'',img:null},{t:'',img:null}];
-  QB_ANS=[];QB_TAGS=[];QB_STEM_IMGS=[];QB_TAGPOP=false;
+  QB_ANS=[];QB_STEM_IMGS=[];QB_EDIT=-1;QB_EDIT_STEM='';
 }
 function qbCollect(){
   const g=id=>document.getElementById(id);
@@ -7406,6 +8042,17 @@ function qbCollect(){
   if(g('qbPoint'))QB_POINT=g('qbPoint').value;
   if(g('qbAnalysis'))QB_ANALYSIS=g('qbAnalysis').value;
   if(g('qbAnswer'))QB_ANSWER=g('qbAnswer').value;
+  if(g('qbGroup'))QB_GROUP=g('qbGroup').value;
+  if(g('qbPrompt'))QB_PROMPT=g('qbPrompt').value;
+  const kt=g('qbKwTbl');
+  if(kt&&kt.querySelectorAll){
+    kt.querySelectorAll('.qb-kw-inp').forEach(function(el){
+      const i=+el.dataset.i; if(QB_KW_GROUPS[i])QB_KW_GROUPS[i].draft=el.value;
+    });
+    kt.querySelectorAll('.qb-kw-ratio input').forEach(function(el){
+      const i=+el.dataset.i; if(QB_KW_GROUPS[i])QB_KW_GROUPS[i].ratio=el.value;
+    });
+  }
   const wrap=g('qbOptsWrap');
   if(wrap&&wrap.querySelectorAll)wrap.querySelectorAll('.qb-opt-txt').forEach(function(el,i){ if(QB_OPTS[i])QB_OPTS[i].t=el.value; });
 }
@@ -7415,79 +8062,148 @@ function qbCnt(el){
   if(box)box.textContent=el.value.length+'/'+(el.maxLength||0);
 }
 function qbImgsHtml(list,scope){
+  /* item：{name, matId}——引用素材库图片，卡片内展示引用图标 + 素材名 */
   return (list||[]).map(function(it,i){
-    return '<div class="qb-img">'+
-      (it.url?'<img src="'+it.url+'" alt="'+esc(it.name||'')+'">':'<span class="qb-imgname">'+esc(it.name||'图片')+'</span>')+
+    return '<div class="qb-img qb-img-ref" title="已引用素材：'+esc(it.name||'')+'">'+
+      (it.matId!=null
+        ?'<span class="qb-imgic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg></span><span class="qb-imgname">'+esc(it.name||'图片')+'</span>'
+        :'<span class="qb-imgname">'+esc(it.name||'图片')+'</span>')+
       '<span class="qb-imgx" data-scope="'+scope+'" data-i="'+i+'" onclick="qbDelImg(this.dataset.scope,+this.dataset.i)">×</span></div>';
   }).join('');
 }
 function qbOptsHtml(){
-  if(!qbHasOpts()){
-    return '<div class="qb-row"><div class="qb-lab"><i>*</i>参考答案</div><div class="qb-ctl">'+
-      '<div class="qb-ta"><textarea id="qbAnswer" maxlength="500" placeholder="请输入参考答案" oninput="qbCnt(this)">'+esc(QB_ANSWER)+'</textarea>'+
-      '<span class="qb-cnt">'+QB_ANSWER.length+'/500</span></div>'+
-      '<div class="qb-tip">'+(QB_TYPE==='填空题'?'填空题依据参考答案匹配判分，多个空可用分号分隔。':'简答题由教师或 AI 依据参考答案要点评分。')+'</div></div></div>';
-  }
+  if(!qbHasOpts())return qbRecogHtml();
   const multi=qbMulti(),fixed=qbFixed();
-  let h='<div class="qb-row"><div class="qb-lab"><i>*</i>选项</div><div class="qb-ctl">';
+  let h='<div class="form-item" style="margin-bottom:16px"><label>选项<i>*</i></label><div class="qb-opt-list">';
   QB_OPTS.forEach(function(o,i){
     h+='<div class="qb-opt">'+
       '<span class="qb-ans"><input type="'+(multi?'checkbox':'radio')+'" name="qbAns" data-i="'+i+'"'+(QB_ANS.indexOf(i)>=0?' checked':'')+' onchange="qbSetAns(+this.dataset.i,this.checked)" title="设为正确答案"></span>'+
-      '<span class="qb-opt-letter">'+qbLetter(i)+'</span>'+
-      '<input class="qb-opt-txt" data-i="'+i+'" value="'+esc(o.t)+'" placeholder="请输入选项内容"'+(fixed?' disabled':'')+'>'+
-      (fixed?'<span class="qb-opt-x" style="visibility:hidden">×</span>':'<span class="qb-opt-x" data-i="'+i+'" onclick="qbDelOpt(+this.dataset.i)" title="删除该选项">×</span>')+
+      (fixed
+        ?'<span class="qb-opt-fixed">'+esc(o.t)+'</span>'
+        :'<span class="qb-opt-letter">'+qbLetter(i)+'</span>'+
+        '<input class="qb-opt-txt" data-i="'+i+'" value="'+esc(o.t)+'" placeholder="请输入选项内容">')+
+      (fixed?'':'<span class="qb-opt-x" data-i="'+i+'" onclick="qbDelOpt(+this.dataset.i)" title="删除该选项">×</span>')+
     '</div>'+
-    '<div class="qb-opt-sub"><span class="qb-addimg" data-scope="opt:'+i+'" onclick="qbPickImg(this.dataset.scope)">添加图片</span>'+
-      '<input type="file" accept="image/*" id="qbFile-opt:'+i+'" data-scope="opt:'+i+'" style="display:none" onchange="qbAddImg(this.dataset.scope,this)">'+
-      qbImgsHtml(o.img?[o.img]:[],'opt:'+i)+'</div>';
+    (fixed?'':'<div class="qb-opt-sub"><span class="qb-addimg" data-scope="opt:'+i+'" onclick="qbPickImg(this.dataset.scope)">从素材库引用</span>'+
+      qbImgsHtml(o.img?[o.img]:[],'opt:'+i)+'</div>');
   });
-  if(!fixed)h+='<button class="qb-addopt" onclick="qbAddOpt()">+ 新增选项</button>'+
-    '<div class="qb-tip">'+(multi?'可勾选多个正确答案。':'点击选项前的圆圈设为唯一正确答案。')+'</div>';
-  h+='</div></div>';
+  if(!fixed)h+='<button class="qb-addopt" onclick="qbAddOpt()">+ 新增选项</button>';
+  h+='</div><div class="form-err" id="qbOptErr">请补全选项内容并设置正确答案</div></div>';
   return h;
 }
-function qbTagsHtml(){
-  const chips=QB_TAGS.length?'<div class="qb-tags">'+QB_TAGS.map(function(t,i){ return '<span class="qb-tag">'+esc(t)+'<span data-i="'+i+'" onclick="qbDelTag(+this.dataset.i)" title="移除标签">×</span></span>'; }).join('')+'</div>':'';
-  let h='<div class="qb-tagbox"><div class="qb-hash">#</div><div class="qb-tx">'+
-    (QB_TAGS.length?'<b>已设置 '+QB_TAGS.length+' 个标签</b><p>标签用于题目检索、试卷组卷匹配与分类归档。</p>':'<b>暂未设置标签</b><p>填写上方内容后可匹配，也可点击「标签选择」添加。</p>')+
-    chips+'</div><button class="qb-taggen" onclick="qbGenTags()">标签生成</button></div>'+
-    '<div class="qb-tagsel" onclick="qbToggleTagPop()">⊕ 标签选择</div>';
-  if(QB_TAGPOP){
-    h+='<div class="qb-tagpop" id="qbTagPop">'+
-      '<div class="qb-tagpop-h">选择标签 <span onclick="qbToggleTagPop()">✕</span></div>'+
-      '<div class="qb-tagpop-list">'+QB_TAG_LIB.map(function(t){ return '<label><input type="checkbox" value="'+esc(t)+'"'+(QB_TAGS.indexOf(t)>=0?' checked':'')+'>'+esc(t)+'</label>'; }).join('')+'</div>'+
-      '<div class="qb-tagpop-add"><input id="qbTagCustom" placeholder="自定义标签，如：银河E5" onkeydown="qbTagKey(event)"><button onclick="qbAddCustomTag()">添加</button></div>'+
-      '<div class="qb-tagpop-foot"><button class="btn btn-g btn-sm" onclick="qbToggleTagPop()">取消</button><button class="btn btn-p btn-sm" onclick="qbConfirmTags()">确定</button></div>'+
-    '</div>';
-  }
-  return h;
+function qbStemHtml(){
+  const single=QB_TYPE==='填空题';   /* 填空题题干为单行文本 */
+  const ctrl=single
+    ?'<input id="qbStem" class="qb-line" maxlength="1000" placeholder="请输入题干" value="'+esc(QB_STEM)+'">'
+    :'<textarea id="qbStem" maxlength="1000" placeholder="请输入题干，如：客户询问银河E5 的 CLTC 续航是多少，应如何回答" oninput="qbCnt(this)">'+esc(QB_STEM)+'</textarea><span class="qb-cnt">'+QB_STEM.length+'/1000</span>';
+  return '<div class="form-item" style="margin-bottom:16px"><label>题干<i>*</i></label>'+
+    '<div class="qb-ta">'+ctrl+'</div>'+
+    '<span class="qb-addimg" data-scope="stem" onclick="qbPickImg(this.dataset.scope)">从素材库引用</span>'+
+    '<div class="qb-imgs" id="qbStemImgs">'+qbImgsHtml(QB_STEM_IMGS,'stem')+'</div>'+
+    '<div class="form-err" id="qbStemErr">题干为必填项，请填写后再保存</div></div>';
 }
 function pgQuestionNew(){
   const W=[];
-  W.push('<div class="qb-wrap">');
-  W.push('<div class="qb-head"><h1>新增试题</h1><button class="qb-x" onclick="qbCancel()" title="关闭">✕</button></div>');
-  W.push('<div class="qb-card">');
-  W.push('<div class="qb-row"><div class="qb-lab"><i>*</i>题型</div><div class="qb-ctl"><div class="qb-radios">'+
-    QB_TYPES.map(function(t){ return '<label><input type="radio" name="qbType" value="'+t+'"'+(QB_TYPE===t?' checked':'')+' onchange="qbSetType(this.value)">'+t+'</label>'; }).join('')+'</div></div></div>');
-  W.push('<div class="qb-row"><div class="qb-lab"><i>*</i>题干</div><div class="qb-ctl">'+
-    '<div class="qb-ta"><textarea id="qbStem" maxlength="1000" placeholder="请输入" oninput="qbCnt(this)">'+esc(QB_STEM)+'</textarea><span class="qb-cnt">'+QB_STEM.length+'/1000</span></div>'+
-    '<span class="qb-addimg" data-scope="stem" onclick="qbPickImg(this.dataset.scope)">添加图片</span>'+
-    '<input type="file" accept="image/*" id="qbFile-stem" data-scope="stem" style="display:none" onchange="qbAddImg(this.dataset.scope,this)">'+
-    '<div class="qb-imgs" id="qbStemImgs">'+qbImgsHtml(QB_STEM_IMGS,'stem')+'</div></div></div>');
+  /* 页头操作区：标题 + 操作按钮（说明文字与必填进度按需求去掉） */
+  W.push('<div class="page-head ph-fix"><h1>'+(QB_EDIT>=0?'编辑题目':'新建题目')+'</h1><div class="btns">'+
+    '<button class="btn btn-g" onclick="qbCancel()">取消</button>'+
+    '<button class="btn btn-g" onclick="qbSave(1)">保存并继续</button>'+
+    '<button class="btn btn-p" onclick="qbSave(0)">保存</button></div></div>');
+  /* 吸顶分区导航（同新增剧本） */
+  W.push('<div class="pn-nav" id="pnNav"><a data-id="fsecBase" class="on" onclick="pnNavTo(\'fsecBase\')">基础信息</a><a data-id="fsecStem" onclick="pnNavTo(\'fsecStem\')">题目内容</a><a data-id="fsecAns" onclick="pnNavTo(\'fsecAns\')">选项与答案</a></div>');
+  W.push('<div class="pn-wrap"><div class="pn-main"><div class="pn-card" id="pnForm">');
+  /* 1 · 基础信息：题型 + 分组设置（复用素材管理分组树下拉） */
+  W.push('<div class="fsec" id="fsecBase"><h3>基础信息</h3></div>');
+  W.push('<div class="form-row">'+
+    '<div class="form-item"><label>题型<i>*</i></label><div class="rchips">'+rOpt('qbType',QB_TYPES,QB_TYPE)+'</div></div>'+
+    '<div class="form-item"><label>分组设置</label><select id="qbGroup">'+qbGroupOpts(QB_GROUP)+'</select></div></div>');
+  /* 2 · 题目内容（题干随题型切换重绘：填空题为单行） */
+  W.push('<div class="fsec" id="fsecStem"><h3>题目内容</h3></div>');
+  W.push('<div id="qbStemWrap">'+qbStemHtml()+'</div>');
+  /* 3 · 选项与答案（题型联动） */
+  W.push('<div class="fsec" id="fsecAns"><h3>选项与答案</h3></div>');
   W.push('<div id="qbOptsWrap">'+qbOptsHtml()+'</div>');
-  W.push('<div class="qb-row"><div class="qb-lab"><i>*</i>难度系数</div><div class="qb-ctl"><div class="qb-radios">'+
-    ['易','中','难'].map(function(l){ return '<label><input type="radio" name="qbLevel" value="'+l+'"'+(QB_LEVEL===l?' checked':'')+' onchange="qbSetLevel(this.value)">'+l+'</label>'; }).join('')+'</div></div></div>');
-  W.push('<div class="qb-row"><div class="qb-lab">考点</div><div class="qb-ctl"><div class="qb-ta"><textarea id="qbPoint" maxlength="500" placeholder="请输入" oninput="qbCnt(this)">'+esc(QB_POINT)+'</textarea><span class="qb-cnt">'+QB_POINT.length+'/500</span></div></div></div>');
-  W.push('<div class="qb-row"><div class="qb-lab">解析</div><div class="qb-ctl"><div class="qb-ta"><textarea id="qbAnalysis" maxlength="512" placeholder="请输入" oninput="qbCnt(this)">'+esc(QB_ANALYSIS)+'</textarea><span class="qb-cnt">'+QB_ANALYSIS.length+'/512</span></div></div></div>');
-  W.push('<div class="qb-row"><div class="qb-lab">标签配置<span class="qb-help" title="填写题干后可自动生成，也可手动选择">?</span></div><div class="qb-ctl" id="qbTagCtl">'+qbTagsHtml()+'</div></div>');
+  W.push('<div class="form-row">'+
+    '<div class="form-item"><label>考点</label>'+
+      '<div class="qb-ta"><textarea id="qbPoint" maxlength="500" placeholder="请输入考点，如：产品参数 · 续航" oninput="qbCnt(this)">'+esc(QB_POINT)+'</textarea><span class="qb-cnt">'+QB_POINT.length+'/500</span></div></div>'+
+    '<div class="form-item"><label>解析</label>'+
+      '<div class="qb-ta"><textarea id="qbAnalysis" maxlength="512" placeholder="请输入解析，说明正确答案的依据" oninput="qbCnt(this)">'+esc(QB_ANALYSIS)+'</textarea><span class="qb-cnt">'+QB_ANALYSIS.length+'/512</span></div></div></div>');
+  W.push('</div></div>');
+  /* 右侧实时试题预览（同课程/剧本预览卡） */
+  W.push('<div class="pn-aside"><div class="pn-card pn-pv"><h3 class="pn-pv-title">实时试题预览<span class="live">实时</span></h3>'+
+    '<div class="qb-pv-badges" id="qbPvBadges"></div>'+
+    '<div class="qb-pv-stem" id="qbPvStem">暂无题干</div>'+
+    '<div class="qb-pv-opts" id="qbPvOpts"></div></div></div>');
   W.push('</div>');
-  W.push('<div class="qb-foot"><button class="btn btn-p" onclick="qbSave(1)">保存并继续</button><button class="btn btn-p" onclick="qbSave(0)">保存</button><button class="btn btn-g" onclick="qbCancel()">取消</button></div>');
-  W.push('</div>');
+  W.push('<button class="pn-totop" id="pnTotop" title="返回顶部" onclick="pnScrollTop()">'+icon('up',18)+'</button>');
   return W.join('');
 }
-function qbRenderOpts(){ const w=$('qbOptsWrap'); if(w)w.innerHTML=qbOptsHtml(); }
+/* 右侧实时预览 + 必填进度联动 */
+function updateQbPreview(){
+  qbCollect();
+  const g=id=>document.getElementById(id);
+  /* 得分比例合计：必须等于 100% 才算配置完成 */
+  const sum=g('qbKwSum');
+  if(sum){ sum.className='qb-kw-sum '+(qbKwSumOk()?'ok':'bad'); sum.innerHTML=qbKwSumHtml(); }
+  const bd=g('qbPvBadges');
+  if(bd)bd.innerHTML='<span class="qb-pv-badge">'+esc(QB_TYPE)+'</span><span class="qb-pv-badge lv">分组：'+esc(qbGName(QB_GROUP))+'</span>';
+  const st=g('qbPvStem');
+  if(st){st.textContent=QB_STEM.trim()||'暂无题干';st.classList.toggle('empty',!QB_STEM.trim());}
+  const op=g('qbPvOpts');
+  if(op){
+    if(qbHasOpts()){
+      op.innerHTML=QB_OPTS.map(function(o,i){
+        return '<div class="qb-pv-opt'+(QB_ANS.indexOf(i)>=0?' on':'')+'"><b>'+(qbFixed()?'':qbLetter(i)+'.')+'</b><span>'+esc(o.t||'（未填写）')+'</span>'+(QB_ANS.indexOf(i)>=0?'<span class="mark">✓ 正确答案</span>':'')+'</div>';
+      }).join('');
+    }else{
+      const llm=QB_RECOG==='大模型识别';
+      const recOk=llm?!!QB_PROMPT.trim():qbKwReady();
+      const recDesc=llm?(recOk?'已配置评分规则':'未配置评分规则'):(recOk?(QB_KW_GROUPS.length+' 组关键词 · 合计 '+qbKwTotal()+'%'):'未配置完整');
+      let h='<div class="qb-pv-ans">'+(QB_ANSWER.trim()?'<b>参考答案：</b>'+esc(QB_ANSWER):'<b>参考答案：</b>（未填写）')+'</div>'+
+        '<div class="qb-pv-recog"><b>答案识别：</b>'+esc(QB_RECOG)+'<span class="'+(recOk?'ok':'none')+'">'+recDesc+'</span></div>';
+      if(!llm&&QB_KW_GROUPS.length){
+        h+=QB_KW_GROUPS.map(function(gr){
+          const ws=qbKwWords(gr);
+          return '<div class="qb-pv-kwrow">'+esc(ws.length?ws.join('、'):'（未填写关键词）')+'<b>'+(gr.ratio||0)+'%</b></div>';
+        }).join('');
+      }
+      op.innerHTML=h;
+    }
+  }
+}
+function initQuestionNew(){
+  const form=document.getElementById('pnForm');if(!form)return;
+  form.addEventListener('input',updateQbPreview);
+  form.addEventListener('change',function(){
+    const t=document.querySelector('input[name=qbType]:checked');
+    if(t&&t.value!==QB_TYPE)qbSetType(t.value);
+    const rc=document.querySelector('input[name=qbRecog]:checked');
+    if(rc&&rc.value!==QB_RECOG){ qbCollect(); QB_RECOG=rc.value; qbRenderOpts(); }
+    updateQbPreview();
+  });
+  const c=document.querySelector('.content');
+  if(c){ if(!c.dataset.pnScroll){ c.addEventListener('scroll',pnScroll,{passive:true}); c.dataset.pnScroll='1'; } pnScroll(); }
+  /* 吸顶偏移与分区导航高亮（同新增剧本 initScriptNew） */
+  const fh=document.querySelector('.page-head.ph-fix'),nv=document.getElementById('pnNav'),asd=document.querySelector('.pn-aside');
+  let stick=56;
+  if(fh&&nv){
+    const hh=fh.offsetHeight,nh=nv.offsetHeight;
+    nv.style.top=hh+'px';
+    if(asd)asd.style.top=(hh+nh)+'px';
+    stick=hh+nh+8;
+    document.querySelectorAll('.fsec[id]').forEach(s=>s.style.scrollMarginTop=stick+'px');
+  }
+  const links=[...document.querySelectorAll('#pnNav a')];
+  if(window.IntersectionObserver&&links.length){
+    const obs=new IntersectionObserver(es=>{
+      es.forEach(e=>{if(e.isIntersecting){const id=e.target.id;links.forEach(a=>a.classList.toggle('on',a.dataset.id===id));}});
+    },{rootMargin:'-'+stick+'px 0px -65% 0px',threshold:0});
+    document.querySelectorAll('.fsec[id]').forEach(s=>obs.observe(s));
+  }
+  updateQbPreview();
+}
+function qbRenderOpts(){ const w=$('qbOptsWrap'); if(w)w.innerHTML=qbOptsHtml(); if(typeof updateQbPreview==='function')updateQbPreview(); }
 function qbRenderStemImgs(){ const w=$('qbStemImgs'); if(w)w.innerHTML=qbImgsHtml(QB_STEM_IMGS,'stem'); }
-function qbRenderTags(){ const w=$('qbTagCtl'); if(w)w.innerHTML=qbTagsHtml(); }
 function qbSetType(t){
   if(QB_TYPES.indexOf(t)<0)return;
   qbCollect();
@@ -7495,9 +8211,9 @@ function qbSetType(t){
   if(t==='判断题')QB_OPTS=[{t:'正确',img:null},{t:'错误',img:null}];
   else if(t==='填空题'||t==='简答题')QB_OPTS=[];
   else if(prev==='判断题'||prev==='填空题'||prev==='简答题')QB_OPTS=[{t:'',img:null},{t:'',img:null},{t:'',img:null},{t:'',img:null}];
+  const sw=$('qbStemWrap'); if(sw)sw.innerHTML=qbStemHtml();   /* 填空题题干切为单行 */
   qbRenderOpts();
 }
-function qbSetLevel(l){ QB_LEVEL=l; }
 function qbSetAns(i,on){
   if(qbMulti()){ if(on){ if(QB_ANS.indexOf(i)<0)QB_ANS.push(i); } else QB_ANS=QB_ANS.filter(function(x){return x!==i;}); }
   else QB_ANS=on?[i]:[];
@@ -7514,17 +8230,84 @@ function qbDelOpt(i){
   QB_ANS=QB_ANS.filter(function(x){return x!==i;}).map(function(x){return x>i?x-1:x;});
   qbRenderOpts();
 }
-function qbPickImg(scope){ const f=$('qbFile-'+scope); if(f&&f.click)f.click(); }
-function qbAddImg(scope,el){
-  const f=el.files&&el.files[0]; if(!f)return;
-  const url=(window.URL&&URL.createObjectURL)?URL.createObjectURL(f):'';
-  const item={name:f.name,url:url};
+/* 从素材库引用图片（题干 / 选项均改为引用素材管理中的图片素材，不再本地上传） */
+let QB_IMG_SCOPE=null, QB_IMG_GROUP='all', QB_IMG_Q='', QB_IMG_SEL=null;
+function qbImgCandidates(){ return MATS.filter(m=>m.type==='图片'); }
+function qbImgCount(gid){
+  const all=qbImgCandidates();
+  if(gid==='all')return all.length;
+  const ids=gid==='ungrouped'?['ungrouped']:matDescendants(gid);
+  return all.filter(m=>ids.indexOf(m.group)>=0).length;
+}
+function qbImgTreeHtml(pid,depth){
+  if(pid===undefined){
+    return '<div class="kb2-node'+(QB_IMG_GROUP==='all'?' on':'')+'" onclick="qbImgPickGroup(\'all\')"><span class="tname">全部素材</span><span class="cnt">'+qbImgCount('all')+'</span></div>'+
+      '<div class="kb2-node'+(QB_IMG_GROUP==='ungrouped'?' on':'')+'" onclick="qbImgPickGroup(\'ungrouped\')"><span class="tname">未分组</span><span class="cnt">'+qbImgCount('ungrouped')+'</span></div>'+
+      matGroupChildren(null).map(g=>qbImgTreeHtml(g.id,0)).join('');
+  }
+  const kids=matGroupChildren(pid), cnt=qbImgCount(pid);
+  if(!cnt&&!kids.length)return '';
+  let h='<div class="kb2-node'+(QB_IMG_GROUP===pid?' on':'')+(depth?' sub':'')+'" onclick="qbImgPickGroup(\''+pid+'\')"><span class="tname">'+esc(matGName(pid))+'</span><span class="cnt">'+cnt+'</span></div>';
+  if(kids.length)h+=kids.map(g=>qbImgTreeHtml(g.id,depth+1)).join('');
+  return h;
+}
+function qbImgListHtml(){
+  const ids=QB_IMG_GROUP==='all'?null:QB_IMG_GROUP==='ungrouped'?['ungrouped']:matDescendants(QB_IMG_GROUP);
+  const f=m=>(ids?ids.indexOf(m.group)>=0:true)&&(!QB_IMG_Q||m.name.toLowerCase().indexOf(QB_IMG_Q.toLowerCase())>=0);
+  const list=qbImgCandidates().filter(f);
+  if(!list.length)return '<div class="kb2-empty">当前筛选下暂无「图片」类型素材，可先到素材管理上传</div>';
+  return list.map(m=>{
+    const on=QB_IMG_SEL===m.id;
+    return '<div class="kb2-item'+(on?' on':'')+'" data-id="'+m.id+'" onclick="qbImgToggle('+m.id+')">'+
+      '<div class="kb2-ic">'+icon('kb',15)+'</div>'+
+      '<div class="kb2-bd"><div class="kb2-nm">'+esc(m.name)+'</div><div class="kb2-meta">'+esc(matGName(m.group))+' · '+matKB(m.kb)+' · '+esc(m.up)+'</div></div>'+
+      '<span class="kb2-ext">图片</span>'+
+      '<span class="kb2-chk">'+(on?'✓':'')+'</span></div>';
+  }).join('');
+}
+function qbImgChipsHtml(){
+  const m=MATS.find(x=>x.id===QB_IMG_SEL);
+  const head=document.getElementById('qbImgSelHead');
+  if(head)head.innerHTML=m?'已选择素材：':'';
+  return m?'<span class="crs-mchip">'+esc(m.name)+' · '+matKB(m.kb)+'<span class="x" onclick="qbImgToggle('+m.id+')">×</span></span>':'';
+}
+function qbImgRender(){
+  const t=document.getElementById('qbImgTree'),l=document.getElementById('qbImgList'),c=document.getElementById('qbImgChips'),si=document.getElementById('qbImgSearch');
+  if(t)t.innerHTML=qbImgTreeHtml();
+  if(l)l.innerHTML=qbImgListHtml();
+  if(c)c.innerHTML=qbImgChipsHtml();
+  if(si&&si.value!==QB_IMG_Q)si.value=QB_IMG_Q;
+}
+function qbPickImg(scope){
   qbCollect();
-  if(scope==='stem')QB_STEM_IMGS.push(item);
-  else if(scope.indexOf('opt:')===0){ const i=+scope.slice(4); if(QB_OPTS[i])QB_OPTS[i].img=item; }
-  el.value='';
+  QB_IMG_SCOPE=scope; QB_IMG_GROUP='all'; QB_IMG_Q='';
+  /* 题干为追加多图：不回显、每次新选一张；选项为单图替换：回显该选项当前引用 */
+  if(scope.indexOf('opt:')===0){ const o=QB_OPTS[+scope.slice(4)]; QB_IMG_SEL=(o&&o.img)?o.img.matId:null; }
+  else QB_IMG_SEL=null;
+  qbImgRender();
+  const mask=document.getElementById('qbImgMask'); if(mask)mask.classList.add('on');
+}
+function qbImgClose(){ const m=document.getElementById('qbImgMask'); if(m)m.classList.remove('on'); }
+function qbImgPickGroup(g){ QB_IMG_GROUP=g; qbImgRender(); }
+function qbImgSearchInput(v){ QB_IMG_Q=(v||'').trim(); qbImgRender(); }
+function qbImgToggle(id){
+  const m=MATS.find(x=>x.id===id); if(!m||m.type!=='图片')return;
+  QB_IMG_SEL=(QB_IMG_SEL===id)?null:id; qbImgRender();
+}
+function qbImgConfirm(){
+  const m=MATS.find(x=>x.id===QB_IMG_SEL);
+  if(!m){ toast('请先选择一个图片素材'); return; }
+  const optScope=QB_IMG_SCOPE&&QB_IMG_SCOPE.indexOf('opt:')===0;
+  const oi=optScope?+QB_IMG_SCOPE.slice(4):-1;
+  /* 同一素材在同一题目内只允许引用一次；选项改选自身原素材不视为重复 */
+  const usedByStem=QB_STEM_IMGS.some(it=>it.matId===m.id);
+  const usedByOtherOpt=QB_OPTS.some((o,k)=>o.img&&o.img.matId===m.id&&k!==oi);
+  if(usedByStem||usedByOtherOpt){ toast('该素材已被当前题目引用'); return; }
+  const item={name:m.name,matId:m.id};
+  if(optScope){ if(QB_OPTS[oi])QB_OPTS[oi].img=item; toast('选项 '+qbLetter(oi)+' 已引用素材图片：'+m.name); }
+  else { QB_STEM_IMGS.push(item); toast('已引用素材图片：'+m.name); }
+  qbImgClose();
   qbRenderOpts(); qbRenderStemImgs();
-  toast('已添加图片：'+f.name);
 }
 function qbDelImg(scope,i){
   qbCollect();
@@ -7532,57 +8315,717 @@ function qbDelImg(scope,i){
   else if(scope.indexOf('opt:')===0){ const k=+scope.slice(4); if(QB_OPTS[k])QB_OPTS[k].img=null; }
   qbRenderOpts(); qbRenderStemImgs();
 }
-function qbToggleTagPop(){ qbCollect(); QB_TAGPOP=!QB_TAGPOP; qbRenderTags(); }
-function qbTagSel(){
-  const p=$('qbTagPop'); if(!p||!p.querySelectorAll)return [];
-  return [].slice.call(p.querySelectorAll('input[type=checkbox]:checked')).map(function(e){return e.value;});
-}
-function qbTagKey(e){ if(e.key==='Enter'){ e.preventDefault(); qbAddCustomTag(); } }
-function qbAddCustomTag(){
-  const inp=$('qbTagCustom'), v=inp?(inp.value||'').trim():'';
-  if(!v){ toast('请输入标签名称'); return; }
-  QB_TAGS=[...new Set([...qbTagSel(),...QB_TAGS,v])];
-  QB_TAGPOP=true; qbRenderTags(); toast('已添加标签：'+v);
-}
-function qbConfirmTags(){
-  const sel=qbTagSel(), inp=$('qbTagCustom'), v=inp?(inp.value||'').trim():'';
-  if(v)sel.push(v);
-  QB_TAGS=[...new Set(sel)]; QB_TAGPOP=false; qbRenderTags();
-  toast(QB_TAGS.length?'已设置 '+QB_TAGS.length+' 个标签':'已清空标签');
-}
-function qbDelTag(i){ QB_TAGS.splice(i,1); qbRenderTags(); }
-function qbGenTags(){
-  qbCollect();
-  const txt=[QB_STEM,QB_POINT,QB_ANSWER].concat(QB_OPTS.map(function(o){return o.t;})).join(' ');
-  if(!txt.trim()){ toast('请先填写题干、考点或选项内容，再生成标签'); return; }
-  const hits=Object.keys(QB_TAG_KW).filter(function(k){ return QB_TAG_KW[k].some(function(w){return txt.indexOf(w)>=0;}); });
-  QB_TAGS=hits.length?hits.slice(0,4):['产品知识'];
-  QB_TAGPOP=false; qbRenderTags();
-  toast('已根据题目内容生成 '+QB_TAGS.length+' 个推荐标签');
-}
 function qbValidate(){
-  if(!QB_STEM.trim())return '请填写题干';
+  const g=id=>document.getElementById(id);
+  const show=(errId,bad)=>{ const e=g(errId); if(e)e.classList.toggle('show',!!bad); };
+  show('qbStemErr',false);show('qbOptErr',false);show('qbAnswerErr',false);show('qbRecogErr',false);
+  const stemEl=g('qbStem'); if(stemEl)stemEl.style.borderColor='';
+  if(!QB_STEM.trim()){ show('qbStemErr',true); if(stemEl)stemEl.style.borderColor='var(--bad)'; return '请填写题干'; }
   if(qbHasOpts()){
-    if(QB_OPTS.length<2)return '至少需要 2 个选项';
-    for(let i=0;i<QB_OPTS.length;i++)if(!(QB_OPTS[i].t||'').trim())return '请填写选项 '+qbLetter(i)+' 的内容';
-    if(!QB_ANS.length)return '请设置正确答案';
-  }else if(!QB_ANSWER.trim())return '请填写参考答案';
+    if(QB_OPTS.length<2){ show('qbOptErr',true); return '至少需要 2 个选项'; }
+    for(let i=0;i<QB_OPTS.length;i++)if(!(QB_OPTS[i].t||'').trim()){ show('qbOptErr',true); return '请填写选项 '+qbLetter(i)+' 的内容'; }
+    if(!QB_ANS.length){ show('qbOptErr',true); return '请设置正确答案'; }
+  }else if(!QB_ANSWER.trim()){ show('qbAnswerErr',true); return '请填写参考答案'; }
+  if(!qbHasOpts()){
+    if(QB_RECOG==='大模型识别'&&!QB_PROMPT.trim()){ show('qbRecogErr',true); return '请填写评分规则'; }
+    if(QB_RECOG==='关键词识别'){ const e=qbKwValidate(); if(e){ show('qbRecogErr',true); return e; } }
+  }
   return '';
 }
 function qbSave(again){
   qbCollect();
   const err=qbValidate(); if(err){ toast(err); return; }
   const stem=QB_STEM.trim();
-  const cate=QB_TAGS.find(function(t){return QB_CATES.indexOf(t)>=0;})||'未分类';
-  const ansTxt=qbHasOpts()?QB_ANS.slice().sort(function(a,b){return a-b;}).map(function(i){return qbLetter(i);}).join('、'):QB_ANSWER.trim();
-  const row=[esc(stem),QB_TYPE_MAP[QB_TYPE],QB_LV_MAP[QB_LEVEL],cate,ST('已发布',OK),todayStr()];
+  const cate='未分类';
+  const ansTxt=qbHasOpts()?QB_ANS.slice().sort(function(a,b){return a-b;}).map(function(i){return qbFixed()?(QB_OPTS[i]?QB_OPTS[i].t:''):qbLetter(i);}).join('、'):QB_ANSWER.trim();
+  /* 列表行结构对齐列表列：题干 / 题型 / 分组设置 / 答案识别 / 状态 / 更新时间 */
+  const recogTxt=qbHasOpts()?'—':QB_RECOG;
+  const meta={type:QB_TYPE,group:QB_GROUP,groupName:qbGName(QB_GROUP),answer:ansTxt,options:QB_OPTS.map(function(o){return o.t;}),analysis:QB_ANALYSIS,point:QB_POINT,
+    stemImgs:QB_STEM_IMGS.map(function(it){return {name:it.name,matId:it.matId};}),
+    optImgs:QB_OPTS.map(function(o){return o.img?{name:o.img.name,matId:o.img.matId}:null;}),
+    recog:(qbHasOpts()?null:QB_RECOG),
+    prompt:(!qbHasOpts()&&QB_RECOG==='大模型识别'?QB_PROMPT:null),
+    kwGroups:(!qbHasOpts()&&QB_RECOG==='关键词识别'?QB_KW_GROUPS.map(function(g){return {words:qbKwWords(g),ratio:g.ratio};}):null)};
+  if(QB_EDIT>=0){
+    const oldRow=DB.questions.rows[QB_EDIT], oldStem=QB_EDIT_STEM;
+    const st=oldRow?oldRow[4]:ST('已发布',OK);
+    DB.questions.rows[QB_EDIT]=[esc(stem),QB_TYPE_MAP[QB_TYPE],qbGName(QB_GROUP),recogTxt,st,todayStr()];
+    if(oldStem&&oldStem!==stem){ delete QB_ROW_GROUPS[oldStem]; delete QB_META[oldStem]; }
+    QB_ROW_GROUPS[stem]=QB_GROUP; QB_META[stem]=meta;
+    qbReset(); go('questions'); toast('已保存修改：'+stem);
+    return;
+  }
+  const row=[esc(stem),QB_TYPE_MAP[QB_TYPE],qbGName(QB_GROUP),recogTxt,ST('已发布',OK),todayStr()];
   DB.questions.rows.unshift(row);
-  QB_META[stem]={type:QB_TYPE,level:QB_LEVEL,answer:ansTxt,options:QB_OPTS.map(function(o){return o.t;}),analysis:QB_ANALYSIS,point:QB_POINT,tags:QB_TAGS.slice(),stemImgs:QB_STEM_IMGS.length};
-  if(again){ qbReset(); render(); toast('已保存试题，可继续新增'); }
-  else { qbReset(); go('questions'); toast('已保存试题：'+stem); }
+  QB_ROW_GROUPS[stem]=QB_GROUP;
+  QB_META[stem]=meta;
+  if(again){ qbReset(); render(); toast('已保存题目，可继续新建'); }
+  else { qbReset(); go('questions'); toast('已保存题目：'+stem); }
 }
 function qbCancel(){ qbReset(); go('questions'); }
-/* ================== 题库管理：新增试题模块结束 ================== */
+/* ===== 题库管理 · 一键导入（Excel 模板下载 / 上传解析预览 / 确认批量入库） ===== */
+const QB_IMPORT_FIELDS=['题型','分组设置','题干','选项','参考答案','答案识别','评分规则 / 得分关键词组','考点','解析'];
+const QB_IMPORT_ROWS=[
+ {stem:'银河E5 支持的最大快充功率是多少千瓦？',type:'单选题',group:'产品知识',recog:'—',answer:'B',options:['120 kW','160 kW','180 kW','200 kW'],point:'产品参数 · 快充',analysis:'银河E5 最大快充功率为 160 kW，讲解时结合充电场景说明。'},
+ {stem:'客户到店后 5 分钟内应有顾问主动接待。',type:'判断题',group:'未分组',recog:'—',answer:'正确',options:['正确','错误'],point:'服务规范 · 接待时效',analysis:'按接待 SOP，客户到店后 5 分钟内须由顾问主动接待。'},
+ {stem:'请说出银河E5 的三个核心卖点。',type:'简答题',group:'产品知识',recog:'大模型识别',answer:'530km 续航 / 大空间 / 智能座舱',prompt:'说出续航、空间、智能座舱任意一个卖点得 30 分，表达完整流畅得 10 分。',point:'产品卖点',analysis:'核心卖点：530km 续航 / 大空间 / 智能座舱。'},
+ {stem:'银河E5 的官方指导价区间是______万元。',type:'填空题',group:'产品知识',recog:'关键词识别',answer:'10.98-13.68',kwGroups:[{words:['10.98','13.68'],ratio:'60'},{words:['万'],ratio:'40'}],point:'产品参数 · 价格',analysis:'官方指导价 10.98–13.68 万元。'},
+ {stem:'试驾结束后应首先确认客户的哪些反馈？',type:'多选题',group:'销售流程',recog:'—',answer:'A、B',options:['驾驶感受','空间与舒适性','当日天气','同事表现'],point:'试驾流程 · 反馈确认',analysis:'试驾后首先确认驾驶感受与空间舒适性反馈。'}];
+const QB_IMPORT_GROUP_ID={'未分组':'qbgUngrouped','产品知识':'qbg1','销售流程':'qbg2','金融保险':'qbg3','销售技巧':'qbg4'};
+function qbImportDrawer(){
+  const intro='<div class="im-intro"><div class="im-intro-ic">'+icon('cloud',18)+'</div>'+
+    '<div><b>一键导入题目</b><p>下载 Excel 模板并按模板填写题目，上传后系统自动解析题干、选项与答案识别配置，确认后批量写入题库。<span style="color:#f60">当前为演示环境，解析数据为示例。</span></p></div></div>';
+  const body=intro+
+    '<div class="sec"><h4>模板字段说明</h4><div style="margin-bottom:8px">'+QB_IMPORT_FIELDS.map(function(f){return '<span class="pill">'+f+'</span>';}).join('')+'</div>'+
+    '<div style="font-size:12px;color:var(--t3);line-height:1.8">· 题型支持：单选题 / 多选题 / 判断题 / 填空题 / 简答题<br>· 选择题选项为 A–H，每行一个；判断题选项固定为「正确 / 错误」<br>· 填空 / 简答题需配置「答案识别」：大模型识别（评分规则）或关键词识别（得分比例合计 100%）<br>· 分组设置需与题库分组名称一致，无法匹配时归入「未分组」</div></div>'+
+    '<div class="sec"><h4>上传文件</h4><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">'+
+    '<button class="btn btn-g" onclick="qbImpTpl()">'+icon('download',13)+'下载 Excel 模板</button>'+
+    '<button class="btn btn-p" onclick="qbImpPick()">'+icon('cloud',13)+'上传已填写的模板</button>'+
+    '<input type="file" id="qbImpFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="qbImpFile(this)">'+
+    '<button class="btn btn-g btn-sm" onclick="qbImportPreview()">使用示例数据</button></div>'+
+    '<div id="qbImpName" style="font-size:12px;color:var(--t3);margin-top:10px">尚未选择文件，可先下载模板，或直接使用示例数据预览</div></div>'+
+    '<div class="im-tip">仅支持 .xlsx / .xls / .csv 格式，单次最多导入 500 题。</div>';
+  openDrawerHtml('一键导入题目',body);
+}
+function qbImpTpl(){ toast('题目导入模板已下载（演示）'); }
+function qbImpPick(){ const f=document.getElementById('qbImpFile'); if(f)f.click(); }
+function qbImpFile(el){
+  const f=el.files&&el.files[0]; if(!f)return;
+  const n=document.getElementById('qbImpName'); if(n)n.textContent='已选择：'+f.name+'（演示环境，使用示例数据解析）';
+  el.value='';
+  qbImportPreview();
+}
+function qbImportPreview(){
+  let h='<div class="im-ok"><div class="im-ok-ic">'+icon('check',28)+'</div><div class="im-ok-t">解析完成</div>'+
+    '<div class="im-stat"><div class="im-stat-c"><b>'+QB_IMPORT_ROWS.length+'</b><span>新增题目</span></div>'+
+    '<div class="im-stat-c"><b>1</b><span>重复跳过</span></div>'+
+    '<div class="im-stat-c"><b>0</b><span>解析失败</span></div></div>'+
+    '<div class="im-pv-title">解析预览</div><div class="im-pv">';
+  QB_IMPORT_ROWS.forEach(function(r){
+    h+='<div class="im-pv-row"><span class="st info" style="flex-shrink:0">'+esc(r.type)+'</span>'+
+      '<div style="min-width:0;flex:1"><div class="nm">'+esc(r.stem)+'</div>'+
+      '<div class="mt">'+esc(r.group)+' · 答案识别：'+esc(r.recog)+'</div></div></div>';
+  });
+  h+='</div><div class="sec" style="display:flex;gap:10px;margin-top:16px"><button class="btn btn-g" onclick="qbImportDrawer()">返回</button>'+
+    '<button class="btn btn-p" style="margin-left:auto" onclick="qbImportConfirm()">确认导入 '+QB_IMPORT_ROWS.length+' 题</button></div></div>';
+  document.querySelector('#drawer .db').innerHTML=h;
+}
+function qbImportConfirm(){
+  QB_IMPORT_ROWS.forEach(function(r){
+    const short={'单选题':'单选','多选题':'多选','判断题':'判断','填空题':'填空','简答题':'简答'}[r.type]||'单选';
+    DB.questions.rows.unshift([esc(r.stem),short,r.group,r.recog,ST('已发布',OK),todayStr()]);
+    QB_ROW_GROUPS[r.stem]=QB_IMPORT_GROUP_ID[r.group]||'qbgUngrouped';
+    QB_META[r.stem]={type:r.type,group:QB_ROW_GROUPS[r.stem],groupName:r.group,answer:r.answer,options:(r.options||[]),analysis:r.analysis||'',point:r.point||'',
+      recog:(r.recog==='—'?null:r.recog),
+      prompt:(r.recog==='大模型识别'?(r.prompt||''):null),
+      kwGroups:(r.recog==='关键词识别'&&r.kwGroups?JSON.parse(JSON.stringify(r.kwGroups)):null)};
+  });
+  closeDrawer();
+  toast('已成功导入 '+QB_IMPORT_ROWS.length+' 道题目');
+  go('questions');
+}
+/* ================== 题库管理：新建题目模块结束 ================== */
+
+/* ================== 培训中心 · 试题考试模块开始（列表分组 + 新建试题考试组卷配置，功能对齐真实后台「新建试题练习/考试」） ================== */
+const EX_QBANKS=['新车销售产品知识库','销售流程规范题库','金融保险政策题库','服务规范题库'];
+const EX_QTYPES=['单选题','多选题','判断题','填空题','简答题'];
+const EX_TAGS_LIB=['产品知识','银河E5','销售流程','金融保险','服务规范','新员工','试驾体验','客户异议'];
+const EX_TEACHERS=['张伟','李娜','王芳','陈强'];
+/* ---- 左侧分组（与课程/剧本分组面板同模式） ---- */
+let EX_GROUPS=[
+ {id:'exUngrouped',name:'未分组',fixed:true,parent:null},
+ {id:'exg1',name:'月度考核',parent:null},
+ {id:'exg2',name:'专项练习',parent:null}];
+const EX_ROW_GROUPS={};
+let EX_G_EXPAND=new Set();
+let EX_G_UID=1;
+let EX_F={kw:'',cat:'all',st:'全部'};
+let EX_SEL=new Set();               /* 列表勾选（批量修改分组） */
+let EX_MOVE_MODE='',EX_MOVE_IDX=-1,EX_MOVE_LIST=[];
+/* 任务完整配置快照（按任务名索引，供后续详情/编辑扩展） */
+const EX_XTRA={};
+function exRowGroup(name){ return EX_ROW_GROUPS[name]||EX_ROW_GROUPS[esc(name)]||'exUngrouped'; }
+function exGName(id){ const g=EX_GROUPS.find(x=>x.id===id); return g?g.name:'未分组'; }
+function exGIdByName(name){ const g=EX_GROUPS.find(x=>x.name===name); return g?g.id:'exUngrouped'; }
+function exGChildren(pid){ return EX_GROUPS.filter(g=>g.parent===pid&&g.id!=='exUngrouped'&&g.id!==pid); }
+function exGDepth(id){ let d=0,g=EX_GROUPS.find(x=>x.id===id); while(g&&g.parent){ d++; g=EX_GROUPS.find(x=>x.id===g.parent); } return d; }
+function exGDescendants(id){ const out=new Set([id]),q=[id]; while(q.length){ const cur=q.shift(); exGChildren(cur).forEach(c=>{ out.add(c.id); q.push(c.id); }); } return out; }
+function exRowGroupId(i){ const name=String(DB.examTasks.rows[i][0]).replace(/<[^>]+>/g,'').trim(); return EX_ROW_GROUPS[esc(name)]||EX_ROW_GROUPS[name]||'exUngrouped'; }
+function exGCount(g){
+  const rows=DB.examTasks.rows;
+  if(g==='all')return rows.length;
+  const ids=g==='exUngrouped'?new Set(['exUngrouped']):exGDescendants(g);
+  return rows.filter((r,i)=>ids.has(exRowGroupId(i))).length;
+}
+function exGToggle(id){ EX_G_EXPAND.has(id)?EX_G_EXPAND.delete(id):EX_G_EXPAND.add(id); render(); }
+function exGPick(g){ EX_F.cat=g; render(); }
+function exGTreeHtml(pid,depth){
+  return exGChildren(pid).map(g=>{
+    const kids=exGChildren(g.id), has=kids.length>0, open=EX_G_EXPAND.has(g.id), sel=EX_F.cat===g.id;
+    let h='<div class="tree-node'+(sel?' on':'')+'" data-g="'+esc(g.name)+'" style="padding-left:'+(8+depth*16)+'px" onclick="exGPick(\''+g.id+'\')">';
+    if(has) h+='<span class="tree-toggle'+(open?' open':'')+'" onclick="event.stopPropagation();exGToggle(\''+g.id+'\')">▸</span>';
+    h+='<span class="tname">'+esc(g.name)+'</span><span class="cnt">('+exGCount(g.id)+')</span>';
+    if(!g.fixed) h+='<span class="mat-gdel" onclick="event.stopPropagation();exGroupDelAsk(\''+g.id+'\')">删除</span>';
+    h+='</div>';
+    if(has&&open) h+=exGTreeHtml(g.id,depth+1);
+    return h;
+  }).join('');
+}
+function exGSearch(v){
+  v=(v||'').trim().toLowerCase();
+  if(v) EX_GROUPS.forEach(g=>{ if(exGChildren(g.id).length) EX_G_EXPAND.add(g.id); });
+  const box=document.getElementById('exGroupList');
+  if(!box)return;
+  box.innerHTML=exGTreeHtml(null,0);
+  box.querySelectorAll('.tree-node').forEach(n=>{
+    n.style.display=(!v||(n.dataset.g||'').toLowerCase().includes(v))?'':'none';
+  });
+}
+function exGOptsTop(selId){
+  let out='<option value=""'+(selId===''?' selected':'')+'>顶级分组</option>';
+  (function rec(pid,depth){
+    exGChildren(pid).forEach(g=>{
+      out+='<option value="'+g.id+'"'+(g.id===selId?' selected':'')+'>'+'  '.repeat(depth)+esc(g.name)+'</option>';
+      rec(g.id,depth+1);
+    });
+  })(null,0);
+  return out;
+}
+function openExGroupAdd(){
+  let def='';
+  if(EX_F.cat&&EX_F.cat!=='all'&&EX_F.cat!=='exUngrouped')def=EX_F.cat;
+  $('exGParentSel').innerHTML=exGOptsTop(def);
+  $('exGNameInp').value='';
+  const e=$('exGErr');e.style.display='none';
+  if(def&&exGDepth(def)>=2){
+    e.textContent='「'+exGName(def)+'」已是三级分组，无法再创建下级，请重新选择上级分组';e.style.display='block';
+  }
+  $('exGroupMask').classList.add('on');
+  setTimeout(()=>{ try{$('exGNameInp').focus();}catch(_){} },50);
+}
+function closeExGroupAdd(){ $('exGroupMask').classList.remove('on'); }
+function exGNameInput(){ const e=$('exGErr'); if(e.style.display!=='none'&&$('exGNameInp').value.trim())e.style.display='none'; }
+function exGParentChange(){
+  const pid=$('exGParentSel').value,e=$('exGErr');
+  if(pid&&exGDepth(pid)>=2){ e.textContent='所选上级分组已是三级，无法再创建下级';e.style.display='block'; }
+  else e.style.display='none';
+}
+function doExGroupAdd(){
+  const name=$('exGNameInp').value.trim();
+  const parent=$('exGParentSel').value||null;
+  const e=$('exGErr');
+  if(!name){ e.textContent='请输入分组名称';e.style.display='block';try{$('exGNameInp').focus();}catch(_){} return; }
+  if(parent){
+    if(exGDepth(parent)>=2){ e.textContent='最多支持三级分组，所选上级分组下无法再创建';e.style.display='block';return; }
+    if(EX_GROUPS.some(g=>g.parent===parent&&g.name===name)){ e.textContent='「'+exGName(parent)+'」下已存在分组「'+name+'」';e.style.display='block';return; }
+  }else if(EX_GROUPS.some(g=>g.parent===null&&g.name===name)){ e.textContent='已存在顶级分组「'+name+'」';e.style.display='block';return; }
+  const id='exgN'+(EX_G_UID++)+'_'+Date.now();
+  EX_GROUPS.push({id,name,parent});
+  if(parent)EX_G_EXPAND.add(parent);
+  toast('已在「'+(parent?exGName(parent):'顶级')+'」下创建分组：'+name);
+  closeExGroupAdd();render();
+}
+function exGroupDelAsk(id){
+  const g=EX_GROUPS.find(x=>x.id===id);if(!g)return;
+  const ids=[...exGDescendants(id)];
+  const n=DB.examTasks.rows.filter((r,i)=>ids.includes(exRowGroupId(i))).length;
+  if(n){ toast('该分组下仍有 '+n+' 个试题任务，请先调整任务分组');return; }
+  const sub=ids.length>1?'（含 '+(ids.length-1)+' 个子分组）':'';
+  matAsk('删除分组','确定删除分组「'+g.name+'」'+sub+'？删除后不可恢复。',()=>{
+    EX_GROUPS=EX_GROUPS.filter(x=>!ids.includes(x.id));
+    ids.forEach(i=>EX_G_EXPAND.delete(i));
+    if(ids.includes(EX_F.cat))EX_F.cat='all';
+    toast('已删除分组：'+g.name);render();
+  });
+}
+function exGroupOpts(selId){
+  const opt=(id,name,d)=>'<option value="'+id+'"'+(selId===id?' selected':'')+'>'+'\u3000'.repeat(d)+esc(name)+'</option>';
+  let out='<option value="exUngrouped"'+(selId==='exUngrouped'?' selected':'')+'>未分组</option>';
+  const walk=(pid,d)=>{ exGChildren(pid).forEach(g=>{ out+=opt(g.id,g.name,d); walk(g.id,d+1); }); };
+  walk(null,0);
+  return out;
+}
+
+/* ---- 列表页 ---- */
+function exStatusIdx(){ return DB.examTasks.cols.findIndex(c=>c[0]==='状态'); }
+function exStatusOf(row){ return String(row[exStatusIdx()]).replace(/<[^>]+>/g,''); }
+function exName(i){ return String(DB.examTasks.rows[i][0]).replace(/<[^>]+>/g,'').trim(); }
+function exFiltered(){
+  return DB.examTasks.rows.map((r,i)=>({r,i})).filter(({r,i})=>{
+    if(EX_F.cat==='all')return true;
+    if(EX_F.cat==='exUngrouped')return exRowGroupId(i)==='exUngrouped';
+    return exGDescendants(EX_F.cat).has(exRowGroupId(i));
+  }).filter(({r})=>{
+    if(EX_F.kw&&String(r[0]).replace(/<[^>]+>/g,'').indexOf(EX_F.kw)<0)return false;
+    if(EX_F.st!=='全部'&&exStatusOf(r)!==EX_F.st)return false;
+    return true;
+  });
+}
+function pgExamPaper(){
+  const rows=exFiltered();
+  const side='<div class="mat-side">'+
+    '<div class="tree-node'+(EX_F.cat==='all'?' on':'')+'" onclick="exGPick(\'all\')"><span class="tname">全部试题任务</span><span class="cnt all-b">'+exGCount('all')+'</span></div>'+
+    '<input class="side-search" placeholder="请输入分组名称" oninput="exGSearch(this.value)">'+
+    '<div class="tree-node'+(EX_F.cat==='exUngrouped'?' on':'')+'" onclick="exGPick(\'exUngrouped\')"><span class="tname">未分组</span><span class="cnt">('+exGCount('exUngrouped')+')</span></div>'+
+    '<div id="exGroupList">'+exGTreeHtml(null,0)+'</div>'+
+    '<button class="side-add" onclick="openExGroupAdd()">+ 新建分组</button>'+
+  '</div>';
+  const head='<th style="width:34px"><input type="checkbox" onchange="exSelAll(this.checked)" title="全选"></th>'+
+    ['任务名称','类型','参与学员','题数','总分数','通过分数','任务时间','通过率','状态','更新时间'].map(t=>'<th>'+t+'</th>').join('')+'<th>操作</th>';
+  const body=rows.map(({r,i})=>{
+    const st=exStatusOf(r);
+    const ops='<div class="row-ops">'+
+      '<span class="lk" onclick="exMoveGroup('+i+')">转移分组</span>'+
+      (st==='已停用'?'<span class="lk" onclick="exEnable('+i+')">启用</span>':'<span class="lk" onclick="exDisable('+i+')">停用</span>')+
+      '<span class="lk danger" onclick="exDelete('+i+')">删除</span></div>';
+    return '<tr>'+
+      '<td><input type="checkbox" data-i="'+i+'"'+(EX_SEL.has(i)?' checked':'')+' onchange="exSelRow(+this.dataset.i,this.checked)" title="选择"></td>'+
+      r.map(cell=>'<td>'+cell+'</td>').join('')+
+      '<td>'+ops+'</td></tr>';
+  }).join('');
+  return '<div class="page-head"><h1>试题考试</h1><span class="desc">共 '+DB.examTasks.rows.length+' 个任务</span><div class="btns">'+headBtns('examPaper')+'</div></div>'+
+    '<div class="org-layout" style="grid-template-columns:230px 1fr">'+side+'<div>'+
+    '<div class="filter-card">'+
+      '<div class="f-item"><span>关键词</span><input id="exFkw" placeholder="请输入任务名称" value="'+esc(EX_F.kw)+'" onkeydown="if(event.key===\'Enter\')exQuery()"></div>'+
+      '<div class="f-item"><span>任务状态</span><select id="exFst">'+['全部','未开始','进行中','已结束','已停用'].map(o=>'<option'+(EX_F.st===o?' selected':'')+'>'+o+'</option>').join('')+'</select></div>'+
+      '<button class="btn btn-p btn-sm" onclick="exQuery()">查询</button><button class="btn btn-g btn-sm" onclick="exResetF()">重置</button></div>'+
+    '<div class="tbl-card"><div class="tbl-scroll"><table><thead><tr>'+head+'</tr></thead><tbody>'+
+      (body||'<tr><td colspan="12"><div class="empty"><div class="ic">◌</div>暂无试题任务，点击右上角「新建试题考试」创建</div></td></tr>')+
+      '</tbody></table></div>'+
+      '<div class="tbl-foot">共 '+rows.length+' 条 · 每页 10 条<div class="pgs"><button>‹</button><button class="on">1</button><button>›</button></div></div></div>'+
+    '</div></div>';
+}
+function exQuery(){ EX_F.kw=($('exFkw').value||'').trim(); EX_F.st=$('exFst').value; render(); }
+function exResetF(){ EX_F={kw:'',cat:EX_F.cat,st:'全部'}; render(); }
+function exSelRow(i,on){ on?EX_SEL.add(i):EX_SEL.delete(i); }
+function exSelAll(on){ exFiltered().forEach(({i})=>{ on?EX_SEL.add(i):EX_SEL.delete(i); }); render(); }
+function exMoveGroup(i){
+  EX_MOVE_MODE='one'; EX_MOVE_IDX=i; EX_MOVE_LIST=[];
+  $('exMoveTitle').textContent='转移分组';
+  $('exMoveName').textContent=exName(i);
+  $('exMoveSel').innerHTML=exGroupOpts(exRowGroupId(i));
+  $('exMoveMask').classList.add('on');
+}
+function exBatchGroup(){
+  const idx=[...EX_SEL].filter(i=>DB.examTasks.rows[i]);
+  if(!idx.length){ toast('请先勾选需要修改分组的试题任务');return; }
+  EX_MOVE_MODE='batch'; EX_MOVE_LIST=idx; EX_MOVE_IDX=-1;
+  $('exMoveTitle').textContent='批量修改分组';
+  $('exMoveName').textContent='已选择 '+idx.length+' 个试题任务';
+  $('exMoveSel').innerHTML=exGroupOpts('');
+  $('exMoveMask').classList.add('on');
+}
+function closeExMove(){ $('exMoveMask').classList.remove('on'); EX_MOVE_MODE=''; EX_MOVE_IDX=-1; EX_MOVE_LIST=[]; }
+function doExMove(){
+  const g=$('exMoveSel').value||'exUngrouped';
+  if(EX_MOVE_MODE==='one'&&EX_MOVE_IDX>=0&&DB.examTasks.rows[EX_MOVE_IDX]){
+    const nm=exName(EX_MOVE_IDX);
+    EX_ROW_GROUPS[esc(nm)]=g; EX_ROW_GROUPS[nm]=g;
+    toast('已将「'+nm+'」转移到分组「'+exGName(g)+'」');
+  }else if(EX_MOVE_MODE==='batch'){
+    let n=0;
+    EX_MOVE_LIST.forEach(i=>{ if(DB.examTasks.rows[i]){ EX_ROW_GROUPS[esc(exName(i))]=g; EX_ROW_GROUPS[exName(i)]=g; n++; } });
+    EX_SEL.clear();
+    toast('已将 '+n+' 个试题任务转移到分组「'+exGName(g)+'」');
+  }
+  closeExMove(); render();
+}
+function exDisable(i){
+  const nm=exName(i);
+  matAsk('停用任务','停用后学员将无法进入「'+nm+'」，确认停用？',()=>{
+    DB.examTasks.rows[i][exStatusIdx()]=ST('已停用',GRAY);
+    toast('已停用试题任务：'+nm); render();
+  });
+}
+function exEnable(i){
+  const nm=exName(i);
+  DB.examTasks.rows[i][exStatusIdx()]=ST('进行中',INFO);
+  toast('已启用试题任务：'+nm); render();
+}
+function exDelete(i){
+  const nm=exName(i);
+  matAsk('删除任务','删除后「'+nm+'」将从试题任务列表移除，学员端不可见。确认删除？',()=>{
+    DB.examTasks.rows.splice(i,1);
+    EX_SEL.clear();
+    toast('已删除试题任务：'+nm); render();
+  });
+}
+
+/* ---- 新建试题考试（组卷任务配置页） ---- */
+let EX={};
+function exReset(){
+  EX={name:'',mode:'智能随机出题',bank:[],cnt:{},score:{},strategy:'每次随机',slider:50,errFirst:false,
+    pass:'',group:'exUngrouped',cover:'',taskType:'手动推送',timeS:'',timeE:'',attempts:'1',limit:'0',
+    study:'选修',anticheat:false,desc:'',aimark:false,whitelist:false,notify:true,aireview:false,tags:[],
+    ansShow:'每个学员考试后即显示',randQ:false,randOpt:false,notice:'',files:[],survey:false,newBadge:true,newDays:'2',
+    teacher:'',scorePer:'2',paper:[],orgAuto:false};
+  EX.org=new Set();
+}
+exReset();
+EX_GROUPS.forEach(g=>{ if(EX_GROUPS.some(x=>x.parent===g.id)) EX_G_EXPAND.add(g.id); });
+/* 种子任务的分组映射（月考→月度考核，周练/练习→专项练习） */
+DB.examTasks.rows.forEach(function(r){
+  const nm=String(r[0]).replace(/<[^>]+>/g,'').trim();
+  if(!nm||EX_ROW_GROUPS[esc(nm)])return;
+  let gid='exUngrouped';
+  if(nm.indexOf('月考')>=0)gid=exGIdByName('月度考核');
+  else if(nm.indexOf('周练')>=0||nm.indexOf('练习')>=0)gid=exGIdByName('专项练习');
+  EX_ROW_GROUPS[esc(nm)]=gid;
+});
+function exSet(k,v){ EX[k]=v; updateExamPreview(); }
+function exSetB(k,on){ EX[k]=on; if(k==='newBadge')exRenderNewDays(); updateExamPreview(); }
+function exSw(key,label,tip,extra){
+  return '<label class="ex-swrow"><span class="lab">'+label+'</span>'+
+    '<span class="sw"><input type="checkbox"'+(EX[key]?' checked':'')+' onchange="exSetB(\''+key+'\',this.checked)"><i></i></span>'+
+    (tip?'<span class="tip">'+tip+'</span>':'')+(extra||'')+'</label>';
+}
+function exChk(key,label,tip){
+  return '<label class="ex-swrow"><span class="sw"><input type="checkbox"'+(EX[key]?' checked':'')+' onchange="exSetB(\''+key+'\',this.checked)"><i></i></span><span class="lab" style="font-weight:400">'+label+'</span>'+(tip?'<span class="tip">'+tip+'</span>':'')+'</label>';
+}
+function exBankChips(){
+  return EX_QBANKS.map(b=>'<label class="rchip"><input type="checkbox" value="'+esc(b)+'"'+(EX.bank.indexOf(b)>=0?' checked':'')+' onchange="exBankToggle(this.value,this.checked)"><span>'+esc(b)+'</span></label>').join('');
+}
+function exBankToggle(v,on){
+  if(on){ if(EX.bank.indexOf(v)<0)EX.bank.push(v); } else EX.bank=EX.bank.filter(x=>x!==v);
+  const e=document.getElementById('exBankErr'); if(e&&EX.bank.length)e.classList.remove('show');
+  updateExamPreview();
+}
+function exTagChips(){
+  return EX_TAGS_LIB.map(t=>'<label class="rchip"><input type="checkbox" value="'+esc(t)+'"'+(EX.tags.indexOf(t)>=0?' checked':'')+' onchange="exTagToggle(this.value,this.checked)"><span>'+esc(t)+'</span></label>').join('');
+}
+function exTagToggle(v,on){
+  if(on){ if(EX.tags.indexOf(v)<0)EX.tags.push(v); } else EX.tags=EX.tags.filter(x=>x!==v);
+  updateExamPreview();
+}
+function exTotalCnt(){ return EX_QTYPES.reduce((s,t)=>s+(+EX.cnt[t]||0),0); }
+function exTotalScore(){ let v=EX_QTYPES.reduce((s,t)=>s+((+EX.cnt[t]||0)*(+EX.score[t]||0)),0); return (Math.round(v*10)/10).toFixed(1); }
+function exPaperTotal(){ return ((EX.paper.length||0)*(parseFloat(EX.scorePer)||0)).toFixed(1); }
+function exCntInp(el){ EX.cnt[el.dataset.t]=+el.value||0; const e=document.getElementById('exPaperErr2'); if(e&&exTotalCnt()>0)e.classList.remove('show'); exCalc(); }
+function exScoreInp(el){ EX.score[el.dataset.t]=+el.value||0; exCalc(); }
+function exCalc(){
+  const g=id=>document.getElementById(id);
+  EX_QTYPES.forEach((t,i)=>{ const el=g('exSub'+i); if(el){ const v=(+EX.cnt[t]||0)*(+EX.score[t]||0); el.textContent=v?(Math.round(v*10)/10).toFixed(1):'0.0'; } });
+  const sm=g('exSum'); if(sm)sm.innerHTML='共抽题 <b>'+exTotalCnt()+'</b> · 总分 <b>'+exTotalScore()+'</b>';
+  updateExamPreview();
+}
+/* 难度占比：滑杆 0-100（0 偏向简单 / 100 偏向困难），中等固定 33%，简单+困难=67% */
+function exDiffRatios(){
+  if(+EX.slider===50)return {e:33,m:34,h:33};   /* 均衡档精确对齐真实后台 33/34/33 */
+  const p=(+EX.slider||0)/100;
+  const e=Math.round(50-33*p);
+  return {e:e,m:33,h:67-e};
+}
+function exDiffSync(){
+  const r=exDiffRatios();
+  const one=(id,txt)=>{ const el=document.getElementById(id); if(el)el.textContent=txt; };
+  one('exDR1','简单 '+r.e+'%'); one('exDR2','中等 '+r.m+'%'); one('exDR3','困难 '+r.h+'%');
+  const b1=document.getElementById('exDB1'),b2=document.getElementById('exDB2'),b3=document.getElementById('exDB3');
+  if(b1)b1.style.width=r.e+'%'; if(b2)b2.style.width=r.m+'%'; if(b3)b3.style.width=r.h+'%';
+}
+function exDiffHtml(){
+  const r=exDiffRatios();
+  return '<div class="ex-diff"><div class="ex-diff-hd">难度占比 '+
+    '<span class="ex-diff-ratios"><span class="ex-r1" id="exDR1">简单 '+r.e+'%</span><span class="ex-r2" id="exDR2">中等 '+r.m+'%</span><span class="ex-r3" id="exDR3">困难 '+r.h+'%</span></span>'+
+    '<span class="ex-swrow" style="margin:0 0 0 auto"><span class="lab" style="font-weight:500">错题优先强化</span><span class="sw"><input type="checkbox"'+(EX.errFirst?' checked':'')+' onchange="exSetB(\'errFirst\',this.checked)"><i></i></span></span></div>'+
+    '<div class="ex-bar"><i class="s1" id="exDB1" style="width:'+r.e+'%"></i><i class="s2" id="exDB2" style="width:'+r.m+'%"></i><i class="s3" id="exDB3" style="width:'+r.h+'%"></i></div>'+
+    '<div class="ex-slider"><span class="tags"><span>偏向简单</span><span>均衡</span><span>偏向困难</span></span>'+
+    '<input type="range" min="0" max="100" value="'+(+EX.slider||0)+'" oninput="exSliderSet(this.value)"></div>'+
+    '<div class="ex-presets"><button type="button" onclick="exDiffPreset(0)">偏向简单</button><button type="button" onclick="exDiffPreset(50)">均衡</button><button type="button" onclick="exDiffPreset(100)">偏向困难</button></div>'+
+    '<div class="ex-note">按难度占比从所选题库抽取试题；开启「错题优先强化」后，学员上次答错的题目将以更高概率再次出现。</div>'+
+    '</div>';
+}
+function exSliderSet(v){ EX.slider=+v||0; exDiffSync(); updateExamPreview(); }
+function exDiffPreset(v){ EX.slider=v; const el=document.querySelector('#exForm input[type=range]'); if(el)el.value=v; exDiffSync(); updateExamPreview(); }
+function exPaperChipsHtml(){
+  if(!EX.paper.length)return '<span class="ex-note">未选择试题</span>';
+  return EX.paper.map(i=>{
+    const r=DB.questions.rows[i]; if(!r)return '';
+    return '<span class="crs-mchip">'+esc(String(r[0]).replace(/<[^>]+>/g,'').slice(0,18))+' · '+esc(r[1])+'<span class="x" onclick="exPaperDel('+i+')">×</span></span>';
+  }).join('');
+}
+function exPaperDel(i){ EX.paper=EX.paper.filter(x=>x!==i); exRenderPaper(); }
+function exPickQ(){
+  const l=document.getElementById('exQPickList');
+  if(l)l.innerHTML=DB.questions.rows.map((r,i)=>'<label class="ex-qp-item"><input type="checkbox"'+(EX.paper.indexOf(i)>=0?' checked':'')+' onchange="exQToggle('+i+',this.checked)"><span class="tp">'+esc(r[1])+'</span><span class="stem">'+esc(String(r[0]).replace(/<[^>]+>/g,''))+'</span><span class="tp lv">'+esc(r[2])+'</span></label>').join('')||'<div class="kb2-empty">题库暂无试题，请先在「题库管理」新增题目</div>';
+  document.getElementById('exQPickMask').classList.add('on');
+}
+function exQClose(){ document.getElementById('exQPickMask').classList.remove('on'); }
+function exQToggle(i,on){ if(on){ if(EX.paper.indexOf(i)<0)EX.paper.push(i); } else EX.paper=EX.paper.filter(x=>x!==i); }
+function exQConfirm(){ exQClose(); exRenderPaper(); toast('已选择 '+EX.paper.length+' 道试题组成试卷'); }
+function exRenderPaper(){ const w=document.getElementById('exPaperBody'); if(w)w.innerHTML=exPaperHtml(); updateExamPreview(); }
+function exPaperHtml(){
+  const strategy='<div class="form-item" style="margin-top:16px;margin-bottom:0"><label>抽题策略</label><div class="rchips">'+rOpt('exStrategy',['每次随机','试题固定'],EX.strategy)+'</div><div class="ex-note">每次随机：同一学员多次考试时，每次随机出题；试题固定：试题固定不发生变化。</div></div>';
+  if(EX.mode==='试题组卷'){
+    return '<div class="ex-paper-tip">ℹ 编辑试卷试题后，将默认自动同步至试题库，题目变更会同步更新学员端试卷。</div>'+
+      '<div class="form-item" style="margin-bottom:14px"><label>试卷试题<i>*</i><span class="opt-tip">（从题库勾选试题组成试卷）</span></label>'+
+      '<div><button class="btn btn-g btn-sm" type="button" onclick="exPickQ()">从题库选择试题</button></div>'+
+      '<div style="margin-top:10px" id="exPaperChips">'+exPaperChipsHtml()+'</div>'+
+      '<div class="form-err" id="exPaperErr">请至少选择 1 道试题组成试卷</div></div>'+
+      '<div class="form-row"><div class="form-item"><label>每题分值<span class="opt-tip">（演示环境统一设置，可按题单独调整）</span></label><input type="number" min="0.5" step="0.5" value="'+esc(EX.scorePer)+'" oninput="exSet(\'scorePer\',this.value)"></div>'+
+      '<div class="form-item"><label>试卷总分</label><div class="ex-sum" style="margin-top:6px">共 <b>'+(EX.paper.length||0)+'</b> 题 · 总分 <b>'+exPaperTotal()+'</b> 分</div></div></div>'+
+      strategy;
+  }
+  const rows=EX_QTYPES.map((t,i)=>{
+    const c=EX.cnt[t]||0, s=EX.score[t]||0;
+    return '<tr><td>'+t+'</td>'+
+      '<td><input type="number" min="0" max="999" value="'+c+'" data-t="'+t+'" oninput="exCntInp(this)"></td>'+
+      '<td><input type="number" min="0" step="0.5" value="'+s+'" data-t="'+t+'" oninput="exScoreInp(this)"></td>'+
+      '<td class="sub" id="exSub'+i+'">'+((c*s)?(Math.round(c*s*10)/10).toFixed(1):'0.0')+'</td></tr>';
+  }).join('');
+  return '<div class="form-item" style="margin-bottom:14px"><label>选择题库<i>*</i><span class="opt-tip">（至少选择 1 个题库 · 从已发布题库中抽取试题）</span></label><div class="rchips">'+exBankChips()+'</div><div class="form-err" id="exBankErr">请至少选择 1 个题库</div></div>'+
+    '<table class="ex-qtbl"><thead><tr><th style="width:110px">题型</th><th>抽题数量</th><th>每题分数（分）</th><th style="width:110px">小计（分）</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<div class="ex-sum" id="exSum">共抽题 <b>'+exTotalCnt()+'</b> · 总分 <b>'+exTotalScore()+'</b></div>'+
+    '<div class="form-err" id="exPaperErr2">请设置抽题数量与每题分数（至少 1 题）</div>'+
+    strategy+exDiffHtml();
+}
+/* 组织树（学员范围，复用全局 ORG_TREE） */
+let EX_ORG_OPEN=new Set(['总部','华北','北京','河北','长久集团']);
+function exOrgNodeHtml(node,depth,q){
+  if(q&&!orgMatches(node,q))return '';
+  const kids=node.c?orgNorm(node.c).filter(c=>orgMatches(c,q)):[];
+  const open=q?true:EX_ORG_OPEN.has(node.n);
+  const leaves=orgLeaves(node);
+  const selN=leaves.filter(l=>EX.org.has(l)).length;
+  const checked=selN>0&&selN===leaves.length;
+  const ind=selN>0&&!checked;
+  let h='<div class="org-row'+(checked?' on':'')+'" style="padding-left:'+(depth*24+6)+'px">';
+  h+='<span class="org-arrow'+(open?' open':'')+(kids.length?'':' hide')+'" onclick="exOrgToggleOpen(\''+esc(node.n)+'\')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:11px;height:11px"><path d="M6 9l6 6 6-6z"/></svg></span>';
+  h+='<input type="checkbox" '+(checked?'checked':'')+(ind?' data-ind="1"':'')+' onchange="exOrgCheck(\''+esc(node.n)+'\',this.checked)">';
+  h+='<span class="org-nm">'+esc(node.n)+'</span>';
+  if(ind)h+='<span class="org-part">'+selN+'/'+leaves.length+'</span>';
+  h+='</div>';
+  if(kids.length&&open)h+=kids.map(c=>exOrgNodeHtml(c,depth+1,q)).join('');
+  return h;
+}
+function exOrgRender(){
+  const t=document.getElementById('exOrgTree');if(!t)return;
+  const se=document.getElementById('exOrgSearch'),q=(se&&se.value||'').trim();
+  t.innerHTML=ORG_TREE.map(n=>exOrgNodeHtml(n,0,q)).join('')||'<div class="org-empty">未找到匹配的组织</div>';
+  t.querySelectorAll('input[data-ind]').forEach(el=>{el.indeterminate=true;});
+  const c=document.getElementById('exOrgCntN');if(c)c.textContent=EX.org.size;
+  updateExamPreview();
+}
+function exOrgCheck(name,add){
+  const node=orgFind(ORG_TREE,name);if(!node)return;
+  orgLeaves(node).forEach(l=>add?EX.org.add(l):EX.org.delete(l));
+  exOrgRender();
+}
+function exOrgToggleOpen(name){EX_ORG_OPEN.has(name)?EX_ORG_OPEN.delete(name):EX_ORG_OPEN.add(name);exOrgRender();}
+/* 封面 */
+function exCoverPick(){ const el=$('exCoverFile'); if(el)el.click(); }
+function exCoverChosen(inp){
+  const f=inp.files&&inp.files[0]; if(!f)return;
+  EX.cover=(window.URL&&URL.createObjectURL)?URL.createObjectURL(f):'';
+  exCoverRender(); updateExamPreview(); toast('已上传封面：'+f.name); inp.value='';
+}
+function exCoverClear(){ EX.cover=''; exCoverRender(); updateExamPreview(); }
+function exCoverRender(){
+  const b=document.getElementById('exCoverBox'); if(!b)return;
+  b.innerHTML=EX.cover?'<img src="'+EX.cover+'" alt="封面" style="width:100%;height:100%;object-fit:cover">':'<span style="font-size:12.5px;color:var(--t3)">点击上传封面</span>';
+}
+/* 资料附件（演示：从素材库添加） */
+function exFileAdd(){
+  if(EX.files.length>=3){ toast('最多添加 3 个资料附件');return; }
+  const names=['银河E5车型速查手册.pdf','销售流程SOP.docx','金融分期政策要点.pdf'];
+  EX.files.push(names[EX.files.length%3]);
+  exRenderFiles(); updateExamPreview(); toast('已从素材库添加资料附件');
+}
+function exFileDel(i){ EX.files.splice(i,1); exRenderFiles(); updateExamPreview(); }
+function exRenderFiles(){
+  const w=document.getElementById('exFileChips');
+  if(w)w.innerHTML=EX.files.length?EX.files.map((f,i)=>'<span class="crs-mchip">'+esc(f)+'<span class="x" onclick="exFileDel('+i+')">×</span></span>').join(''):'<span class="ex-note" style="margin-top:0">未添加附件</span>';
+}
+function exRenderNewDays(){ const el=document.getElementById('exNewDays'); if(el)el.disabled=!EX.newBadge; }
+function exFmtDT(v){
+  if(!v)return '—';
+  const m=String(v).match(/^\d{4}-(\d{2}-\d{2})T(\d{2}:\d{2})/);
+  return m?m[1]+' '+m[2]:v;
+}
+function pgExamNew(){
+  const W=[];
+  W.push('<div class="page-head ph-fix"><h1>新建试题考试</h1><span class="desc">配置组卷、任务与规则 · 提交后推送至学员端</span><div class="btns">'+
+    '<span class="pn-prog" id="exProg">必填：任务名称 * · 组卷 * · 通过分数 * · 任务时间 * · 学员范围 *</span>'+
+    '<button class="btn btn-g" onclick="exCancel()">取消</button>'+
+    '<button class="btn btn-p" onclick="exSave()">提交</button></div></div>');
+  W.push('<div class="pn-nav" id="pnNav"><a data-id="exBase" class="on" onclick="pnNavTo(\'exBase\')">基础信息</a><a data-id="exPaper" onclick="pnNavTo(\'exPaper\')">组卷配置</a><a data-id="exTask" onclick="pnNavTo(\'exTask\')">任务设置</a><a data-id="exSet" onclick="pnNavTo(\'exSet\')">考试设置</a><a data-id="exRule" onclick="pnNavTo(\'exRule\')">规则设置</a></div>');
+  W.push('<div class="pn-wrap"><div class="pn-main"><div class="pn-card" id="exForm">');
+  /* 1 · 基础信息 */
+  W.push('<div class="fsec" id="exBase"><h3>基础信息</h3></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><label>任务名称<i>*</i><span class="opt-tip">（必填 · 100 字以内）</span></label>'+
+    '<input id="exName" maxlength="100" placeholder="示例：11月产品知识月考" oninput="exSet(\'name\',this.value)">'+
+    '<div class="form-err" id="exNameErr">任务名称为必填项，请填写后再提交</div></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><label>出题模式<span class="opt-tip">（智能随机：按题型从题库抽题；试题组卷：手动勾选试题组成固定试卷）</span></label><div class="rchips">'+rOpt('exMode',['智能随机出题','试题组卷'],EX.mode)+'</div></div>');
+  /* 2 · 组卷配置 */
+  W.push('<div class="fsec" id="exPaper"><h3>组卷配置</h3></div>');
+  W.push('<div id="exPaperBody">'+exPaperHtml()+'</div>');
+  W.push('<div class="form-row" style="margin-top:16px"><div class="form-item"><label>通过分数<i>*</i><span class="opt-tip">（学员得分达到通过分数记为通过）</span></label>'+
+    '<input type="number" id="exPass" min="0" step="0.5" placeholder="如：60" value="'+esc(EX.pass)+'" oninput="exSet(\'pass\',this.value)">'+
+    '<div class="form-err" id="exPassErr">请填写通过分数，且不能大于总分</div></div></div>');
+  /* 3 · 任务设置 */
+  W.push('<div class="fsec" id="exTask"><h3>任务设置</h3></div>');
+  W.push('<div class="form-row"><div class="form-item"><label>所属分组<i>*</i></label><select onchange="exSet(\'group\',this.value)">'+exGroupOpts(EX.group)+'</select></div>'+
+    '<div class="form-item"><label>任务类型<span class="opt-tip">（自动推送：到任务开始时间自动下发给学员范围内学员）</span></label><div class="rchips">'+rOpt('exTaskType',['手动推送','自动推送'],EX.taskType)+'</div></div></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><label>封面<span class="opt-tip">（建议尺寸：750px*422px · 未上传时使用默认封面）</span></label>'+
+    '<div class="crs-cover-wrap"><div class="crs-cover-drop" id="exCoverBox" onclick="exCoverPick()"></div>'+
+    '<div class="crs-cover-side"><p>上传试题考试封面，支持在线制图、素材库选择与本地上传（演示环境支持本地上传）。</p>'+
+    '<button class="btn btn-g btn-sm" type="button" onclick="exCoverPick()">本地上传</button>'+
+    '<button class="btn btn-g btn-sm" type="button" onclick="toast(\'演示环境：在线制图与素材库选择暂未开放\')">在线制图 / 素材库选择</button>'+
+    '<button class="btn btn-g btn-sm" type="button" onclick="exCoverClear()">移除封面</button>'+
+    '<input type="file" id="exCoverFile" accept="image/*" style="display:none" onchange="exCoverChosen(this)"></div></div></div>');
+  W.push('<div class="form-row"><div class="form-item"><label>任务时间<i>*</i></label><div style="display:flex;align-items:center;gap:8px">'+
+    '<input type="datetime-local" value="'+esc(EX.timeS)+'" onchange="exSet(\'timeS\',this.value)"><span style="color:var(--t3)">至</span>'+
+    '<input type="datetime-local" value="'+esc(EX.timeE)+'" onchange="exSet(\'timeE\',this.value)"></div>'+
+    '<div class="form-err" id="exTimeErr">请设置任务起止时间，且开始时间需早于结束时间</div></div>'+
+    '<div class="form-item"><label>允许次数<i>*</i><span class="opt-tip">（学员可参加考试的次数）</span></label><input type="number" min="1" value="'+esc(EX.attempts)+'" oninput="exSet(\'attempts\',this.value)"></div></div>');
+  W.push('<div class="form-row"><div class="form-item"><label>考试限时<span class="opt-tip">（分钟 · 0 表示不限时）</span></label><input type="number" min="0" value="'+esc(EX.limit)+'" oninput="exSet(\'limit\',this.value)"></div>'+
+    '<div class="form-item"><label>学习类型</label><div class="rchips">'+rOpt('exStudy',['选修','必修'],EX.study)+'</div></div></div>');
+  W.push(exSw('anticheat','防作弊','开启后，学员考试中切屏、退出全屏等行为将被记录并提示'));
+  W.push('<div class="form-item" style="margin-bottom:14px"><label>任务说明<span class="opt-tip">（0/200 · 展示在学员端任务详情）</span></label>'+
+    '<div class="qb-ta"><textarea maxlength="200" placeholder="请输入任务说明" oninput="exSet(\'desc\',this.value)">'+esc(EX.desc)+'</textarea></div></div>');
+  W.push(exSw('aimark','主观题智能阅卷','开启后，填空/简答题由大模型按参考答案要点自动评分'));
+  /* 4 · 考试设置 */
+  W.push('<div class="fsec" id="exSet"><h3>考试设置</h3></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>学员范围<i>*</i><span class="opt-tip">（按组织下发，勾选上级组织将自动连选其全部下级）</span></label><span class="org-cnt">已选择<b id="exOrgCntN">'+EX.org.size+'</b>家门店</span></div>'+
+    '<div class="org-box"><div class="org-search"><input id="exOrgSearch" placeholder="请输入搜索关键词" oninput="exOrgRender()"></div><div class="org-tree" id="exOrgTree"></div></div>'+
+    '<div class="ex-note">新增到机构、分组的员工将自动推送此任务</div>'+
+    '<div class="form-err" id="exOrgErr">请选择学员范围（至少 1 家组织）</div></div>');
+  W.push(exSw('whitelist','学员白名单','开启后，白名单内的学员将会豁免，不会收到此试题考试'));
+  W.push(exChk('notify','应用内消息通知','任务下发时向学员发送应用内通知'));
+  W.push(exSw('aireview','AI复盘','开启大模型复盘&推荐课程'));
+  W.push('<div class="form-item" style="margin-bottom:16px"><label>标签<span class="opt-tip">（用于任务检索与分类归档）</span></label><div class="rchips">'+exTagChips()+'</div></div>');
+  /* 5 · 规则设置 */
+  W.push('<div class="fsec" id="exRule"><h3>规则设置</h3></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><label>答案解析显示时间<span class="opt-tip">（控制学员端何时可见答案与解析）</span></label><div class="rchips">'+rOpt('exAnsShow',['每个学员考试后即显示','到任务结束时间显示'],EX.ansShow)+'</div></div>');
+  W.push(exChk('randQ','题目随机顺序','每位学员的题目顺序随机打乱'));
+  W.push(exChk('randOpt','选项随机顺序（单选/多选/判断题）','选择题选项顺序随机打乱'));
+  W.push('<div class="form-item" style="margin-bottom:14px"><label>考试注意事项<span class="opt-tip">（0/200 · 学员考前即可看到）</span></label>'+
+    '<div class="qb-ta"><textarea maxlength="200" placeholder="请输入考试注意事项，如：考试过程中请勿切换屏幕" oninput="exSet(\'notice\',this.value)">'+esc(EX.notice)+'</textarea></div></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><label>资料附件<span class="opt-tip">（学员考试前可查看的参考资料）</span></label>'+
+    '<div><button class="btn btn-g btn-sm" type="button" onclick="exFileAdd()">+ 添加素材</button></div>'+
+    '<div style="margin-top:10px" id="exFileChips">'+(EX.files.length?EX.files.map((f,i)=>'<span class="crs-mchip">'+esc(f)+'<span class="x" onclick="exFileDel('+i+')">×</span></span>').join(''):'<span class="ex-note" style="margin-top:0">未添加附件</span>')+'</div></div>');
+  W.push(exSw('survey','问卷调查','开启后可在任务结束后收集学员问卷反馈'));
+  W.push('<div class="form-item" style="margin-bottom:16px">'+exSw('newBadge','显示 new 标识','任务开启时，学员端默认展示"NEW"标识').replace('class="lab"','class="lab" style="display:inline-block;width:auto"')+
+    '<div style="display:flex;align-items:center;gap:8px;margin:-6px 0 0 0"><span style="font-size:13px;color:var(--t2)">推送后</span>'+
+    '<input type="number" id="exNewDays" min="1" max="31" style="width:110px" value="'+esc(EX.newDays)+'" oninput="exSet(\'newDays\',this.value)"'+(!EX.newBadge?' disabled':'')+'>'+
+    '<span style="font-size:13px;color:var(--t2)">天内展示，最长支持 31 天</span></div></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><label>任务老师<span class="opt-tip">（任务负责人，学员端展示）</span></label><select onchange="exSet(\'teacher\',this.value)">'+
+    '<option value="">请选择</option>'+EX_TEACHERS.map(t=>'<option'+(EX.teacher===t?' selected':'')+'>'+t+'</option>').join('')+'</select></div>');
+  W.push('</div></div>');
+  /* 右侧实时任务配置总览 */
+  W.push('<div class="pn-aside"><div class="pn-card pn-pv"><h3 class="pn-pv-title">实时任务配置总览<span class="live">实时</span></h3>'+
+    '<div class="qb-pv-badges" id="exPvBadges"></div>'+
+    '<div class="qb-pv-stem" id="exPvName">未命名试题考试</div>'+
+    '<div id="exPvRows" style="padding:12px 0"></div>'+
+    '<div class="ex-pv-dots" id="exPvDots"></div></div></div>');
+  W.push('</div>');
+  W.push('<button class="pn-totop" id="pnTotop" title="返回顶部" onclick="pnScrollTop()">'+icon('up',18)+'</button>');
+  return W.join('');
+}
+function updateExamPreview(){
+  const g=id=>document.getElementById(id);
+  if(!g('exPvName'))return;
+  const prog=g('exProg');
+  if(prog){
+    const nameOk=!!(EX.name||'').trim();
+    let paperOk;
+    if(EX.mode==='试题组卷')paperOk=EX.paper.length>0;
+    else paperOk=exTotalCnt()>0&&EX_QTYPES.every(t=>!(+EX.cnt[t]>0&&!(+EX.score[t]>0)));
+    const passOk=parseFloat(EX.pass)>0;
+    const timeOk=!!EX.timeS&&!!EX.timeE&&EX.timeS<EX.timeE;
+    const orgOk=EX.org.size>0;
+    if(nameOk&&paperOk&&passOk&&timeOk&&orgOk){prog.textContent='✓ 必填项已填写，可提交';prog.classList.add('ok');}
+    else{prog.textContent='必填：任务名称 * · 组卷 * · 通过分数 * · 任务时间 * · 学员范围 *';prog.classList.remove('ok');}
+  }
+  g('exPvName').textContent=(EX.name||'').trim()||'未命名试题考试';
+  g('exPvBadges').innerHTML='<span class="qb-pv-badge">'+esc(EX.mode)+'</span><span class="qb-pv-badge lv">'+esc(EX.study)+'</span><span class="qb-pv-badge lv">'+esc(EX.taskType)+'</span>';
+  const r=exDiffRatios();
+  const rows=[
+    ['组卷配置',EX.mode==='试题组卷'?'已选 '+EX.paper.length+' 题 · 总分 '+exPaperTotal()+' 分':'共抽题 '+(exTotalCnt()||0)+' · 总分 '+exTotalScore()+' 分'],
+    ['难度占比','简单 '+r.e+'% · 中等 '+r.m+'% · 困难 '+r.h+'%'],
+    ['通过分数',(parseFloat(EX.pass)||0)+' 分'],
+    ['所属分组',exGName(EX.group)],
+    ['任务时间',(EX.timeS&&EX.timeE)?exFmtDT(EX.timeS)+' ~ '+exFmtDT(EX.timeE):'未设置'],
+    ['次数 / 限时','允许 '+(parseInt(EX.attempts)||1)+' 次 · '+(parseInt(EX.limit)>0?'限时 '+EX.limit+' 分钟':'不限时')],
+    ['学员范围',EX.org.size?EX.org.size+' 家组织':'未选择'],
+    ['标签',EX.tags.length?EX.tags.join('、'):'未设置'],
+    ['解析显示',EX.ansShow]
+  ];
+  g('exPvRows').innerHTML=rows.map(x=>'<div class="ex-pv-row"><span class="k">'+x[0]+'</span><span class="v">'+esc(String(x[1]))+'</span></div>').join('');
+  const dots=[['防作弊',EX.anticheat],['题目随机',EX.randQ],['选项随机',EX.randOpt],['智能阅卷',EX.aimark],['AI复盘',EX.aireview],['NEW标识',EX.newBadge],['问卷',EX.survey],['白名单',EX.whitelist]];
+  g('exPvDots').innerHTML=dots.map(d=>'<span class="ex-dot'+(d[1]?' on':'')+'">'+d[0]+(d[1]?' ✓':'')+'</span>').join('');
+}
+function initExamNew(){
+  const form=document.getElementById('exForm');if(!form)return;
+  form.addEventListener('change',function(e){
+    const n=e.target&&e.target.name;
+    if(n==='exMode'&&e.target.value!==EX.mode){ EX.mode=e.target.value; exRenderPaper(); }
+    else if(n==='exStrategy'){ EX.strategy=e.target.value; }
+    else if(n==='exTaskType'){ EX.taskType=e.target.value; }
+    else if(n==='exStudy'){ EX.study=e.target.value; }
+    else if(n==='exAnsShow'){ EX.ansShow=e.target.value; }
+    updateExamPreview();
+  });
+  exCoverRender(); exOrgRender(); exDiffSync(); exRenderNewDays();
+  const c=document.querySelector('.content');
+  if(c){ if(!c.dataset.pnScroll){ c.addEventListener('scroll',pnScroll,{passive:true}); c.dataset.pnScroll='1'; } pnScroll(); }
+  const fh=document.querySelector('.page-head.ph-fix'),nv=document.getElementById('pnNav'),asd=document.querySelector('.pn-aside');
+  let stick=56;
+  if(fh&&nv){
+    const hh=fh.offsetHeight,nh=nv.offsetHeight;
+    nv.style.top=hh+'px';
+    if(asd)asd.style.top=(hh+nh)+'px';
+    stick=hh+nh+8;
+    document.querySelectorAll('.fsec[id]').forEach(s=>s.style.scrollMarginTop=stick+'px');
+  }
+  const links=[...document.querySelectorAll('#pnNav a')];
+  if(window.IntersectionObserver&&links.length){
+    const obs=new IntersectionObserver(es=>{
+      es.forEach(e=>{if(e.isIntersecting){const id=e.target.id;links.forEach(a=>a.classList.toggle('on',a.dataset.id===id));}});
+    },{rootMargin:'-'+stick+'px 0px -65% 0px',threshold:0});
+    document.querySelectorAll('.fsec[id]').forEach(s=>obs.observe(s));
+  }
+  updateExamPreview();
+}
+function exValidate(){
+  const g=id=>document.getElementById(id);
+  const err=(id,msg)=>{ const e=g(id); if(e){e.textContent=msg;e.classList.add('show');} return msg; };
+  ['exNameErr','exBankErr','exPaperErr','exPaperErr2','exPassErr','exTimeErr','exOrgErr'].forEach(id=>{const e=g(id);if(e)e.classList.remove('show');});
+  const nameEl=g('exName'); if(nameEl)nameEl.style.borderColor='';
+  if(!(EX.name||'').trim()){ err('exNameErr','任务名称为必填项，请填写后再提交'); if(nameEl)nameEl.style.borderColor='var(--bad)'; return '请填写任务名称'; }
+  if(EX.mode==='试题组卷'){
+    if(!EX.paper.length)return err('exPaperErr','请至少选择 1 道试题组成试卷');
+  }else{
+    if(!EX.bank.length)return err('exBankErr','请至少选择 1 个题库');
+    if(exTotalCnt()<=0)return err('exPaperErr2','请至少为一种题型设置抽题数量');
+    const bad=EX_QTYPES.find(t=>(+EX.cnt[t]>0)&&!(+EX.score[t]>0));
+    if(bad)return err('exPaperErr2','请为已设置抽题数量的「'+bad+'」填写每题分数');
+  }
+  if(!(parseFloat(EX.pass)>0))return err('exPassErr','请填写通过分数');
+  const total=EX.mode==='试题组卷'?exPaperTotal():exTotalScore();
+  if(parseFloat(EX.pass)>parseFloat(total))return err('exPassErr','通过分数不能大于总分（当前总分 '+total+' 分）');
+  if(!EX.timeS||!EX.timeE)return err('exTimeErr','请设置任务起止时间');
+  if(EX.timeS>=EX.timeE)return err('exTimeErr','任务开始时间需早于结束时间');
+  if(!EX.org.size)return err('exOrgErr','请选择学员范围（至少 1 家组织）');
+  return '';
+}
+function exSave(){
+  const e=exValidate(); if(e){ toast(e); return; }
+  const name=EX.name.trim();
+  const total=EX.mode==='试题组卷'?exPaperTotal():exTotalScore();
+  const cnt=EX.mode==='试题组卷'?EX.paper.length:exTotalCnt();
+  const row=[esc(name),'考试',String(EX.org.size),String(cnt),total,(Math.round(parseFloat(EX.pass)*10)/10).toFixed(1),exFmtDT(EX.timeS)+' ~ '+exFmtDT(EX.timeE),'—',ST('未开始',GRAY),crsNow()];
+  DB.examTasks.rows.unshift(row);
+  EX_ROW_GROUPS[esc(name)]=EX.group;
+  const snap=Object.assign({},EX);
+  snap.org=[...EX.org];
+  EX_XTRA[esc(name)]=snap;
+  exReset();
+  go('examPaper');
+  toast('已创建试题考试任务：'+name.replace(/<[^>]+>/g,''));
+}
+function exCancel(){ exReset(); go('examPaper'); }
+/* ================== 培训中心 · 试题考试模块结束 ================== */
+
 
 
 /* ---- 启动 ---- */
