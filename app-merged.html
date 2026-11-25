@@ -410,6 +410,8 @@ button{font-family:inherit;border:none;background:none;cursor:pointer;color:inhe
 .stepflow i.done{background:var(--primary)}
 
 /* 考试 */
+.page.exam-bg{background:#EEF1F8}
+.page.exam-center{justify-content:center;text-align:center}
 .exam-q{background:#fff;border-radius:16px;padding:18px 16px}
 .exam-q .qn{font-size:11.5px;color:var(--t3);margin-bottom:8px}
 .exam-q .qt{font-size:15px;font-weight:600;line-height:1.7;margin-bottom:14px}
@@ -786,7 +788,7 @@ let SIM_MODE=false;
 const SIM_OK=['scriptDetail','practice','practiceV','reportGen','report'];
 let TABS={home:0,scripts:1,tasks:2,me:3};
 let CHAT=[], PRAC={scriptId:0,persona:0,taskId:null,from:'',mode:'文字',showRule:true,sess:'text',stage:0,turn:0,ev:[],done:false,result:null,lastEval:null};
-let EXAM={idx:0,ans:[null,null]};
+let EXAM={ans:[]};
 let W=86;
 
 const dim6=[['开场破冰',85],['需求挖掘',72],['产品介绍',78],['异议处理',64],['促成邀约',58],['沟通表达',88]];
@@ -928,18 +930,75 @@ function courseCoverSvg(c){
   return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
 }
 function courseCoverSrc(c){return c.cover||courseCoverSvg(c);}
+/* 任务数据：与 admin 后台 5 个任务管理模块对齐（培训 / 陪练 / 课程学习 / 对话考试 / 试题考试）。
+   字段与后台各任务配置一致：剧本/课程清单、逐剧本及格分、逐题分值（总分 100）、通过分数、限时、
+   任务时间；防作弊为后台预留配置（学员端本期不体现）；次数设置已去掉，未完成任务前可反复执行；
+   完成机制：课程 100% / 陪练出报告 / 对话考试出报告且达及格分 / 试题考试出成绩且达及格分；
+   培训任务为任务链条（按设置顺序解锁下一阶段，链中任务相互独立）。
+   演示账号：赵磊 · 北京长久博瑞店 · 销售顾问 */
+const PAPER_QS=[
+ {t:'银河E5 CLTC 纯电续航是多少公里？',type:'单选',score:20,opts:['430 km','530 km','605 km','435 km']},
+ {t:'客户提出"我再对比一下其他品牌"时，哪种应对最合适？',type:'单选',score:15,opts:['直接承诺给最低价','询问客户主要对比点，针对性给出总持有成本对比','贬低竞品质量','建议客户尽快下单享优惠']},
+ {t:'以下哪些属于试驾前必须确认的项目？',type:'多选',score:20,opts:['油量 / 电量充足','胎压正常','试驾路线已规划','客户驾驶证有效']},
+ {t:'分期购车贷款手续必须由客户本人办理。',type:'判断',score:10,opts:['正确','错误']},
+ {t:'银河E5 的 CLTC 纯电续航是______公里。',type:'填空',score:20},
+ {t:'客户抱怨到店等待时间过长，正确的第一时间动作是？',type:'单选',score:15,opts:['先致歉并安抚情绪，引导至休息区','解释门店现状请客户理解','请客户自行等待叫号','转交其他同事处理']}];
 const TASKS=[
- {id:0,name:'新车型销售能力培训',type:'培训任务',dl:'11-30',prog:25,status:'ing',flow:['课程 1/2','陪练 1/2','考核 0/1'],
-  desc:'通过产品课程学习、客户沟通陪练和最终考核，提升新车型销售技能。'},
- {id:1,name:'客户异议处理专项练习',type:'陪练任务',dl:'12-08',prog:0,status:'ing',flow:['剧本 0/2'],
-  desc:'完成指定的两个场景剧本训练。'},
- {id:2,name:'新能源产品知识学习',type:'学习任务',dl:'12-15',prog:0,status:'ing',flow:['课程 0/2'],
-  desc:'完成指定的课程内容。'},
- {id:3,name:'销售知识阶段考试',type:'考试任务',dl:'12-20',prog:0,status:'todo',flow:['考核 0/1'],
-  desc:'按要求完成一次正式试卷考试。'}];
-const EXAMS=[
- {name:'新车销售顾问认证考核',type:'AI实训',rel:'进店首次接待·犹豫型客户',pass:80,time:'20 分钟',chance:'剩余 1 次'},
- {name:'10月产品知识月考',type:'试卷',rel:'50题 · 限时45分钟',pass:60,time:'45 分钟',chance:'剩余 2 次'}];
+ {id:0,name:'10月银河E5上市冲刺培训',type:'培训任务',time:'10-15 ~ 10-31',dl:'10-31',prog:63,status:'ing',
+  desc:'银河E5 上市冲刺培训：按「课程学习 → 陪练练习 → 试题考试」顺序完成，链中任务相互独立，任务设置各自独立配置。',
+  steps:[{k:'cl',name:'课程学习',tasks:['新车销售六步法学习任务']},
+         {k:'pr',name:'陪练练习',tasks:['周末试驾邀约专项陪练']},
+         {k:'ex',name:'试题考试',tasks:['11月产品知识月考']}]},
+ {id:1,name:'周末试驾邀约专项陪练',type:'陪练任务',time:'10-20 ~ 10-27',dl:'10-27',prog:41,status:'ing',attempts:'3',
+  desc:'针对周末到店高峰的试驾邀约场景，完成电话邀约全流程演练：开场确认、需求确认、邀约理由说明与到店时间锁定。',
+  scripts:['试驾邀约电话演练']},
+ {id:2,name:'新车销售六步法学习任务',type:'课程学习',time:'10-08 ~ 10-22',dl:'10-22',prog:97,status:'ing',attempts:'1',
+  desc:'新车销售全流程课程学习任务：依次完成六步法、试驾邀约与异议处理三门课程的学习。',
+  courses:['新车销售六步法','试驾邀约与体验设计','客户异议处理二十讲']},
+ {id:3,name:'进店接待对话考核',type:'对话考试',time:'11-05 ~ 11-20',dl:'11-20',prog:0,status:'todo',attempts:'2',anticheat:1,
+  desc:'进店接待场景的对话认证考核，各剧本达到及格分记为合格；未通过可重考。',
+  scripts:['进店首次接待·犹豫型客户','试驾邀约电话演练'],passes:{'进店首次接待·犹豫型客户':80,'试驾邀约电话演练':80}},
+ {id:4,name:'11月产品知识月考',type:'试题考试',time:'11-01 ~ 11-05',dl:'11-05',prog:0,status:'todo',pass:'60',limit:'45',attempts:'1',anticheat:1,
+  desc:'产品知识月度试卷考试：共 6 题、总分 100 分，60 分及格；未通过可重考。',
+  questions:PAPER_QS},
+ /* ---- 补充测试数据：5 类任务 × 多条，覆盖 已完成/进行中/未开始 三态 ---- */
+ {id:5,name:'银河E5产品知识学习',type:'课程学习',time:'11-15 ~ 11-30',dl:'11-30',prog:45,status:'ing',attempts:'1',
+  desc:'银河 E5 产品知识专项学习：完成产品卖点精讲与试驾邀约体验设计两门课程，为月度产品考试做准备。',
+  courses:['银河E5产品卖点精讲','试驾邀约与体验设计']},
+ {id:6,name:'新人入职必修课',type:'课程学习',time:'10-01 ~ 10-10',dl:'10-10',prog:100,status:'done',attempts:'1',
+  desc:'新员工入职必修课程：新车销售六步法，完成全部章节学习记为完成。',
+  courses:['新车销售六步法']},
+ {id:7,name:'产品讲解强化陪练',type:'陪练任务',time:'11-18 ~ 11-28',dl:'11-28',prog:0,status:'todo',attempts:'2',
+  desc:'车型上市前的产品讲解强化：完成三分钟讲车与车型亮点演讲两个剧本，重点提升讲解结构化与感染力。',
+  scripts:['银河E5产品讲解·三分钟讲车','新车上市·车型亮点演讲']},
+ {id:8,name:'客户接待流程日常陪练',type:'陪练任务',time:'10-09 ~ 10-16',dl:'10-16',prog:100,status:'done',attempts:'3',
+  desc:'客户接待标准流程话术每日一练，完成后自动计入培训链路进度。',
+  scripts:['客户接待标准流程话术朗读']},
+ {id:9,name:'金融分期话术专项陪练',type:'陪练任务',time:'11-10 ~ 11-24',dl:'11-24',prog:33,status:'ing',attempts:'3',
+  desc:'金融分期场景专项：围绕首付、利率、审批常见异议完成话术演练。',
+  scripts:['金融分期异议处理']},
+ {id:10,name:'月末接待能力考核',type:'对话考试',time:'11-25 ~ 12-05',dl:'12-05',prog:0,status:'todo',attempts:'2',
+  desc:'月末接待能力认证：犹豫型客户接待与竞品谈判两个剧本逐一考核，各剧本达到及格分记为合格。',
+  scripts:['进店首次接待·犹豫型客户','竞品对比价格谈判'],passes:{'进店首次接待·犹豫型客户':75,'竞品对比价格谈判':75}},
+ {id:11,name:'10月邀约话术认证',type:'对话考试',time:'10-10 ~ 10-18',dl:'10-18',prog:100,status:'done',attempts:'3',anticheat:1,
+  desc:'试驾邀约话术认证考核，已通过。',
+  scripts:['试驾邀约电话演练'],passes:{'试驾邀约电话演练':80}},
+ {id:12,name:'12月产品知识周测',type:'试题考试',time:'12-01 ~ 12-03',dl:'12-03',prog:0,status:'todo',pass:'60',limit:'30',attempts:'1',
+  desc:'产品知识每周小测：共 6 题、总分 100 分，60 分及格。',
+  questions:PAPER_QS},
+ {id:13,name:'10月产品知识补考',type:'试题考试',time:'10-21 ~ 10-22',dl:'10-22',prog:100,status:'done',pass:'60',limit:'45',attempts:'2',
+  desc:'10 月产品知识月考补考，已通过；限时 45 分钟，计入正式成绩。',
+  questions:PAPER_QS},
+ {id:14,name:'12月车型上市全员培训',type:'培训任务',time:'11-20 ~ 12-10',dl:'12-10',prog:0,status:'todo',
+  desc:'新款车型上市全员培训：按「课程学习 → 陪练练习 → 对话考试」顺序完成，链中任务相互独立，任务设置各自独立配置。',
+  steps:[{k:'cl',name:'课程学习',tasks:['银河E5产品知识学习']},
+         {k:'pr',name:'陪练练习',tasks:['产品讲解强化陪练']},
+         {k:'dk',name:'对话考试',tasks:['月末接待能力考核']}]},
+ {id:15,name:'10月服务规范专项培训',type:'培训任务',time:'10-08 ~ 10-20',dl:'10-20',prog:100,status:'done',
+  desc:'服务规范专项培训（已完成）：课程学习 → 陪练练习 → 试题考试全链路通过，链中任务相互独立。',
+  steps:[{k:'cl',name:'课程学习',tasks:['新人入职必修课']},
+         {k:'pr',name:'陪练练习',tasks:['客户接待流程日常陪练']},
+         {k:'ex',name:'试题考试',tasks:['10月产品知识补考']}]}];
 const PRAC_RECS=[
  ['竞品对比价格谈判','王先生 · 语音 · 任务','86','10-25 20:10'],
  ['进店首次接待·犹豫型客户','李女士 · 文字 · 任务','72','10-25 19:44'],
@@ -987,7 +1046,7 @@ function render(){
   if(s==='practice'){const c=app.querySelector('.chat');if(c)c.scrollTop=c.scrollHeight;}
   if(s==='practiceV'){const c=app.querySelector('#vchat');if(c)c.scrollTop=c.scrollHeight;const last=VCHAT[VCHAT.length-1];vSpeaking(last&&(last.who==='ai'||last.who==='typing'));}
 }
-const TITLES={courses:'课程中心',courseDetail:'课程详情',learn:'课程学习',courseDone:'课程完成',scriptDetail:'剧本详情',practice:'AI 陪练',practiceV:'AI 陪练',reportGen:'生成陪练报告',report:'陪练报告',taskDetail:'任务详情',taskCourses:'任务课程',taskScripts:'任务剧本',examDetail:'正式考核',examRun:'正式考核',examResult:'考试结果',archive:'学习档案',pRecords:'陪练记录',eRecords:'考试记录',diag:'能力诊断',msg:'消息中心',settings:'账号设置',qa:'AI问答',personaNew:'自定义客户',scriptNew:'创建剧本',scriptNewResult:'AI 生成结果'};
+const TITLES={courses:'课程中心',courseDetail:'课程详情',learn:'课程学习',courseDone:'课程完成',scriptDetail:'剧本详情',practice:'AI 陪练',practiceV:'AI 陪练',reportGen:'生成陪练报告',report:'陪练报告',taskDetail:'任务详情',taskRecords:'任务记录',taskCourses:'任务课程',taskScripts:'任务剧本',examDetail:'考核详情',examRun:'试卷考试',examResult:'考试结果',archive:'学习档案',pRecords:'陪练记录',eRecords:'考试记录',diag:'能力诊断',msg:'消息中心',settings:'账号设置',qa:'AI问答',personaNew:'自定义客户',scriptNew:'创建剧本',scriptNewResult:'AI 生成结果'};
 const PHONE='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg>';
 const SRIGHT={practice:'<button class="phb" onclick="startPhone()" title="切换到模拟电话">'+PHONE+'</button>',practiceV:'<button class="phb txtb" onclick="backToText()" title="切换为文字对话">文</button>',examRun:'',qa:'<button class="phb" onclick="qaNew()" title="开启新对话">'+ic('refresh',14)+'</button>'};
 const PINFO={'王先生 · 私营业主':{tag:['价格敏感','决策快','重面子'],focus:'总价与月供，关注置换残值',tip:'先认同再重构，忌直接否定竞品'},'刘总 · 企业高管':{tag:['效率优先','要求专业','时间紧'],focus:'交付周期与售后保障',tip:'结论先行，用数据支撑，控制篇幅'},'李女士 · 白领':{tag:['犹豫型','重口碑','怕被推销'],focus:'用车场景与月供压力',tip:'少讲参数，多讲场景与故事'},'张老师 · 中学教师':{tag:['谨慎','重合同','怕隐性收费'],focus:'费用明细与条款',tip:'逐项拆解费用，给书面清单'}};
@@ -1025,7 +1084,7 @@ SCREENS.home=()=>'<div class="page bleed" style="padding-bottom:0">'+
  '<div class="home-head"><div class="row"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDEyMDAgMzAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImJyYW5kQmx1ZSIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNGM2ZWUiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxNzVlZjUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMC4wMCwxMi4wMCkgc2NhbGUoMC43MTQyODYpIj48ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJvdXRlciIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjAiPjxzdG9wIHN0b3AtY29sb3I9IiMxMGQ3Y2IiLz48c3RvcCBvZmZzZXQ9Ii4zOCIgc3RvcC1jb2xvcj0iIzA4YWVlYSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzIyNTFlNyIvPjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0ic2hlbGwiIHgxPSIwIiB5MT0iMCIgeDI9Ii44IiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2Y5ZmZmZiIvPjxzdG9wIG9mZnNldD0iLjU2IiBzdG9wLWNvbG9yPSIjZmZmZmZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjYTBiOWY1Ii8+PC9saW5lYXJHcmFkaWVudD4KPGxpbmVhckdyYWRpZW50IGlkPSJmYWNlIiB4MT0iMCIgeTE9IjAiIHgyPSIuNzUiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjMDY3YWFiIi8+PHN0b3Agb2Zmc2V0PSIuNDUiIHN0b3AtY29sb3I9IiMwMzRjODkiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwYjEzNGMiLz48L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9ImVhciIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwMGJkZGQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxNDE3ODEiLz48L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9ImFudCIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMxY2U5ZGQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwODI0NmIiLz48L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9ImJyYW5kQmx1ZSIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNGM2ZWUiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxNzVlZjUiLz48L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjwhLS0gYW50ZW5uYSAtLT4KPHJlY3QgeD0iMjAwIiB5PSIzMiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjQ0IiByeD0iOCIgZmlsbD0iIzA3NWE5ZiIvPgo8Y2lyY2xlIGN4PSIyMDgiIGN5PSIyNiIgcj0iMjIiIGZpbGw9InVybCgjYW50KSIvPgo8IS0tIGJsdWUtY3lhbiBzcGVlY2ggcmluZyB3aXRoIHRhaWwgLS0+CjxwYXRoIGQ9Ik01NyAxODEgQzU3IDk2IDExOSA2MSAyMDQgNTkgQzI5NCA1NiAzNjAgMTA5IDM2MyAxOTggQzM2NyAyNzUgMzE1IDMxNSAyMzYgMzI5IEMxNzQgMzQxIDEyMSAzMzUgOTEgMzMwIEw0NSAzNTAgTDY0IDI3OSBDMjggMjUwIDM4IDIxNCA1NyAxODEgWiIgZmlsbD0idXJsKCNvdXRlcikiLz4KPCEtLSB3aGl0ZSBpbm5lciBib2R5IC0tPgo8cGF0aCBkPSJNNjkgMTk0IEM2NiAxMjYgMTI0IDgzIDIwMiA4MSBDMjg2IDc4IDM0MSAxMjYgMzQxIDE5NyBDMzQxIDI2OCAyOTQgMzAyIDIxMiAzMDcgQzEyOCAzMTIgNzYgMjc1IDY5IDE5NCBaIiBmaWxsPSJ1cmwoI3NoZWxsKSIvPgo8IS0tIGxlZnQvcmlnaHQgaGVhZHNldCBlYXJjdXBzIC0tPgo8cmVjdCB4PSIzNSIgeT0iMTUwIiB3aWR0aD0iNTAiIGhlaWdodD0iMTE2IiByeD0iMjUiIGZpbGw9InVybCgjZWFyKSIvPgo8cmVjdCB4PSIzMjEiIHk9IjE1MCIgd2lkdGg9IjUwIiBoZWlnaHQ9IjExNiIgcng9IjI1IiBmaWxsPSJ1cmwoI2VhcikiLz4KPCEtLSBmYWNlIC0tPgo8cGF0aCBkPSJNOTUgMTk0IEM5NSAxMzggMTMxIDExNSAyMDIgMTE0IEMyNzggMTExIDMxNSAxNDIgMzE1IDE5NSBDMzE1IDI0NyAyODYgMjYzIDIwNSAyNjMgQzEzMCAyNjQgOTUgMjQ0IDk1IDE5NCBaIiBmaWxsPSJ1cmwoI2ZhY2UpIi8+CjwhLS0gaGFwcHkgY3lhbiBleWVzIC0tPgo8cGF0aCBkPSJNMTMzIDIwNSBDMTQ1IDE3NiAxNjggMTc3IDE4MSAyMDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwZDlmMyIgc3Ryb2tlLXdpZHRoPSIxNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxwYXRoIGQ9Ik0yMjYgMjA1IEMyMzkgMTc1IDI2MiAxNzggMjc1IDIwNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBkOWYzIiBzdHJva2Utd2lkdGg9IjE1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBjaGVlcmZ1bCBzcGFya2xlIC0tPgo8cGF0aCBkPSJNMzc3IDEyNiBMMzkzIDEwNCIgc3Ryb2tlPSJ1cmwoI2JyYW5kQmx1ZSkiIHN0cm9rZS13aWR0aD0iMTIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8cGF0aCBkPSJNMzgxIDE1OSBMNDAxIDE0OSIgc3Ryb2tlPSJ1cmwoI2JyYW5kQmx1ZSkiIHN0cm9rZS13aWR0aD0iMTIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L2c+PGcgZm9udC1mYW1pbHk9Ik5vdG8gU2FucyBDSksgU0MsIE5vdG8gU2FucyBDSksgSlAsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMyIiBmb250LXdlaWdodD0iOTAwIiBsZXR0ZXItc3BhY2luZz0iMCI+PHRleHQgeD0iMzU1IiB5PSIyMjIiIGZpbGw9IiNGRkZGRkYiPkFJPC90ZXh0Pjx0ZXh0IHg9IjU2OC44NCIgeT0iMjIyIiBmaWxsPSIjRkZGRkZGIj7pmarnu4M8L3RleHQ+PC9nPjwvc3ZnPg==" alt="AI陪练"><button class="bell" onclick="navTo(\'msg\')">'+ic('bell',16,'color:#fff')+'<i>2</i></button></div>'+
   '<div class="hello">下午好，赵磊 👋<span>北京长久博瑞店 · 销售顾问</span></div></div>'+
  '<div class="task-hero mt" onclick="navTo(\'taskDetail\')">'+
-  '<span class="tag">进行中 · '+TASKS[0].type+'</span><b class="t">'+TASKS[0].name+'</b><p>阶段2/3 · 陪练 1/2 · 截止 '+TASKS[0].dl+'</p><div class="prog"><i style="width:'+TASKS[0].prog+'%"></i></div></div>'+
+  '<span class="tag">进行中 · '+TASKS[0].type+'</span><b class="t">'+TASKS[0].name+'</b><p>'+(TASKS[0].steps?TASKS[0].steps.map(s=>s.name).join(' → ')+' · ':'')+'截止 '+TASKS[0].dl+'</p><div class="prog"><i style="width:'+TASKS[0].prog+'%"></i></div></div>'+
  '<div class="qgrid mt">'+
   '<div class="q" onclick="navTo(\'courses\')"><div class="ic ic-b">'+ic('doc',18)+'</div><b>课程中心</b></div>'+
   '<div class="q" onclick="goTab(\'scripts\')"><div class="ic ic-p">'+ic('sword',18)+'</div><b>AI陪练</b></div>'+
@@ -2084,6 +2143,10 @@ function pList(s){return s.personas.concat(CUSTOM_P.map(c=>c.name+' \u00b7 '+c.r
 SCREENS.scriptDetail=()=>{const s=SCRIPTS[SCRIPT];const plist=pList(s);const free=!PRAC.taskId;
  if(PRAC.persona>=plist.length)PRAC.persona=0;
  const pf=personaFull(s,PRAC.persona);
+ /* 任务上下文：从陪练任务/对话考试进入时保留任务链路，按钮文案与提示随任务类型变化 */
+ const tk=(!free&&TASKS[PRAC.taskId])?TASKS[PRAC.taskId]:null;
+ const isDk=tk&&tk.type==='对话考试';
+ const blabel=isDk?'进入考核':'开始陪练';
  return '<div class="page"><div class="cover"><h1>'+s.name+'</h1><p>'+s.desc+'</p><span class="pill">情景对话</span><span class="pill">'+scTime(s)+'</span></div>'+
  '<div class="card mt"><div class="sec-t" style="margin:0 0 10px"><b>选择模拟客户</b><span style="font-size:11px;color:var(--t3);margin-left:6px">本场会话固定一位</span></div>'+
  '<div class="persona-pick" id="pp">'+plist.map((q,i)=>'<div class="pp'+(i===PRAC.persona?' on':'')+'" onclick="pickP('+i+')"><div class="av" style="background:'+(i===PRAC.persona?'linear-gradient(135deg,#175EF5,#04C6EE)':'linear-gradient(135deg,#F08A0C,#FFB84D)')+'">'+q[0]+'</div><b>'+q.split(' \u00b7 ')[0]+'</b><span>'+q.split(' \u00b7 ')[1]+'</span></div>').join('')+
@@ -2095,7 +2158,8 @@ SCREENS.scriptDetail=()=>{const s=SCRIPTS[SCRIPT];const plist=pList(s);const fre
  '<div class="kv2"><span>年龄段</span><b>'+esc(pf.age)+'</b></div>'+
  '<div class="kv2"><span>性别</span><b>'+esc(pf.sex)+'</b></div>'+
  '<div class="kv2"><span>家庭结构</span><b>'+esc(pf.fam)+'</b></div></div></div>'+
- '<button class="btn btn-p mt" onclick="PRAC.scriptId='+SCRIPT+';PRAC.taskId=null;startPractice()">开始陪练</button>'+
+ (isDk?'<div class="note" style="margin-top:10px">对话考核 · 本剧本及格分 '+((tk.passes||{})[s.name]||tk.pass)+' 分，考核中不提供教练提示，成绩计入正式任务。</div>':'')+
+ '<button class="btn btn-p mt" onclick="PRAC.scriptId='+SCRIPT+';startPractice()">'+blabel+'</button>'+
  '<p style="text-align:center;font-size:11px;color:var(--t3);margin-top:10px">默认进入文字对话，可在对话页切换语音输入或模拟电话</p></div>';};
 function pickP(i){PRAC.persona=i;
  document.querySelectorAll('#pp .pp').forEach((n,j)=>n.classList.toggle('on',j===i));
@@ -2337,6 +2401,11 @@ function endPractice(){
   const s=pracS(),d=new Date(),pd=n=>String(n).padStart(2,'0');
   const ts=pd(d.getMonth()+1)+'-'+pd(d.getDate())+' '+pd(d.getHours())+':'+pd(d.getMinutes());
   PRAC_RECS.push([s.name,pracP().name+' · '+PRAC.mode+' · '+(PRAC.taskId?'任务':'自主'),String(PRAC.result.total),ts]);
+  if(PRAC.taskId!=null&&TASKS[PRAC.taskId]){   /* 完成机制：任务陪练出报告即记完成 */
+    const t=TASKS[PRAC.taskId];
+    tDoneOf(t.id).scripts[s.name]=PRAC.result.total;
+    tRefresh(t);
+  }
   navTo('reportGen');}
 /* ---- 语音沉浸陪练（practiceV）：布局参考附件——全屏AI形象 + 气泡挂逐句操作条 + 按住说话 ---- */
 const SPK='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>';
@@ -2529,80 +2598,201 @@ SCREENS.report=()=>{const s=pracS(),R=PRAC.result;
  '<button class="btn btn-g mt" style="margin-top:10px" onclick="'+(PRAC.taskId?'navTo(\'taskScripts\')':'goTab(\'scripts\')')+'">'+(PRAC.taskId?'返回任务剧本列表':'返回剧本列表')+'</button></div>';};
 
 /* ---- 任务 ---- */
-const TF1S=['全部','待完成','已完成'],TF2S=['全部','培训','陪练','学习','考试'];
+const TF1S=['全部','待完成','已完成'],TF2S=['全部','培训任务','陪练任务','课程学习','对话考试','试题考试'];
 let TF1='全部',TF2='全部';
 function setTF(r,c){if(r===1)TF1=c;else TF2=c;render();}
 function taskPass(t){
   if(TF1==='待完成'&&t.status==='done')return false;
   if(TF1==='已完成'&&t.status!=='done')return false;
-  if(TF2!=='全部'&&t.type.indexOf(TF2)!==0)return false;
+  if(TF2!=='全部'&&t.type!==TF2)return false;
   return true;}
+const TK_ST={todo:['未开始','gray'],ing:['进行中','info'],done:['已完成','ok']};
 SCREENS.tasks=()=>{const list=TASKS.filter(taskPass);
  return '<div class="page"><div class="pg-h1">我的任务</div>'+
  '<div class="chips tight" style="margin-top:0">'+TF1S.map(c=>'<button class="chip'+(TF1===c?' on':'')+'" onclick="setTF(1,\''+c+'\')">'+c+'</button>').join('')+'</div>'+
  '<div class="chips tight">'+TF2S.map(c=>'<button class="chip'+(TF2===c?' on':'')+'" onclick="setTF(2,\''+c+'\')">'+c+'</button>').join('')+'</div>'+
- (list.length?list.map(t=>'<div class="tk" onclick="navTo(\'taskDetail\');SET_TASK('+t.id+')">'+
-  '<div class="tk-top"><b class="tk-name">'+t.name+'</b><span class="tk-badge">'+t.type+'</span></div>'+
+ (list.length?list.map(t=>'<div class="tk" onclick="SET_TASK('+t.id+');navTo(\'taskDetail\')">'+
+  '<div class="tk-top"><b class="tk-name">'+t.name+'</b><span class="tk-badge">'+t.type+'</span>'+stTag(TK_ST[t.status][0],TK_ST[t.status][1])+'</div>'+
   '<p class="tk-desc">'+t.desc+'</p>'+
   '<div class="tk-bar"><i style="width:'+t.prog+'%"></i></div>'+
-  '<div class="tk-foot"><span class="tk-dl">截止：'+t.dl+'</span><span class="tk-pct">完成 '+t.prog+'% '+ic('right',12)+'</span></div></div>').join('')
-  :'<div class="note" style="text-align:center">当前筛选下暂无任务</div>')+'</div>';};
+  '<div class="tk-foot"><span class="tk-dl">任务时间：'+t.time+'</span><span class="tk-pct">完成 '+t.prog+'% '+ic('right',12)+'</span></div></div>').join('')
+  :'<div class="note" style="text-align:center">当前筛选下暂无任务</div>')+
+  '<div class="item" style="margin-top:10px" onclick="navTo(\'taskRecords\')"><div class="thumb ic-b">'+ic('play',18)+'</div><div class="tt"><b>任务记录</b><span>已完成任务与成绩 · 任务删除后仍可在此查看</span></div>'+ic('right',15)+'</div>'+
+  '</div>';};
+/* 任务记录：已完成任务与成绩（任务被删除后，已完成学员仍可查看） */
+SCREENS.taskRecords=()=>{const recs=TASK_RECORDS;
+ return '<div class="page"><div class="pg-h1">任务记录</div>'+
+  '<div class="note" style="margin-bottom:10px">已完成任务与成绩记录；任务被删除后，已完成学员仍可在此查看。</div>'+
+  (recs.length?recs.map(r=>'<div class="item"><div class="tt"><b>'+esc(r.name)+'</b><span>'+esc(r.type)+' · '+esc(r.time||'')+'</span></div>'+(r.score!=='—'?stTag(r.score,'ok'):stTag('已完成','ok'))+'</div>').join('')
+   :'<div class="note" style="text-align:center">暂无已完成任务记录</div>')+'</div>';};
 
-let TASK=0;
+let TASK=0,SUB=0,CUR_EXAM_TASK=0;   /* 当前任务 / 任务课程·剧本上下文 / 当前考核任务 */
 function SET_TASK(i){TASK=i;}
+function SET_SUB(i){SUB=i;}
+function openExamTask(scr,i){EXI=1;EXAM.ans=[];CUR_EXAM_TASK=i;navTo(scr);}
+function taskByName(n){return TASKS.filter(x=>x.name===n)[0]||null;}
+function courseByName(n){return COURSES.filter(c=>c.name===n)[0]||null;}
+function scriptByName(n){return SCRIPTS.filter(s=>s.name===n)[0]||null;}
+/* 内容项完成状态（任务完成机制）：
+   课程学习 → 课程中心进度 100%；陪练 → 生成陪练报告即完成；对话考试 → 出报告且达到该剧本及格分；
+   试题考试 → 出成绩且达到及格分（TDONE.ex）；链中考核/考试 → 看子任务自身进度。
+   注意：剧本的全局练习记录 cnt 只是素材历史，不能代表某个任务已完成。*/
+let TDONE={};   /* 任务完成进度：{taskId:{scripts:{剧本名:得分}, ex:考试得分}} */
+function tDoneOf(i){ return TDONE[i]||(TDONE[i]={scripts:{}}); }
+function tPassOf(t,n){ const v=(t&&t.passes&&t.passes[n]!=null)?t.passes[n]:(t&&t.pass); return parseInt(v)||0; }
+function taskItemDone(kind,name,t){
+ if(kind==='course'){const c=courseByName(name);return !!c&&c.prog>=100;}
+ if(kind==='script'){const d=t&&TDONE[t.id];return !!(d&&d.scripts[name]!=null);}
+ if(kind==='dk'){const d=t&&TDONE[t.id];const sc=d&&d.scripts[name];return sc!=null&&sc>=tPassOf(t,name);}
+ const q=taskByName(name);return !!q&&q.prog>=100;}
+/* 任务级进度/状态刷新；完成后写入任务记录（任务被删除后已完成学员仍可查看） */
+let TASK_RECORDS=[];
+function tRecord(t){
+ if(!t||t.status!=='done')return;
+ if(TASK_RECORDS.some(r=>r.id===t.id))return;
+ const score=t.type==='试题考试'?((tDoneOf(t.id).ex!=null?tDoneOf(t.id).ex:'—')+' 分'):(t.type==='对话考试'?'逐剧本达标':'—');
+ TASK_RECORDS.unshift({id:t.id,name:t.name,type:t.type,time:t.time,score:score});}
+function tRefresh(t){
+ if(!t)return;
+ const d=tDoneOf(t.id);
+ if(t.type==='陪练任务'||t.type==='对话考试'){
+   const kind=t.type==='对话考试'?'dk':'script';
+   const list=t.scripts||[];
+   const done=list.filter(n=>taskItemDone(kind,n,t)).length;
+   if(list.length)t.prog=Math.round(done/list.length*100);
+   t.status=(list.length&&done===list.length)?'done':(done>0?'ing':t.status);
+ }else if(t.type==='试题考试'){
+   if(d.ex!=null){ if(d.ex>=tPassOf(t,null)){t.prog=100;t.status='done';} else t.status='ing'; }
+ }else if(t.type==='课程学习'){
+   const list=t.courses||[];
+   const done=list.filter(n=>{const c=courseByName(n);return c&&c.prog>=100;}).length;
+   if(list.length)t.prog=Math.round(done/list.length*100);
+   t.status=(list.length&&done===list.length)?'done':(done>0?'ing':t.status);
+ }else if(t.type==='培训任务'){
+   const on=t.steps||[];
+   const dn=on.filter(s=>s.tasks.every(n=>{const q=taskByName(n);return q&&q.prog>=100;})).length;
+   if(on.length)t.prog=Math.round(dn/on.length*100);
+   t.status=(on.length&&dn===on.length)?'done':(dn>0?'ing':t.status);
+ }
+ tRecord(t);}
+/* 种子已完成任务 → 预填完成进度记录 */
+TASKS.filter(t=>t.status==='done').forEach(t=>{const d=tDoneOf(t.id);
+ if(t.type==='试题考试'&&d.ex==null)d.ex=88;
+ if((t.type==='陪练任务'||t.type==='对话考试')&&t.scripts)t.scripts.forEach(n=>{if(d.scripts[n]==null)d.scripts[n]=tPassOf(t,n);});
+ tRecord(t);});
+/* 链中子任务展开为具体内容项（课程学习→课程 / 陪练→剧本 / 对话考试→剧本+及格分 / 试题考试→试卷） */
+function taskItemsOf(name){
+ const t=taskByName(name);if(!t)return [];
+ if(t.type==='课程学习')return t.courses.map(n=>({kind:'course',name:n}));
+ if(t.type==='陪练任务')return t.scripts.map(n=>({kind:'script',name:n}));
+ if(t.type==='对话考试')return t.scripts.map(n=>({kind:'dk',name:n,pass:(t.passes||{})[n]}));
+ return [{kind:'ex',name:name}];}
 SCREENS.taskDetail=()=>{const t=TASKS[TASK];
- const stage=(no,title,items,done,locked,note)=>
-  '<div class="stage'+(locked?' lock':'')+'"><div class="sh"><b>'+no+' '+title+'</b>'+stTag(done?'已完成':'进行中',done?'ok':'info')+'</div>'+
-  '<div class="stepflow">'+items.map((x,i)=>'<i'+(x.done?' class="done"':'')+'></i>').join('')+'</div>'+
-  items.map(x=>'<div class="info-kv" style="padding:7px 0"><span>'+x.name+'</span>'+(locked?'<b style="color:var(--t3)">'+ic('lock',12)+' 未解锁</b>':x.act)+'</div>').join('')+
-  (note?'<div class="locknote">'+ic('lock',11)+note+'</div>':'')+'</div>';
- return '<div class="page"><div style="height:12px"></div>'+
- '<div class="card"><b style="font-size:16px">'+t.name+'</b><div style="margin:6px 0 4px">'+stTag(t.type,'info')+stTag('截止 '+t.dl,'warn')+'</div>'+
- '<div style="display:flex;gap:8px;align-items:center;margin-top:10px"><div class="bar" style="flex:1"><i style="width:'+t.prog+'%"></i></div><span style="font-size:11.5px;color:var(--t3)">'+t.prog+'%</span></div></div>'+
- (t.type==='培训任务'?
-  stage('①','课程阶段（2门）',[{name:'新车销售六步法',done:1,act:stTag('已完成','ok')},{name:'银河E5产品卖点精讲',done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'taskCourses\')">继续学习</button>'}],0,0)+
-  stage('②','陪练阶段（2个剧本）',[{name:'竞品对比价格谈判',done:1,act:stTag('已完成','ok')},{name:'进店首次接待·犹豫型客户',done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'taskScripts\')">去陪练</button>'}],0,0)+
-  stage('③','正式考核（1项）',[{name:'新车销售顾问认证考核 · 及格分80',done:0,act:'<button class="btn btn-dis" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px">未解锁</button>'}],0,1,'完成前两阶段后解锁')+
-  '<div class="note mt">培训任务严格按 课程 → 陪练 → 考核 顺序解锁；已完成阶段可查看历史记录。</div>'
-  :t.type==='陪练任务'?
-  stage('①','剧本阶段（2个）',[{name:'竞品对比价格谈判',done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'taskScripts\')">去陪练</button>'},{name:'金融分期异议处理',done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'taskScripts\')">去陪练</button>'}],0,0)
-  :t.type==='学习任务'?
-  stage('①','课程阶段（2门）',[{name:'新能源产品知识·三电技术篇',done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'taskCourses\')">继续学习</button>'},{name:'新能源产品知识·智驾功能篇',done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'taskCourses\')">继续学习</button>'}],0,0)
-  :stage('①','考核（1项）',[{name:EXAMS[1].name,done:0,act:'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="navTo(\'examDetail\');SET_EXAM(1)">进入考核</button>'}],0,0))+
- '</div>';};
-SCREENS.taskCourses=()=>
- '<div class="page"><div style="height:12px"></div><div class="note" style="margin-bottom:10px">完成全部课程后解锁陪练阶段（2/2 → 1/2）</div>'+
- COURSES.slice(0,2).map(c=>'<div class="item" onclick="SET_COURSE('+c.id+');navTo(\'courseDetail\')"><div class="thumb ic-b">'+ic('play',18)+'</div><div class="tt"><b>'+c.name+'</b><span>'+c.ch+' 章</span><div style="display:flex;gap:8px;align-items:center;margin-top:5px"><div class="bar" style="flex:1"><i class="'+(c.prog===100?'g':'')+'" style="width:'+c.prog+'%"></i></div><span style="font-size:11px;color:var(--t3)">'+c.prog+'%</span></div></div>'+(c.prog===100?stTag('已完成','ok'):stTag('继续','info'))+'</div>').join('')+'</div>';
-SCREENS.taskScripts=()=>
- '<div class="page"><div style="height:12px"></div><div class="note" style="margin-bottom:10px">每个剧本独立完成；完成 1/2 只显示 1/2，不会自动完成任务。</div>'+
- SCRIPTS.slice(0,2).map((s,i)=>'<div class="item"><div class="thumb" style="background:linear-gradient(135deg,#6E4EEA,#9F7CFF)">'+ic('sword',18)+'</div><div class="tt"><b>'+s.name+'</b><span>'+(i===0?'已完成 1 次 · 最高 86 分':'未开始')+'</span></div><button class="btn btn-p" style="height:30px;padding:0 13px;font-size:12px;border-radius:9px" onclick="PRAC.scriptId='+s.id+';PRAC.persona=0;PRAC.taskId=1;'+(i===0?'navTo(\'report\')':'startPractice()')+'">'+(i===0?'查看报告':'开始')+'</button></div>').join('')+'</div>';
+ const btn=(label,fn)=>'<button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="'+fn+'">'+label+'</button>';
+ const lockBtn='<button class="btn btn-dis" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px">未解锁</button>';
+ const stage=(no,title,items,locked,note)=>{
+  const allDone=!locked&&items.length&&items.every(x=>x.done);
+  return '<div class="stage'+(locked?' lock':'')+'"><div class="sh"><b>'+no+' '+title+'</b>'+stTag(locked?'未解锁':allDone?'已完成':'进行中',locked?'gray':allDone?'ok':'info')+'</div>'+
+  '<div class="stepflow">'+items.map(x=>'<i'+(x.done?' class="done"':'')+'></i>').join('')+'</div>'+
+  items.map(x=>'<div class="info-kv" style="padding:7px 0"><span>'+x.name+(x.pass?' <span style="font-size:11px;color:var(--t3)">及格分 '+x.pass+' 分</span>':'')+(x.extra?' <span style="font-size:11px;color:var(--t3)">'+x.extra+'</span>':'')+'</span>'+(locked?lockBtn:x.act)+'</div>').join('')+
+  (note?'<div class="locknote">'+ic('lock',11)+note+'</div>':'')+'</div>';};
+ const actOf=x=>{
+  if(x.kind==='course')return x.done?stTag('已完成','ok'):btn('继续学习','SET_SUB('+x.si+');navTo(\'taskCourses\')');
+  if(x.kind==='script')return btn(x.done?'再练一次':'去陪练','SET_SUB('+x.si+');PRAC.taskId='+x.si+';PRAC.persona=0;SET_SCRIPT(scriptByName(\''+x.name+'\').id);navTo(\'scriptDetail\')');
+  if(x.kind==='dk')return btn('进入考核','SET_SUB('+x.si+');PRAC.taskId='+x.si+';PRAC.persona=0;SET_SCRIPT(scriptByName(\''+x.name+'\').id);navTo(\'scriptDetail\')');
+  return btn('进入考试','openExamTask(\'examRun\','+x.si+')');};
+ const head='<div class="page"><div style="height:12px"></div>'+
+  '<div class="card"><b style="font-size:16px">'+esc(t.name)+'</b><div style="margin:6px 0 4px">'+stTag(t.type,'info')+stTag('截止 '+t.dl,'warn')+'</div>'+
+  '<div class="info-kv" style="margin-top:8px"><span>任务时间</span><b>'+t.time+'</b></div>'+
 
-SCREENS.examDetail=()=>{const e=EXAMS[0];
- return '<div class="page"><div style="height:12px"></div>'+
- '<div class="card"><b style="font-size:16px">'+e.name+'</b><div style="margin-top:6px">'+stTag(e.type,'info')+stTag('正式考核','warn')+'</div>'+
- '<div class="info-kv" style="margin-top:8px"><span>限时</span><b>'+e.time+'</b></div><div class="info-kv"><span>及格线</span><b>'+e.pass+' 分</b></div><div class="info-kv"><span>考试机会</span><b>'+e.chance+'</b></div><div class="info-kv"><span>关联剧本</span><b>进店首次接待·犹豫型客户</b></div></div>'+
- '<div class="card mt"><div class="sec-t" style="margin:0 0 6px"><b>考试说明</b></div><p style="font-size:12.5px;color:var(--t2);line-height:1.75">进入 AI 实训考试后与模拟客户进行一场完整对话。考试模式不提供实时教练提示，不展示评分规则；成绩计入正式任务，未通过可重考。</p></div>'+
- '<button class="btn btn-p mt" onclick="SET_EXAM(1);navTo(\'examRun\')">开始考试</button>'+
- '<button class="btn btn-g mt" style="margin-top:10px" onclick="navTo(\'examRun\')">先试一次模拟考核（不计成绩）</button></div>';};
+  '<div style="display:flex;gap:8px;align-items:center;margin-top:10px"><div class="bar" style="flex:1"><i style="width:'+t.prog+'%"></i></div><span style="font-size:11.5px;color:var(--t3)">'+t.prog+'%</span></div>'+
+  '<p style="font-size:12.5px;color:var(--t2);line-height:1.7;margin-top:8px">'+esc(t.desc)+'</p></div>';
+ let body='';
+ if(t.type==='培训任务'){
+  const on=t.steps;
+  body=on.map((st,sti)=>{
+   const items=st.tasks.map(n=>{const sub=taskByName(n);const si=TASKS.indexOf(sub);
+    return taskItemsOf(n).map(x=>Object.assign({},x,{si:si,done:taskItemDone(x.kind,x.name,sub)}));}).flat()
+    .map(x=>Object.assign({},x,{act:actOf(x)}));
+   const locked=sti>0&&!on.slice(0,sti).every(ps=>ps.tasks.every(n=>{const q=taskByName(n);return q&&q.prog>=100;}));
+   return stage('①②③④⑤'[sti],st.name+'（'+items.length+' 项）',items,locked,locked?'完成前'+sti+'个阶段后解锁':'');
+  }).join('')+
+  '<div class="note mt">培训任务严格按链条顺序（'+t.steps.map(s=>s.name).join(' → ')+'）解锁；链中任务相互独立，任务设置各自独立配置。</div>';
+ }else if(t.type==='陪练任务'){
+  const items=t.scripts.map(n=>{const sc=scriptByName(n);
+   const x={kind:'script',name:n,done:taskItemDone('script',n,t),extra:sc?String(sc.cnt||'').replace('已完成','已练'):'',si:TASK};
+   x.act=actOf(x);return x;});
+  body=stage('①','剧本练习（'+items.length+' 个）',items,0,'完成机制：每个剧本完成陪练并生成陪练报告即记为完成；未完成前可反复练习。');
+ }else if(t.type==='课程学习'){
+  const items=t.courses.map(n=>{const c=courseByName(n);
+   const x={kind:'course',name:n,done:taskItemDone('course',n),extra:c?c.prog+'%':'',si:TASK};
+   x.act=actOf(x);return x;});
+  body=stage('①','课程学习（'+items.length+' 门）',items,0,'完成全部课程后本任务记为完成。');
+ }else if(t.type==='对话考试'){
+  const items=t.scripts.map(n=>{const x={kind:'dk',name:n,pass:(t.passes||{})[n],done:taskItemDone('dk',n,t),si:TASK};x.act=actOf(x);return x;});
+  body=stage('①','对话考核（'+items.length+' 个剧本）',items,0,'完成机制：每个剧本生成陪练报告且得分达到该剧本及格分记为合格。');
+ }else{ /* 试题考试 */
+  const tot=t.questions.reduce((a,q)=>a+q.score,0);
+  body='<div class="card mt"><div class="sec-t" style="margin:0 0 6px"><b>试卷信息</b></div>'+
+   '<div class="info-kv"><span>题数</span><b>'+t.questions.length+' 题</b></div>'+
+   '<div class="info-kv"><span>总分数</span><b>'+tot+' 分</b></div>'+
+   '<div class="info-kv"><span>通过分数</span><b>'+t.pass+' 分</b></div>'+
+   '<div class="info-kv"><span>限时</span><b>'+(t.limit&&t.limit!=='0'?t.limit+' 分钟':'不限时')+'</b></div></div>'+
+   '<div class="card mt"><div class="sec-t" style="margin:0 0 6px"><b>考试说明</b></div><p style="font-size:12.5px;color:var(--t2);line-height:1.75">进入试卷考试后逐题作答，题型包含单选、多选、判断与填空；每题分值由后台组卷配置，总分 100 分，得分达到 '+t.pass+' 分即通过。未作答题目交卷前会二次确认。</p></div>'+
+   '<button class="btn btn-p mt" onclick="openExamTask(\'examRun\','+TASK+')">开始考试</button>';
+ }
+ return head+body+'</div>';};
+SCREENS.taskCourses=()=>{const t=TASKS[SUB];const list=t.courses||[];
+ const dn=list.filter(n=>{const c=courseByName(n);return c&&c.prog>=100;}).length;
+ return '<div class="page"><div style="height:12px"></div><div class="note" style="margin-bottom:10px">任务课程 '+dn+'/'+list.length+' 门已完成；课程进度与课程中心同步。</div>'+
+ list.map(n=>{const c=courseByName(n);if(!c)return '';
+  return '<div class="item" onclick="SET_COURSE('+c.id+');navTo(\'courseDetail\')"><div class="thumb ic-b">'+ic('play',18)+'</div><div class="tt"><b>'+esc(c.name)+'</b><span>'+esc(c.cate)+' · '+c.ch+' 章 · '+courseTotalMin(c)+' 分钟</span><div style="display:flex;gap:8px;align-items:center;margin-top:5px"><div class="bar" style="flex:1"><i class="'+(c.prog===100?'g':'')+'" style="width:'+c.prog+'%"></i></div><span style="font-size:11px;color:var(--t3)">'+c.prog+'%</span></div></div>'+(c.prog===100?stTag('已完成','ok'):stTag('继续学习','info'))+'</div>';}).join('')+'</div>';};
+SCREENS.taskScripts=()=>{const t=TASKS[SUB];const list=t.scripts||[];
+ const dn=list.filter(n=>taskItemDone('script',n,t)).length;
+ return '<div class="page"><div style="height:12px"></div><div class="note" style="margin-bottom:10px">任务剧本 '+dn+'/'+list.length+' 个已完成；每个剧本独立完成，不会自动完成任务。</div>'+
+ list.map(n=>{const sc=scriptByName(n);if(!sc)return '';
+  const done=taskItemDone('script',n,t);
+  return '<div class="item"><div class="thumb" style="background:linear-gradient(135deg,#6E4EEA,#9F7CFF)">'+ic('sword',18)+'</div><div class="tt"><b>'+esc(sc.name)+'</b><span>'+esc(sc.time)+' · '+esc(sc.cnt||'未开始')+'</span></div><button class="btn btn-p" style="height:30px;padding:0 13px;font-size:12px;border-radius:9px" onclick="PRAC.scriptId='+sc.id+';PRAC.persona=0;PRAC.taskId='+SUB+';SET_SCRIPT('+sc.id+');navTo(\'scriptDetail\')">'+(done?'再练一次':'开始')+'</button></div>';}).join('')+'</div>';};
 
+/* 对话考试详情：逐剧本及格分 + 完成机制说明（对应后台「对话考试任务」配置） */
+SCREENS.examDetail=()=>{let t=TASKS[CUR_EXAM_TASK];if(!t.scripts)t=TASKS.filter(x=>x.scripts&&x.passes)[0]||t;
+ return '<div class="page"><div style="height:12px"></div>'+
+ '<div class="card"><b style="font-size:16px">'+esc(t.name)+'</b><div style="margin-top:6px">'+stTag(t.type,'info')+stTag('截止 '+t.dl,'warn')+'</div>'+
+ '<div class="info-kv" style="margin-top:8px"><span>任务时间</span><b>'+t.time+'</b></div>'+
+
+ '<div class="info-kv"><span>考核剧本</span><b>'+t.scripts.length+' 个</b></div>'+
+ t.scripts.map(n=>{const sc=scriptByName(n);return '<div class="info-kv" style="padding:8px 0"><span>'+esc(n)+'</span><b style="margin-left:auto;margin-right:10px">及格分 '+t.passes[n]+' 分</b><button class="btn btn-p" style="height:28px;padding:0 12px;font-size:11.5px;border-radius:8px" onclick="PRAC.scriptId='+sc.id+';PRAC.persona=0;PRAC.taskId='+CUR_EXAM_TASK+';SET_SCRIPT('+sc.id+');navTo(\'scriptDetail\')">进入考核</button></div>';}).join('')+'</div>'+
+ '<div class="card mt"><div class="sec-t" style="margin:0 0 6px"><b>考试说明</b></div><p style="font-size:12.5px;color:var(--t2);line-height:1.75">进入 AI 实训考试后与模拟客户进行一场完整对话，每个剧本独立计分，达到该剧本及格分记为合格。考试模式不提供实时教练提示，不展示评分规则'+'；成绩计入正式任务，未通过可重考。</p></div>'+
+ '<button class="btn btn-p mt" onclick="PRAC.scriptId='+scriptByName(t.scripts[0]).id+';PRAC.persona=0;PRAC.taskId='+CUR_EXAM_TASK+';SET_SCRIPT('+scriptByName(t.scripts[0]).id+');navTo(\'scriptDetail\')">进入考核</button>'+
+ '<button class="btn btn-g mt" style="margin-top:10px" onclick="goTab(\'tasks\')">返回任务</button></div>';};
+
+/* 试卷考试：逐题作答，每题分值来自后台组卷配置（总分 100） */
 let EXI=1;
-function SET_EXAM(i){EXI=i;}
-const EQS=[
- {q:'银河E5 的 CLTC 纯电续航最高是多少公里？',opts:['430 km','530 km','605 km','435 km']},
- {q:'客户提出"我再对比一下其他品牌"，以下哪种应对最合适？',opts:['直接承诺给最低价','询问客户主要对比点，针对性给出总持有成本对比','贬低竞品质量','建议客户尽快下单享优惠']}];
-SCREENS.examRun=()=>
- '<div class="page" style="background:#EEF1F8"><div style="height:12px"></div>'+
- '<div class="card" style="display:flex;align-items:center;gap:10px;padding:11px 14px"><b style="font-size:13.5px">10月产品知识月考</b>'+stTag('试卷 · 45:00','warn')+'<span style="margin-left:auto;font-size:11.5px;color:var(--t3)">第 '+EXI+'/2 题</span></div>'+
- '<div class="exam-q mt"><div class="qn">第 '+EXI+' 题 · 单选 · 5 分</div><div class="qt">'+EQS[EXI-1].q+'</div>'+
- EQS[EXI-1].opts.map((o,i)=>'<div class="opt'+(EXAM.ans[EXI-1]===i?' on':'')+'" onclick="EXAM.ans['+(EXI-1)+']='+i+';render()"><span class="o">'+('ABCD'[i])+'</span>'+o+'</div>').join('')+'</div>'+
+function exPick(qi,i,multi){
+ if(multi){let a=EXAM.ans[qi];if(!Array.isArray(a))a=EXAM.ans[qi]=[];const k=a.indexOf(i);if(k>=0)a.splice(k,1);else a.push(i);}
+ else EXAM.ans[qi]=i;
+ render();}
+function exSubmit(){
+ /* 完成机制：试题考试出具成绩，得分达到及格分记为通过；未通过可重考（次数不限） */
+ const t=TASKS[CUR_EXAM_TASK]||TASKS.filter(x=>x.questions)[0];
+ tDoneOf(t.id).ex=90;
+ tRefresh(t);
+ navTo('examResult');}
+SCREENS.examRun=()=>{let t=TASKS[CUR_EXAM_TASK];if(!t.questions)t=TASKS.filter(x=>x.questions)[0]||t;const qs=t.questions;const q=qs[EXI-1];const multi=q.type==='多选';
+ const inner=q.opts?q.opts.map((o,i)=>{const a=EXAM.ans[EXI-1];const on=multi?(Array.isArray(a)&&a.indexOf(i)>=0):a===i;
+  return '<div class="opt'+(on?' on':'')+'" onclick="exPick('+(EXI-1)+','+i+','+(multi?1:0)+')"><span class="o">'+('ABCD'[i])+'</span>'+o+'</div>';}).join('')
+ :'<div class="opt" style="align-items:flex-start;padding:12px 14px"><textarea style="flex:1;border:0;outline:0;font:inherit;background:transparent;resize:none;min-height:72px" placeholder="'+(q.type==='填空'?'请输入答案':'请简述作答要点')+'"></textarea></div>';
+ return '<div class="page exam-bg"><div style="height:12px"></div>'+
+ '<div class="card" style="display:flex;align-items:center;gap:8px;padding:11px 14px;flex-wrap:wrap"><b style="font-size:13.5px">'+esc(t.name)+'</b>'+stTag('限时 '+(t.limit&&t.limit!=='0'?t.limit+' 分钟':'不限'),'warn')+'<span style="margin-left:auto;font-size:11.5px;color:var(--t3)">第 '+EXI+'/'+qs.length+' 题</span></div>'+
+ '<div class="exam-q mt"><div class="qn">第 '+EXI+' 题 · '+q.type+' · '+q.score+' 分</div><div class="qt">'+esc(q.t)+'</div>'+inner+'</div>'+
  '<div style="display:flex;gap:10px" class="mt">'+
  '<button class="btn btn-g" style="flex:1" onclick="EXI>1?(EXI--,render()):back()">上一题</button>'+
- (EXI<EQS.length?'<button class="btn btn-p" style="flex:2" onclick="EXI++;render()">下一题</button>':'<button class="btn btn-p" style="flex:2" onclick="navTo(\'examResult\')">确认交卷</button>')+'</div>'+
- '<div class="note mt">考试中退出将按规则处理；未作答题目交卷前会二次确认。正式考核不提供教练提示。</div></div>';
-SCREENS.examResult=()=>{
- return '<div class="page" style="justify-content:center;text-align:center"><div style="font-size:48px">✅</div><b style="font-size:20px;margin:10px 0 4px">92 分 · 通过</b>'+
- '<p style="font-size:12.5px;color:var(--t3)">及格线 60 分 · 用时 28:41 · 正式成绩</p>'+
- '<div class="card mt" style="text-align:left"><div class="info-kv"><span>单选</span><b>20 题 · 全对</b></div><div class="info-kv"><span>多选</span><b>20 题 · 错 1 题（-2）</b></div><div class="info-kv"><span>判断</span><b>10 题 · 错 1 题（-6）</b></div><div class="info-kv"><span>任务状态</span><b>'+stTag('考核阶段已完成','ok')+'</b></div></div>'+
+ (EXI<qs.length?'<button class="btn btn-p" style="flex:2" onclick="EXI++;render()">下一题</button>':'<button class="btn btn-p" style="flex:2" onclick="exSubmit()">确认交卷</button>')+'</div>'+
+ '<div class="note mt">未作答题目交卷前会二次确认。正式考试不提供教练提示，每题分值见题号旁标注。</div></div>';};
+SCREENS.examResult=()=>{let t=TASKS[CUR_EXAM_TASK];if(!t.questions)t=TASKS.filter(x=>x.questions)[0]||t;
+ return '<div class="page exam-center"><div style="font-size:48px">✅</div><b style="font-size:20px;margin:10px 0 4px">90 分 · 通过</b>'+
+ '<p style="font-size:12.5px;color:var(--t3)">及格线 '+t.pass+' 分 · 用时 28:41 · 正式成绩</p>'+
+ '<div class="card mt" style="text-align:left"><div class="info-kv"><span>试卷</span><b>'+esc(t.name)+' · '+t.questions.length+' 题 · 总分 100</b></div><div class="info-kv"><span>单选</span><b>3 题 · 全对</b></div><div class="info-kv"><span>多选</span><b>1 题 · 全对</b></div><div class="info-kv"><span>判断</span><b>1 题 · 错 1（-10）</b></div><div class="info-kv"><span>填空</span><b>1 题 · 全对</b></div><div class="info-kv"><span>任务状态</span><b>'+stTag('考试已完成','ok')+'</b></div></div>'+
  '<button class="btn btn-p mt" onclick="goTab(\'tasks\')">返回任务</button></div>';};
 
 /* ---- 我的 ---- */

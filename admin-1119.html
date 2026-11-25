@@ -1270,6 +1270,17 @@ body.chpwd .chpwd-page{display:flex}
 .ex-pv-row .k{color:var(--t3);flex:none}
 .ex-pv-row .v{color:var(--t1);text-align:right;word-break:break-all}
 .ex-pv-dots{display:flex;flex-wrap:wrap;gap:6px;padding-top:10px}
+/* 陪练任务 · 选择剧本 */
+.pr-scr-list{max-height:330px;overflow:auto;border:1px solid var(--bd-2);border-radius:10px;padding:8px;background:#fff}
+.pr-scr{border:1px solid var(--bd-2);border-radius:9px;padding:9px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:6px;background:#fff}
+.pr-scr:last-child{margin-bottom:0}
+.pr-scr:hover{border-color:var(--primary)}
+.pr-scr.on{border-color:var(--primary);background:var(--primary-bg)}
+.pr-scr .pr-scr-ck{flex:none;width:18px;height:18px;border:1.5px solid var(--bd-2);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;background:transparent}
+.pr-scr.on .pr-scr-ck{background:var(--primary);border-color:var(--primary)}
+.pr-scr .pr-scr-nm{display:block;font-size:13px;font-weight:600;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pr-scr .pr-scr-meta{display:block;font-size:11.5px;color:var(--t3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pr-scr .pr-scr-tag{flex:none;font-size:11px;padding:2px 8px;border-radius:99px;background:var(--primary-bg);color:var(--primary)}
 .ex-dot{font-size:11.5px;padding:2px 9px;border-radius:99px;background:var(--surface-2);color:var(--t3)}
 .ex-dot.on{background:#EAF7EF;color:var(--ok);font-weight:600}
 </style>
@@ -1588,20 +1599,6 @@ body.chpwd .chpwd-page{display:flex}
   </div>
 </div>
 
-<!-- 从题库选择试题（试题组卷） -->
-<div class="lmodal-mask" id="exQPickMask">
-  <div class="modal" style="max-width:660px">
-    <span class="close-x" onclick="exQClose()">✕</span>
-    <h3>从题库选择试题</h3>
-    <div class="ex-note" style="margin:0 0 10px">勾选试题组成试卷，提交后学员按试卷作答；题目编辑后将默认自动同步至试题库。</div>
-    <div id="exQPickList" style="max-height:380px;overflow:auto"></div>
-    <div class="modal-actions">
-      <button class="l-btn-g" onclick="exQClose()">取消</button>
-      <button class="btn-primary" style="flex:1" onclick="exQConfirm()">确定</button>
-    </div>
-  </div>
-</div>
-
 <!-- 新建分组弹窗（题库管理） -->
 <div class="lmodal-mask" id="qbGroupMask">
   <div class="modal">
@@ -1852,9 +1849,9 @@ const NAV=[
    {k:'sop',t:'陪练SOP',ic:'book',lock:1}]},
  {g:'培训中心',items:[
    {k:'tasks',t:'培训任务',ic:'task'},
-   {k:'taskCourse',t:'课程学习任务',ic:'play',todo:1},
-   {k:'taskPractice',t:'陪练任务',ic:'face',todo:1},
-   {k:'examDialog',t:'对话考试',ic:'spark',todo:1},
+   {k:'taskCourse',t:'课程学习任务',ic:'play'},
+   {k:'taskPractice',t:'陪练任务',ic:'face'},
+   {k:'examDialog',t:'对话考试',ic:'spark'},
    {k:'examPaper',t:'试题考试',ic:'exam'}]},
  {g:'训练与数据分析',items:[
    {k:'rlearn',t:'学习记录',ic:'book'},
@@ -1888,9 +1885,19 @@ TITLE_OF.courseDetail='课程详情'; GROUP_OF.courseDetail='知识库管理';
 TITLE_OF.questionNew='新建题目'; GROUP_OF.questionNew='知识库管理';
 TITLE_OF.questionDetail='题目详情'; GROUP_OF.questionDetail='知识库管理';
 TITLE_OF.examNew='新建试题考试'; GROUP_OF.examNew='培训中心';
+TITLE_OF.prTaskNew='新建陪练任务'; GROUP_OF.prTaskNew='培训中心';
+TITLE_OF.clTaskNew='新建课程学习任务'; GROUP_OF.clTaskNew='培训中心';
+TITLE_OF.dkTaskNew='新建对话考试'; GROUP_OF.dkTaskNew='培训中心';
+TITLE_OF.ttTaskNew='新建培训任务'; GROUP_OF.ttTaskNew='培训中心';
+TITLE_OF.ttTaskDetail='配置任务设置'; GROUP_OF.ttTaskDetail='培训中心';
+TITLE_OF.prTaskDetail='陪练任务详情'; GROUP_OF.prTaskDetail='培训中心';
+TITLE_OF.clTaskDetail='课程学习任务详情'; GROUP_OF.clTaskDetail='培训中心';
+TITLE_OF.dkTaskDetail='对话考试详情'; GROUP_OF.dkTaskDetail='培训中心';
+TITLE_OF.exTaskDetail='试题考试详情'; GROUP_OF.exTaskDetail='培训中心';
+TITLE_OF.ttTaskInfo='培训任务详情'; GROUP_OF.ttTaskInfo='培训中心';
 
 function renderNav(cur){
-  const alias={roleNew:'roles',roleDetail:'roles',personaNew:'personas',scriptNew:'scripts',orgNew:'orgs',staffDetail:'staff',staffNew:'staff',personaDetail:'personas',scriptDetail:'scripts',radarNew:'radar',radarDetail:'radar',courseNew:'courses',courseDetail:'courses',questionNew:'questions',questionDetail:'questions',examNew:'examPaper'};
+  const alias={roleNew:'roles',roleDetail:'roles',personaNew:'personas',scriptNew:'scripts',orgNew:'orgs',staffDetail:'staff',staffNew:'staff',personaDetail:'personas',scriptDetail:'scripts',radarNew:'radar',radarDetail:'radar',courseNew:'courses',courseDetail:'courses',questionNew:'questions',questionDetail:'questions',examNew:'examPaper',prTaskNew:'taskPractice',clTaskNew:'taskCourse',dkTaskNew:'examDialog',ttTaskNew:'tasks',ttTaskDetail:'tasks',prTaskDetail:'taskPractice',clTaskDetail:'taskCourse',dkTaskDetail:'examDialog',exTaskDetail:'examPaper',ttTaskInfo:'tasks'};
   const active=alias[cur]||cur;
   document.getElementById('nav').innerHTML = NAV.map(g=>
     (g.g?'<div class="nav-group">'+g.g+'</div>':'')+
@@ -1965,9 +1972,42 @@ const DB={
  examTasks:{filters:['状态:全部|未开始|进行中|已结束|已停用'],
   cols:[['任务名称',1],['类型',0],['参与学员',0],['题数',0],['总分数',0],['通过分数',0],['任务时间',0],['通过率',0],['状态',0],['更新时间',0]],
   rows:[
-   ['11月产品知识月考','考试','184','50','100.0','60','11-01 ~ 11-05','—',ST('未开始',GRAY),'2026-10-28 09:12'],
-   ['销售流程通关练习','考试','52','30','100.0','70','10-22 ~ 11-22','42%',ST('进行中',INFO),'2026-10-22 10:05'],
-   ['银河E5产品知识周练','考试','184','20','100.0','60','10-20 ~ 10-27','86%',ST('已结束',GRAY),'2026-10-20 15:40']]},
+   ['11月产品知识月考','考试','184','6','100.0','60','11-01 ~ 11-05','—',ST('未开始',GRAY),'2026-10-28 09:12'],
+   ['销售流程通关练习','考试','52','4','100.0','70','10-22 ~ 11-22','42%',ST('进行中',INFO),'2026-10-22 10:05'],
+   ['银河E5产品知识周练','考试','184','3','100.0','60','10-20 ~ 10-27','86%',ST('已结束',GRAY),'2026-10-20 15:40']]},
+
+/* 陪练任务列表：分组树（PT_GROUPS）+ 新建陪练任务页（选择剧本最多 5 个 + 基本信息与任务时间），样式与试题考试一致 */
+ practiceTasks:{filters:['状态:全部|未开始|进行中|已结束|已停用'],
+  cols:[['任务名称',1],['参与学员',0],['剧本数',0],['任务时间',0],['完成率',0],['状态',0],['更新时间',0]],
+  rows:[
+   ['周末试驾邀约专项陪练','52','2','10-20 ~ 10-27','41%',ST('进行中',INFO),'2026-10-20 09:30'],
+   ['金融分期话术专项陪练','38','1','10-12 ~ 10-26','55%',ST('进行中',INFO),'2026-10-12 11:05'],
+   ['竞品对比应对陪练','26','3','10-08 ~ 10-15','78%',ST('已结束',GRAY),'2026-10-08 14:20'],
+   ['11月新车接待陪练','52','1','11-05 ~ 11-30','—',ST('未开始',GRAY),'2026-11-02 10:18']]},
+
+/* 课程学习任务列表：分组树（CL_GROUPS）+ 新建课程学习任务页（选择课程最多 5 个 + 基本信息与任务时间），样式与陪练任务一致 */
+ courseTasks:{filters:['状态:全部|未开始|进行中|已结束|已停用'],
+  cols:[['任务名称',1],['参与学员',0],['课程数',0],['任务时间',0],['完成率',0],['状态',0],['更新时间',0]],
+  rows:[
+   ['新车销售六步法学习任务','184','3','10-08 ~ 10-22','97%',ST('已结束',GRAY),'2026-10-08 09:20'],
+   ['银河E5产品知识学习','52','2','11-01 ~ 11-15','—',ST('未开始',GRAY),'2026-10-28 16:40'],
+   ['试驾邀约话术课程包','38','2','10-15 ~ 11-10','62%',ST('进行中',INFO),'2026-10-15 11:02']]},
+
+/* 对话考试任务列表：分组树（DK_GROUPS）+ 新建对话考试页（选择剧本最多 5 个 + 打标分数及格制），样式与陪练任务一致 */
+ dialogExams:{filters:['状态:全部|未开始|进行中|已结束|已停用'],
+  cols:[['任务名称',1],['参与学员',0],['剧本数',0],['及格分',0],['任务时间',0],['完成率',0],['状态',0],['更新时间',0]],
+  rows:[
+   ['进店接待对话考核','52','2','80','11-05 ~ 11-20','—',ST('未开始',GRAY),'2026-10-28 10:30'],
+   ['竞品应对话术通关','38','1','75','10-12 ~ 10-26','55%',ST('进行中',INFO),'2026-10-12 14:05'],
+   ['金融分期异议处理考核','26','2','85','10-01 ~ 10-10','82%',ST('已结束',GRAY),'2026-10-01 09:00']]},
+
+/* 培训任务（任务链条编排）：链中包含课程学习/陪练/对话考试/试题考试（包含与顺序可配置），链中任务跳转各任务新建页创建、任务设置各自独立配置 */
+ trainTasks:{filters:['状态:全部|未开始|进行中|已结束|已停用'],
+  cols:[['任务名称',1],['任务链条',0],['参与学员',0],['任务时间',0],['完成率',0],['状态',0],['更新时间',0]],
+  rows:[
+   ['10月银河E5上市冲刺培训','课程学习 → 陪练练习 → 试题考试','184','10-15 ~ 10-31','63%',ST('进行中',INFO),'2026-10-15 09:00'],
+   ['银河E5产品知识周培训','课程学习','52','11-01 ~ 11-07','—',ST('未开始',GRAY),'2026-10-28 16:40'],
+   ['新车销售全流程培训','课程学习 → 陪练练习 → 对话考试','38','10-08 ~ 11-15','78%',ST('已结束',GRAY),'2026-10-08 14:20']]},
 
  tasks:{filters:['类型:全部|培训任务|学习任务|陪练任务|考试任务','状态:全部|未开始|进行中|已结束'],
   cols:[['任务名称',1],['类型',0],['创建组织',0],['起止时间',0],['状态',0],['下发门店',0],['覆盖学员',0],['完成率',0],['执行跟踪',0]],
@@ -2052,12 +2092,16 @@ function go(k){ if(k==='scoring'||k==='scoreNew')k='radar'; CUR=k; document.body
 function headBtns(k){
   if(['rlearn','rpractice','rexam','logs','ability'].includes(k)) return '<button class="btn btn-g">'+icon('download',13)+'导出</button>';
   if(k==='courses') return '<button class="btn btn-p" onclick="COURSE_EDIT=-1;go(\'courseNew\')">'+icon('plus',13)+'新建课程</button>';
-  if(['assessments','tasks'].includes(k)) return '<button class="btn btn-p">'+icon('plus',13)+'新建</button>';
+  if(k==='assessments') return '<button class="btn btn-p">'+icon('plus',13)+'新建</button>';
+  if(k==='tasks') return '<button class="btn btn-g" onclick="ttBatchGroup()">批量修改分组</button><button class="btn btn-p" onclick="ttReset();go(\'ttTaskNew\')">'+icon('plus',13)+'新建培训任务</button>';
   if(k==='scripts') return '<button class="btn btn-p" onclick="SCRIPT_EDIT=-1;go(\'scriptNew\')">'+icon('plus',13)+'新建</button>';
   if(k==='radar') return '<button class="btn btn-p" onclick="radarEdit(-1)">'+icon('plus',13)+'新建能力雷达表</button>';
   if(k==='personas') return '<button class="btn btn-g" onclick="openImportDrawer()">'+icon('download',13)+'一键导入（预留）</button><button class="btn btn-p" onclick="go(\'personaNew\')">'+icon('plus',13)+'新建</button>';
   if(k==='questions') return '<button class="btn btn-g" onclick="qbImportDrawer()">'+icon('download',13)+'一键导入</button><button class="btn btn-p" onclick="qbReset();go(\'questionNew\')">'+icon('plus',13)+'新增题目</button>';
   if(k==='examPaper') return '<button class="btn btn-g" onclick="exBatchGroup()">批量修改分组</button><button class="btn btn-p" onclick="exReset();go(\'examNew\')">'+icon('plus',13)+'新建试题考试</button>';
+  if(k==='taskPractice') return '<button class="btn btn-g" onclick="prBatchGroup()">批量修改分组</button><button class="btn btn-p" onclick="prReset();go(\'prTaskNew\')">'+icon('plus',13)+'新建陪练任务</button>';
+  if(k==='taskCourse') return '<button class="btn btn-g" onclick="clBatchGroup()">批量修改分组</button><button class="btn btn-p" onclick="clReset();go(\'clTaskNew\')">'+icon('plus',13)+'新建课程学习任务</button>';
+  if(k==='examDialog') return '<button class="btn btn-g" onclick="dkBatchGroup()">批量修改分组</button><button class="btn btn-p" onclick="dkReset();go(\'dkTaskNew\')">'+icon('plus',13)+'新建对话考试</button>';
   if(k==='staff') return '<button class="btn btn-g">导出</button><button class="btn btn-p" onclick="go(\'staffNew\')">'+icon('plus',13)+'新增员工</button>';
   if(k==='roles') return '<button class="btn btn-p" onclick="go(\'roleNew\')">'+icon('plus',13)+'新增角色</button>';
   return '';
@@ -2084,6 +2128,20 @@ function render(){
   else if(CUR==='questionNew'){ c.innerHTML=pgQuestionNew(); initQuestionNew(); }
   else if(CUR==='examPaper'){ c.innerHTML=pgExamPaper(); }
   else if(CUR==='examNew'){ c.innerHTML=pgExamNew(); initExamNew(); }
+  else if(CUR==='taskPractice'){ c.innerHTML=pgPrTasks(); }
+  else if(CUR==='prTaskNew'){ c.innerHTML=pgPrTaskNew(); initPrTaskNew(); }
+  else if(CUR==='taskCourse'){ c.innerHTML=pgCourseTasks(); }
+  else if(CUR==='clTaskNew'){ c.innerHTML=pgCourseTaskNew(); initClTaskNew(); }
+  else if(CUR==='examDialog'){ c.innerHTML=pgDialogExams(); }
+  else if(CUR==='dkTaskNew'){ c.innerHTML=pgDialogTaskNew(); initDkTaskNew(); }
+  else if(CUR==='tasks'){ c.innerHTML=pgTrainTasks(); }
+  else if(CUR==='ttTaskNew'){ c.innerHTML=pgTrainTaskNew(); initTtTaskNew(); }
+  else if(CUR==='ttTaskDetail'){ c.innerHTML=pgTrainTaskDetail(); initTtTaskNew(); }
+  else if(CUR==='prTaskDetail'){ c.innerHTML=pgPrTaskDetail(); }
+  else if(CUR==='clTaskDetail'){ c.innerHTML=pgClTaskDetail(); }
+  else if(CUR==='dkTaskDetail'){ c.innerHTML=pgDkTaskDetail(); }
+  else if(CUR==='exTaskDetail'){ c.innerHTML=pgExTaskDetail(); }
+  else if(CUR==='ttTaskInfo'){ c.innerHTML=pgTtTaskInfo(); }
   else if(CUR==='scripts') c.innerHTML=pgScripts();
   else if(CUR==='radar'){ c.innerHTML=pgRadar(); initRadarList(); }
   else if(CUR==='radarNew'){ c.innerHTML=pgRadarNew(); initRadarNew(); }
@@ -6826,7 +6884,7 @@ function pgSettings(){
    '<div class="kv"><span>评分维度</span><b>6 维（开场/挖掘/介绍/异议/促成/表达）</b></div>'+
    '<div class="kv"><span>综合能力算法</span><b>维度加权 · 近30天衰减</b></div>'+
    '<div class="kv"><span>陪练默认及格线</span><b>60 分</b></div>'+
-   '<div class="kv"><span>考核重考次数</span><b>默认 2 次（可按考核覆盖）</b></div></div>'+
+   '<div class="kv"><span>考核重考</span><b>未通过可重考，不限次数</b></div></div>'+
    '<div class="sec" style="display:flex;gap:10px"><button class="btn btn-p btn-sm">编辑维度权重</button><button class="btn btn-g btn-sm">查看变更历史</button></div></div></div>'+
   '<div class="card"><div class="h">AI 与语音服务</div><div class="b">'+
    '<div class="kv-list">'+
@@ -8427,10 +8485,6 @@ function qbImportConfirm(){
 /* ================== 题库管理：新建题目模块结束 ================== */
 
 /* ================== 培训中心 · 试题考试模块开始（列表分组 + 新建试题考试组卷配置，功能对齐真实后台「新建试题练习/考试」） ================== */
-const EX_QBANKS=['新车销售产品知识库','销售流程规范题库','金融保险政策题库','服务规范题库'];
-const EX_QTYPES=['单选题','多选题','判断题','填空题','简答题'];
-const EX_TAGS_LIB=['产品知识','银河E5','销售流程','金融保险','服务规范','新员工','试驾体验','客户异议'];
-const EX_TEACHERS=['张伟','李娜','王芳','陈强'];
 /* ---- 左侧分组（与课程/剧本分组面板同模式） ---- */
 let EX_GROUPS=[
  {id:'exUngrouped',name:'未分组',fixed:true,parent:null},
@@ -8503,14 +8557,19 @@ function openExGroupAdd(){
   $('exGroupMask').classList.add('on');
   setTimeout(()=>{ try{$('exGNameInp').focus();}catch(_){} },50);
 }
-function closeExGroupAdd(){ $('exGroupMask').classList.remove('on'); }
+function closeExGroupAdd(){ PR_GCTX=false; CL_GCTX=false; DK_GCTX=false; TT_GCTX=false; $('exGroupMask').classList.remove('on'); }
 function exGNameInput(){ const e=$('exGErr'); if(e.style.display!=='none'&&$('exGNameInp').value.trim())e.style.display='none'; }
 function exGParentChange(){
   const pid=$('exGParentSel').value,e=$('exGErr');
-  if(pid&&exGDepth(pid)>=2){ e.textContent='所选上级分组已是三级，无法再创建下级';e.style.display='block'; }
+  const d=PR_GCTX?ptGDepth(pid):CL_GCTX?tgDepth('cl',pid):DK_GCTX?tgDepth('dk',pid):TT_GCTX?tgDepth('tt',pid):exGDepth(pid);
+  if(pid&&d>=2){ e.textContent='所选上级分组已是三级，无法再创建下级';e.style.display='block'; }
   else e.style.display='none';
 }
 function doExGroupAdd(){
+  if(PR_GCTX)return doPtGroupAdd();
+  if(CL_GCTX)return doClGroupAdd();
+  if(DK_GCTX)return doDkGroupAdd();
+  if(TT_GCTX)return doTtGroupAdd();
   const name=$('exGNameInp').value.trim();
   const parent=$('exGParentSel').value||null;
   const e=$('exGErr');
@@ -8575,12 +8634,14 @@ function pgExamPaper(){
   const body=rows.map(({r,i})=>{
     const st=exStatusOf(r);
     const ops='<div class="row-ops">'+
+      (exXtraOf(exName(i)).taskType==='手动推送'?'<span class="lk" onclick="taskPushAsk(\'ex\','+i+')">推送</span>':'')+
       '<span class="lk" onclick="exMoveGroup('+i+')">转移分组</span>'+
       (st==='已停用'?'<span class="lk" onclick="exEnable('+i+')">启用</span>':'<span class="lk" onclick="exDisable('+i+')">停用</span>')+
       '<span class="lk danger" onclick="exDelete('+i+')">删除</span></div>';
     return '<tr>'+
       '<td><input type="checkbox" data-i="'+i+'"'+(EX_SEL.has(i)?' checked':'')+' onchange="exSelRow(+this.dataset.i,this.checked)" title="选择"></td>'+
-      r.map(cell=>'<td>'+cell+'</td>').join('')+
+      '<td><span class="lk" onclick="viewExTask('+i+')">'+r[0]+'</span></td>'+
+      r.slice(1).map(cell=>'<td>'+cell+'</td>').join('')+
       '<td>'+ops+'</td></tr>';
   }).join('');
   return '<div class="page-head"><h1>试题考试</h1><span class="desc">共 '+DB.examTasks.rows.length+' 个任务</span><div class="btns">'+headBtns('examPaper')+'</div></div>'+
@@ -8615,8 +8676,12 @@ function exBatchGroup(){
   $('exMoveSel').innerHTML=exGroupOpts('');
   $('exMoveMask').classList.add('on');
 }
-function closeExMove(){ $('exMoveMask').classList.remove('on'); EX_MOVE_MODE=''; EX_MOVE_IDX=-1; EX_MOVE_LIST=[]; }
+function closeExMove(){ PR_MOVE_ON=false; CL_MOVE_ON=false; DK_MOVE_ON=false; TT_MOVE_ON=false; $('exMoveMask').classList.remove('on'); EX_MOVE_MODE=''; EX_MOVE_IDX=-1; EX_MOVE_LIST=[]; }
 function doExMove(){
+  if(PR_MOVE_ON)return doPrMove();
+  if(CL_MOVE_ON)return doClMove();
+  if(DK_MOVE_ON)return doDkMove();
+  if(TT_MOVE_ON)return doTtMove();
   const g=$('exMoveSel').value||'exUngrouped';
   if(EX_MOVE_MODE==='one'&&EX_MOVE_IDX>=0&&DB.examTasks.rows[EX_MOVE_IDX]){
     const nm=exName(EX_MOVE_IDX);
@@ -8632,7 +8697,7 @@ function doExMove(){
 }
 function exDisable(i){
   const nm=exName(i);
-  matAsk('停用任务','停用后学员将无法进入「'+nm+'」，确认停用？',()=>{
+  matAsk('停用任务','停用后学员端将不再展示该任务；任务不受其他限制，可随时重新启用。确认停用「'+nm+'」？',()=>{
     DB.examTasks.rows[i][exStatusIdx()]=ST('已停用',GRAY);
     toast('已停用试题任务：'+nm); render();
   });
@@ -8644,7 +8709,7 @@ function exEnable(i){
 }
 function exDelete(i){
   const nm=exName(i);
-  matAsk('删除任务','删除后「'+nm+'」将从试题任务列表移除，学员端不可见。确认删除？',()=>{
+  matAsk('删除任务','删除为物理删除：「'+nm+'」将从列表移除；已开始未完成的学员可继续完成任务，未开始的学员任务将直接消失，已完成任务的学员可在「任务记录」中查看。确认删除？',()=>{
     DB.examTasks.rows.splice(i,1);
     EX_SEL.clear();
     toast('已删除试题任务：'+nm); render();
@@ -8654,12 +8719,12 @@ function exDelete(i){
 /* ---- 新建试题考试（组卷任务配置页） ---- */
 let EX={};
 function exReset(){
-  EX={name:'',mode:'智能随机出题',bank:[],cnt:{},score:{},strategy:'每次随机',slider:50,errFirst:false,
-    pass:'',group:'exUngrouped',cover:'',taskType:'手动推送',timeS:'',timeE:'',attempts:'1',limit:'0',
-    study:'选修',anticheat:false,desc:'',aimark:false,whitelist:false,notify:true,aireview:false,tags:[],
-    ansShow:'每个学员考试后即显示',randQ:false,randOpt:false,notice:'',files:[],survey:false,newBadge:true,newDays:'2',
-    teacher:'',scorePer:'2',paper:[],orgAuto:false};
+  /* 出题方式固定一种：题库分组定出题范围 → 逐题选择 → 每题设置分数 → 总分（各题分数之和）= 100 分 + 及格分 */
+  EX={name:'',qgroup:'',qsel:[],qscore:{},
+    pass:'',group:'exUngrouped',taskType:'手动推送',timeS:'',timeE:'',attempts:'1',limit:'0',
+    anticheat:false,desc:'',orgAuto:false};
   EX.org=new Set();
+  EX.roles=new Set();
 }
 exReset();
 EX_GROUPS.forEach(g=>{ if(EX_GROUPS.some(x=>x.parent===g.id)) EX_G_EXPAND.add(g.id); });
@@ -8673,7 +8738,7 @@ DB.examTasks.rows.forEach(function(r){
   EX_ROW_GROUPS[esc(nm)]=gid;
 });
 function exSet(k,v){ EX[k]=v; updateExamPreview(); }
-function exSetB(k,on){ EX[k]=on; if(k==='newBadge')exRenderNewDays(); updateExamPreview(); }
+function exSetB(k,on){ EX[k]=on; updateExamPreview(); }
 function exSw(key,label,tip,extra){
   return '<label class="ex-swrow"><span class="lab">'+label+'</span>'+
     '<span class="sw"><input type="checkbox"'+(EX[key]?' checked':'')+' onchange="exSetB(\''+key+'\',this.checked)"><i></i></span>'+
@@ -8682,101 +8747,99 @@ function exSw(key,label,tip,extra){
 function exChk(key,label,tip){
   return '<label class="ex-swrow"><span class="sw"><input type="checkbox"'+(EX[key]?' checked':'')+' onchange="exSetB(\''+key+'\',this.checked)"><i></i></span><span class="lab" style="font-weight:400">'+label+'</span>'+(tip?'<span class="tip">'+tip+'</span>':'')+'</label>';
 }
-function exBankChips(){
-  return EX_QBANKS.map(b=>'<label class="rchip"><input type="checkbox" value="'+esc(b)+'"'+(EX.bank.indexOf(b)>=0?' checked':'')+' onchange="exBankToggle(this.value,this.checked)"><span>'+esc(b)+'</span></label>').join('');
+/* ---- 组卷配置：题库分组下拉（参考对话考试的分组选择方式）选择出题范围（复用 QB_GROUPS 分组树与题目计数） ---- */
+function exQGroupOpts(sel){
+  let out='<option value=""'+(!sel?' selected':'')+'>全部分组</option><option value="qbgUngrouped"'+(sel==='qbgUngrouped'?' selected':'')+'>未分组</option>';
+  const walk=(pid,d)=>{ qbGChildren(pid).forEach(g=>{ out+='<option value="'+g.id+'"'+(sel===g.id?' selected':'')+'>'+'\u3000'.repeat(d)+esc(g.name)+'（'+qbGCount(g.id)+' 题）</option>'; walk(g.id,d+1); }); };
+  walk(null,0);
+  return out;
 }
-function exBankToggle(v,on){
-  if(on){ if(EX.bank.indexOf(v)<0)EX.bank.push(v); } else EX.bank=EX.bank.filter(x=>x!==v);
-  const e=document.getElementById('exBankErr'); if(e&&EX.bank.length)e.classList.remove('show');
-  updateExamPreview();
+function exQGroupSel(v){
+  EX.qgroup=v;
+  /* 范围变化后清掉已不在所选分组内的题目，避免残留计分 */
+  const pool=new Set(exQPool());
+  EX.qsel=EX.qsel.filter(i=>{ if(pool.has(i))return true; delete EX.qscore[i]; return false; });
+  exRenderPaperTypes(); updateExamPreview();
 }
-function exTagChips(){
-  return EX_TAGS_LIB.map(t=>'<label class="rchip"><input type="checkbox" value="'+esc(t)+'"'+(EX.tags.indexOf(t)>=0?' checked':'')+' onchange="exTagToggle(this.value,this.checked)"><span>'+esc(t)+'</span></label>').join('');
+/* 所选分组（含子分组）内的已发布题目索引池（题库题型列为「单选/多选…」短名，状态列含样式标签） */
+function exQPool(){
+  const ids=new Set();
+  if(!EX.qgroup) QB_GROUPS.forEach(g=>ids.add(g.id));
+  else if(EX.qgroup==='qbgUngrouped') ids.add('qbgUngrouped');
+  else qbGDescendants(EX.qgroup).forEach(x=>ids.add(x));
+  return DB.questions.rows.reduce((a,r,i)=>{
+    if(String(r[4]).indexOf('已发布')>=0&&ids.has(qbRowGroupId(i)))a.push(i);
+    return a;
+  },[]);
 }
-function exTagToggle(v,on){
-  if(on){ if(EX.tags.indexOf(v)<0)EX.tags.push(v); } else EX.tags=EX.tags.filter(x=>x!==v);
-  updateExamPreview();
+function exQName(i){
+  const r=DB.questions.rows[i]; if(!r)return '';
+  return String(r[0]).replace(/<[^>]+>/g,'').trim();
 }
-function exTotalCnt(){ return EX_QTYPES.reduce((s,t)=>s+(+EX.cnt[t]||0),0); }
-function exTotalScore(){ let v=EX_QTYPES.reduce((s,t)=>s+((+EX.cnt[t]||0)*(+EX.score[t]||0)),0); return (Math.round(v*10)/10).toFixed(1); }
-function exPaperTotal(){ return ((EX.paper.length||0)*(parseFloat(EX.scorePer)||0)).toFixed(1); }
-function exCntInp(el){ EX.cnt[el.dataset.t]=+el.value||0; const e=document.getElementById('exPaperErr2'); if(e&&exTotalCnt()>0)e.classList.remove('show'); exCalc(); }
-function exScoreInp(el){ EX.score[el.dataset.t]=+el.value||0; exCalc(); }
+/* 总分 = 各已选题目「每题分数」之和 */
+function exTotalCnt(){ return EX.qsel.length; }
+function exTotalScore(){ let v=EX.qsel.reduce((s,i)=>s+(parseFloat(EX.qscore[i])||0),0); return (Math.round(v*10)/10).toFixed(1); }
+function exQScoreInp(el){
+  const i=+el.dataset.i; EX.qscore[i]=el.value;
+  const e=document.getElementById('exPaperErr2');
+  if(e&&EX.qsel.every(x=>parseFloat(EX.qscore[x])>0))e.classList.remove('show');
+  exCalc();
+}
 function exCalc(){
   const g=id=>document.getElementById(id);
-  EX_QTYPES.forEach((t,i)=>{ const el=g('exSub'+i); if(el){ const v=(+EX.cnt[t]||0)*(+EX.score[t]||0); el.textContent=v?(Math.round(v*10)/10).toFixed(1):'0.0'; } });
-  const sm=g('exSum'); if(sm)sm.innerHTML='共抽题 <b>'+exTotalCnt()+'</b> · 总分 <b>'+exTotalScore()+'</b>';
+  const sm=g('exSum'); if(sm)sm.innerHTML='已选题目 <b>'+exTotalCnt()+'</b> 道 · 总分 <b>'+exTotalScore()+'</b> / 100 分';
+  const te=g('exTotalErr');
+  if(te){
+    const tot=parseFloat(exTotalScore());
+    if(exTotalCnt()>0&&tot!==100){ te.textContent='当前总分 '+tot+' 分，各题目「每题分数」之和需为 100 分'; te.classList.add('show'); }
+    else te.classList.remove('show');
+  }
   updateExamPreview();
 }
-/* 难度占比：滑杆 0-100（0 偏向简单 / 100 偏向困难），中等固定 33%，简单+困难=67% */
-function exDiffRatios(){
-  if(+EX.slider===50)return {e:33,m:34,h:33};   /* 均衡档精确对齐真实后台 33/34/33 */
-  const p=(+EX.slider||0)/100;
-  const e=Math.round(50-33*p);
-  return {e:e,m:33,h:67-e};
+/* ---- 选择题目（题库分组范围内已发布的题目，卡片多选，显示题目名称/题型/分组/答案识别/更新时间） ---- */
+function exQToggle(i){
+  const k=EX.qsel.indexOf(i);
+  if(k<0)EX.qsel.push(i); else { EX.qsel.splice(k,1); delete EX.qscore[i]; }
+  const e=document.getElementById('exTypeError'); if(e&&EX.qsel.length)e.classList.remove('show');
+  exRenderPaperTypes(); updateExamPreview();
 }
-function exDiffSync(){
-  const r=exDiffRatios();
-  const one=(id,txt)=>{ const el=document.getElementById(id); if(el)el.textContent=txt; };
-  one('exDR1','简单 '+r.e+'%'); one('exDR2','中等 '+r.m+'%'); one('exDR3','困难 '+r.h+'%');
-  const b1=document.getElementById('exDB1'),b2=document.getElementById('exDB2'),b3=document.getElementById('exDB3');
-  if(b1)b1.style.width=r.e+'%'; if(b2)b2.style.width=r.m+'%'; if(b3)b3.style.width=r.h+'%';
+function exQCardHtml(i){
+  const r=DB.questions.rows[i], on=EX.qsel.indexOf(i)>=0, nm=exQName(i);
+  return '<label class="pr-scr'+(on?' on':'')+'" data-i="'+i+'" onclick="exQToggle(+this.dataset.i);return false;">'+
+    '<span class="pr-scr-ck">'+(on?'✓':'')+'</span>'+
+    '<span style="flex:1;min-width:0"><span class="pr-scr-nm">'+esc(nm.length>28?nm.slice(0,28)+'…':nm)+'</span>'+
+    '<span class="pr-scr-meta">题型 '+esc(r[1])+' · 分组 '+esc(qbGName(qbRowGroupId(i)))+' · 答案识别 '+esc(r[3])+' · 更新时间 '+esc(r[5])+'</span></span>'+
+    (on?'<span class="pr-scr-tag">已选</span>':'')+'</label>';
 }
-function exDiffHtml(){
-  const r=exDiffRatios();
-  return '<div class="ex-diff"><div class="ex-diff-hd">难度占比 '+
-    '<span class="ex-diff-ratios"><span class="ex-r1" id="exDR1">简单 '+r.e+'%</span><span class="ex-r2" id="exDR2">中等 '+r.m+'%</span><span class="ex-r3" id="exDR3">困难 '+r.h+'%</span></span>'+
-    '<span class="ex-swrow" style="margin:0 0 0 auto"><span class="lab" style="font-weight:500">错题优先强化</span><span class="sw"><input type="checkbox"'+(EX.errFirst?' checked':'')+' onchange="exSetB(\'errFirst\',this.checked)"><i></i></span></span></div>'+
-    '<div class="ex-bar"><i class="s1" id="exDB1" style="width:'+r.e+'%"></i><i class="s2" id="exDB2" style="width:'+r.m+'%"></i><i class="s3" id="exDB3" style="width:'+r.h+'%"></i></div>'+
-    '<div class="ex-slider"><span class="tags"><span>偏向简单</span><span>均衡</span><span>偏向困难</span></span>'+
-    '<input type="range" min="0" max="100" value="'+(+EX.slider||0)+'" oninput="exSliderSet(this.value)"></div>'+
-    '<div class="ex-presets"><button type="button" onclick="exDiffPreset(0)">偏向简单</button><button type="button" onclick="exDiffPreset(50)">均衡</button><button type="button" onclick="exDiffPreset(100)">偏向困难</button></div>'+
-    '<div class="ex-note">按难度占比从所选题库抽取试题；开启「错题优先强化」后，学员上次答错的题目将以更高概率再次出现。</div>'+
-    '</div>';
+function exQPickHtml(){
+  return exQPool().map(exQCardHtml).join('')||'<div class="org-empty">所选分组内暂无已发布题目，请先在「题库管理」新增并发布题目</div>';
 }
-function exSliderSet(v){ EX.slider=+v||0; exDiffSync(); updateExamPreview(); }
-function exDiffPreset(v){ EX.slider=v; const el=document.querySelector('#exForm input[type=range]'); if(el)el.value=v; exDiffSync(); updateExamPreview(); }
-function exPaperChipsHtml(){
-  if(!EX.paper.length)return '<span class="ex-note">未选择试题</span>';
-  return EX.paper.map(i=>{
-    const r=DB.questions.rows[i]; if(!r)return '';
-    return '<span class="crs-mchip">'+esc(String(r[0]).replace(/<[^>]+>/g,'').slice(0,18))+' · '+esc(r[1])+'<span class="x" onclick="exPaperDel('+i+')">×</span></span>';
+function exRenderTypePick(){
+  const b=document.getElementById('exQPick'); if(b)b.innerHTML=exQPickHtml();
+  const c=document.getElementById('exQCnt'); if(c)c.textContent=EX.qsel.length;
+}
+/* ---- 已选题目分值表（每题分数，总分 = 各题分数之和） ---- */
+function exQRowsHtml(){
+  return EX.qsel.map(i=>{
+    const nm=exQName(i), tp=String(DB.questions.rows[i][1]);
+    return '<tr><td>'+esc(nm.length>34?nm.slice(0,34)+'…':nm)+'<span class="sub" style="color:var(--t3);margin-left:8px">'+esc(tp)+'</span></td>'+
+      '<td style="width:150px"><input type="number" min="0" max="100" step="0.5" value="'+esc(EX.qscore[i]||'')+'" data-i="'+i+'" oninput="exQScoreInp(this)"></td></tr>';
   }).join('');
 }
-function exPaperDel(i){ EX.paper=EX.paper.filter(x=>x!==i); exRenderPaper(); }
-function exPickQ(){
-  const l=document.getElementById('exQPickList');
-  if(l)l.innerHTML=DB.questions.rows.map((r,i)=>'<label class="ex-qp-item"><input type="checkbox"'+(EX.paper.indexOf(i)>=0?' checked':'')+' onchange="exQToggle('+i+',this.checked)"><span class="tp">'+esc(r[1])+'</span><span class="stem">'+esc(String(r[0]).replace(/<[^>]+>/g,''))+'</span><span class="tp lv">'+esc(r[2])+'</span></label>').join('')||'<div class="kb2-empty">题库暂无试题，请先在「题库管理」新增题目</div>';
-  document.getElementById('exQPickMask').classList.add('on');
+function exRenderPaperTypes(){
+  exRenderTypePick();
+  const b=document.getElementById('exQBody'); if(b)b.innerHTML=exQRowsHtml();
 }
-function exQClose(){ document.getElementById('exQPickMask').classList.remove('on'); }
-function exQToggle(i,on){ if(on){ if(EX.paper.indexOf(i)<0)EX.paper.push(i); } else EX.paper=EX.paper.filter(x=>x!==i); }
-function exQConfirm(){ exQClose(); exRenderPaper(); toast('已选择 '+EX.paper.length+' 道试题组成试卷'); }
-function exRenderPaper(){ const w=document.getElementById('exPaperBody'); if(w)w.innerHTML=exPaperHtml(); updateExamPreview(); }
+/* ---- 组卷配置（唯一出题方式：题库分组选题目 + 每题分数，总分 = 各题分数之和，固定 100 分） ---- */
 function exPaperHtml(){
-  const strategy='<div class="form-item" style="margin-top:16px;margin-bottom:0"><label>抽题策略</label><div class="rchips">'+rOpt('exStrategy',['每次随机','试题固定'],EX.strategy)+'</div><div class="ex-note">每次随机：同一学员多次考试时，每次随机出题；试题固定：试题固定不发生变化。</div></div>';
-  if(EX.mode==='试题组卷'){
-    return '<div class="ex-paper-tip">ℹ 编辑试卷试题后，将默认自动同步至试题库，题目变更会同步更新学员端试卷。</div>'+
-      '<div class="form-item" style="margin-bottom:14px"><label>试卷试题<i>*</i><span class="opt-tip">（从题库勾选试题组成试卷）</span></label>'+
-      '<div><button class="btn btn-g btn-sm" type="button" onclick="exPickQ()">从题库选择试题</button></div>'+
-      '<div style="margin-top:10px" id="exPaperChips">'+exPaperChipsHtml()+'</div>'+
-      '<div class="form-err" id="exPaperErr">请至少选择 1 道试题组成试卷</div></div>'+
-      '<div class="form-row"><div class="form-item"><label>每题分值<span class="opt-tip">（演示环境统一设置，可按题单独调整）</span></label><input type="number" min="0.5" step="0.5" value="'+esc(EX.scorePer)+'" oninput="exSet(\'scorePer\',this.value)"></div>'+
-      '<div class="form-item"><label>试卷总分</label><div class="ex-sum" style="margin-top:6px">共 <b>'+(EX.paper.length||0)+'</b> 题 · 总分 <b>'+exPaperTotal()+'</b> 分</div></div></div>'+
-      strategy;
-  }
-  const rows=EX_QTYPES.map((t,i)=>{
-    const c=EX.cnt[t]||0, s=EX.score[t]||0;
-    return '<tr><td>'+t+'</td>'+
-      '<td><input type="number" min="0" max="999" value="'+c+'" data-t="'+t+'" oninput="exCntInp(this)"></td>'+
-      '<td><input type="number" min="0" step="0.5" value="'+s+'" data-t="'+t+'" oninput="exScoreInp(this)"></td>'+
-      '<td class="sub" id="exSub'+i+'">'+((c*s)?(Math.round(c*s*10)/10).toFixed(1):'0.0')+'</td></tr>';
-  }).join('');
-  return '<div class="form-item" style="margin-bottom:14px"><label>选择题库<i>*</i><span class="opt-tip">（至少选择 1 个题库 · 从已发布题库中抽取试题）</span></label><div class="rchips">'+exBankChips()+'</div><div class="form-err" id="exBankErr">请至少选择 1 个题库</div></div>'+
-    '<table class="ex-qtbl"><thead><tr><th style="width:110px">题型</th><th>抽题数量</th><th>每题分数（分）</th><th style="width:110px">小计（分）</th></tr></thead><tbody>'+rows+'</tbody></table>'+
-    '<div class="ex-sum" id="exSum">共抽题 <b>'+exTotalCnt()+'</b> · 总分 <b>'+exTotalScore()+'</b></div>'+
-    '<div class="form-err" id="exPaperErr2">请设置抽题数量与每题分数（至少 1 题）</div>'+
-    strategy+exDiffHtml();
+  return '<div class="form-item" style="margin-bottom:14px"><div class="org-head"><label>选择题目<i>*</i><span class="opt-tip">（通过下拉选择分组确定出题范围 · 卡片显示题目名称 / 题型 / 分组 / 答案识别 / 更新时间）</span></label><span class="org-cnt">已选择<b id="exQCnt">'+EX.qsel.length+'</b> 道题目</span></div>'+
+    '<div class="org-search"><select id="exQGroup" style="flex:none;width:220px" onchange="exQGroupSel(this.value)">'+exQGroupOpts(EX.qgroup)+'</select></div>'+
+    '<div class="pr-scr-list" id="exQPick">'+exQPickHtml()+'</div>'+
+    '<div class="form-err" id="exTypeError">请至少选择 1 道题目</div></div>'+
+    '<table class="ex-qtbl"><thead><tr><th>题目名称</th><th style="width:150px">每题分数（分）</th></tr></thead><tbody id="exQBody">'+exQRowsHtml()+'</tbody></table>'+
+    '<div class="ex-sum" id="exSum">已选题目 <b>'+exTotalCnt()+'</b> 道 · 总分 <b>'+exTotalScore()+'</b> / 100 分</div>'+
+    '<div class="form-err" id="exPaperErr2">请为每道已选题目设置每题分数</div>'+
+    '<div class="form-err" id="exTotalErr">各题目「每题分数」之和需为 100 分</div>';
 }
 /* 组织树（学员范围，复用全局 ORG_TREE） */
 let EX_ORG_OPEN=new Set(['总部','华北','北京','河北','长久集团']);
@@ -8811,31 +8874,19 @@ function exOrgCheck(name,add){
   exOrgRender();
 }
 function exOrgToggleOpen(name){EX_ORG_OPEN.has(name)?EX_ORG_OPEN.delete(name):EX_ORG_OPEN.add(name);exOrgRender();}
-/* 封面 */
-function exCoverPick(){ const el=$('exCoverFile'); if(el)el.click(); }
-function exCoverChosen(inp){
-  const f=inp.files&&inp.files[0]; if(!f)return;
-  EX.cover=(window.URL&&URL.createObjectURL)?URL.createObjectURL(f):'';
-  exCoverRender(); updateExamPreview(); toast('已上传封面：'+f.name); inp.value='';
+/* 角色（学员范围补充，与组织共同决定下发对象，来自「角色管理」；「全部」一键全选） */
+function exRoleChips(){
+  const all=DB.roles.list.map(r=>r.name);
+  const allOn=all.length>0&&all.every(n=>EX.roles.has(n));
+  return '<label class="rchip"><input type="checkbox" value="__ALL__"'+(allOn?' checked':'')+' onchange="exRoleToggle(this.value,this.checked)"><span>全部</span></label>'+
+    DB.roles.list.map(r=>'<label class="rchip"><input type="checkbox" value="'+esc(r.name)+'"'+(EX.roles.has(r.name)?' checked':'')+' onchange="exRoleToggle(this.value,this.checked)"><span>'+esc(r.name)+'</span></label>').join('');
 }
-function exCoverClear(){ EX.cover=''; exCoverRender(); updateExamPreview(); }
-function exCoverRender(){
-  const b=document.getElementById('exCoverBox'); if(!b)return;
-  b.innerHTML=EX.cover?'<img src="'+EX.cover+'" alt="封面" style="width:100%;height:100%;object-fit:cover">':'<span style="font-size:12.5px;color:var(--t3)">点击上传封面</span>';
+function exRoleToggle(v,on){
+  if(v==='__ALL__'){ if(on)DB.roles.list.forEach(r=>EX.roles.add(r.name)); else EX.roles.clear(); }
+  else on?EX.roles.add(v):EX.roles.delete(v);
+  const w=document.getElementById('exRoleChips'); if(w)w.innerHTML=exRoleChips();
+  updateExamPreview();
 }
-/* 资料附件（演示：从素材库添加） */
-function exFileAdd(){
-  if(EX.files.length>=3){ toast('最多添加 3 个资料附件');return; }
-  const names=['银河E5车型速查手册.pdf','销售流程SOP.docx','金融分期政策要点.pdf'];
-  EX.files.push(names[EX.files.length%3]);
-  exRenderFiles(); updateExamPreview(); toast('已从素材库添加资料附件');
-}
-function exFileDel(i){ EX.files.splice(i,1); exRenderFiles(); updateExamPreview(); }
-function exRenderFiles(){
-  const w=document.getElementById('exFileChips');
-  if(w)w.innerHTML=EX.files.length?EX.files.map((f,i)=>'<span class="crs-mchip">'+esc(f)+'<span class="x" onclick="exFileDel('+i+')">×</span></span>').join(''):'<span class="ex-note" style="margin-top:0">未添加附件</span>';
-}
-function exRenderNewDays(){ const el=document.getElementById('exNewDays'); if(el)el.disabled=!EX.newBadge; }
 function exFmtDT(v){
   if(!v)return '—';
   const m=String(v).match(/^\d{4}-(\d{2}-\d{2})T(\d{2}:\d{2})/);
@@ -8843,73 +8894,44 @@ function exFmtDT(v){
 }
 function pgExamNew(){
   const W=[];
-  W.push('<div class="page-head ph-fix"><h1>新建试题考试</h1><span class="desc">配置组卷、任务与规则 · 提交后推送至学员端</span><div class="btns">'+
+  W.push('<div class="page-head ph-fix"><h1>新建试题考试</h1><span class="desc">配置组卷与任务 · 提交后推送至学员端</span><div class="btns">'+
     '<span class="pn-prog" id="exProg">必填：任务名称 * · 组卷 * · 通过分数 * · 任务时间 * · 学员范围 *</span>'+
     '<button class="btn btn-g" onclick="exCancel()">取消</button>'+
     '<button class="btn btn-p" onclick="exSave()">提交</button></div></div>');
-  W.push('<div class="pn-nav" id="pnNav"><a data-id="exBase" class="on" onclick="pnNavTo(\'exBase\')">基础信息</a><a data-id="exPaper" onclick="pnNavTo(\'exPaper\')">组卷配置</a><a data-id="exTask" onclick="pnNavTo(\'exTask\')">任务设置</a><a data-id="exSet" onclick="pnNavTo(\'exSet\')">考试设置</a><a data-id="exRule" onclick="pnNavTo(\'exRule\')">规则设置</a></div>');
+  W.push('<div class="pn-nav" id="pnNav"><a data-id="exBase" class="on" onclick="pnNavTo(\'exBase\')">基础信息</a><a data-id="exPaper" onclick="pnNavTo(\'exPaper\')">组卷配置</a><a data-id="exTask" onclick="pnNavTo(\'exTask\')">任务设置</a></div>');
   W.push('<div class="pn-wrap"><div class="pn-main"><div class="pn-card" id="exForm">');
   /* 1 · 基础信息 */
   W.push('<div class="fsec" id="exBase"><h3>基础信息</h3></div>');
   W.push('<div class="form-item" style="margin-bottom:16px"><label>任务名称<i>*</i><span class="opt-tip">（必填 · 100 字以内）</span></label>'+
     '<input id="exName" maxlength="100" placeholder="示例：11月产品知识月考" oninput="exSet(\'name\',this.value)">'+
     '<div class="form-err" id="exNameErr">任务名称为必填项，请填写后再提交</div></div>');
-  W.push('<div class="form-item" style="margin-bottom:16px"><label>出题模式<span class="opt-tip">（智能随机：按题型从题库抽题；试题组卷：手动勾选试题组成固定试卷）</span></label><div class="rchips">'+rOpt('exMode',['智能随机出题','试题组卷'],EX.mode)+'</div></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><label>任务说明<span class="opt-tip">（0/200 · 展示在学员端任务详情）</span></label>'+
+    '<div class="qb-ta"><textarea maxlength="200" placeholder="请输入任务说明" oninput="exSet(\'desc\',this.value)">'+esc(EX.desc)+'</textarea></div></div>');
   /* 2 · 组卷配置 */
   W.push('<div class="fsec" id="exPaper"><h3>组卷配置</h3></div>');
   W.push('<div id="exPaperBody">'+exPaperHtml()+'</div>');
-  W.push('<div class="form-row" style="margin-top:16px"><div class="form-item"><label>通过分数<i>*</i><span class="opt-tip">（学员得分达到通过分数记为通过）</span></label>'+
+  W.push('<div class="form-row" style="margin-top:16px"><div class="form-item"><label>通过分数（及格分）<i>*</i><span class="opt-tip">（试卷总分为 100 分 · 学员得分达到及格分记为通过）</span></label>'+
     '<input type="number" id="exPass" min="0" step="0.5" placeholder="如：60" value="'+esc(EX.pass)+'" oninput="exSet(\'pass\',this.value)">'+
-    '<div class="form-err" id="exPassErr">请填写通过分数，且不能大于总分</div></div></div>');
+    '<div class="form-err" id="exPassErr">请填写通过分数，且不能大于总分（100 分）</div></div></div>');
   /* 3 · 任务设置 */
   W.push('<div class="fsec" id="exTask"><h3>任务设置</h3></div>');
-  W.push('<div class="form-row"><div class="form-item"><label>所属分组<i>*</i></label><select onchange="exSet(\'group\',this.value)">'+exGroupOpts(EX.group)+'</select></div>'+
+  if(TT_CHAIN_K)W.push('<div class="ex-note" style="margin-top:12px">本任务由培训任务「任务链条」创建：与培训任务相互独立，任务设置在此单独配置，保存后自动返回培训任务并加入链条</div>');
+    W.push('<div class="form-row"><div class="form-item"><label>所属分组<i>*</i></label><select onchange="exSet(\'group\',this.value)">'+exGroupOpts(EX.group)+'</select></div>'+
     '<div class="form-item"><label>任务类型<span class="opt-tip">（自动推送：到任务开始时间自动下发给学员范围内学员）</span></label><div class="rchips">'+rOpt('exTaskType',['手动推送','自动推送'],EX.taskType)+'</div></div></div>');
-  W.push('<div class="form-item" style="margin-bottom:16px"><label>封面<span class="opt-tip">（建议尺寸：750px*422px · 未上传时使用默认封面）</span></label>'+
-    '<div class="crs-cover-wrap"><div class="crs-cover-drop" id="exCoverBox" onclick="exCoverPick()"></div>'+
-    '<div class="crs-cover-side"><p>上传试题考试封面，支持在线制图、素材库选择与本地上传（演示环境支持本地上传）。</p>'+
-    '<button class="btn btn-g btn-sm" type="button" onclick="exCoverPick()">本地上传</button>'+
-    '<button class="btn btn-g btn-sm" type="button" onclick="toast(\'演示环境：在线制图与素材库选择暂未开放\')">在线制图 / 素材库选择</button>'+
-    '<button class="btn btn-g btn-sm" type="button" onclick="exCoverClear()">移除封面</button>'+
-    '<input type="file" id="exCoverFile" accept="image/*" style="display:none" onchange="exCoverChosen(this)"></div></div></div>');
-  W.push('<div class="form-row"><div class="form-item"><label>任务时间<i>*</i></label><div style="display:flex;align-items:center;gap:8px">'+
+    W.push('<div class="form-row"><div class="form-item"><label>任务时间<i>*</i></label><div style="display:flex;align-items:center;gap:8px">'+
     '<input type="datetime-local" value="'+esc(EX.timeS)+'" onchange="exSet(\'timeS\',this.value)"><span style="color:var(--t3)">至</span>'+
     '<input type="datetime-local" value="'+esc(EX.timeE)+'" onchange="exSet(\'timeE\',this.value)"></div>'+
-    '<div class="form-err" id="exTimeErr">请设置任务起止时间，且开始时间需早于结束时间</div></div>'+
-    '<div class="form-item"><label>允许次数<i>*</i><span class="opt-tip">（学员可参加考试的次数）</span></label><input type="number" min="1" value="'+esc(EX.attempts)+'" oninput="exSet(\'attempts\',this.value)"></div></div>');
-  W.push('<div class="form-row"><div class="form-item"><label>考试限时<span class="opt-tip">（分钟 · 0 表示不限时）</span></label><input type="number" min="0" value="'+esc(EX.limit)+'" oninput="exSet(\'limit\',this.value)"></div>'+
-    '<div class="form-item"><label>学习类型</label><div class="rchips">'+rOpt('exStudy',['选修','必修'],EX.study)+'</div></div></div>');
-  W.push(exSw('anticheat','防作弊','开启后，学员考试中切屏、退出全屏等行为将被记录并提示'));
-  W.push('<div class="form-item" style="margin-bottom:14px"><label>任务说明<span class="opt-tip">（0/200 · 展示在学员端任务详情）</span></label>'+
-    '<div class="qb-ta"><textarea maxlength="200" placeholder="请输入任务说明" oninput="exSet(\'desc\',this.value)">'+esc(EX.desc)+'</textarea></div></div>');
-  W.push(exSw('aimark','主观题智能阅卷','开启后，填空/简答题由大模型按参考答案要点自动评分'));
-  /* 4 · 考试设置 */
-  W.push('<div class="fsec" id="exSet"><h3>考试设置</h3></div>');
-  W.push('<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>学员范围<i>*</i><span class="opt-tip">（按组织下发，勾选上级组织将自动连选其全部下级）</span></label><span class="org-cnt">已选择<b id="exOrgCntN">'+EX.org.size+'</b>家门店</span></div>'+
+    '<div class="form-err" id="exTimeErr">请设置任务起止时间，且开始时间需早于结束时间</div></div></div>');
+    W.push('<div class="form-row"><div class="form-item"><label>考试限时<span class="opt-tip">（分钟 · 0 表示不限时）</span></label><input type="number" min="0" value="'+esc(EX.limit)+'" oninput="exSet(\'limit\',this.value)"></div></div>');
+    W.push(exSw('anticheat','防作弊（预留）','预留配置，本期不生效；防作弊仅对话考试与试题考试支持，开启后切屏、退出全屏等行为将被记录'));
+  /* 学员范围（组织 + 角色）· 并入任务设置 */
+    W.push('<div class="ex-note" style="margin:10px 0">完成机制：学员完成考试并出具成绩，得分达到及格分记为通过；未完成前可反复参加考试。</div>');
+    W.push('<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>学员范围<i>*</i><span class="opt-tip">（按组织下发，勾选上级组织将自动连选其全部下级）</span></label><span class="org-cnt">已选择<b id="exOrgCntN">'+EX.org.size+'</b>家门店</span></div>'+
     '<div class="org-box"><div class="org-search"><input id="exOrgSearch" placeholder="请输入搜索关键词" oninput="exOrgRender()"></div><div class="org-tree" id="exOrgTree"></div></div>'+
-    '<div class="ex-note">新增到机构、分组的员工将自动推送此任务</div>'+
+    '<div class="ex-note">任务有效时间范围内，新加入所选组织/角色的员工将自动获得此任务（手动推送任务推送后同样自动纳入）</div>'+
     '<div class="form-err" id="exOrgErr">请选择学员范围（至少 1 家组织）</div></div>');
-  W.push(exSw('whitelist','学员白名单','开启后，白名单内的学员将会豁免，不会收到此试题考试'));
-  W.push(exChk('notify','应用内消息通知','任务下发时向学员发送应用内通知'));
-  W.push(exSw('aireview','AI复盘','开启大模型复盘&推荐课程'));
-  W.push('<div class="form-item" style="margin-bottom:16px"><label>标签<span class="opt-tip">（用于任务检索与分类归档）</span></label><div class="rchips">'+exTagChips()+'</div></div>');
-  /* 5 · 规则设置 */
-  W.push('<div class="fsec" id="exRule"><h3>规则设置</h3></div>');
-  W.push('<div class="form-item" style="margin-bottom:16px"><label>答案解析显示时间<span class="opt-tip">（控制学员端何时可见答案与解析）</span></label><div class="rchips">'+rOpt('exAnsShow',['每个学员考试后即显示','到任务结束时间显示'],EX.ansShow)+'</div></div>');
-  W.push(exChk('randQ','题目随机顺序','每位学员的题目顺序随机打乱'));
-  W.push(exChk('randOpt','选项随机顺序（单选/多选/判断题）','选择题选项顺序随机打乱'));
-  W.push('<div class="form-item" style="margin-bottom:14px"><label>考试注意事项<span class="opt-tip">（0/200 · 学员考前即可看到）</span></label>'+
-    '<div class="qb-ta"><textarea maxlength="200" placeholder="请输入考试注意事项，如：考试过程中请勿切换屏幕" oninput="exSet(\'notice\',this.value)">'+esc(EX.notice)+'</textarea></div></div>');
-  W.push('<div class="form-item" style="margin-bottom:16px"><label>资料附件<span class="opt-tip">（学员考试前可查看的参考资料）</span></label>'+
-    '<div><button class="btn btn-g btn-sm" type="button" onclick="exFileAdd()">+ 添加素材</button></div>'+
-    '<div style="margin-top:10px" id="exFileChips">'+(EX.files.length?EX.files.map((f,i)=>'<span class="crs-mchip">'+esc(f)+'<span class="x" onclick="exFileDel('+i+')">×</span></span>').join(''):'<span class="ex-note" style="margin-top:0">未添加附件</span>')+'</div></div>');
-  W.push(exSw('survey','问卷调查','开启后可在任务结束后收集学员问卷反馈'));
-  W.push('<div class="form-item" style="margin-bottom:16px">'+exSw('newBadge','显示 new 标识','任务开启时，学员端默认展示"NEW"标识').replace('class="lab"','class="lab" style="display:inline-block;width:auto"')+
-    '<div style="display:flex;align-items:center;gap:8px;margin:-6px 0 0 0"><span style="font-size:13px;color:var(--t2)">推送后</span>'+
-    '<input type="number" id="exNewDays" min="1" max="31" style="width:110px" value="'+esc(EX.newDays)+'" oninput="exSet(\'newDays\',this.value)"'+(!EX.newBadge?' disabled':'')+'>'+
-    '<span style="font-size:13px;color:var(--t2)">天内展示，最长支持 31 天</span></div></div>');
-  W.push('<div class="form-item" style="margin-bottom:16px"><label>任务老师<span class="opt-tip">（任务负责人，学员端展示）</span></label><select onchange="exSet(\'teacher\',this.value)">'+
-    '<option value="">请选择</option>'+EX_TEACHERS.map(t=>'<option'+(EX.teacher===t?' selected':'')+'>'+t+'</option>').join('')+'</select></div>');
+    W.push('<div class="form-item" style="margin-bottom:16px"><label>角色<span class="opt-tip">（在所选组织范围内按角色过滤学员，可多选 · 来自「角色管理」· 不选则全部角色生效）</span></label>'+
+    '<div class="rchips" id="exRoleChips">'+exRoleChips()+'</div></div>');
   W.push('</div></div>');
   /* 右侧实时任务配置总览 */
   W.push('<div class="pn-aside"><div class="pn-card pn-pv"><h3 class="pn-pv-title">实时任务配置总览<span class="live">实时</span></h3>'+
@@ -8927,45 +8949,35 @@ function updateExamPreview(){
   const prog=g('exProg');
   if(prog){
     const nameOk=!!(EX.name||'').trim();
-    let paperOk;
-    if(EX.mode==='试题组卷')paperOk=EX.paper.length>0;
-    else paperOk=exTotalCnt()>0&&EX_QTYPES.every(t=>!(+EX.cnt[t]>0&&!(+EX.score[t]>0)));
-    const passOk=parseFloat(EX.pass)>0;
-    const timeOk=!!EX.timeS&&!!EX.timeE&&EX.timeS<EX.timeE;
+    const paperOk=EX.qsel.length>0&&EX.qsel.every(i=>parseFloat(EX.qscore[i])>0)&&parseFloat(exTotalScore())===100;
+    const passOk=parseFloat(EX.pass)>0&&parseFloat(EX.pass)<=100;
+    const timeOk=(!!EX.timeS&&!!EX.timeE&&EX.timeS<EX.timeE);
     const orgOk=EX.org.size>0;
     if(nameOk&&paperOk&&passOk&&timeOk&&orgOk){prog.textContent='✓ 必填项已填写，可提交';prog.classList.add('ok');}
     else{prog.textContent='必填：任务名称 * · 组卷 * · 通过分数 * · 任务时间 * · 学员范围 *';prog.classList.remove('ok');}
   }
   g('exPvName').textContent=(EX.name||'').trim()||'未命名试题考试';
-  g('exPvBadges').innerHTML='<span class="qb-pv-badge">'+esc(EX.mode)+'</span><span class="qb-pv-badge lv">'+esc(EX.study)+'</span><span class="qb-pv-badge lv">'+esc(EX.taskType)+'</span>';
-  const r=exDiffRatios();
+  g('exPvBadges').innerHTML='<span class="qb-pv-badge">组卷配置</span><span class="qb-pv-badge lv">'+esc(EX.taskType)+'</span>';
   const rows=[
-    ['组卷配置',EX.mode==='试题组卷'?'已选 '+EX.paper.length+' 题 · 总分 '+exPaperTotal()+' 分':'共抽题 '+(exTotalCnt()||0)+' · 总分 '+exTotalScore()+' 分'],
-    ['难度占比','简单 '+r.e+'% · 中等 '+r.m+'% · 困难 '+r.h+'%'],
+    ['组卷配置','已选 '+(exTotalCnt()||0)+' 题 · 出题范围 '+(EX.qgroup?qbGName(EX.qgroup):'全部分组')+' · 总分 '+exTotalScore()+' 分'],
     ['通过分数',(parseFloat(EX.pass)||0)+' 分'],
     ['所属分组',exGName(EX.group)],
     ['任务时间',(EX.timeS&&EX.timeE)?exFmtDT(EX.timeS)+' ~ '+exFmtDT(EX.timeE):'未设置'],
-    ['次数 / 限时','允许 '+(parseInt(EX.attempts)||1)+' 次 · '+(parseInt(EX.limit)>0?'限时 '+EX.limit+' 分钟':'不限时')],
-    ['学员范围',EX.org.size?EX.org.size+' 家组织':'未选择'],
-    ['标签',EX.tags.length?EX.tags.join('、'):'未设置'],
-    ['解析显示',EX.ansShow]
+    ['考试限时',parseInt(EX.limit)>0?'限时 '+EX.limit+' 分钟':'不限时'],
+    ['学员范围',(EX.org.size?EX.org.size+' 家组织':'未选择')+(EX.roles.size?' · 角色 '+[...EX.roles].join('、'):'')]
   ];
   g('exPvRows').innerHTML=rows.map(x=>'<div class="ex-pv-row"><span class="k">'+x[0]+'</span><span class="v">'+esc(String(x[1]))+'</span></div>').join('');
-  const dots=[['防作弊',EX.anticheat],['题目随机',EX.randQ],['选项随机',EX.randOpt],['智能阅卷',EX.aimark],['AI复盘',EX.aireview],['NEW标识',EX.newBadge],['问卷',EX.survey],['白名单',EX.whitelist]];
+  const dots=[['防作弊（预留）',EX.anticheat]];
   g('exPvDots').innerHTML=dots.map(d=>'<span class="ex-dot'+(d[1]?' on':'')+'">'+d[0]+(d[1]?' ✓':'')+'</span>').join('');
 }
 function initExamNew(){
   const form=document.getElementById('exForm');if(!form)return;
   form.addEventListener('change',function(e){
     const n=e.target&&e.target.name;
-    if(n==='exMode'&&e.target.value!==EX.mode){ EX.mode=e.target.value; exRenderPaper(); }
-    else if(n==='exStrategy'){ EX.strategy=e.target.value; }
-    else if(n==='exTaskType'){ EX.taskType=e.target.value; }
-    else if(n==='exStudy'){ EX.study=e.target.value; }
-    else if(n==='exAnsShow'){ EX.ansShow=e.target.value; }
+    if(n==='exTaskType'){ EX.taskType=e.target.value; }
     updateExamPreview();
   });
-  exCoverRender(); exOrgRender(); exDiffSync(); exRenderNewDays();
+  exOrgRender();
   const c=document.querySelector('.content');
   if(c){ if(!c.dataset.pnScroll){ c.addEventListener('scroll',pnScroll,{passive:true}); c.dataset.pnScroll='1'; } pnScroll(); }
   const fh=document.querySelector('.page-head.ph-fix'),nv=document.getElementById('pnNav'),asd=document.querySelector('.pn-aside');
@@ -8989,44 +9001,2048 @@ function initExamNew(){
 function exValidate(){
   const g=id=>document.getElementById(id);
   const err=(id,msg)=>{ const e=g(id); if(e){e.textContent=msg;e.classList.add('show');} return msg; };
-  ['exNameErr','exBankErr','exPaperErr','exPaperErr2','exPassErr','exTimeErr','exOrgErr'].forEach(id=>{const e=g(id);if(e)e.classList.remove('show');});
+  ['exNameErr','exTypeError','exPaperErr2','exTotalErr','exPassErr','exTimeErr','exOrgErr'].forEach(id=>{const e=g(id);if(e)e.classList.remove('show');});
   const nameEl=g('exName'); if(nameEl)nameEl.style.borderColor='';
   if(!(EX.name||'').trim()){ err('exNameErr','任务名称为必填项，请填写后再提交'); if(nameEl)nameEl.style.borderColor='var(--bad)'; return '请填写任务名称'; }
-  if(EX.mode==='试题组卷'){
-    if(!EX.paper.length)return err('exPaperErr','请至少选择 1 道试题组成试卷');
-  }else{
-    if(!EX.bank.length)return err('exBankErr','请至少选择 1 个题库');
-    if(exTotalCnt()<=0)return err('exPaperErr2','请至少为一种题型设置抽题数量');
-    const bad=EX_QTYPES.find(t=>(+EX.cnt[t]>0)&&!(+EX.score[t]>0));
-    if(bad)return err('exPaperErr2','请为已设置抽题数量的「'+bad+'」填写每题分数');
+  if(!EX.qsel.length)return err('exTypeError','请至少选择 1 道题目');
+  const noScore=EX.qsel.find(i=>!(parseFloat(EX.qscore[i])>0));
+  if(noScore!==undefined)return err('exPaperErr2','请为已选题目「'+esc(exQName(noScore).slice(0,14))+'…」设置每题分数');
+  const total=parseFloat(exTotalScore());
+  if(total!==100)return err('exTotalErr','当前总分 '+total+' 分，各题目「每题分数」之和需为 100 分');
+  if(!(parseFloat(EX.pass)>0))return err('exPassErr','请填写通过分数（及格分）');
+  if(parseFloat(EX.pass)>100)return err('exPassErr','通过分数不能大于总分（100 分）');
+  {
+    if(!EX.timeS||!EX.timeE)return err('exTimeErr','请设置任务起止时间');
+    if(EX.timeS>=EX.timeE)return err('exTimeErr','任务开始时间需早于结束时间');
+    if(!EX.org.size)return err('exOrgErr','请选择学员范围（至少 1 家组织）');
   }
-  if(!(parseFloat(EX.pass)>0))return err('exPassErr','请填写通过分数');
-  const total=EX.mode==='试题组卷'?exPaperTotal():exTotalScore();
-  if(parseFloat(EX.pass)>parseFloat(total))return err('exPassErr','通过分数不能大于总分（当前总分 '+total+' 分）');
-  if(!EX.timeS||!EX.timeE)return err('exTimeErr','请设置任务起止时间');
-  if(EX.timeS>=EX.timeE)return err('exTimeErr','任务开始时间需早于结束时间');
-  if(!EX.org.size)return err('exOrgErr','请选择学员范围（至少 1 家组织）');
   return '';
 }
 function exSave(){
   const e=exValidate(); if(e){ toast(e); return; }
   const name=EX.name.trim();
-  const total=EX.mode==='试题组卷'?exPaperTotal():exTotalScore();
-  const cnt=EX.mode==='试题组卷'?EX.paper.length:exTotalCnt();
+  const total=exTotalScore();
+  const cnt=exTotalCnt();
   const row=[esc(name),'考试',String(EX.org.size),String(cnt),total,(Math.round(parseFloat(EX.pass)*10)/10).toFixed(1),exFmtDT(EX.timeS)+' ~ '+exFmtDT(EX.timeE),'—',ST('未开始',GRAY),crsNow()];
   DB.examTasks.rows.unshift(row);
   EX_ROW_GROUPS[esc(name)]=EX.group;
   const snap=Object.assign({},EX);
   snap.org=[...EX.org];
+  snap.roles=[...EX.roles];
   EX_XTRA[esc(name)]=snap;
   exReset();
+  if(TT_CHAIN_K){ const k=TT_CHAIN_K; TT_CHAIN_K=''; ttChainAdd(k,name); go('ttTaskNew'); toast('已创建试题考试任务「'+name.replace(/<[^>]+>/g,'')+'」并加入任务链条'); return; }
   go('examPaper');
   toast('已创建试题考试任务：'+name.replace(/<[^>]+>/g,''));
 }
-function exCancel(){ exReset(); go('examPaper'); }
+function exCancel(){ exReset(); if(TT_CHAIN_K){TT_CHAIN_K=''; go('ttTaskNew'); toast('已取消创建，返回培训任务'); return;} go('examPaper'); }
 /* ================== 培训中心 · 试题考试模块结束 ================== */
 
+/* ================== 培训中心 · 陪练任务模块 ==================
+   列表：分组树 + 筛选 + 表格（与试题考试列表同骨架，分组为陪练任务独立树）
+   新建：基本信息 / 选择剧本（最多 5 个已发布剧本）/ 任务设置 / 学员范围 + 右侧实时预览 */
+/* ---- 左侧分组 ---- */
+let PT_GROUPS=[
+ {id:'ptUngrouped',name:'未分组',fixed:true,parent:null},
+ {id:'ptg1',name:'销售话术',parent:null},
+ {id:'ptg2',name:'客户接待',parent:null}];
+const PT_ROW_GROUPS={};
+let PT_G_EXPAND=new Set();
+let PT_G_UID=1;
+let PT_F={kw:'',cat:'all',st:'全部'};
+let PT_SEL=new Set();               /* 列表勾选（批量修改分组） */
+let PT_MOVE_MODE='',PT_MOVE_IDX=-1,PT_MOVE_LIST=[];
+let PR_GCTX=false;                  /* 新建分组弹窗上下文：false=试题考试，true=陪练任务 */
+let PR_MOVE_ON=false;               /* 转移分组弹窗上下文 */
+const PT_XTRA={};                   /* 任务完整配置快照（按任务名索引） */
+function ptRowGroup(name){ return PT_ROW_GROUPS[name]||PT_ROW_GROUPS[esc(name)]||'ptUngrouped'; }
+function ptGName(id){ const g=PT_GROUPS.find(x=>x.id===id); return g?g.name:'未分组'; }
+function ptGIdByName(name){ const g=PT_GROUPS.find(x=>x.name===name); return g?g.id:'ptUngrouped'; }
+function ptGChildren(pid){ return PT_GROUPS.filter(g=>g.parent===pid&&g.id!=='ptUngrouped'&&g.id!==pid); }
+function ptGDepth(id){ let d=0,g=PT_GROUPS.find(x=>x.id===id); while(g&&g.parent){ d++; g=PT_GROUPS.find(x=>x.id===g.parent); } return d; }
+function ptGDescendants(id){ const out=new Set([id]),q=[id]; while(q.length){ const c=q.shift(); ptGChildren(c).forEach(x=>{ out.add(x.id); q.push(x.id); }); } return out; }
+function ptRowGroupId(i){ const name=String(DB.practiceTasks.rows[i][0]).replace(/<[^>]+>/g,'').trim(); return PT_ROW_GROUPS[esc(name)]||PT_ROW_GROUPS[name]||'ptUngrouped'; }
+function ptGCount(g){
+  const rows=DB.practiceTasks.rows;
+  if(g==='all')return rows.length;
+  const ids=g==='ptUngrouped'?new Set(['ptUngrouped']):ptGDescendants(g);
+  return rows.filter((r,i)=>ids.has(ptRowGroupId(i))).length;
+}
+function ptGToggle(id){ PT_G_EXPAND.has(id)?PT_G_EXPAND.delete(id):PT_G_EXPAND.add(id); render(); }
+function ptGPick(g){ PT_F.cat=g; render(); }
+function ptGTreeHtml(pid,depth){
+  return ptGChildren(pid).map(g=>{
+    const kids=ptGChildren(g.id), has=kids.length>0, open=PT_G_EXPAND.has(g.id), sel=PT_F.cat===g.id;
+    let h='<div class="tree-node'+(sel?' on':'')+'" data-g="'+esc(g.name)+'" style="padding-left:'+(8+depth*16)+'px" onclick="ptGPick(\''+g.id+'\')">';
+    if(has) h+='<span class="tree-toggle'+(open?' open':'')+'" onclick="event.stopPropagation();ptGToggle(\''+g.id+'\')">▸</span>';
+    h+='<span class="tname">'+esc(g.name)+'</span><span class="cnt">('+ptGCount(g.id)+')</span>';
+    if(!g.fixed) h+='<span class="mat-gdel" onclick="event.stopPropagation();ptGroupDelAsk(\''+g.id+'\')">删除</span>';
+    h+='</div>';
+    if(has&&open) h+=ptGTreeHtml(g.id,depth+1);
+    return h;
+  }).join('');
+}
+function ptGSearch(v){
+  v=(v||'').trim().toLowerCase();
+  if(v) PT_GROUPS.forEach(g=>{ if(ptGChildren(g.id).length) PT_G_EXPAND.add(g.id); });
+  const box=document.getElementById('ptGroupList');
+  if(!box)return;
+  box.innerHTML=ptGTreeHtml(null,0);
+  box.querySelectorAll('.tree-node').forEach(n=>{
+    n.style.display=(!v||(n.dataset.g||'').toLowerCase().includes(v))?'':'none';
+  });
+}
+function ptGOptsTop(selId){
+  let out='<option value=""'+(selId===''?' selected':'')+'>顶级分组</option>';
+  (function rec(pid,depth){
+    ptGChildren(pid).forEach(g=>{
+      out+='<option value="'+g.id+'"'+(g.id===selId?' selected':'')+'>'+'  '.repeat(depth)+esc(g.name)+'</option>';
+      rec(g.id,depth+1);
+    });
+  })(null,0);
+  return out;
+}
+function openPtGroupAdd(){
+  let def='';
+  if(PT_F.cat&&PT_F.cat!=='all'&&PT_F.cat!=='ptUngrouped')def=PT_F.cat;
+  $('exGParentSel').innerHTML=ptGOptsTop(def);
+  $('exGNameInp').value='';
+  const e=$('exGErr');e.style.display='none';
+  if(def&&ptGDepth(def)>=2){
+    e.textContent='「'+ptGName(def)+'」已是三级分组，无法再创建下级，请重新选择上级分组';e.style.display='block';
+  }
+  PR_GCTX=true;
+  $('exGroupMask').classList.add('on');
+  setTimeout(()=>{ try{$('exGNameInp').focus();}catch(_){} },50);
+}
+function doPtGroupAdd(){
+  const name=$('exGNameInp').value.trim();
+  const parent=$('exGParentSel').value||null;
+  const e=$('exGErr');
+  if(!name){ e.textContent='请输入分组名称';e.style.display='block';try{$('exGNameInp').focus();}catch(_){} return; }
+  if(parent){
+    if(ptGDepth(parent)>=2){ e.textContent='最多支持三级分组，所选上级分组下无法再创建';e.style.display='block';return; }
+    if(PT_GROUPS.some(g=>g.parent===parent&&g.name===name)){ e.textContent='「'+ptGName(parent)+'」下已存在分组「'+name+'」';e.style.display='block';return; }
+  }else if(PT_GROUPS.some(g=>g.parent===null&&g.name===name)){ e.textContent='已存在顶级分组「'+name+'」';e.style.display='block';return; }
+  const id='ptgN'+(PT_G_UID++)+'_'+Date.now();
+  PT_GROUPS.push({id,name,parent});
+  if(parent)PT_G_EXPAND.add(parent);
+  toast('已在「'+(parent?ptGName(parent):'顶级')+'」下创建分组：'+name);
+  closeExGroupAdd();render();
+}
+function ptGroupDelAsk(id){
+  const g=PT_GROUPS.find(x=>x.id===id);if(!g)return;
+  const ids=[...ptGDescendants(id)];
+  const n=DB.practiceTasks.rows.filter((r,i)=>ids.includes(ptRowGroupId(i))).length;
+  if(n){ toast('该分组下仍有 '+n+' 个陪练任务，请先调整任务分组');return; }
+  const sub=ids.length>1?'（含 '+(ids.length-1)+' 个子分组）':'';
+  matAsk('删除分组','确定删除分组「'+g.name+'」'+sub+'？删除后不可恢复。',()=>{
+    PT_GROUPS=PT_GROUPS.filter(x=>!ids.includes(x.id));
+    ids.forEach(i=>PT_G_EXPAND.delete(i));
+    if(ids.includes(PT_F.cat))PT_F.cat='all';
+    toast('已删除分组：'+g.name);render();
+  });
+}
+function ptGroupOpts(selId){
+  const opt=(id,name,d)=>'<option value="'+id+'"'+(selId===id?' selected':'')+'>'+'\u3000'.repeat(d)+esc(name)+'</option>';
+  let out='<option value="ptUngrouped"'+(selId==='ptUngrouped'?' selected':'')+'>未分组</option>';
+  const walk=(pid,d)=>{ ptGChildren(pid).forEach(g=>{ out+=opt(g.id,g.name,d); walk(g.id,d+1); }); };
+  walk(null,0);
+  return out;
+}
 
+/* ---- 列表页 ---- */
+function prStatusIdx(){ return DB.practiceTasks.cols.findIndex(c=>c[0]==='状态'); }
+function prStatusOf(row){ return String(row[prStatusIdx()]).replace(/<[^>]+>/g,''); }
+function prName(i){ return String(DB.practiceTasks.rows[i][0]).replace(/<[^>]+>/g,'').trim(); }
+function prFiltered(){
+  return DB.practiceTasks.rows.map((r,i)=>({r,i})).filter(({r,i})=>{
+    if(PT_F.cat==='all')return true;
+    if(PT_F.cat==='ptUngrouped')return ptRowGroupId(i)==='ptUngrouped';
+    return ptGDescendants(PT_F.cat).has(ptRowGroupId(i));
+  }).filter(({r})=>{
+    if(PT_F.kw&&String(r[0]).replace(/<[^>]+>/g,'').indexOf(PT_F.kw)<0)return false;
+    if(PT_F.st!=='全部'&&prStatusOf(r)!==PT_F.st)return false;
+    return true;
+  });
+}
+function pgPrTasks(){
+  const rows=prFiltered();
+  const side='<div class="mat-side">'+
+    '<div class="tree-node'+(PT_F.cat==='all'?' on':'')+'" onclick="ptGPick(\'all\')"><span class="tname">全部陪练任务</span><span class="cnt all-b">'+ptGCount('all')+'</span></div>'+
+    '<input class="side-search" placeholder="请输入分组名称" oninput="ptGSearch(this.value)">'+
+    '<div class="tree-node'+(PT_F.cat==='ptUngrouped'?' on':'')+'" onclick="ptGPick(\'ptUngrouped\')"><span class="tname">未分组</span><span class="cnt">('+ptGCount('ptUngrouped')+')</span></div>'+
+    '<div id="ptGroupList">'+ptGTreeHtml(null,0)+'</div>'+
+    '<button class="side-add" onclick="openPtGroupAdd()">+ 新建分组</button>'+
+  '</div>';
+  const head='<th style="width:34px"><input type="checkbox" onchange="prSelAll(this.checked)" title="全选"></th>'+
+    ['任务名称','参与学员','剧本数','任务时间','完成率','状态','更新时间'].map(t=>'<th>'+t+'</th>').join('')+'<th>操作</th>';
+  const body=rows.map(({r,i})=>{
+    const st=prStatusOf(r);
+    const ops='<div class="row-ops">'+
+      (prXtraOf(prName(i)).taskType==='手动推送'?'<span class="lk" onclick="taskPushAsk(\'pr\','+i+')">推送</span>':'')+
+      '<span class="lk" onclick="prMoveGroup('+i+')">转移分组</span>'+
+      (st==='已停用'?'<span class="lk" onclick="prEnable('+i+')">启用</span>':'<span class="lk" onclick="prDisable('+i+')">停用</span>')+
+      '<span class="lk danger" onclick="prDelete('+i+')">删除</span></div>';
+    return '<tr>'+
+      '<td><input type="checkbox" data-i="'+i+'"'+(PT_SEL.has(i)?' checked':'')+' onchange="prSelRow(+this.dataset.i,this.checked)" title="选择"></td>'+
+      '<td><span class="lk" onclick="viewPrTask('+i+')">'+r[0]+'</span></td>'+
+      r.slice(1).map(cell=>'<td>'+cell+'</td>').join('')+
+      '<td>'+ops+'</td></tr>';
+  }).join('');
+  return '<div class="page-head"><h1>陪练任务</h1><span class="desc">共 '+DB.practiceTasks.rows.length+' 个任务</span><div class="btns">'+headBtns('taskPractice')+'</div></div>'+
+    '<div class="org-layout" style="grid-template-columns:230px 1fr">'+side+'<div>'+
+    '<div class="filter-card">'+
+      '<div class="f-item"><span>关键词</span><input id="prFkw" placeholder="请输入任务名称" value="'+esc(PT_F.kw)+'" onkeydown="if(event.key===\'Enter\')prQuery()"></div>'+
+      '<div class="f-item"><span>任务状态</span><select id="prFst">'+['全部','未开始','进行中','已结束','已停用'].map(o=>'<option'+(PT_F.st===o?' selected':'')+'>'+o+'</option>').join('')+'</select></div>'+
+      '<button class="btn btn-p btn-sm" onclick="prQuery()">查询</button><button class="btn btn-g btn-sm" onclick="prResetF()">重置</button></div>'+
+    '<div class="tbl-card"><div class="tbl-scroll"><table><thead><tr>'+head+'</tr></thead><tbody>'+
+      (body||'<tr><td colspan="9"><div class="empty"><div class="ic">◌</div>暂无陪练任务，点击右上角「新建陪练任务」创建</div></td></tr>')+
+      '</tbody></table></div>'+
+      '<div class="tbl-foot">共 '+rows.length+' 条 · 每页 10 条<div class="pgs"><button>‹</button><button class="on">1</button><button>›</button></div></div></div>'+
+    '</div></div>';
+}
+function prQuery(){ PT_F.kw=($('prFkw').value||'').trim(); PT_F.st=$('prFst').value; render(); }
+function prResetF(){ PT_F={kw:'',cat:PT_F.cat,st:'全部'}; render(); }
+function prSelRow(i,on){ on?PT_SEL.add(i):PT_SEL.delete(i); }
+function prSelAll(on){ prFiltered().forEach(({i})=>{ on?PT_SEL.add(i):PT_SEL.delete(i); }); render(); }
+function prMoveGroup(i){
+  PR_MOVE_ON=true; PT_MOVE_MODE='one'; PT_MOVE_IDX=i; PT_MOVE_LIST=[];
+  $('exMoveTitle').textContent='转移分组';
+  $('exMoveName').textContent=prName(i);
+  $('exMoveSel').innerHTML=ptGroupOpts(ptRowGroupId(i));
+  $('exMoveMask').classList.add('on');
+}
+function prBatchGroup(){
+  const idx=[...PT_SEL].filter(i=>DB.practiceTasks.rows[i]);
+  if(!idx.length){ toast('请先勾选需要修改分组的陪练任务');return; }
+  PR_MOVE_ON=true; PT_MOVE_MODE='batch'; PT_MOVE_LIST=idx; PT_MOVE_IDX=-1;
+  $('exMoveTitle').textContent='批量修改分组';
+  $('exMoveName').textContent='已选择 '+idx.length+' 个陪练任务';
+  $('exMoveSel').innerHTML=ptGroupOpts('');
+  $('exMoveMask').classList.add('on');
+}
+function doPrMove(){
+  const g=$('exMoveSel').value||'ptUngrouped';
+  if(PT_MOVE_MODE==='one'&&PT_MOVE_IDX>=0&&DB.practiceTasks.rows[PT_MOVE_IDX]){
+    const nm=prName(PT_MOVE_IDX);
+    PT_ROW_GROUPS[esc(nm)]=g; PT_ROW_GROUPS[nm]=g;
+    toast('已将「'+nm+'」转移到分组「'+ptGName(g)+'」');
+  }else if(PT_MOVE_MODE==='batch'){
+    let n=0;
+    PT_MOVE_LIST.forEach(i=>{ if(DB.practiceTasks.rows[i]){ PT_ROW_GROUPS[esc(prName(i))]=g; PT_ROW_GROUPS[prName(i)]=g; n++; } });
+    PT_SEL.clear();
+    toast('已将 '+n+' 个陪练任务转移到分组「'+ptGName(g)+'」');
+  }
+  closeExMove(); render();
+}
+function prDisable(i){
+  const nm=prName(i);
+  matAsk('停用任务','停用后学员端将不再展示该任务；任务不受其他限制，可随时重新启用。确认停用「'+nm+'」？',()=>{
+    DB.practiceTasks.rows[i][prStatusIdx()]=ST('已停用',GRAY);
+    toast('已停用陪练任务：'+nm); render();
+  });
+}
+function prEnable(i){
+  const nm=prName(i);
+  DB.practiceTasks.rows[i][prStatusIdx()]=ST('进行中',INFO);
+  toast('已启用陪练任务：'+nm); render();
+}
+function prDelete(i){
+  const nm=prName(i);
+  matAsk('删除任务','删除为物理删除：「'+nm+'」将从列表移除；已开始未完成的学员可继续完成任务，未开始的学员任务将直接消失，已完成任务的学员可在「任务记录」中查看。确认删除？',()=>{
+    DB.practiceTasks.rows.splice(i,1);
+    PT_SEL.clear();
+    toast('已删除陪练任务：'+nm); render();
+  });
+}
+/* 种子任务的分组映射（试驾/接待→客户接待，话术/应对→销售话术） */
+PT_GROUPS.forEach(g=>{ if(PT_GROUPS.some(x=>x.parent===g.id)) PT_G_EXPAND.add(g.id); });
+DB.practiceTasks.rows.forEach(function(r){
+  const nm=String(r[0]).replace(/<[^>]+>/g,'').trim();
+  if(!nm||PT_ROW_GROUPS[esc(nm)])return;
+  let gid='ptUngrouped';
+  if(nm.indexOf('试驾')>=0||nm.indexOf('接待')>=0)gid=ptGIdByName('客户接待');
+  else if(nm.indexOf('话术')>=0||nm.indexOf('应对')>=0||nm.indexOf('谈判')>=0)gid=ptGIdByName('销售话术');
+  PT_ROW_GROUPS[esc(nm)]=gid;
+});
+
+/* ---- 新建陪练任务 ---- */
+let PR={};
+const PR_SCRIPT_MAX=5;
+function prReset(){
+  PR={name:'',scripts:[],sq:'',sgroup:'',group:'ptUngrouped',taskType:'手动推送',timeS:'',timeE:'',attempts:'1',desc:''};
+  PR.org=new Set();
+  PR.roles=new Set();
+}
+prReset();
+function prSet(k,v){ PR[k]=v; updatePrPreview(); }
+function prSetB(k,on){ PR[k]=on; updatePrPreview(); }
+/* 剧本分组筛选下拉（全部分组 / 未分组 / SC_GROUPS 树，随剧本分组实时更新） */
+function scFilterOpts(sel){
+  let out='<option value=""'+(!sel?' selected':'')+'>全部分组</option><option value="scUngrouped"'+(sel==='scUngrouped'?' selected':'')+'>未分组</option>';
+  const walk=(pid,d)=>{ scGroupChildren(pid).forEach(g=>{ out+='<option value="'+g.id+'"'+(sel===g.id?' selected':'')+'>'+'\u3000'.repeat(d)+esc(g.name)+'</option>'; walk(g.id,d+1); }); };
+  walk(null,0);
+  return out;
+}
+/* 已发布剧本池（陪练任务 / 对话考试任务共用）：sg=剧本分组 id 或 ''=全部；q=关键词 */
+function pubScriptPool(sg,q){
+  let list=DB.scripts.rows.filter(r=>String(r[3]).replace(/<[^>]+>/g,'').trim()==='已发布').map(r=>({
+    name:String(r[0]).replace(/<[^>]+>/g,'').trim(),
+    aud:String(r[1]||'').replace(/<[^>]+>/g,''),
+    org:String(r[2]||'').replace(/<[^>]+>/g,''),
+    stages:String(r[5]||'').replace(/<[^>]+>/g,'')
+  })).filter(s=>s.name);
+  if(sg){ const ids=sg==='scUngrouped'?['scUngrouped']:scDescendants(sg); list=list.filter(s=>ids.includes(scRowGroup(s.name))); }
+  if(q)list=list.filter(s=>s.name.indexOf(q)>=0);
+  return list;
+}
+function prScriptToggle(name){
+  const i=PR.scripts.indexOf(name);
+  if(i<0){
+    if(PR.scripts.length>=PR_SCRIPT_MAX){ toast('最多选择 '+PR_SCRIPT_MAX+' 个剧本，请先取消已选剧本');return; }
+    PR.scripts.push(name);
+  }else PR.scripts.splice(i,1);
+  const e=document.getElementById('prScrErr'); if(e&&PR.scripts.length)e.classList.remove('show');
+  prRenderScripts(); updatePrPreview();
+}
+function prScriptSearch(v){ PR.sq=(v||'').trim(); prRenderScripts(); }
+function prRenderScripts(){
+  const box=document.getElementById('prScriptList'); if(!box)return;
+  const items=pubScriptPool(PR.sgroup,PR.sq);
+  box.innerHTML=items.map(s=>{
+    const on=PR.scripts.indexOf(s.name)>=0;
+    return '<label class="pr-scr'+(on?' on':'')+'" data-sc="'+esc(s.name)+'" onclick="prScriptToggle(this.dataset.sc);return false;">'+
+      '<span class="pr-scr-ck">'+(on?'✓':'')+'</span>'+
+      '<span style="flex:1;min-width:0"><span class="pr-scr-nm">'+esc(s.name)+'</span>'+
+      '<span class="pr-scr-meta">适用：'+esc(s.aud||'—')+' · '+esc(s.org||'—')+' · '+esc(s.stages||'—')+' 个会话阶段</span></span>'+
+      (on?'<span class="pr-scr-tag">已选</span>':'')+'</label>';
+  }).join('')||'<div class="org-empty">未找到匹配的剧本（仅展示「已发布」剧本）</div>';
+  const c=document.getElementById('prScrCnt'); if(c)c.textContent=PR.scripts.length;
+  const ch=document.getElementById('prScrChips');
+  if(ch)ch.innerHTML=PR.scripts.length?PR.scripts.map(n=>'<span class="crs-mchip">'+esc(n)+'<span class="x" data-n="'+esc(n)+'" onclick="event.stopPropagation();prScriptToggle(this.dataset.n)">×</span></span>').join(''):'<span class="ex-note" style="margin-top:0">未选择剧本</span>';
+}
+/* 组织树（学员范围，复用全局 ORG_TREE） */
+let PR_ORG_OPEN=new Set(['总部','华北','北京','河北','长久集团']);
+function prOrgNodeHtml(node,depth,q){
+  if(q&&!orgMatches(node,q))return '';
+  const kids=node.c?orgNorm(node.c).filter(c=>orgMatches(c,q)):[];
+  const open=q?true:PR_ORG_OPEN.has(node.n);
+  const leaves=orgLeaves(node);
+  const selN=leaves.filter(l=>PR.org.has(l)).length;
+  const checked=selN>0&&selN===leaves.length;
+  const ind=selN>0&&!checked;
+  let h='<div class="org-row'+(checked?' on':'')+'" style="padding-left:'+(depth*24+6)+'px">';
+  h+='<span class="org-arrow'+(open?' open':'')+(kids.length?'':' hide')+'" onclick="prOrgToggleOpen(\''+esc(node.n)+'\')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:11px;height:11px"><path d="M6 9l6 6 6-6z"/></svg></span>';
+  h+='<input type="checkbox" '+(checked?'checked':'')+(ind?' data-ind="1"':'')+' onchange="prOrgCheck(\''+esc(node.n)+'\',this.checked)">';
+  h+='<span class="org-nm">'+esc(node.n)+'</span>';
+  if(ind)h+='<span class="org-part">'+selN+'/'+leaves.length+'</span>';
+  h+='</div>';
+  if(kids.length&&open)h+=kids.map(c=>prOrgNodeHtml(c,depth+1,q)).join('');
+  return h;
+}
+function prOrgRender(){
+  const t=document.getElementById('prOrgTree');if(!t)return;
+  const se=document.getElementById('prOrgSearch'),q=(se&&se.value||'').trim();
+  t.innerHTML=ORG_TREE.map(n=>prOrgNodeHtml(n,0,q)).join('')||'<div class="org-empty">未找到匹配的组织</div>';
+  t.querySelectorAll('input[data-ind]').forEach(el=>{el.indeterminate=true;});
+  const c=document.getElementById('prOrgCntN');if(c)c.textContent=PR.org.size;
+  updatePrPreview();
+}
+function prOrgCheck(name,add){
+  const node=orgFind(ORG_TREE,name);if(!node)return;
+  orgLeaves(node).forEach(l=>add?PR.org.add(l):PR.org.delete(l));
+  prOrgRender();
+}
+function prOrgToggleOpen(name){PR_ORG_OPEN.has(name)?PR_ORG_OPEN.delete(name):PR_ORG_OPEN.add(name);prOrgRender();}
+/* 角色（学员范围补充，与组织共同决定下发对象，来自「角色管理」） */
+function prRoleChips(){
+  return DB.roles.list.map(r=>'<label class="rchip"><input type="checkbox" value="'+esc(r.name)+'"'+(PR.roles.has(r.name)?' checked':'')+' onchange="prRoleToggle(this.value,this.checked)"><span>'+esc(r.name)+'</span></label>').join('');
+}
+function prRoleToggle(v,on){ on?PR.roles.add(v):PR.roles.delete(v); updatePrPreview(); }
+function pgPrTaskNew(){
+  const W=[];
+  W.push('<div class="page-head ph-fix"><h1>新建陪练任务</h1><span class="desc">选择剧本、配置任务 · 提交后推送至学员端</span><div class="btns">'+
+    '<span class="pn-prog" id="prProg">必填：任务名称 * · 选择剧本 * · 任务时间 * · 学员范围 *</span>'+
+    '<button class="btn btn-g" onclick="prCancel()">取消</button>'+
+    '<button class="btn btn-p" onclick="prSave()">提交</button></div></div>');
+  W.push('<div class="pn-nav" id="pnNav"><a data-id="prBase" class="on" onclick="pnNavTo(\'prBase\')">基础信息</a><a data-id="prScripts" onclick="pnNavTo(\'prScripts\')">选择剧本</a><a data-id="prTask" onclick="pnNavTo(\'prTask\')">任务设置</a></div>');
+  W.push('<div class="pn-wrap"><div class="pn-main"><div class="pn-card" id="prForm">');
+  /* 1 · 基础信息 */
+  W.push('<div class="fsec" id="prBase"><h3>基础信息</h3></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><label>任务名称<i>*</i><span class="opt-tip">（必填 · 100 字以内）</span></label>'+
+    '<input id="prName" maxlength="100" placeholder="示例：周末试驾邀约专项陪练" oninput="prSet(\'name\',this.value)">'+
+    '<div class="form-err" id="prNameErr">任务名称为必填项，请填写后再提交</div></div>');
+  W.push('<div class="form-item" style="margin-bottom:14px"><label>任务说明<span class="opt-tip">（0/200 · 展示在学员端任务详情）</span></label>'+
+    '<div class="qb-ta"><textarea maxlength="200" placeholder="请输入任务说明" oninput="prSet(\'desc\',this.value)">'+esc(PR.desc)+'</textarea></div></div>');
+  /* 2 · 选择剧本 */
+  W.push('<div class="fsec" id="prScripts"><h3>选择剧本</h3></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>选择剧本<i>*</i><span class="opt-tip">（从已创建的剧本中选择，最多 '+PR_SCRIPT_MAX+' 个）</span></label>'+
+    '<span class="org-cnt">已选择<b id="prScrCnt">'+PR.scripts.length+'</b>/'+PR_SCRIPT_MAX+' 个剧本</span></div>'+
+    '<div class="org-search"><select id="prScriptGroup" style="flex:none;width:170px" onchange="prSet(\'sgroup\',this.value);prRenderScripts()">'+scFilterOpts(PR.sgroup)+'</select><input id="prScriptSearch" placeholder="请输入剧本名称" oninput="prScriptSearch(this.value)"></div>'+
+    '<div class="pr-scr-list" id="prScriptList"></div>'+
+    '<div style="margin-top:10px" id="prScrChips"></div>'+
+    '<div class="form-err" id="prScrErr">请至少选择 1 个剧本</div></div>');
+  /* 3 · 任务设置 */
+  W.push('<div class="fsec" id="prTask"><h3>任务设置</h3></div>');
+  if(TT_CHAIN_K)W.push('<div class="ex-note" style="margin-top:12px">本任务由培训任务「任务链条」创建：与培训任务相互独立，任务设置在此单独配置，保存后自动返回培训任务并加入链条</div>');
+    W.push('<div class="form-row"><div class="form-item"><label>所属分组<i>*</i></label><select onchange="prSet(\'group\',this.value)">'+ptGroupOpts(PR.group)+'</select></div>'+
+    '<div class="form-item"><label>任务类型<span class="opt-tip">（自动推送：到任务开始时间自动下发给学员范围内学员）</span></label><div class="rchips">'+rOpt('prTaskType',['手动推送','自动推送'],PR.taskType)+'</div></div></div>');
+    W.push('<div class="form-row"><div class="form-item"><label>任务时间<i>*</i></label><div style="display:flex;align-items:center;gap:8px">'+
+    '<input type="datetime-local" value="'+esc(PR.timeS)+'" onchange="prSet(\'timeS\',this.value)"><span style="color:var(--t3)">至</span>'+
+    '<input type="datetime-local" value="'+esc(PR.timeE)+'" onchange="prSet(\'timeE\',this.value)"></div>'+
+    '<div class="form-err" id="prTimeErr">请设置任务起止时间，且开始时间需早于结束时间</div></div></div>');
+  /* 学员范围（组织 + 角色）· 并入任务设置 */
+    W.push('<div class="ex-note" style="margin:10px 0">完成机制：每个剧本完成陪练并生成陪练报告即记为完成；未完成前可反复练习。</div>');
+    W.push('<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>学员范围<i>*</i><span class="opt-tip">（按组织下发，勾选上级组织将自动连选其全部下级）</span></label><span class="org-cnt">已选择<b id="prOrgCntN">'+PR.org.size+'</b>家门店</span></div>'+
+    '<div class="org-box"><div class="org-search"><input id="prOrgSearch" placeholder="请输入搜索关键词" oninput="prOrgRender()"></div><div class="org-tree" id="prOrgTree"></div></div>'+
+    '<div class="ex-note">任务有效时间范围内，新加入所选组织/角色的员工将自动获得此任务（手动推送任务推送后同样自动纳入）</div>'+
+    '<div class="form-err" id="prOrgErr">请选择学员范围（至少 1 家组织）</div></div>');
+    W.push('<div class="form-item" style="margin-bottom:16px"><label>角色<span class="opt-tip">（在所选组织范围内按角色过滤学员，可多选 · 来自「角色管理」· 不选则全部角色生效）</span></label>'+
+    '<div class="rchips" id="prRoleChips">'+prRoleChips()+'</div></div>');
+  W.push('</div></div>');
+  /* 右侧实时任务配置总览 */
+  W.push('<div class="pn-aside"><div class="pn-card pn-pv"><h3 class="pn-pv-title">实时任务配置总览<span class="live">实时</span></h3>'+
+    '<div class="qb-pv-badges" id="prPvBadges"></div>'+
+    '<div class="qb-pv-stem" id="prPvName">未命名陪练任务</div>'+
+    '<div id="prPvRows" style="padding:12px 0"></div>'+
+    '<div class="ex-pv-dots" id="prPvDots"></div></div></div>');
+  W.push('</div>');
+  W.push('<button class="pn-totop" id="pnTotop" title="返回顶部" onclick="pnScrollTop()">'+icon('up',18)+'</button>');
+  return W.join('');
+}
+function updatePrPreview(){
+  const g=id=>document.getElementById(id);
+  if(!g('prPvName'))return;
+  const prog=g('prProg');
+  if(prog){
+    const nameOk=!!(PR.name||'').trim();
+    const scrOk=PR.scripts.length>=1&&PR.scripts.length<=PR_SCRIPT_MAX;
+    const timeOk=(!!PR.timeS&&!!PR.timeE&&PR.timeS<PR.timeE);
+    const orgOk=PR.org.size>0;
+    if(nameOk&&scrOk&&timeOk&&orgOk){prog.textContent='✓ 必填项已填写，可提交';prog.classList.add('ok');}
+    else{prog.textContent='必填：任务名称 * · 选择剧本 * · 任务时间 * · 学员范围 *';prog.classList.remove('ok');}
+  }
+  g('prPvName').textContent=(PR.name||'').trim()||'未命名陪练任务';
+  g('prPvBadges').innerHTML='<span class="qb-pv-badge">'+esc(PR.taskType)+'</span><span class="qb-pv-badge lv">'+ptGName(PR.group)+'</span>';
+  const rows=[
+    ['选择剧本',PR.scripts.length?('已选 '+PR.scripts.length+'/'+PR_SCRIPT_MAX+' · '+PR.scripts.map(s=>s.length>10?s.slice(0,10)+'…':s).join('、')):'未选择'],
+    ['所属分组',ptGName(PR.group)],
+    ['任务时间',(PR.timeS&&PR.timeE)?exFmtDT(PR.timeS)+' ~ '+exFmtDT(PR.timeE):'未设置'],
+    ['学员范围',(PR.org.size?PR.org.size+' 家组织':'未选择')+(PR.roles.size?' · 角色 '+[...PR.roles].join('、'):'')]
+  ];
+  g('prPvRows').innerHTML=rows.map(x=>'<div class="ex-pv-row"><span class="k">'+x[0]+'</span><span class="v">'+esc(String(x[1]))+'</span></div>').join('');
+  g('prPvDots').innerHTML='';
+}
+function initPrTaskNew(){
+  const form=document.getElementById('prForm');if(!form)return;
+  form.addEventListener('change',function(e){
+    const n=e.target&&e.target.name;
+    if(n==='prTaskType'){ PR.taskType=e.target.value; }
+    updatePrPreview();
+  });
+  prOrgRender(); prRenderScripts();
+  const c=document.querySelector('.content');
+  if(c){ if(!c.dataset.pnScroll){ c.addEventListener('scroll',pnScroll,{passive:true}); c.dataset.pnScroll='1'; } pnScroll(); }
+  const fh=document.querySelector('.page-head.ph-fix'),nv=document.getElementById('pnNav'),asd=document.querySelector('.pn-aside');
+  let stick=56;
+  if(fh&&nv){
+    const hh=fh.offsetHeight,nh=nv.offsetHeight;
+    nv.style.top=hh+'px';
+    if(asd)asd.style.top=(hh+nh)+'px';
+    stick=hh+nh+8;
+    document.querySelectorAll('.fsec[id]').forEach(s=>s.style.scrollMarginTop=stick+'px');
+  }
+  const links=[...document.querySelectorAll('#pnNav a')];
+  if(window.IntersectionObserver&&links.length){
+    const obs=new IntersectionObserver(es=>{
+      es.forEach(e=>{if(e.isIntersecting){const id=e.target.id;links.forEach(a=>a.classList.toggle('on',a.dataset.id===id));}});
+    },{rootMargin:'-'+stick+'px 0px -65% 0px',threshold:0});
+    document.querySelectorAll('.fsec[id]').forEach(s=>obs.observe(s));
+  }
+  updatePrPreview();
+}
+function prValidate(){
+  const g=id=>document.getElementById(id);
+  const err=(id,msg)=>{ const e=g(id); if(e){e.textContent=msg;e.classList.add('show');} return msg; };
+  ['prNameErr','prScrErr','prTimeErr','prOrgErr'].forEach(id=>{const e=g(id);if(e)e.classList.remove('show');});
+  const nameEl=g('prName'); if(nameEl)nameEl.style.borderColor='';
+  if(!(PR.name||'').trim()){ err('prNameErr','任务名称为必填项，请填写后再提交'); if(nameEl)nameEl.style.borderColor='var(--bad)'; return '请填写任务名称'; }
+  if(!PR.scripts.length)return err('prScrErr','请至少选择 1 个剧本');
+  {
+    if(!PR.timeS||!PR.timeE)return err('prTimeErr','请设置任务起止时间');
+    if(PR.timeS>=PR.timeE)return err('prTimeErr','任务开始时间需早于结束时间');
+    if(!PR.org.size)return err('prOrgErr','请选择学员范围（至少 1 家组织）');
+  }
+  return '';
+}
+function prSave(){
+  const e=prValidate(); if(e){ toast(e); return; }
+  const name=PR.name.trim();
+  const row=[esc(name),String(PR.org.size),String(PR.scripts.length),exFmtDT(PR.timeS)+' ~ '+exFmtDT(PR.timeE),'—',ST('未开始',GRAY),crsNow()];
+  DB.practiceTasks.rows.unshift(row);
+  PT_ROW_GROUPS[esc(name)]=PR.group;
+  const snap=Object.assign({},PR);
+  snap.org=[...PR.org]; snap.roles=[...PR.roles];
+  PT_XTRA[esc(name)]=snap;
+  prReset();
+  if(TT_CHAIN_K){ const k=TT_CHAIN_K; TT_CHAIN_K=''; ttChainAdd(k,name); go('ttTaskNew'); toast('已创建陪练任务「'+name.replace(/<[^>]+>/g,'')+'」并加入任务链条'); return; }
+  go('taskPractice');
+  toast('已创建陪练任务：'+name.replace(/<[^>]+>/g,''));
+}
+function prCancel(){ prReset(); if(TT_CHAIN_K){TT_CHAIN_K=''; go('ttTaskNew'); toast('已取消创建，返回培训任务'); return;} go('taskPractice'); }
+/* ================== 培训中心 · 陪练任务模块结束 ================== */
+
+/* ================== 培训中心 · 课程学习任务 / 对话考试任务模块 ==================
+   两个模块与陪练任务同构：
+   列表：分组树 + 筛选 + 表格（分组树/新建分组/转移分组复用试题考试弹窗，CL_GCTX / DK_GCTX 调度）
+   新建：基础信息 / 选择资源（课程或剧本，最多 5 个）/ 任务设置（含学员范围：组织 + 角色）+ 右侧实时预览
+   对话考试额外要求：根据剧本设置「打标分数（及格分）」，达到该分数记为合格 */
+
+/* ---- 已发布课程池 + 课程分组筛选下拉（课程学习任务用） ---- */
+function crsFilterOpts(sel){
+  let out='<option value=""'+(!sel?' selected':'')+'>全部分组</option><option value="crsUngrouped"'+(sel==='crsUngrouped'?' selected':'')+'>未分组</option>';
+  const walk=(pid,d)=>{ crsGChildren(pid).forEach(g=>{ out+='<option value="'+g.id+'"'+(sel===g.id?' selected':'')+'>'+'\u3000'.repeat(d)+esc(g.name)+'</option>'; walk(g.id,d+1); }); };
+  walk(null,0);
+  return out;
+}
+function pubCoursePool(sg,q){
+  let list=DB.courses.rows.filter(r=>String(r[5]).replace(/<[^>]+>/g,'').trim()==='已发布').map(r=>({
+    name:String(r[0]).replace(/<[^>]+>/g,'').trim(),
+    grp:String(r[1]||'').replace(/<[^>]+>/g,''),
+    ch:String(r[2]||'').replace(/<[^>]+>/g,''),
+    aud:String(r[3]||'').replace(/<[^>]+>/g,'')
+  })).filter(s=>s.name);
+  if(sg){ const ids=sg==='crsUngrouped'?['crsUngrouped']:[...crsGDescendants(sg)]; list=list.filter(s=>ids.includes(crsGIdByName(s.grp)||'crsUngrouped')); }
+  if(q)list=list.filter(s=>s.name.indexOf(q)>=0);
+  return list;
+}
+
+/* ---- 新任务模块通用分组树（ctx：'cl'=课程学习 / 'dk'=对话考试） ---- */
+let CL_GROUPS=[
+ {id:'clUngrouped',name:'未分组',fixed:true,parent:null},
+ {id:'clg1',name:'产品学习',parent:null},
+ {id:'clg2',name:'流程学习',parent:null}];
+let DK_GROUPS=[
+ {id:'dkUngrouped',name:'未分组',fixed:true,parent:null},
+ {id:'dkg1',name:'销售话术考核',parent:null},
+ {id:'dkg2',name:'接待服务考核',parent:null}];
+const CL_ROW_GROUPS={},DK_ROW_GROUPS={};
+let CL_G_EXPAND=new Set(),DK_G_EXPAND=new Set();
+let CL_G_UID=1,DK_G_UID=1;
+let CL_F={kw:'',cat:'all',st:'全部'},DK_F={kw:'',cat:'all',st:'全部'};
+let CL_SEL=new Set(),DK_SEL=new Set();
+let CL_MOVE_MODE='',CL_MOVE_IDX=-1,CL_MOVE_LIST=[],DK_MOVE_MODE='',DK_MOVE_IDX=-1,DK_MOVE_LIST=[];
+let CL_GCTX=false,DK_GCTX=false;    /* 新建分组弹窗上下文（复用试题考试弹窗） */
+let CL_MOVE_ON=false,DK_MOVE_ON=false; /* 转移分组弹窗上下文 */
+const CL_XTRA={},DK_XTRA={};        /* 任务完整配置快照（按任务名索引） */
+/* 培训任务（任务链条）状态（声明于 TG_REG 之前，供 tt 注册项立即引用） */
+let TT_GROUPS=[
+ {id:'ttUngrouped',name:'未分组',fixed:true,parent:null},
+ {id:'ttg1',name:'新员工培训',parent:null},
+ {id:'ttg2',name:'产品上市',parent:null}];
+const TT_ROW_GROUPS={};
+let TT_G_EXPAND=new Set();
+let TT_G_UID=1;
+let TT_F={kw:'',cat:'all',st:'全部'};
+let TT_SEL=new Set();
+let TT_MOVE_MODE='',TT_MOVE_IDX=-1,TT_MOVE_LIST=[];
+let TT_GCTX=false,TT_MOVE_ON=false;
+const TT_XTRA={};
+const TG_REG={
+  cl:{getG:()=>CL_GROUPS,setG:v=>{CL_GROUPS=v;},rowG:CL_ROW_GROUPS,exp:CL_G_EXPAND,ung:'clUngrouped',f:()=>CL_F,sel:CL_SEL,rows:()=>DB.courseTasks.rows,uid:()=>CL_G_UID++,label:'课程学习任务'},
+  dk:{getG:()=>DK_GROUPS,setG:v=>{DK_GROUPS=v;},rowG:DK_ROW_GROUPS,exp:DK_G_EXPAND,ung:'dkUngrouped',f:()=>DK_F,sel:DK_SEL,rows:()=>DB.dialogExams.rows,uid:()=>DK_G_UID++,label:'对话考试任务'},
+  tt:{getG:()=>TT_GROUPS,setG:v=>{TT_GROUPS=v;},rowG:TT_ROW_GROUPS,exp:TT_G_EXPAND,ung:'ttUngrouped',f:()=>TT_F,sel:TT_SEL,rows:()=>DB.trainTasks.rows,uid:()=>TT_G_UID++,label:'培训任务'}
+};
+function tgChildren(ctx,pid){ const R=TG_REG[ctx]; return R.getG().filter(g=>g.parent===pid&&g.id!==R.ung&&g.id!==pid); }
+function tgDepth(ctx,id){ const R=TG_REG[ctx]; let d=0,g=R.getG().find(x=>x.id===id); while(g&&g.parent){ d++; g=R.getG().find(x=>x.id===g.parent); } return d; }
+function tgDescendants(ctx,id){ const out=new Set([id]),q=[id]; while(q.length){ const c=q.shift(); tgChildren(ctx,c).forEach(x=>{ out.add(x.id); q.push(x.id); }); } return out; }
+function tgName(ctx,id){ const g=TG_REG[ctx].getG().find(x=>x.id===id); return g?g.name:'未分组'; }
+function tgIdByName(ctx,name){ const g=TG_REG[ctx].getG().find(x=>x.name===name); return g?g.id:TG_REG[ctx].ung; }
+function tgRowGroupId(ctx,i){ const R=TG_REG[ctx],name=String(R.rows()[i][0]).replace(/<[^>]+>/g,'').trim(); return R.rowG[esc(name)]||R.rowG[name]||R.ung; }
+function tgCount(ctx,g){
+  const R=TG_REG[ctx],rows=R.rows();
+  if(g==='all')return rows.length;
+  const ids=g===R.ung?new Set([R.ung]):tgDescendants(ctx,g);
+  return rows.filter((r,i)=>ids.has(tgRowGroupId(ctx,i))).length;
+}
+function tgToggle(ctx,id){ const e=TG_REG[ctx].exp; e.has(id)?e.delete(id):e.add(id); render(); }
+function tgPick(ctx,g){ TG_REG[ctx].f().cat=g; render(); }
+function tgTreeHtml(ctx,pid,depth){
+  const R=TG_REG[ctx];
+  return tgChildren(ctx,pid).map(g=>{
+    const kids=tgChildren(ctx,g.id), has=kids.length>0, open=R.exp.has(g.id), sel=R.f().cat===g.id;
+    let h='<div class="tree-node'+(sel?' on':'')+'" data-g="'+esc(g.name)+'" style="padding-left:'+(8+depth*16)+'px" onclick="tgPick(\''+ctx+'\',\''+g.id+'\')">';
+    if(has) h+='<span class="tree-toggle'+(open?' open':'')+'" onclick="event.stopPropagation();tgToggle(\''+ctx+'\',\''+g.id+'\')">▸</span>';
+    h+='<span class="tname">'+esc(g.name)+'</span><span class="cnt">('+tgCount(ctx,g.id)+')</span>';
+    if(!g.fixed) h+='<span class="mat-gdel" onclick="event.stopPropagation();tgGroupDelAsk(\''+ctx+'\',\''+g.id+'\')">删除</span>';
+    h+='</div>';
+    if(has&&open) h+=tgTreeHtml(ctx,g.id,depth+1);
+    return h;
+  }).join('');
+}
+function tgSearch(ctx,v){
+  v=(v||'').trim().toLowerCase();
+  if(v) TG_REG[ctx].getG().forEach(g=>{ if(tgChildren(ctx,g.id).length) TG_REG[ctx].exp.add(g.id); });
+  const box=document.getElementById(ctx+'GroupList');
+  if(!box)return;
+  box.innerHTML=tgTreeHtml(ctx,null,0);
+  box.querySelectorAll('.tree-node').forEach(n=>{
+    n.style.display=(!v||(n.dataset.g||'').toLowerCase().includes(v))?'':'none';
+  });
+}
+function tgOptsTop(ctx,selId){
+  let out='<option value=""'+(selId===''?' selected':'')+'>顶级分组</option>';
+  (function rec(pid,depth){
+    tgChildren(ctx,pid).forEach(g=>{
+      out+='<option value="'+g.id+'"'+(g.id===selId?' selected':'')+'>'+'  '.repeat(depth)+esc(g.name)+'</option>';
+      rec(g.id,depth+1);
+    });
+  })(null,0);
+  return out;
+}
+function tgGroupOpts(ctx,selId){
+  const R=TG_REG[ctx];
+  let out='<option value="'+R.ung+'"'+(selId===R.ung?' selected':'')+'>未分组</option>';
+  const walk=(pid,d)=>{ tgChildren(ctx,pid).forEach(g=>{ out+='<option value="'+g.id+'"'+(selId===g.id?' selected':'')+'>'+'\u3000'.repeat(d)+esc(g.name)+'</option>'; walk(g.id,d+1); }); };
+  walk(null,0);
+  return out;
+}
+function openClGroupAdd(){
+  let def='';
+  if(CL_F.cat&&CL_F.cat!=='all'&&CL_F.cat!=='clUngrouped')def=CL_F.cat;
+  $('exGParentSel').innerHTML=tgOptsTop('cl',def);
+  $('exGNameInp').value='';
+  const e=$('exGErr');e.style.display='none';
+  if(def&&tgDepth('cl',def)>=2){
+    e.textContent='「'+tgName('cl',def)+'」已是三级分组，无法再创建下级，请重新选择上级分组';e.style.display='block';
+  }
+  CL_GCTX=true;
+  $('exGroupMask').classList.add('on');
+  setTimeout(()=>{ try{$('exGNameInp').focus();}catch(_){} },50);
+}
+function openDkGroupAdd(){
+  let def='';
+  if(DK_F.cat&&DK_F.cat!=='all'&&DK_F.cat!=='dkUngrouped')def=DK_F.cat;
+  $('exGParentSel').innerHTML=tgOptsTop('dk',def);
+  $('exGNameInp').value='';
+  const e=$('exGErr');e.style.display='none';
+  if(def&&tgDepth('dk',def)>=2){
+    e.textContent='「'+tgName('dk',def)+'」已是三级分组，无法再创建下级，请重新选择上级分组';e.style.display='block';
+  }
+  DK_GCTX=true;
+  $('exGroupMask').classList.add('on');
+  setTimeout(()=>{ try{$('exGNameInp').focus();}catch(_){} },50);
+}
+function doClGroupAdd(){
+  const R=TG_REG['cl'],name=$('exGNameInp').value.trim(),parent=$('exGParentSel').value||null,e=$('exGErr');
+  if(!name){ e.textContent='请输入分组名称';e.style.display='block';try{$('exGNameInp').focus();}catch(_){} return; }
+  if(parent){
+    if(tgDepth('cl',parent)>=2){ e.textContent='最多支持三级分组，所选上级分组下无法再创建';e.style.display='block';return; }
+    if(CL_GROUPS.some(g=>g.parent===parent&&g.name===name)){ e.textContent='「'+tgName('cl',parent)+'」下已存在分组「'+name+'」';e.style.display='block';return; }
+  }else if(CL_GROUPS.some(g=>g.parent===null&&g.name===name)){ e.textContent='已存在顶级分组「'+name+'」';e.style.display='block';return; }
+  const id='clgN'+(R.uid())+'_'+Date.now();
+  CL_GROUPS.push({id,name,parent});
+  if(parent)CL_G_EXPAND.add(parent);
+  toast('已在「'+(parent?tgName('cl',parent):'顶级')+'」下创建分组：'+name);
+  closeExGroupAdd();render();
+}
+function doDkGroupAdd(){
+  const R=TG_REG['dk'],name=$('exGNameInp').value.trim(),parent=$('exGParentSel').value||null,e=$('exGErr');
+  if(!name){ e.textContent='请输入分组名称';e.style.display='block';try{$('exGNameInp').focus();}catch(_){} return; }
+  if(parent){
+    if(tgDepth('dk',parent)>=2){ e.textContent='最多支持三级分组，所选上级分组下无法再创建';e.style.display='block';return; }
+    if(DK_GROUPS.some(g=>g.parent===parent&&g.name===name)){ e.textContent='「'+tgName('dk',parent)+'」下已存在分组「'+name+'」';e.style.display='block';return; }
+  }else if(DK_GROUPS.some(g=>g.parent===null&&g.name===name)){ e.textContent='已存在顶级分组「'+name+'」';e.style.display='block';return; }
+  const id='dkgN'+(R.uid())+'_'+Date.now();
+  DK_GROUPS.push({id,name,parent});
+  if(parent)DK_G_EXPAND.add(parent);
+  toast('已在「'+(parent?tgName('dk',parent):'顶级')+'」下创建分组：'+name);
+  closeExGroupAdd();render();
+}
+function tgGroupDelAsk(ctx,id){
+  const R=TG_REG[ctx],g=R.getG().find(x=>x.id===id);if(!g)return;
+  const ids=[...tgDescendants(ctx,id)];
+  const n=R.rows().filter((r,i)=>ids.includes(tgRowGroupId(ctx,i))).length;
+  if(n){ toast('该分组下仍有 '+n+' 个'+R.label+'，请先调整任务分组');return; }
+  const sub=ids.length>1?'（含 '+(ids.length-1)+' 个子分组）':'';
+  matAsk('删除分组','确定删除分组「'+g.name+'」'+sub+'？删除后不可恢复。',()=>{
+    R.setG(R.getG().filter(x=>!ids.includes(x.id)));
+    ids.forEach(i=>R.exp.delete(i));
+    if(ids.includes(R.f().cat))R.f().cat='all';
+    toast('已删除分组：'+g.name);render();
+  });
+}
+
+/* ---- 新任务模块通用：组织树 + 角色（学员范围，与试题考试一致） ---- */
+function tgStOf(ctx){ return ctx==='cl'?CL:ctx==='dk'?DK:TT; }
+function ttPvDispatch(ctx){ if(ctx==='cl')updateClPreview(); else if(ctx==='dk')updateDkPreview(); else updateTtPreview(); }
+function tgOrgNode(ctx,node,depth,q){
+  const st=tgStOf(ctx);
+  if(q&&!orgMatches(node,q))return '';
+  const kids=node.c?orgNorm(node.c).filter(c=>orgMatches(c,q)):[];
+  const open=q?true:st.orgOpen.has(node.n);
+  const leaves=orgLeaves(node);
+  const selN=leaves.filter(l=>st.org.has(l)).length;
+  const checked=selN>0&&selN===leaves.length;
+  const ind=selN>0&&!checked;
+  let h='<div class="org-row'+(checked?' on':'')+'" style="padding-left:'+(depth*24+6)+'px">';
+  h+='<span class="org-arrow'+(open?' open':'')+(kids.length?'':' hide')+'" onclick="tgOrgToggle(\''+ctx+'\',\''+esc(node.n)+'\')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:11px;height:11px"><path d="M6 9l6 6 6-6z"/></svg></span>';
+  h+='<input type="checkbox" '+(checked?'checked':'')+(ind?' data-ind="1"':'')+' onchange="tgOrgCheck(\''+ctx+'\',\''+esc(node.n)+'\',this.checked)">';
+  h+='<span class="org-nm">'+esc(node.n)+'</span>';
+  if(ind)h+='<span class="org-part">'+selN+'/'+leaves.length+'</span>';
+  h+='</div>';
+  if(kids.length&&open)h+=kids.map(c=>tgOrgNode(ctx,c,depth+1,q)).join('');
+  return h;
+}
+function tgOrgRender(ctx){
+  const st=tgStOf(ctx);
+  const t=document.getElementById(ctx+'OrgTree');if(!t)return;
+  const se=document.getElementById(ctx+'OrgSearch'),q=(se&&se.value||'').trim();
+  t.innerHTML=ORG_TREE.map(n=>tgOrgNode(ctx,n,0,q)).join('')||'<div class="org-empty">未找到匹配的组织</div>';
+  t.querySelectorAll('input[data-ind]').forEach(el=>{el.indeterminate=true;});
+  const c=document.getElementById(ctx+'OrgCntN');if(c)c.textContent=st.org.size;
+  ttPvDispatch(ctx);
+}
+function tgOrgCheck(ctx,name,add){
+  const st=tgStOf(ctx);
+  const node=orgFind(ORG_TREE,name);if(!node)return;
+  orgLeaves(node).forEach(l=>add?st.org.add(l):st.org.delete(l));
+  tgOrgRender(ctx);
+}
+function tgOrgToggle(ctx,name){
+  const st=tgStOf(ctx);
+  st.orgOpen.has(name)?st.orgOpen.delete(name):st.orgOpen.add(name);
+  tgOrgRender(ctx);
+}
+function tgRoleChips(ctx){
+  const st=tgStOf(ctx);
+  const all=DB.roles.list.map(r=>r.name);
+  const allOn=all.length>0&&all.every(n=>st.roles.has(n));
+  return '<label class="rchip"><input type="checkbox" value="__ALL__"'+(allOn?' checked':'')+' onchange="tgRoleToggle(\''+ctx+'\',this.value,this.checked)"><span>全部</span></label>'+
+    DB.roles.list.map(r=>'<label class="rchip"><input type="checkbox" value="'+esc(r.name)+'"'+(st.roles.has(r.name)?' checked':'')+' onchange="tgRoleToggle(\''+ctx+'\',this.value,this.checked)"><span>'+esc(r.name)+'</span></label>').join('');
+}
+function tgRoleToggle(ctx,v,on){
+  const st=tgStOf(ctx);
+  if(v==='__ALL__'){ if(on)DB.roles.list.forEach(r=>st.roles.add(r.name)); else st.roles.clear(); }
+  else on?st.roles.add(v):st.roles.delete(v);
+  const w=document.getElementById(ctx+'RoleChips'); if(w)w.innerHTML=tgRoleChips(ctx);
+  ttPvDispatch(ctx);
+}
+function tgScopeHtml(ctx){
+  const st=tgStOf(ctx);
+  return '<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>学员范围<i>*</i><span class="opt-tip">（按组织下发，勾选上级组织将自动连选其全部下级）</span></label><span class="org-cnt">已选择<b id="'+ctx+'OrgCntN">'+st.org.size+'</b>家门店</span></div>'+
+    '<div class="org-box"><div class="org-search"><input id="'+ctx+'OrgSearch" placeholder="请输入搜索关键词" oninput="tgOrgRender(\''+ctx+'\')"></div><div class="org-tree" id="'+ctx+'OrgTree"></div></div>'+
+    '<div class="ex-note">任务有效时间范围内，新加入所选组织/角色的员工将自动获得此任务（手动推送任务推送后同样自动纳入）</div>'+
+    '<div class="form-err" id="'+ctx+'OrgErr">请选择学员范围（至少 1 家组织）</div></div>'+
+    '<div class="form-item" style="margin-bottom:16px"><label>角色<span class="opt-tip">（在所选组织范围内按角色过滤学员，可多选 · 来自「角色管理」· 不选则全部角色生效）</span></label>'+
+    '<div class="rchips" id="'+ctx+'RoleChips">'+tgRoleChips(ctx)+'</div></div>';
+}
+/* pn 页通用初始化（导航吸顶 + 滚动监听 + 章节高亮，与 initPrTaskNew 同骨架） */
+function tgInitPageNav(formId){
+  const c=document.querySelector('.content');
+  if(c){ if(!c.dataset.pnScroll){ c.addEventListener('scroll',pnScroll,{passive:true}); c.dataset.pnScroll='1'; } pnScroll(); }
+  const fh=document.querySelector('.page-head.ph-fix'),nv=document.getElementById('pnNav'),asd=document.querySelector('.pn-aside');
+  let stick=56;
+  if(fh&&nv){
+    const hh=fh.offsetHeight,nh=nv.offsetHeight;
+    nv.style.top=hh+'px';
+    if(asd)asd.style.top=(hh+nh)+'px';
+    stick=hh+nh+8;
+    document.querySelectorAll('.fsec[id]').forEach(s=>s.style.scrollMarginTop=stick+'px');
+  }
+  const links=[...document.querySelectorAll('#pnNav a')];
+  if(window.IntersectionObserver&&links.length){
+    const obs=new IntersectionObserver(es=>{
+      es.forEach(e=>{if(e.isIntersecting){const id=e.target.id;links.forEach(a=>a.classList.toggle('on',a.dataset.id===id));}});
+    },{rootMargin:'-'+stick+'px 0px -65% 0px',threshold:0});
+    document.querySelectorAll('.fsec[id]').forEach(s=>obs.observe(s));
+  }
+}
+
+/* ==================== 课程学习任务 ==================== */
+let CL={};
+const CL_COURSE_MAX=5;
+function clReset(){
+  CL={name:'',courses:[],cq:'',cgroup:'',group:'clUngrouped',taskType:'手动推送',timeS:'',timeE:'',attempts:'1',desc:''};
+  CL.org=new Set();
+  CL.roles=new Set();
+  CL.orgOpen=new Set(['总部','华北','北京','河北','长久集团']);
+}
+clReset();
+function clSet(k,v){ CL[k]=v; updateClPreview(); }
+function clStatusIdx(){ return DB.courseTasks.cols.findIndex(c=>c[0]==='状态'); }
+function clStatusOf(row){ return String(row[clStatusIdx()]).replace(/<[^>]+>/g,''); }
+function clName(i){ return String(DB.courseTasks.rows[i][0]).replace(/<[^>]+>/g,'').trim(); }
+/* 种子任务的分组映射（产品/E5→产品学习，销售/六步法/话术→流程学习） */
+CL_GROUPS.forEach(g=>{ if(CL_GROUPS.some(x=>x.parent===g.id)) CL_G_EXPAND.add(g.id); });
+DB.courseTasks.rows.forEach(function(r){
+  const nm=String(r[0]).replace(/<[^>]+>/g,'').trim();
+  if(!nm||CL_ROW_GROUPS[esc(nm)])return;
+  let gid='clUngrouped';
+  if(nm.indexOf('产品')>=0||nm.indexOf('E5')>=0)gid=tgIdByName('cl','产品学习');
+  else if(nm.indexOf('销售')>=0||nm.indexOf('六步法')>=0||nm.indexOf('话术')>=0)gid=tgIdByName('cl','流程学习');
+  CL_ROW_GROUPS[esc(nm)]=gid;
+});
+function clFiltered(){
+  return DB.courseTasks.rows.map((r,i)=>({r,i})).filter(({r,i})=>{
+    if(CL_F.cat==='all')return true;
+    if(CL_F.cat==='clUngrouped')return tgRowGroupId('cl',i)==='clUngrouped';
+    return tgDescendants('cl',CL_F.cat).has(tgRowGroupId('cl',i));
+  }).filter(({r})=>{
+    if(CL_F.kw&&String(r[0]).replace(/<[^>]+>/g,'').indexOf(CL_F.kw)<0)return false;
+    if(CL_F.st!=='全部'&&clStatusOf(r)!==CL_F.st)return false;
+    return true;
+  });
+}
+function pgCourseTasks(){
+  const rows=clFiltered();
+  const side='<div class="mat-side">'+
+    '<div class="tree-node'+(CL_F.cat==='all'?' on':'')+'" onclick="tgPick(\'cl\',\'all\')"><span class="tname">全部课程学习任务</span><span class="cnt all-b">'+tgCount('cl','all')+'</span></div>'+
+    '<input class="side-search" placeholder="请输入分组名称" oninput="tgSearch(\'cl\',this.value)">'+
+    '<div class="tree-node'+(CL_F.cat==='clUngrouped'?' on':'')+'" onclick="tgPick(\'cl\',\'clUngrouped\')"><span class="tname">未分组</span><span class="cnt">('+tgCount('cl','clUngrouped')+')</span></div>'+
+    '<div id="clGroupList">'+tgTreeHtml('cl',null,0)+'</div>'+
+    '<button class="side-add" onclick="openClGroupAdd()">+ 新建分组</button>'+
+  '</div>';
+  const head='<th style="width:34px"><input type="checkbox" onchange="clSelAll(this.checked)" title="全选"></th>'+
+    ['任务名称','参与学员','课程数','任务时间','完成率','状态','更新时间'].map(t=>'<th>'+t+'</th>').join('')+'<th>操作</th>';
+  const body=rows.map(({r,i})=>{
+    const st=clStatusOf(r);
+    const ops='<div class="row-ops">'+
+      (clXtraOf(clName(i)).taskType==='手动推送'?'<span class="lk" onclick="taskPushAsk(\'cl\','+i+')">推送</span>':'')+
+      '<span class="lk" onclick="clMoveGroup('+i+')">转移分组</span>'+
+      (st==='已停用'?'<span class="lk" onclick="clEnable('+i+')">启用</span>':'<span class="lk" onclick="clDisable('+i+')">停用</span>')+
+      '<span class="lk danger" onclick="clDelete('+i+')">删除</span></div>';
+    return '<tr>'+
+      '<td><input type="checkbox" data-i="'+i+'"'+(CL_SEL.has(i)?' checked':'')+' onchange="clSelRow(+this.dataset.i,this.checked)" title="选择"></td>'+
+      '<td><span class="lk" onclick="viewClTask('+i+')">'+r[0]+'</span></td>'+
+      r.slice(1).map(cell=>'<td>'+cell+'</td>').join('')+
+      '<td>'+ops+'</td></tr>';
+  }).join('');
+  return '<div class="page-head"><h1>课程学习任务</h1><span class="desc">共 '+DB.courseTasks.rows.length+' 个任务</span><div class="btns">'+headBtns('taskCourse')+'</div></div>'+
+    '<div class="org-layout" style="grid-template-columns:230px 1fr">'+side+'<div>'+
+    '<div class="filter-card">'+
+      '<div class="f-item"><span>关键词</span><input id="clFkw" placeholder="请输入任务名称" value="'+esc(CL_F.kw)+'" onkeydown="if(event.key===\'Enter\')clQuery()"></div>'+
+      '<div class="f-item"><span>任务状态</span><select id="clFst">'+['全部','未开始','进行中','已结束','已停用'].map(o=>'<option'+(CL_F.st===o?' selected':'')+'>'+o+'</option>').join('')+'</select></div>'+
+      '<button class="btn btn-p btn-sm" onclick="clQuery()">查询</button><button class="btn btn-g btn-sm" onclick="clResetF()">重置</button></div>'+
+    '<div class="tbl-card"><div class="tbl-scroll"><table><thead><tr>'+head+'</tr></thead><tbody>'+
+      (body||'<tr><td colspan="9"><div class="empty"><div class="ic">◌</div>暂无课程学习任务，点击右上角「新建课程学习任务」创建</div></td></tr>')+
+      '</tbody></table></div>'+
+      '<div class="tbl-foot">共 '+rows.length+' 条 · 每页 10 条<div class="pgs"><button>‹</button><button class="on">1</button><button>›</button></div></div></div>'+
+    '</div></div>';
+}
+function clQuery(){ CL_F.kw=($('clFkw').value||'').trim(); CL_F.st=$('clFst').value; render(); }
+function clResetF(){ CL_F={kw:'',cat:CL_F.cat,st:'全部'}; render(); }
+function clSelRow(i,on){ on?CL_SEL.add(i):CL_SEL.delete(i); }
+function clSelAll(on){ clFiltered().forEach(({i})=>{ on?CL_SEL.add(i):CL_SEL.delete(i); }); render(); }
+function clMoveGroup(i){
+  CL_MOVE_ON=true; CL_MOVE_MODE='one'; CL_MOVE_IDX=i; CL_MOVE_LIST=[];
+  $('exMoveTitle').textContent='转移分组';
+  $('exMoveName').textContent=clName(i);
+  $('exMoveSel').innerHTML=tgGroupOpts('cl',tgRowGroupId('cl',i));
+  $('exMoveMask').classList.add('on');
+}
+function clBatchGroup(){
+  const idx=[...CL_SEL].filter(i=>DB.courseTasks.rows[i]);
+  if(!idx.length){ toast('请先勾选需要修改分组的课程学习任务');return; }
+  CL_MOVE_ON=true; CL_MOVE_MODE='batch'; CL_MOVE_LIST=idx; CL_MOVE_IDX=-1;
+  $('exMoveTitle').textContent='批量修改分组';
+  $('exMoveName').textContent='已选择 '+idx.length+' 个课程学习任务';
+  $('exMoveSel').innerHTML=tgGroupOpts('cl','');
+  $('exMoveMask').classList.add('on');
+}
+function doClMove(){
+  const g=$('exMoveSel').value||'clUngrouped';
+  if(CL_MOVE_MODE==='one'&&CL_MOVE_IDX>=0&&DB.courseTasks.rows[CL_MOVE_IDX]){
+    const nm=clName(CL_MOVE_IDX);
+    CL_ROW_GROUPS[esc(nm)]=g; CL_ROW_GROUPS[nm]=g;
+    toast('已将「'+nm+'」转移到分组「'+tgName('cl',g)+'」');
+  }else if(CL_MOVE_MODE==='batch'){
+    let n=0;
+    CL_MOVE_LIST.forEach(i=>{ if(DB.courseTasks.rows[i]){ CL_ROW_GROUPS[esc(clName(i))]=g; CL_ROW_GROUPS[clName(i)]=g; n++; } });
+    CL_SEL.clear();
+    toast('已将 '+n+' 个课程学习任务转移到分组「'+tgName('cl',g)+'」');
+  }
+  closeExMove(); render();
+}
+function clDisable(i){
+  const nm=clName(i);
+  matAsk('停用任务','停用后学员端将不再展示该任务；任务不受其他限制，可随时重新启用。确认停用「'+nm+'」？',()=>{
+    DB.courseTasks.rows[i][clStatusIdx()]=ST('已停用',GRAY);
+    toast('已停用课程学习任务：'+nm); render();
+  });
+}
+function clEnable(i){
+  const nm=clName(i);
+  DB.courseTasks.rows[i][clStatusIdx()]=ST('进行中',INFO);
+  toast('已启用课程学习任务：'+nm); render();
+}
+function clDelete(i){
+  const nm=clName(i);
+  matAsk('删除任务','删除为物理删除：「'+nm+'」将从列表移除；已开始未完成的学员可继续完成任务，未开始的学员任务将直接消失，已完成任务的学员可在「任务记录」中查看。确认删除？',()=>{
+    DB.courseTasks.rows.splice(i,1);
+    CL_SEL.clear();
+    toast('已删除课程学习任务：'+nm); render();
+  });
+}
+/* 课程池（已发布课程）：卡片多选，最多 5 个 */
+function clCourseGroupSel(v){ CL.cgroup=v; clRenderCourses(); }
+function clCourseSearch(v){ CL.cq=(v||'').trim(); clRenderCourses(); }
+function clCourseToggle(name){
+  const i=CL.courses.indexOf(name);
+  if(i<0){
+    if(CL.courses.length>=CL_COURSE_MAX){ toast('最多选择 '+CL_COURSE_MAX+' 门课程，请先取消已选课程');return; }
+    CL.courses.push(name);
+  }else CL.courses.splice(i,1);
+  const e=document.getElementById('clCrErr'); if(e&&CL.courses.length)e.classList.remove('show');
+  clRenderCourses(); updateClPreview();
+}
+function clRenderCourses(){
+  const box=document.getElementById('clCourseList'); if(!box)return;
+  const items=pubCoursePool(CL.cgroup,CL.cq);
+  box.innerHTML=items.map(s=>{
+    const on=CL.courses.indexOf(s.name)>=0;
+    return '<label class="pr-scr'+(on?' on':'')+'" data-sc="'+esc(s.name)+'" onclick="clCourseToggle(this.dataset.sc);return false;">'+
+      '<span class="pr-scr-ck">'+(on?'✓':'')+'</span>'+
+      '<span style="flex:1;min-width:0"><span class="pr-scr-nm">'+esc(s.name)+'</span>'+
+      '<span class="pr-scr-meta">适用：'+esc(s.aud||'—')+' · '+esc(s.grp||'—')+' · '+esc(s.ch||'—')+' 个章节</span></span>'+
+      (on?'<span class="pr-scr-tag">已选</span>':'')+'</label>';
+  }).join('')||'<div class="org-empty">未找到匹配的课程（仅展示「已发布」课程）</div>';
+  const c=document.getElementById('clCrCnt'); if(c)c.textContent=CL.courses.length;
+  const ch=document.getElementById('clCrChips');
+  if(ch)ch.innerHTML=CL.courses.length?CL.courses.map(n=>'<span class="crs-mchip">'+esc(n)+'<span class="x" data-n="'+esc(n)+'" onclick="event.stopPropagation();clCourseToggle(this.dataset.n)">×</span></span>').join(''):'<span class="ex-note" style="margin-top:0">未选择课程</span>';
+}
+function pgCourseTaskNew(){
+  const W=[];
+  W.push('<div class="page-head ph-fix"><h1>新建课程学习任务</h1><span class="desc">选择课程、配置任务 · 提交后推送至学员端</span><div class="btns">'+
+    '<span class="pn-prog" id="clProg">必填：任务名称 * · 选择课程 * · 任务时间 * · 学员范围 *</span>'+
+    '<button class="btn btn-g" onclick="clCancel()">取消</button>'+
+    '<button class="btn btn-p" onclick="clSave()">提交</button></div></div>');
+  W.push('<div class="pn-nav" id="pnNav"><a data-id="clBase" class="on" onclick="pnNavTo(\'clBase\')">基础信息</a><a data-id="clCourses" onclick="pnNavTo(\'clCourses\')">选择课程</a><a data-id="clTask" onclick="pnNavTo(\'clTask\')">任务设置</a></div>');
+  W.push('<div class="pn-wrap"><div class="pn-main"><div class="pn-card" id="clForm">');
+  /* 1 · 基础信息 */
+  W.push('<div class="fsec" id="clBase"><h3>基础信息</h3></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><label>任务名称<i>*</i><span class="opt-tip">（必填 · 100 字以内）</span></label>'+
+    '<input id="clName" maxlength="100" placeholder="示例：银河E5产品知识学习月" oninput="clSet(\'name\',this.value)">'+
+    '<div class="form-err" id="clNameErr">任务名称为必填项，请填写后再提交</div></div>');
+  W.push('<div class="form-item" style="margin-bottom:14px"><label>任务说明<span class="opt-tip">（0/200 · 展示在学员端任务详情）</span></label>'+
+    '<div class="qb-ta"><textarea maxlength="200" placeholder="请输入任务说明" oninput="clSet(\'desc\',this.value)">'+esc(CL.desc)+'</textarea></div></div>');
+  /* 2 · 选择课程 */
+  W.push('<div class="fsec" id="clCourses"><h3>选择课程</h3></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>选择课程<i>*</i><span class="opt-tip">（从已创建的课程中选择，最多 '+CL_COURSE_MAX+' 个）</span></label>'+
+    '<span class="org-cnt">已选择<b id="clCrCnt">'+CL.courses.length+'</b>/'+CL_COURSE_MAX+' 门课程</span></div>'+
+    '<div class="org-search"><select id="clCourseGroup" style="flex:none;width:170px" onchange="clSet(\'cgroup\',this.value);clRenderCourses()">'+crsFilterOpts(CL.cgroup)+'</select><input id="clCourseSearch" placeholder="请输入课程名称" oninput="clCourseSearch(this.value)"></div>'+
+    '<div class="pr-scr-list" id="clCourseList"></div>'+
+    '<div style="margin-top:10px" id="clCrChips"></div>'+
+    '<div class="form-err" id="clCrErr">请至少选择 1 门课程</div></div>');
+  /* 3 · 任务设置（含学员范围） */
+  W.push('<div class="fsec" id="clTask"><h3>任务设置</h3></div>');
+  if(TT_CHAIN_K)W.push('<div class="ex-note" style="margin-top:12px">本任务由培训任务「任务链条」创建：与培训任务相互独立，任务设置在此单独配置，保存后自动返回培训任务并加入链条</div>');
+    W.push('<div class="form-row"><div class="form-item"><label>所属分组<i>*</i></label><select onchange="clSet(\'group\',this.value)">'+tgGroupOpts('cl',CL.group)+'</select></div>'+
+    '<div class="form-item"><label>任务类型<span class="opt-tip">（自动推送：到任务开始时间自动下发给学员范围内学员）</span></label><div class="rchips">'+rOpt('clTaskType',['手动推送','自动推送'],CL.taskType)+'</div></div></div>');
+    W.push('<div class="form-row"><div class="form-item"><label>任务时间<i>*</i></label><div style="display:flex;align-items:center;gap:8px">'+
+    '<input type="datetime-local" value="'+esc(CL.timeS)+'" onchange="clSet(\'timeS\',this.value)"><span style="color:var(--t3)">至</span>'+
+    '<input type="datetime-local" value="'+esc(CL.timeE)+'" onchange="clSet(\'timeE\',this.value)"></div>'+
+    '<div class="form-err" id="clTimeErr">请设置任务起止时间，且开始时间需早于结束时间</div></div></div>');
+    W.push('<div class="ex-note" style="margin:10px 0">完成机制：配置的课程全部学习至 100% 记为完成；未完成前可反复学习。</div>');
+    W.push(tgScopeHtml('cl'));
+  W.push('</div></div>');
+  /* 右侧实时任务配置总览 */
+  W.push('<div class="pn-aside"><div class="pn-card pn-pv"><h3 class="pn-pv-title">实时任务配置总览<span class="live">实时</span></h3>'+
+    '<div class="qb-pv-badges" id="clPvBadges"></div>'+
+    '<div class="qb-pv-stem" id="clPvName">未命名课程学习任务</div>'+
+    '<div id="clPvRows" style="padding:12px 0"></div>'+
+    '<div class="ex-pv-dots" id="clPvDots"></div></div></div>');
+  W.push('</div>');
+  W.push('<button class="pn-totop" id="pnTotop" title="返回顶部" onclick="pnScrollTop()">'+icon('up',18)+'</button>');
+  return W.join('');
+}
+function updateClPreview(){
+  const g=id=>document.getElementById(id);
+  if(!g('clPvName'))return;
+  const prog=g('clProg');
+  if(prog){
+    const nameOk=!!(CL.name||'').trim();
+    const crsOk=CL.courses.length>=1&&CL.courses.length<=CL_COURSE_MAX;
+    const timeOk=(!!CL.timeS&&!!CL.timeE&&CL.timeS<CL.timeE);
+    const orgOk=CL.org.size>0;
+    if(nameOk&&crsOk&&timeOk&&orgOk){prog.textContent='✓ 必填项已填写，可提交';prog.classList.add('ok');}
+    else{prog.textContent='必填：任务名称 * · 选择课程 * · 任务时间 * · 学员范围 *';prog.classList.remove('ok');}
+  }
+  g('clPvName').textContent=(CL.name||'').trim()||'未命名课程学习任务';
+  g('clPvBadges').innerHTML='<span class="qb-pv-badge">'+esc(CL.taskType)+'</span><span class="qb-pv-badge lv">'+tgName('cl',CL.group)+'</span>';
+  const rows=[
+    ['选择课程',CL.courses.length?('已选 '+CL.courses.length+'/'+CL_COURSE_MAX+' · '+CL.courses.map(s=>s.length>10?s.slice(0,10)+'…':s).join('、')):'未选择'],
+    ['所属分组',tgName('cl',CL.group)],
+    ['任务时间',(CL.timeS&&CL.timeE)?exFmtDT(CL.timeS)+' ~ '+exFmtDT(CL.timeE):'未设置'],
+    ['学员范围',(CL.org.size?CL.org.size+' 家组织':'未选择')+(CL.roles.size?' · 角色 '+[...CL.roles].join('、'):'')]
+  ];
+  g('clPvRows').innerHTML=rows.map(x=>'<div class="ex-pv-row"><span class="k">'+x[0]+'</span><span class="v">'+esc(String(x[1]))+'</span></div>').join('');
+  g('clPvDots').innerHTML='';
+}
+function initClTaskNew(){
+  const form=document.getElementById('clForm');if(!form)return;
+  form.addEventListener('change',function(e){
+    const n=e.target&&e.target.name;
+    if(n==='clTaskType'){ CL.taskType=e.target.value; }
+    updateClPreview();
+  });
+  tgOrgRender('cl'); clRenderCourses();
+  tgInitPageNav('clForm');
+  updateClPreview();
+}
+function clValidate(){
+  const g=id=>document.getElementById(id);
+  const err=(id,msg)=>{ const e=g(id); if(e){e.textContent=msg;e.classList.add('show');} return msg; };
+  ['clNameErr','clCrErr','clTimeErr','clOrgErr'].forEach(id=>{const e=g(id);if(e)e.classList.remove('show');});
+  const nameEl=g('clName'); if(nameEl)nameEl.style.borderColor='';
+  if(!(CL.name||'').trim()){ err('clNameErr','任务名称为必填项，请填写后再提交'); if(nameEl)nameEl.style.borderColor='var(--bad)'; return '请填写任务名称'; }
+  if(!CL.courses.length)return err('clCrErr','请至少选择 1 门课程');
+  {
+    if(!CL.timeS||!CL.timeE)return err('clTimeErr','请设置任务起止时间');
+    if(CL.timeS>=CL.timeE)return err('clTimeErr','任务开始时间需早于结束时间');
+    if(!CL.org.size)return err('clOrgErr','请选择学员范围（至少 1 家组织）');
+  }
+  return '';
+}
+function clSave(){
+  const e=clValidate(); if(e){ toast(e); return; }
+  const name=CL.name.trim();
+  const row=[esc(name),String(CL.org.size),String(CL.courses.length),exFmtDT(CL.timeS)+' ~ '+exFmtDT(CL.timeE),'—',ST('未开始',GRAY),crsNow()];
+  DB.courseTasks.rows.unshift(row);
+  CL_ROW_GROUPS[esc(name)]=CL.group; CL_ROW_GROUPS[name]=CL.group;
+  const snap=Object.assign({},CL);
+  snap.org=[...CL.org]; snap.roles=[...CL.roles];
+  CL_XTRA[esc(name)]=snap;
+  clReset();
+  if(TT_CHAIN_K){ const k=TT_CHAIN_K; TT_CHAIN_K=''; ttChainAdd(k,name); go('ttTaskNew'); toast('已创建课程学习任务「'+name.replace(/<[^>]+>/g,'')+'」并加入任务链条'); return; }
+  go('taskCourse');
+  toast('已创建课程学习任务：'+name.replace(/<[^>]+>/g,''));
+}
+function clCancel(){ clReset(); if(TT_CHAIN_K){TT_CHAIN_K=''; go('ttTaskNew'); toast('已取消创建，返回培训任务'); return;} go('taskCourse'); }
+/* ================== 培训中心 · 课程学习任务模块结束 ================== */
+
+/* ==================== 对话考试任务 ==================== */
+let DK={};
+const DK_SCRIPT_MAX=5;
+function dkReset(){
+  /* 每个已选剧本单独设置及格分（打标分数）：DK.passes[剧本名] = 分数 */
+  DK={name:'',scripts:[],sq:'',sgroup:'',passes:{},group:'dkUngrouped',taskType:'手动推送',timeS:'',timeE:'',attempts:'1',anticheat:false,desc:''};
+  DK.org=new Set();
+  DK.roles=new Set();
+  DK.orgOpen=new Set(['总部','华北','北京','河北','长久集团']);
+}
+dkReset();
+function dkSet(k,v){ DK[k]=v; updateDkPreview(); }
+function dkStatusIdx(){ return DB.dialogExams.cols.findIndex(c=>c[0]==='状态'); }
+function dkStatusOf(row){ return String(row[dkStatusIdx()]).replace(/<[^>]+>/g,''); }
+function dkName(i){ return String(DB.dialogExams.rows[i][0]).replace(/<[^>]+>/g,'').trim(); }
+/* 种子任务的分组映射（接待→接待服务考核，其余→销售话术考核） */
+DK_GROUPS.forEach(g=>{ if(DK_GROUPS.some(x=>x.parent===g.id)) DK_G_EXPAND.add(g.id); });
+DB.dialogExams.rows.forEach(function(r){
+  const nm=String(r[0]).replace(/<[^>]+>/g,'').trim();
+  if(!nm||DK_ROW_GROUPS[esc(nm)])return;
+  let gid='dkUngrouped';
+  if(nm.indexOf('接待')>=0)gid=tgIdByName('dk','接待服务考核');
+  else gid=tgIdByName('dk','销售话术考核');
+  DK_ROW_GROUPS[esc(nm)]=gid;
+});
+function dkFiltered(){
+  return DB.dialogExams.rows.map((r,i)=>({r,i})).filter(({r,i})=>{
+    if(DK_F.cat==='all')return true;
+    if(DK_F.cat==='dkUngrouped')return tgRowGroupId('dk',i)==='dkUngrouped';
+    return tgDescendants('dk',DK_F.cat).has(tgRowGroupId('dk',i));
+  }).filter(({r})=>{
+    if(DK_F.kw&&String(r[0]).replace(/<[^>]+>/g,'').indexOf(DK_F.kw)<0)return false;
+    if(DK_F.st!=='全部'&&dkStatusOf(r)!==DK_F.st)return false;
+    return true;
+  });
+}
+function pgDialogExams(){
+  const rows=dkFiltered();
+  const side='<div class="mat-side">'+
+    '<div class="tree-node'+(DK_F.cat==='all'?' on':'')+'" onclick="tgPick(\'dk\',\'all\')"><span class="tname">全部对话考试</span><span class="cnt all-b">'+tgCount('dk','all')+'</span></div>'+
+    '<input class="side-search" placeholder="请输入分组名称" oninput="tgSearch(\'dk\',this.value)">'+
+    '<div class="tree-node'+(DK_F.cat==='dkUngrouped'?' on':'')+'" onclick="tgPick(\'dk\',\'dkUngrouped\')"><span class="tname">未分组</span><span class="cnt">('+tgCount('dk','dkUngrouped')+')</span></div>'+
+    '<div id="dkGroupList">'+tgTreeHtml('dk',null,0)+'</div>'+
+    '<button class="side-add" onclick="openDkGroupAdd()">+ 新建分组</button>'+
+  '</div>';
+  const head='<th style="width:34px"><input type="checkbox" onchange="dkSelAll(this.checked)" title="全选"></th>'+
+    ['任务名称','参与学员','剧本数','及格分','任务时间','完成率','状态','更新时间'].map(t=>'<th>'+t+'</th>').join('')+'<th>操作</th>';
+  const body=rows.map(({r,i})=>{
+    const st=dkStatusOf(r);
+    const ops='<div class="row-ops">'+
+      (dkXtraOf(dkName(i)).taskType==='手动推送'?'<span class="lk" onclick="taskPushAsk(\'dk\','+i+')">推送</span>':'')+
+      '<span class="lk" onclick="dkMoveGroup('+i+')">转移分组</span>'+
+      (st==='已停用'?'<span class="lk" onclick="dkEnable('+i+')">启用</span>':'<span class="lk" onclick="dkDisable('+i+')">停用</span>')+
+      '<span class="lk danger" onclick="dkDelete('+i+')">删除</span></div>';
+    return '<tr>'+
+      '<td><input type="checkbox" data-i="'+i+'"'+(DK_SEL.has(i)?' checked':'')+' onchange="dkSelRow(+this.dataset.i,this.checked)" title="选择"></td>'+
+      '<td><span class="lk" onclick="viewDkTask('+i+')">'+r[0]+'</span></td>'+
+      r.slice(1).map(cell=>'<td>'+cell+'</td>').join('')+
+      '<td>'+ops+'</td></tr>';
+  }).join('');
+  return '<div class="page-head"><h1>对话考试</h1><span class="desc">共 '+DB.dialogExams.rows.length+' 个任务</span><div class="btns">'+headBtns('examDialog')+'</div></div>'+
+    '<div class="org-layout" style="grid-template-columns:230px 1fr">'+side+'<div>'+
+    '<div class="filter-card">'+
+      '<div class="f-item"><span>关键词</span><input id="dkFkw" placeholder="请输入任务名称" value="'+esc(DK_F.kw)+'" onkeydown="if(event.key===\'Enter\')dkQuery()"></div>'+
+      '<div class="f-item"><span>任务状态</span><select id="dkFst">'+['全部','未开始','进行中','已结束','已停用'].map(o=>'<option'+(DK_F.st===o?' selected':'')+'>'+o+'</option>').join('')+'</select></div>'+
+      '<button class="btn btn-p btn-sm" onclick="dkQuery()">查询</button><button class="btn btn-g btn-sm" onclick="dkResetF()">重置</button></div>'+
+    '<div class="tbl-card"><div class="tbl-scroll"><table><thead><tr>'+head+'</tr></thead><tbody>'+
+      (body||'<tr><td colspan="10"><div class="empty"><div class="ic">◌</div>暂无对话考试任务，点击右上角「新建对话考试」创建</div></td></tr>')+
+      '</tbody></table></div>'+
+      '<div class="tbl-foot">共 '+rows.length+' 条 · 每页 10 条<div class="pgs"><button>‹</button><button class="on">1</button><button>›</button></div></div></div>'+
+    '</div></div>';
+}
+function dkQuery(){ DK_F.kw=($('dkFkw').value||'').trim(); DK_F.st=$('dkFst').value; render(); }
+function dkResetF(){ DK_F={kw:'',cat:DK_F.cat,st:'全部'}; render(); }
+function dkSelRow(i,on){ on?DK_SEL.add(i):DK_SEL.delete(i); }
+function dkSelAll(on){ dkFiltered().forEach(({i})=>{ on?DK_SEL.add(i):DK_SEL.delete(i); }); render(); }
+function dkMoveGroup(i){
+  DK_MOVE_ON=true; DK_MOVE_MODE='one'; DK_MOVE_IDX=i; DK_MOVE_LIST=[];
+  $('exMoveTitle').textContent='转移分组';
+  $('exMoveName').textContent=dkName(i);
+  $('exMoveSel').innerHTML=tgGroupOpts('dk',tgRowGroupId('dk',i));
+  $('exMoveMask').classList.add('on');
+}
+function dkBatchGroup(){
+  const idx=[...DK_SEL].filter(i=>DB.dialogExams.rows[i]);
+  if(!idx.length){ toast('请先勾选需要修改分组的对话考试任务');return; }
+  DK_MOVE_ON=true; DK_MOVE_MODE='batch'; DK_MOVE_LIST=idx; DK_MOVE_IDX=-1;
+  $('exMoveTitle').textContent='批量修改分组';
+  $('exMoveName').textContent='已选择 '+idx.length+' 个对话考试任务';
+  $('exMoveSel').innerHTML=tgGroupOpts('dk','');
+  $('exMoveMask').classList.add('on');
+}
+function doDkMove(){
+  const g=$('exMoveSel').value||'dkUngrouped';
+  if(DK_MOVE_MODE==='one'&&DK_MOVE_IDX>=0&&DB.dialogExams.rows[DK_MOVE_IDX]){
+    const nm=dkName(DK_MOVE_IDX);
+    DK_ROW_GROUPS[esc(nm)]=g; DK_ROW_GROUPS[nm]=g;
+    toast('已将「'+nm+'」转移到分组「'+tgName('dk',g)+'」');
+  }else if(DK_MOVE_MODE==='batch'){
+    let n=0;
+    DK_MOVE_LIST.forEach(i=>{ if(DB.dialogExams.rows[i]){ DK_ROW_GROUPS[esc(dkName(i))]=g; DK_ROW_GROUPS[dkName(i)]=g; n++; } });
+    DK_SEL.clear();
+    toast('已将 '+n+' 个对话考试任务转移到分组「'+tgName('dk',g)+'」');
+  }
+  closeExMove(); render();
+}
+function dkDisable(i){
+  const nm=dkName(i);
+  matAsk('停用任务','停用后学员端将不再展示该任务；任务不受其他限制，可随时重新启用。确认停用「'+nm+'」？',()=>{
+    DB.dialogExams.rows[i][dkStatusIdx()]=ST('已停用',GRAY);
+    toast('已停用对话考试任务：'+nm); render();
+  });
+}
+function dkEnable(i){
+  const nm=dkName(i);
+  DB.dialogExams.rows[i][dkStatusIdx()]=ST('进行中',INFO);
+  toast('已启用对话考试任务：'+nm); render();
+}
+function dkDelete(i){
+  const nm=dkName(i);
+  matAsk('删除任务','删除为物理删除：「'+nm+'」将从列表移除；已开始未完成的学员可继续完成任务，未开始的学员任务将直接消失，已完成任务的学员可在「任务记录」中查看。确认删除？',()=>{
+    DB.dialogExams.rows.splice(i,1);
+    DK_SEL.clear();
+    toast('已删除对话考试任务：'+nm); render();
+  });
+}
+/* 剧本池（已发布剧本）：卡片多选，最多 5 个，分组筛选 + 搜索 */
+function dkScriptGroupSel(v){ DK.sgroup=v; dkRenderScripts(); }
+function dkScriptSearch(v){ DK.sq=(v||'').trim(); dkRenderScripts(); }
+function dkScriptToggle(name){
+  const i=DK.scripts.indexOf(name);
+  if(i<0){
+    if(DK.scripts.length>=DK_SCRIPT_MAX){ toast('最多选择 '+DK_SCRIPT_MAX+' 个剧本，请先取消已选剧本');return; }
+    DK.scripts.push(name);
+  }else{ DK.scripts.splice(i,1); delete DK.passes[name]; }
+  const e=document.getElementById('dkScrErr'); if(e&&DK.scripts.length)e.classList.remove('show');
+  dkRenderScripts(); updateDkPreview();
+}
+/* 每个已选剧本的及格分（打标分数 0-100，达到即合格） */
+function dkPassOk(){
+  return DK.scripts.length>0&&DK.scripts.every(n=>{const p=parseFloat(DK.passes[n]);return p>0&&p<=100;});
+}
+function dkPassInp(el){
+  DK.passes[el.dataset.n]=el.value;
+  const e=document.getElementById('dkPassErr'); if(e&&dkPassOk())e.classList.remove('show');
+  updateDkPreview();
+}
+function dkPassRowsHtml(){
+  return DK.scripts.map(n=>'<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">'+
+    '<span class="crs-mchip" style="flex:none;max-width:300px">'+esc(n)+'</span>'+
+    '<input type="number" min="0" max="100" step="1" placeholder="如：80" value="'+esc(DK.passes[n]||'')+'" data-n="'+esc(n)+'" oninput="dkPassInp(this)" style="width:140px">'+
+    '<span style="font-size:13px;color:var(--t2)">分（达到即合格）</span></div>').join('')||'<span class="ex-note" style="margin-top:0">请先在上方选择剧本，选择后为每个剧本设置及格分</span>';
+}
+function dkRenderPassRows(){ const w=document.getElementById('dkPassRows'); if(w)w.innerHTML=dkPassRowsHtml(); }
+function dkRenderScripts(){
+  const box=document.getElementById('dkScriptList'); if(!box)return;
+  const items=pubScriptPool(DK.sgroup,DK.sq);
+  box.innerHTML=items.map(s=>{
+    const on=DK.scripts.indexOf(s.name)>=0;
+    return '<label class="pr-scr'+(on?' on':'')+'" data-sc="'+esc(s.name)+'" onclick="dkScriptToggle(this.dataset.sc);return false;">'+
+      '<span class="pr-scr-ck">'+(on?'✓':'')+'</span>'+
+      '<span style="flex:1;min-width:0"><span class="pr-scr-nm">'+esc(s.name)+'</span>'+
+      '<span class="pr-scr-meta">适用：'+esc(s.aud||'—')+' · '+esc(s.org||'—')+' · '+esc(s.stages||'—')+' 个会话阶段</span></span>'+
+      (on?'<span class="pr-scr-tag">已选</span>':'')+'</label>';
+  }).join('')||'<div class="org-empty">未找到匹配的剧本（仅展示「已发布」剧本）</div>';
+  const c=document.getElementById('dkScrCnt'); if(c)c.textContent=DK.scripts.length;
+  const ch=document.getElementById('dkScrChips');
+  if(ch)ch.innerHTML=DK.scripts.length?DK.scripts.map(n=>'<span class="crs-mchip">'+esc(n)+'<span class="x" data-n="'+esc(n)+'" onclick="event.stopPropagation();dkScriptToggle(this.dataset.n)">×</span></span>').join(''):'<span class="ex-note" style="margin-top:0">未选择剧本</span>';
+  dkRenderPassRows();
+}
+/* 防作弊开关（与试题考试一致） */
+function dkSw(key,label,tip){
+  return '<label class="ex-swrow"><span class="lab">'+label+'</span>'+
+    '<span class="sw"><input type="checkbox"'+(DK[key]?' checked':'')+' onchange="DK[\''+key+'\']=this.checked;updateDkPreview()"><i></i></span>'+
+    (tip?'<span class="tip">'+tip+'</span>':'')+'</label>';
+}
+function pgDialogTaskNew(){
+  const W=[];
+  W.push('<div class="page-head ph-fix"><h1>新建对话考试</h1><span class="desc">选择剧本、设置各剧本及格分 · 提交后推送至学员端</span><div class="btns">'+
+    '<span class="pn-prog" id="dkProg">必填：任务名称 * · 选择剧本 * · 打标分数 * · 任务时间 * · 学员范围 *</span>'+
+    '<button class="btn btn-g" onclick="dkCancel()">取消</button>'+
+    '<button class="btn btn-p" onclick="dkSave()">提交</button></div></div>');
+  W.push('<div class="pn-nav" id="pnNav"><a data-id="dkBase" class="on" onclick="pnNavTo(\'dkBase\')">基础信息</a><a data-id="dkScripts" onclick="pnNavTo(\'dkScripts\')">选择剧本</a><a data-id="dkTask" onclick="pnNavTo(\'dkTask\')">任务设置</a></div>');
+  W.push('<div class="pn-wrap"><div class="pn-main"><div class="pn-card" id="dkForm">');
+  /* 1 · 基础信息 */
+  W.push('<div class="fsec" id="dkBase"><h3>基础信息</h3></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><label>任务名称<i>*</i><span class="opt-tip">（必填 · 100 字以内）</span></label>'+
+    '<input id="dkName" maxlength="100" placeholder="示例：进店接待对话认证考核" oninput="dkSet(\'name\',this.value)">'+
+    '<div class="form-err" id="dkNameErr">任务名称为必填项，请填写后再提交</div></div>');
+  W.push('<div class="form-item" style="margin-bottom:14px"><label>任务说明<span class="opt-tip">（0/200 · 展示在学员端任务详情）</span></label>'+
+    '<div class="qb-ta"><textarea maxlength="200" placeholder="请输入任务说明" oninput="dkSet(\'desc\',this.value)">'+esc(DK.desc)+'</textarea></div></div>');
+  /* 2 · 选择剧本（含打标分数） */
+  W.push('<div class="fsec" id="dkScripts"><h3>选择剧本</h3></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>选择剧本<i>*</i><span class="opt-tip">（从已创建的剧本中选择，最多 '+DK_SCRIPT_MAX+' 个）</span></label>'+
+    '<span class="org-cnt">已选择<b id="dkScrCnt">'+DK.scripts.length+'</b>/'+DK_SCRIPT_MAX+' 个剧本</span></div>'+
+    '<div class="org-search"><select id="dkScriptGroup" style="flex:none;width:170px" onchange="dkSet(\'sgroup\',this.value);dkRenderScripts()">'+scFilterOpts(DK.sgroup)+'</select><input id="dkScriptSearch" placeholder="请输入剧本名称" oninput="dkScriptSearch(this.value)"></div>'+
+    '<div class="pr-scr-list" id="dkScriptList"></div>'+
+    '<div style="margin-top:10px" id="dkScrChips"></div>'+
+    '<div class="form-err" id="dkScrErr">请至少选择 1 个剧本</div></div>');
+  W.push('<div class="form-item" style="margin-bottom:14px"><label>剧本及格分（打标分数）<i>*</i><span class="opt-tip">（选择剧本后，为每个剧本单独设置打标分数 · 0-100 分 · 学员在该剧本的得分达到及格分记为合格）</span></label>'+
+    '<div id="dkPassRows">'+dkPassRowsHtml()+'</div>'+
+    '<div class="form-err" id="dkPassErr">请为每个已选剧本设置及格分（0-100 分）</div></div>');
+  /* 3 · 任务设置（含学员范围） */
+  W.push('<div class="fsec" id="dkTask"><h3>任务设置</h3></div>');
+  if(TT_CHAIN_K)W.push('<div class="ex-note" style="margin-top:12px">本任务由培训任务「任务链条」创建：与培训任务相互独立，任务设置在此单独配置，保存后自动返回培训任务并加入链条</div>');
+    W.push('<div class="form-row"><div class="form-item"><label>所属分组<i>*</i></label><select onchange="dkSet(\'group\',this.value)">'+tgGroupOpts('dk',DK.group)+'</select></div>'+
+    '<div class="form-item"><label>任务类型<span class="opt-tip">（自动推送：到任务开始时间自动下发给学员范围内学员）</span></label><div class="rchips">'+rOpt('dkTaskType',['手动推送','自动推送'],DK.taskType)+'</div></div></div>');
+    W.push('<div class="form-row"><div class="form-item"><label>任务时间<i>*</i></label><div style="display:flex;align-items:center;gap:8px">'+
+    '<input type="datetime-local" value="'+esc(DK.timeS)+'" onchange="dkSet(\'timeS\',this.value)"><span style="color:var(--t3)">至</span>'+
+    '<input type="datetime-local" value="'+esc(DK.timeE)+'" onchange="dkSet(\'timeE\',this.value)"></div>'+
+    '<div class="form-err" id="dkTimeErr">请设置任务起止时间，且开始时间需早于结束时间</div></div></div>');
+    W.push(dkSw('anticheat','防作弊（预留）','预留配置，本期不生效；开启后学员考试中切屏、退出全屏等行为将被记录'));
+  /* 学员范围（组织 + 角色）· 并入任务设置 */
+    W.push('<div class="ex-note" style="margin:10px 0">完成机制：每个剧本生成陪练报告且得分达到该剧本及格分记为合格；未通过可重考。</div>');
+    W.push(tgScopeHtml('dk'));
+  W.push('</div></div>');
+  /* 右侧实时任务配置总览 */
+  W.push('<div class="pn-aside"><div class="pn-card pn-pv"><h3 class="pn-pv-title">实时任务配置总览<span class="live">实时</span></h3>'+
+    '<div class="qb-pv-badges" id="dkPvBadges"></div>'+
+    '<div class="qb-pv-stem" id="dkPvName">未命名对话考试</div>'+
+    '<div id="dkPvRows" style="padding:12px 0"></div>'+
+    '<div class="ex-pv-dots" id="dkPvDots"></div></div></div>');
+  W.push('</div>');
+  W.push('<button class="pn-totop" id="pnTotop" title="返回顶部" onclick="pnScrollTop()">'+icon('up',18)+'</button>');
+  return W.join('');
+}
+function updateDkPreview(){
+  const g=id=>document.getElementById(id);
+  if(!g('dkPvName'))return;
+  const prog=g('dkProg');
+  if(prog){
+    const nameOk=!!(DK.name||'').trim();
+    const scrOk=DK.scripts.length>=1&&DK.scripts.length<=DK_SCRIPT_MAX;
+    const passOk=dkPassOk();
+    const timeOk=(!!DK.timeS&&!!DK.timeE&&DK.timeS<DK.timeE);
+    const orgOk=DK.org.size>0;
+    if(nameOk&&scrOk&&passOk&&timeOk&&orgOk){prog.textContent='✓ 必填项已填写，可提交';prog.classList.add('ok');}
+    else{prog.textContent='必填：任务名称 * · 选择剧本 * · 剧本及格分 * · 任务时间 * · 学员范围 *';prog.classList.remove('ok');}
+  }
+  g('dkPvName').textContent=(DK.name||'').trim()||'未命名对话考试';
+  g('dkPvBadges').innerHTML='<span class="qb-pv-badge">'+esc(DK.taskType)+'</span><span class="qb-pv-badge lv">'+tgName('dk',DK.group)+'</span>';
+  const rows=[
+    ['选择剧本',DK.scripts.length?('已选 '+DK.scripts.length+'/'+DK_SCRIPT_MAX+' · '+DK.scripts.map(s=>s.length>10?s.slice(0,10)+'…':s).join('、')):'未选择'],
+    ['剧本及格分',DK.scripts.length?DK.scripts.map(n=>{const p=parseFloat(DK.passes[n]);return (n.length>8?n.slice(0,8)+'…':n)+' '+(p>0?p+' 分':'未设置');}).join('、'):'未设置'],
+    ['所属分组',tgName('dk',DK.group)],
+    ['任务时间',(DK.timeS&&DK.timeE)?exFmtDT(DK.timeS)+' ~ '+exFmtDT(DK.timeE):'未设置'],
+    ['学员范围',(DK.org.size?DK.org.size+' 家组织':'未选择')+(DK.roles.size?' · 角色 '+[...DK.roles].join('、'):'')]
+  ];
+  g('dkPvRows').innerHTML=rows.map(x=>'<div class="ex-pv-row"><span class="k">'+x[0]+'</span><span class="v">'+esc(String(x[1]))+'</span></div>').join('');
+  const dots=[['防作弊（预留）',DK.anticheat]];
+  g('dkPvDots').innerHTML=dots.map(d=>'<span class="ex-dot'+(d[1]?' on':'')+'">'+d[0]+(d[1]?' ✓':'')+'</span>').join('');
+}
+function initDkTaskNew(){
+  const form=document.getElementById('dkForm');if(!form)return;
+  form.addEventListener('change',function(e){
+    const n=e.target&&e.target.name;
+    if(n==='dkTaskType'){ DK.taskType=e.target.value; }
+    updateDkPreview();
+  });
+  tgOrgRender('dk'); dkRenderScripts();
+  tgInitPageNav('dkForm');
+  updateDkPreview();
+}
+function dkValidate(){
+  const g=id=>document.getElementById(id);
+  const err=(id,msg)=>{ const e=g(id); if(e){e.textContent=msg;e.classList.add('show');} return msg; };
+  ['dkNameErr','dkScrErr','dkPassErr','dkTimeErr','dkOrgErr'].forEach(id=>{const e=g(id);if(e)e.classList.remove('show');});
+  const nameEl=g('dkName'); if(nameEl)nameEl.style.borderColor='';
+  if(!(DK.name||'').trim()){ err('dkNameErr','任务名称为必填项，请填写后再提交'); if(nameEl)nameEl.style.borderColor='var(--bad)'; return '请填写任务名称'; }
+  if(!DK.scripts.length)return err('dkScrErr','请至少选择 1 个剧本');
+  if(!dkPassOk())return err('dkPassErr','请为每个已选剧本设置及格分（0-100 分）');
+  {
+    if(!DK.timeS||!DK.timeE)return err('dkTimeErr','请设置任务起止时间');
+    if(DK.timeS>=DK.timeE)return err('dkTimeErr','任务开始时间需早于结束时间');
+    if(!DK.org.size)return err('dkOrgErr','请选择学员范围（至少 1 家组织）');
+  }
+  return '';
+}
+function dkSave(){
+  const e=dkValidate(); if(e){ toast(e); return; }
+  const name=DK.name.trim();
+  const row=[esc(name),String(DK.org.size),String(DK.scripts.length),DK.scripts.map(n=>{const p=parseFloat(DK.passes[n])||0;return String(Math.round(p*10)/10);}).join('/'),exFmtDT(DK.timeS)+' ~ '+exFmtDT(DK.timeE),'—',ST('未开始',GRAY),crsNow()];
+  DB.dialogExams.rows.unshift(row);
+  DK_ROW_GROUPS[esc(name)]=DK.group; DK_ROW_GROUPS[name]=DK.group;
+  const snap=Object.assign({},DK);
+  snap.org=[...DK.org]; snap.roles=[...DK.roles];
+  DK_XTRA[esc(name)]=snap;
+  dkReset();
+  if(TT_CHAIN_K){ const k=TT_CHAIN_K; TT_CHAIN_K=''; ttChainAdd(k,name); go('ttTaskNew'); toast('已创建对话考试「'+name.replace(/<[^>]+>/g,'')+'」并加入任务链条'); return; }
+  go('examDialog');
+  toast('已创建对话考试：'+name.replace(/<[^>]+>/g,''));
+}
+function dkCancel(){ dkReset(); if(TT_CHAIN_K){TT_CHAIN_K=''; go('ttTaskNew'); toast('已取消创建，返回培训任务'); return;} go('examDialog'); }
+/* ================== 培训中心 · 对话考试任务模块结束 ================== */
+/* ================== 培训中心 · 培训任务（任务链条编排） ==================
+   列表：分组树 + 筛选 + 表格（TG_REG 'tt'，分组弹窗/转移弹窗复用试题考试弹窗，TT_GCTX / TT_MOVE_ON 调度）
+   新建：基础信息 / 任务链条（课程学习 → 陪练 → 对话考试 → 试题考试，是否包含与顺序可配置；
+        各步骤跳转对应任务创建页（含各自「任务设置」）/ 培训任务自身任务设置
+   详情：培训任务仅保存自身设置，链中任务在对应任务列表中单独调整 */
+let TT={};
+let TT_CHAIN_K='';
+const TT_STEP_MAX=5;
+const TT_STEP_NAME={cl:'课程学习',pr:'陪练练习',dk:'对话考试',ex:'试题考试'};
+function ttReset(){
+  /* steps 数组顺序即任务执行顺序，可整体上移/下移；on 控制是否包含该类任务 */
+  TT={name:'',desc:'',steps:[
+      {on:true, k:'cl', tasks:[]},
+      {on:true, k:'pr', tasks:[]},
+      {on:false,k:'dk', tasks:[]},
+      {on:false,k:'ex', tasks:[]}],
+    group:'ttUngrouped',taskType:'手动推送',timeS:'',timeE:'',attempts:'1',anticheat:false};
+  TT.org=new Set(); TT.roles=new Set(); TT.orgOpen=new Set(['总部','华北','北京','河北','长久集团']);
+  TT_CHAIN_K='';
+}
+ttReset();
+/* 种子任务的分组映射与配置快照（链中任务在培训任务中创建，不可选择已创建任务） */
+DB.trainTasks.rows.forEach(function(r){
+  const nm=String(r[0]).replace(/<[^>]+>/g,'').trim();
+  if(!nm||TT_ROW_GROUPS[esc(nm)])return;
+  let gid='ttUngrouped';
+  if(nm.indexOf('冲刺培训')>=0)gid=tgIdByName('tt','产品上市');
+  else if(nm.indexOf('全流程')>=0)gid=tgIdByName('tt','新员工培训');
+  TT_ROW_GROUPS[esc(nm)]=gid;
+  TT_XTRA[esc(nm)]={name:nm,desc:(nm.indexOf('冲刺培训')>=0?'银河E5 上市冲刺培训：按「课程学习 → 陪练练习 → 试题考试」顺序完成，链中任务相互独立，任务设置各自独立配置。':nm.indexOf('周培训')>=0?'银河E5 产品知识周培训：完成课程学习后进入产品知识周练与考核。':'新车销售全流程培训：覆盖课程学习、陪练练习与对话考试的完整上岗培训链路。'),
+    org:['北京奥迪门店','汽车示范站','北京比亚迪','珠海路虎','珠海奥迪','河北奥迪门店','河北奔驰百货'],roles:['销售顾问'],steps:[
+    {on:true, k:'cl', tasks:['新车销售六步法学习任务']},
+    {on:nm.indexOf('周培训')<0, k:'pr', tasks:['周末试驾邀约专项陪练']},
+    {on:nm.indexOf('全流程')>=0, k:'dk', tasks:['进店接待对话考核']},
+    {on:nm.indexOf('冲刺培训')>=0, k:'ex', tasks:['11月产品知识月考']}],
+    group:gid,taskType:nm.indexOf('周培训')>=0?'手动推送':'自动推送',timeS:'',timeE:'',chain:String(r[1]).replace(/<[^>]+>/g,'')};
+});
+function ttStep(k){ return TT.steps.find(s=>s.k===k); }
+function ttStepName(k){ return TT_STEP_NAME[k]||k; }
+function ttStepDesc(k){
+  if(k==='cl')return '学员完成所选课程学习后进入下一步';
+  if(k==='pr')return '学员完成所选剧本陪练后进入下一步';
+  if(k==='dk')return '学员参加对话考试，各剧本达到及格分记为合格';
+  if(k==='ex')return '学员参加试题考试，得分达到及格分记为通过';
+  return '';
+}
+function ttSet(k,v){ TT[k]=v; updateTtPreview(); }
+/* 包含 / 取消包含（取消包含时保留已创建任务——任务相互独立，仅不参与执行）+ 步骤顺序调整 */
+function ttToggleStep(k,on){
+  const s=ttStep(k); s.on=on;
+  const e=document.getElementById('ttChainErr'); if(e&&TT.steps.some(x=>x.on))e.classList.remove('show');
+  ttRenderChain(); updateTtPreview();
+}
+function ttMoveStep(k,dir){
+  const i=TT.steps.findIndex(s=>s.k===k), j=i+dir;
+  if(i<0||j<0||j>=TT.steps.length)return;
+  const t=TT.steps[i]; TT.steps[i]=TT.steps[j]; TT.steps[j]=t;
+  ttRenderChain(); updateTtPreview();
+}
+/* ---- 任务链条 · 步骤内容：不可从已创建任务中选择，页面跳转新建，保存后自动返回 ---- */
+function ttGoNew(k){
+  TT_CHAIN_K=k;
+  if(k==='cl')clReset(); else if(k==='pr')prReset(); else if(k==='dk')dkReset(); else if(k==='ex')exReset();
+  go({cl:'clTaskNew',pr:'prTaskNew',dk:'dkTaskNew',ex:'examNew'}[k]);
+}
+function ttChainAdd(k,name){
+  const s=ttStep(k);
+  if(s.tasks.indexOf(name)>=0)return;
+  if(s.tasks.length>=TT_STEP_MAX){ toast('每个步骤最多包含 '+TT_STEP_MAX+' 个任务');return; }
+  s.tasks.push(name);
+  updateTtPreview();
+}
+function ttChainRemove(k,name){
+  const s=ttStep(k),i=s.tasks.indexOf(name);
+  if(i>=0)s.tasks.splice(i,1);
+  ttRenderChain(); updateTtPreview();
+}
+function ttStepCfgHtml(s){
+  let h='<div style="margin-top:12px">'+
+    '<div class="ex-note" style="margin-top:0">不可从已创建的任务中选择；点击下方按钮跳转到对应任务的新建页，保存后自动返回本页并加入该步骤（链中任务相互独立，任务设置在各任务创建页单独配置）</div>';
+  if(s.tasks.length){
+    h+='<div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px">'+s.tasks.map(n=>{
+      const t=String(n).replace(/<[^>]+>/g,'');
+      return '<span class="crs-mchip">'+esc(t)+'<span class="x" data-n="'+esc(t)+'" onclick="ttChainRemove(\''+s.k+'\',this.dataset.n)">×</span></span>';
+    }).join('')+'</div>';
+  }else{
+    h+='<div class="ex-note" style="margin-top:10px">尚未创建任务，请点击下方「新建」按钮</div>';
+  }
+  h+='<div style="margin-top:10px"><button class="btn btn-p btn-sm" onclick="ttGoNew(\''+s.k+'\')">'+icon('plus',13)+'新建'+ttStepName(s.k)+'任务</button></div>'+
+    '</div>';
+  return h;
+}
+function ttChainHtml(){
+  return TT.steps.map((s,idx)=>{
+    let h='<div class="pn-card" style="margin-bottom:14px;padding:14px 16px">'+
+      '<div style="display:flex;align-items:center;gap:10px">'+
+      '<span style="width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;flex:none">'+(idx+1)+'</span>'+
+      '<div style="flex:1;min-width:0"><div style="font-weight:600">'+ttStepName(s.k)+(s.on?'':'<span class="ex-note" style="margin-left:8px;margin-top:0">未包含</span>')+'</div>'+
+      '<div class="ex-note" style="margin-top:2px">'+ttStepDesc(s.k)+'</div></div>'+
+      (idx>0?'<button class="btn btn-g btn-sm" onclick="ttMoveStep(\''+s.k+'\',-1)" title="上移">↑</button>':'')+
+      (idx<TT.steps.length-1?'<button class="btn btn-g btn-sm" onclick="ttMoveStep(\''+s.k+'\',1)" title="下移">↓</button>':'')+
+      '<label class="rchip" style="margin:0"><input type="checkbox"'+(s.on?' checked':'')+' onchange="ttToggleStep(\''+s.k+'\',this.checked)"><span>包含此任务</span></label>'+
+      '</div>';
+    if(s.on)h+=ttStepCfgHtml(s);
+    return h+'</div>';
+  }).join('');
+}
+function ttRenderChain(){ const w=document.getElementById('ttChain'); if(w)w.innerHTML=ttChainHtml(); }
+/* ---- 任务设置（培训任务自身设置：新建页与详情页共用） ---- */
+function ttSw(key,label,tip){
+  return '<label class="ex-swrow"><span class="lab">'+label+'</span>'+
+    '<span class="sw"><input type="checkbox"'+(TT[key]?' checked':'')+' onchange="TT[\''+key+'\']=this.checked;updateTtPreview()"><i></i></span>'+
+    (tip?'<span class="tip">'+tip+'</span>':'')+'</label>';
+}
+function ttTaskSetHtml(){
+  return '<div class="form-row"><div class="form-item"><label>所属分组<i>*</i></label><select onchange="ttSet(\'group\',this.value)">'+tgGroupOpts('tt',TT.group)+'</select></div>'+
+    '<div class="form-item"><label>任务类型<span class="opt-tip">（自动推送：到任务开始时间自动下发给学员范围内学员）</span></label><div class="rchips">'+rOpt('ttTaskType',['手动推送','自动推送'],TT.taskType)+'</div></div></div>'+
+    '<div class="form-row"><div class="form-item"><label>任务时间<i>*</i></label><div style="display:flex;align-items:center;gap:8px">'+
+    '<input type="datetime-local" value="'+esc(TT.timeS)+'" onchange="ttSet(\'timeS\',this.value)"><span style="color:var(--t3)">至</span>'+
+    '<input type="datetime-local" value="'+esc(TT.timeE)+'" onchange="ttSet(\'timeE\',this.value)"></div>'+
+    '<div class="form-err" id="ttTimeErr">请设置任务起止时间，且开始时间需早于结束时间</div></div></div>'+
+    '<div class="ex-note" style="margin:10px 0">完成机制：按任务链条顺序执行，完成当前阶段全部任务后自动解锁下一阶段；学员完成全部阶段记为完成。任务有效时间范围内，新加入所选组织/角色的员工将自动获得此任务</div>'+
+    tgScopeHtml('tt');
+}
+/* ---- 新建培训任务页 ---- */
+function pgTrainTaskNew(){
+  const W=[];
+  W.push('<div class="page-head ph-fix"><h1>新建培训任务</h1><span class="desc">编排任务链条：课程学习 / 陪练 / 对话考试 / 试题考试 · 链中任务通过页面跳转新建</span><div class="btns">'+
+    '<span class="pn-prog" id="ttProg">必填：任务名称 * · 任务链条 * · 任务时间 * · 学员范围 *</span>'+
+    '<button class="btn btn-g" onclick="ttCancel()">取消</button>'+
+    '<button class="btn btn-p" onclick="ttSave()">提交</button></div></div>');
+  W.push('<div class="pn-nav" id="pnNav"><a data-id="ttBase" class="on" onclick="pnNavTo(\'ttBase\')">基础信息</a><a data-id="ttChainSec" onclick="pnNavTo(\'ttChainSec\')">任务链条</a><a data-id="ttTaskSec" onclick="pnNavTo(\'ttTaskSec\')">任务设置</a></div>');
+  W.push('<div class="pn-wrap"><div class="pn-main"><div class="pn-card" id="ttForm">');
+  W.push('<div class="fsec" id="ttBase"><h3>基础信息</h3></div>');
+  W.push('<div class="form-item" style="margin-bottom:16px"><label>任务名称<i>*</i><span class="opt-tip">（必填 · 100 字以内）</span></label>'+
+    '<input id="ttName" maxlength="100" placeholder="示例：10月银河E5上市冲刺培训" oninput="ttSet(\'name\',this.value)">'+
+    '<div class="form-err" id="ttNameErr">任务名称为必填项，请填写后再提交</div></div>');
+  W.push('<div class="form-item" style="margin-bottom:14px"><label>任务说明<span class="opt-tip">（0/200 · 展示在学员端任务详情）</span></label>'+
+    '<div class="qb-ta"><textarea maxlength="200" placeholder="请输入任务说明" oninput="ttSet(\'desc\',this.value)">'+esc(TT.desc)+'</textarea></div></div>');
+  W.push('<div class="fsec" id="ttChainSec"><h3>任务链条</h3></div>');
+  W.push('<div class="ex-note" style="margin-top:0">按顺序编排任务链条：可配置每类任务是否包含及先后顺序；链中任务不可从已创建任务中选择，点击各步骤的「新建」按钮跳转创建，保存后自动返回本页并加入链条；链中任务相互独立，任务设置在各任务创建页单独配置</div>');
+  W.push('<div id="ttChain" style="margin-top:12px">'+ttChainHtml()+'</div>');
+  W.push('<div class="form-err" id="ttChainErr">请至少包含 1 类任务</div>');
+  W.push('<div class="fsec" id="ttTaskSec"><h3>任务设置</h3></div>');
+  W.push('<div class="ex-note" style="margin-top:0">以下设置为「培训任务」自身设置；链中任务为相互独立的任务，其所属分组 / 任务类型 / 任务时间 / 学员范围在各任务创建页单独配置，与培训任务互不引用</div>');
+  W.push('<div style="margin-top:12px">'+ttTaskSetHtml()+'</div>');
+  W.push('</div></div>');
+  W.push('<div class="pn-aside"><div class="pn-card pn-pv"><h3 class="pn-pv-title">实时任务配置总览<span class="live">实时</span></h3>'+
+    '<div class="qb-pv-badges" id="ttPvBadges"></div>'+
+    '<div class="qb-pv-stem" id="ttPvName">未命名培训任务</div>'+
+    '<div id="ttPvRows" style="padding:12px 0"></div>'+
+    '<div class="ex-pv-dots" id="ttPvDots"></div></div></div>');
+  W.push('</div>');
+  W.push('<button class="pn-totop" id="pnTotop" title="返回顶部" onclick="pnScrollTop()">'+icon('up',18)+'</button>');
+  return W.join('');
+}
+function initTtTaskNew(){
+  const form=document.getElementById('ttForm');if(!form)return;
+  form.addEventListener('change',function(e){
+    const n=e.target&&e.target.name;
+    if(n==='ttTaskType'){ TT.taskType=e.target.value; }
+    updateTtPreview();
+  });
+  tgOrgRender('tt');
+  ttRenderChain();
+  tgInitPageNav('ttForm');
+  updateTtPreview();
+}
+/* ---- 实时预览 / 校验 ---- */
+function ttStepSum(k){
+  const s=ttStep(k);
+  if(!s.tasks.length)return '未创建任务';
+  return s.tasks.length+' 个任务：'+s.tasks.map(n=>{const t=String(n).replace(/<[^>]+>/g,'');return t.length>8?t.slice(0,8)+'…':t;}).join('、');
+}
+function ttStepsOk(){
+  const en=TT.steps.filter(s=>s.on);
+  if(!en.length)return false;
+  return en.every(s=>s.tasks.length>0);
+}
+function updateTtPreview(){
+  const g=id=>document.getElementById(id);
+  if(!g('ttPvName'))return;
+  const prog=g('ttProg');
+  if(prog){
+    const nameOk=!!(TT.name||'').trim();
+    const timeOk=!!TT.timeS&&!!TT.timeE&&TT.timeS<TT.timeE;
+    const orgOk=TT.org.size>0;
+    if(nameOk&&ttStepsOk()&&timeOk&&orgOk){prog.textContent='✓ 必填项已填写，可提交';prog.classList.add('ok');}
+    else{prog.textContent='必填：任务名称 * · 任务链条 * · 任务时间 * · 学员范围 *';prog.classList.remove('ok');}
+  }
+  g('ttPvName').textContent=(TT.name||'').trim()||'未命名培训任务';
+  g('ttPvBadges').innerHTML='<span class="qb-pv-badge">任务链条</span><span class="qb-pv-badge lv">'+esc(TT.taskType)+'</span>';
+  const en=TT.steps.filter(s=>s.on);
+  const rows=[
+    ['任务链条',en.length?en.map((s,i)=>(i+1)+'. '+ttStepName(s.k)).join(' → '):'未配置（至少包含 1 类任务）'],
+    ['步骤配置',en.length?en.map(s=>ttStepName(s.k)+'：'+ttStepSum(s.k)).join('；'):'—'],
+    ['所属分组',tgName('tt',TT.group)],
+    ['任务时间',(TT.timeS&&TT.timeE)?exFmtDT(TT.timeS)+' ~ '+exFmtDT(TT.timeE):'未设置'],
+    ['学员范围',(TT.org.size?TT.org.size+' 家组织':'未选择')+(TT.roles.size?' · 角色 '+[...TT.roles].join('、'):'')]
+  ];
+  g('ttPvRows').innerHTML=rows.map(x=>'<div class="ex-pv-row"><span class="k">'+x[0]+'</span><span class="v">'+esc(String(x[1]))+'</span></div>').join('');
+  const dots=[];
+  g('ttPvDots').innerHTML=dots.map(d=>'<span class="ex-dot'+(d[1]?' on':'')+'">'+d[0]+(d[1]?' ✓':'')+'</span>').join('');
+}
+function ttValidate(){
+  const g=id=>document.getElementById(id);
+  const err=(id,msg)=>{ const e=g(id); if(e){e.textContent=msg;e.classList.add('show');} return msg; };
+  ['ttNameErr','ttChainErr','ttTimeErr','ttOrgErr'].forEach(id=>{const e=g(id);if(e)e.classList.remove('show');});
+  const nameEl=g('ttName'); if(nameEl)nameEl.style.borderColor='';
+  if(!(TT.name||'').trim()){ err('ttNameErr','任务名称为必填项，请填写后再提交'); if(nameEl)nameEl.style.borderColor='var(--bad)'; return '请填写任务名称'; }
+  const en=TT.steps.filter(s=>s.on);
+  if(!en.length)return err('ttChainErr','请至少包含 1 类任务');
+  for(let i=0;i<en.length;i++){
+    const s=en[i];
+    if(!s.tasks.length)return err('ttChainErr','「'+ttStepName(s.k)+'」步骤尚未创建任务：请点击该步骤的「新建'+ttStepName(s.k)+'任务」按钮，保存后自动加入链条');
+  }
+  if(!TT.timeS||!TT.timeE)return err('ttTimeErr','请设置任务起止时间');
+  if(TT.timeS>=TT.timeE)return err('ttTimeErr','任务开始时间需早于结束时间');
+  if(!TT.org.size)return err('ttOrgErr','请选择学员范围（至少 1 家组织）');
+  return '';
+}
+/* ---- 保存：链中任务写入各自任务列表 + 培训任务入库 ---- */
+function ttSave(){
+  const e=ttValidate(); if(e){ toast(e); return; }
+  const name=TT.name.trim();
+  const en=TT.steps.filter(s=>s.on);
+  const chainDesc=en.map(s=>ttStepName(s.k)).join(' → ');
+  const timeTxt=exFmtDT(TT.timeS)+' ~ '+exFmtDT(TT.timeE);
+  /* 链中任务已在各自创建页保存（相互独立的任务，可在各任务列表中单独管理），此处仅登记培训任务 */
+  DB.trainTasks.rows.unshift([esc(name),chainDesc,String(TT.org.size),timeTxt,'—',ST('未开始',GRAY),crsNow()]);
+  TT_ROW_GROUPS[esc(name)]=TT.group; TT_ROW_GROUPS[name]=TT.group;
+  TT_XTRA[esc(name)]={name:name,desc:TT.desc,steps:JSON.parse(JSON.stringify(TT.steps)),group:TT.group,taskType:TT.taskType,timeS:TT.timeS,timeE:TT.timeE,org:[...TT.org],roles:[...TT.roles],chain:chainDesc};
+  ttReset();
+  go('tasks');
+  toast('已创建培训任务：'+name.replace(/<[^>]+>/g,'')+'（链中 '+en.reduce((a,s)=>a+s.tasks.length,0)+' 个任务）');
+}
+function ttCancel(){ TT_CHAIN_K=''; ttReset(); go('tasks'); }
+/* ---- 列表页 ---- */
+function ttStatusIdx(){ return DB.trainTasks.cols.findIndex(c=>c[0]==='状态'); }
+function ttStatusOf(row){ return String(row[ttStatusIdx()]).replace(/<[^>]+>/g,''); }
+function ttName(i){ return String(DB.trainTasks.rows[i][0]).replace(/<[^>]+>/g,'').trim(); }
+function ttFiltered(){
+  return DB.trainTasks.rows.map((r,i)=>({r,i})).filter(({r,i})=>{
+    if(TT_F.cat==='all')return true;
+    if(TT_F.cat==='ttUngrouped')return tgRowGroupId('tt',i)==='ttUngrouped';
+    return tgDescendants('tt',TT_F.cat).has(tgRowGroupId('tt',i));
+  }).filter(({r})=>{
+    if(TT_F.kw&&String(r[0]).replace(/<[^>]+>/g,'').indexOf(TT_F.kw)<0)return false;
+    if(TT_F.st!=='全部'&&ttStatusOf(r)!==TT_F.st)return false;
+    return true;
+  });
+}
+function pgTrainTasks(){
+  const rows=ttFiltered();
+  const side='<div class="mat-side">'+
+    '<div class="tree-node'+(TT_F.cat==='all'?' on':'')+'" onclick="tgPick(\'tt\',\'all\')"><span class="tname">全部培训任务</span><span class="cnt all-b">'+DB.trainTasks.rows.length+'</span></div>'+
+    '<input class="side-search" placeholder="请输入分组名称" oninput="tgSearch(\'tt\',this.value)">'+
+    '<div class="tree-node'+(TT_F.cat==='ttUngrouped'?' on':'')+'" onclick="tgPick(\'tt\',\'ttUngrouped\')"><span class="tname">未分组</span><span class="cnt">('+tgCount('tt','ttUngrouped')+')</span></div>'+
+    '<div id="ttGroupList">'+tgTreeHtml('tt',null,0)+'</div>'+
+    '<button class="side-add" onclick="openTtGroupAdd()">+ 新建分组</button>'+
+  '</div>';
+  const head='<th style="width:34px"><input type="checkbox" onchange="ttSelAll(this.checked)" title="全选"></th>'+
+    ['任务名称','任务链条','参与学员','任务时间','完成率','状态','更新时间'].map(t=>'<th>'+t+'</th>').join('')+'<th>操作</th>';
+  const body=rows.map(({r,i})=>{
+    const st=ttStatusOf(r);
+    const ops='<div class="row-ops">'+
+      (ttXtraOf(ttName(i)).taskType==='手动推送'?'<span class="lk" onclick="taskPushAsk(\'tt\','+i+')">推送</span>':'')+
+      '<span class="lk" onclick="viewTtTask('+i+')">详情</span>'+
+      '<span class="lk" onclick="ttView('+i+')">配置任务设置</span>'+
+      '<span class="lk" onclick="ttMoveGroup('+i+')">转移分组</span>'+
+      (st==='已停用'?'<span class="lk" onclick="ttEnable('+i+')">启用</span>':'<span class="lk" onclick="ttDisable('+i+')">停用</span>')+
+      '<span class="lk danger" onclick="ttDelete('+i+')">删除</span></div>';
+    return '<tr>'+
+      '<td><input type="checkbox" data-i="'+i+'"'+(TT_SEL.has(i)?' checked':'')+' onchange="ttSelRow(+this.dataset.i,this.checked)" title="选择"></td>'+
+      '<td><span class="lk" onclick="viewTtTask('+i+')">'+r[0]+'</span></td>'+
+      r.slice(1).map(cell=>'<td>'+cell+'</td>').join('')+
+      '<td>'+ops+'</td></tr>';
+  }).join('');
+  return '<div class="page-head"><h1>培训任务</h1><span class="desc">共 '+DB.trainTasks.rows.length+' 个任务</span><div class="btns">'+headBtns('tasks')+'</div></div>'+
+    '<div class="org-layout" style="grid-template-columns:230px 1fr">'+side+'<div>'+
+    '<div class="filter-card">'+
+      '<div class="f-item"><span>关键词</span><input id="ttFkw" placeholder="请输入任务名称" value="'+esc(TT_F.kw)+'" onkeydown="if(event.key===\'Enter\')ttQuery()"></div>'+
+      '<div class="f-item"><span>任务状态</span><select id="ttFst">'+['全部','未开始','进行中','已结束','已停用'].map(o=>'<option'+(TT_F.st===o?' selected':'')+'>'+o+'</option>').join('')+'</select></div>'+
+      '<button class="btn btn-p btn-sm" onclick="ttQuery()">查询</button><button class="btn btn-g btn-sm" onclick="ttResetF()">重置</button></div>'+
+    '<div class="tbl-card"><div class="tbl-scroll"><table><thead><tr>'+head+'</tr></thead><tbody>'+
+      (body||'<tr><td colspan="9"><div class="empty"><div class="ic">◌</div>暂无培训任务，点击右上角「新建培训任务」创建</div></td></tr>')+
+      '</tbody></table></div>'+
+      '<div class="tbl-foot">共 '+rows.length+' 条 · 每页 10 条<div class="pgs"><button>‹</button><button class="on">1</button><button>›</button></div></div></div>'+
+    '</div></div>';
+}
+function ttQuery(){ TT_F.kw=($('ttFkw').value||'').trim(); TT_F.st=$('ttFst').value; render(); }
+function ttResetF(){ TT_F={kw:'',cat:TT_F.cat,st:'全部'}; render(); }
+function ttSelRow(i,on){ on?TT_SEL.add(i):TT_SEL.delete(i); }
+function ttSelAll(on){ ttFiltered().forEach(({i})=>{ on?TT_SEL.add(i):TT_SEL.delete(i); }); render(); }
+function ttMoveGroup(i){
+  TT_MOVE_ON=true; TT_MOVE_MODE='one'; TT_MOVE_IDX=i; TT_MOVE_LIST=[];
+  $('exMoveTitle').textContent='转移分组';
+  $('exMoveName').textContent=ttName(i);
+  $('exMoveSel').innerHTML=tgGroupOpts('tt',tgRowGroupId('tt',i));
+  $('exMoveMask').classList.add('on');
+}
+function ttBatchGroup(){
+  const idx=[...TT_SEL].filter(i=>DB.trainTasks.rows[i]);
+  if(!idx.length){ toast('请先勾选需要修改分组的培训任务');return; }
+  TT_MOVE_ON=true; TT_MOVE_MODE='batch'; TT_MOVE_LIST=idx; TT_MOVE_IDX=-1;
+  $('exMoveTitle').textContent='批量修改分组';
+  $('exMoveName').textContent='已选择 '+idx.length+' 个培训任务';
+  $('exMoveSel').innerHTML=tgGroupOpts('tt','');
+  $('exMoveMask').classList.add('on');
+}
+function doTtMove(){
+  const g=$('exMoveSel').value||'ttUngrouped';
+  if(TT_MOVE_MODE==='one'&&TT_MOVE_IDX>=0&&DB.trainTasks.rows[TT_MOVE_IDX]){
+    const nm=ttName(TT_MOVE_IDX);
+    TT_ROW_GROUPS[esc(nm)]=g; TT_ROW_GROUPS[nm]=g;
+    toast('已将「'+nm+'」转移到分组「'+tgName('tt',g)+'」');
+  }else if(TT_MOVE_MODE==='batch'){
+    let n=0;
+    TT_MOVE_LIST.forEach(i=>{ if(DB.trainTasks.rows[i]){ TT_ROW_GROUPS[esc(ttName(i))]=g; TT_ROW_GROUPS[ttName(i)]=g; n++; } });
+    TT_SEL.clear();
+    toast('已将 '+n+' 个培训任务转移到分组「'+tgName('tt',g)+'」');
+  }
+  closeExMove(); render();
+}
+function ttDisable(i){
+  const nm=ttName(i);
+  matAsk('停用任务','停用后学员端将不再展示该任务；任务不受其他限制，可随时重新启用。确认停用「'+nm+'」？',()=>{
+    DB.trainTasks.rows[i][ttStatusIdx()]=ST('已停用',GRAY);
+    toast('已停用培训任务：'+nm); render();
+  });
+}
+function ttEnable(i){
+  const nm=ttName(i);
+  DB.trainTasks.rows[i][ttStatusIdx()]=ST('进行中',INFO);
+  toast('已启用培训任务：'+nm); render();
+}
+function ttDelete(i){
+  const nm=ttName(i);
+  matAsk('删除任务','删除为物理删除：「'+nm+'」将从列表移除（链中任务保留在各自任务列表）；已开始未完成的学员可继续完成任务，未开始的学员任务将直接消失，已完成任务的学员可在「任务记录」中查看。确认删除？',()=>{
+    DB.trainTasks.rows.splice(i,1);
+    TT_SEL.clear();
+    toast('已删除培训任务：'+nm); render();
+  });
+}
+function openTtGroupAdd(){
+  let def='';
+  if(TT_F.cat&&TT_F.cat!=='all'&&TT_F.cat!=='ttUngrouped')def=TT_F.cat;
+  $('exGParentSel').innerHTML=tgOptsTop('tt',def);
+  $('exGNameInp').value='';
+  const e=$('exGErr');e.style.display='none';
+  if(def&&tgDepth('tt',def)>=2){
+    e.textContent='「'+tgName('tt',def)+'」已是三级分组，无法再创建下级，请重新选择上级分组';e.style.display='block';
+  }
+  TT_GCTX=true;
+  $('exGroupMask').classList.add('on');
+  setTimeout(()=>{ try{$('exGNameInp').focus();}catch(_){} },50);
+}
+function doTtGroupAdd(){
+  const R=TG_REG['tt'],name=$('exGNameInp').value.trim(),parent=$('exGParentSel').value||null,e=$('exGErr');
+  if(!name){ e.textContent='请输入分组名称';e.style.display='block';try{$('exGNameInp').focus();}catch(_){} return; }
+  if(parent){
+    if(tgDepth('tt',parent)>=2){ e.textContent='最多支持三级分组，所选上级分组下无法再创建';e.style.display='block';return; }
+    if(TT_GROUPS.some(g=>g.parent===parent&&g.name===name)){ e.textContent='「'+tgName('tt',parent)+'」下已存在分组「'+name+'」';e.style.display='block';return; }
+  }else if(TT_GROUPS.some(g=>g.parent===null&&g.name===name)){ e.textContent='已存在顶级分组「'+name+'」';e.style.display='block';return; }
+  const id='ttgN'+(R.uid())+'_'+Date.now();
+  TT_GROUPS.push({id,name,parent});
+  if(parent)TT_G_EXPAND.add(parent);
+  toast('已在「'+(parent?tgName('tt',parent):'顶级')+'」下创建分组：'+name);
+  closeExGroupAdd();render();
+}
+/* ---- 详情页：配置培训任务自身设置 ---- */
+let TT_VIEW=-1;
+function ttView(i){ TT_VIEW=i; go('ttTaskDetail'); }
+function ttLoadCfg(){
+  const i=TT_VIEW,c=(i>=0)?(TT_XTRA[esc(ttName(i))]||null):null;
+  if(!c){ ttReset(); return; }
+  TT=JSON.parse(JSON.stringify(c));
+  if(!TT.steps||!TT.steps.length)TT.steps=JSON.parse(JSON.stringify(ttDefaultSteps()));
+  TT.org=new Set(c.org||[]); TT.roles=new Set(c.roles||[]); TT.orgOpen=new Set(['总部','华北','北京','河北','长久集团']);
+}
+function ttDefaultSteps(){
+  return [{on:true, k:'cl', tasks:[]},
+    {on:false,k:'pr', tasks:[]},
+    {on:false,k:'dk', tasks:[]},
+    {on:false,k:'ex', tasks:[]}];
+}
+function pgTrainTaskDetail(){
+  const i=TT_VIEW, r=DB.trainTasks.rows[i];
+  if(!r)return '<div class="page-head"><h1>培训任务</h1></div>';
+  ttLoadCfg();
+  const nm=ttName(i);
+  const en=TT.steps.filter(s=>s.on);
+  const W=[];
+  W.push('<div class="page-head ph-fix"><h1>配置任务设置</h1><span class="desc">'+esc(nm)+' · 培训任务自身设置（链中任务相互独立）</span><div class="btns">'+
+    '<button class="btn btn-g" onclick="go(\'tasks\')">返回</button>'+
+    '<button class="btn btn-p" onclick="ttSaveCfg()">保存配置</button></div></div>');
+  W.push('<div class="pn-wrap"><div class="pn-main"><div class="pn-card" id="ttForm">');
+  W.push('<div class="fsec" id="ttInfo"><h3>任务链条</h3></div>');
+  W.push('<div class="kv-list" style="margin:12px 0">'+
+    '<div class="kv"><span>任务名称</span><b>'+esc(nm)+'</b></div>'+
+    '<div class="kv"><span>任务链条</span><b>'+(en.length?en.map((s,k)=>(k+1)+'. '+ttStepName(s.k)).join(' → '):'—')+'</b></div>'+
+    '<div class="kv"><span>链中任务</span><b>'+(en.length?en.map(s=>ttStepName(s.k)+'：'+(s.tasks.length?s.tasks.map(x=>esc(String(x).replace(/<[^>]+>/g,''))).join('、'):'—')).join('；'):'—')+'</b></div>'+
+    '<div class="kv"><span>任务说明</span><b>'+esc(TT.desc||'—')+'</b></div></div>');
+  W.push('<div class="fsec" id="ttCfg"><h3>任务设置</h3></div>');
+  W.push('<div class="ex-note" style="margin-top:0">以下设置为培训任务自身设置；链中任务相互独立，其资源内容与任务设置请在对应任务列表（课程学习 / 陪练 / 对话考试 / 试题考试）中单独调整</div>');
+  W.push('<div style="margin-top:12px">'+ttTaskSetHtml()+'</div>');
+  W.push('</div></div>');
+  W.push('<div class="pn-aside"><div class="pn-card pn-pv"><h3 class="pn-pv-title">实时任务配置总览<span class="live">实时</span></h3>'+
+    '<div class="qb-pv-badges" id="ttPvBadges"></div>'+
+    '<div class="qb-pv-stem" id="ttPvName">'+esc(nm)+'</div>'+
+    '<div id="ttPvRows" style="padding:12px 0"></div>'+
+    '<div class="ex-pv-dots" id="ttPvDots"></div></div></div>');
+  W.push('</div>');
+  W.push('<button class="pn-totop" id="pnTotop" title="返回顶部" onclick="pnScrollTop()">'+icon('up',18)+'</button>');
+  return W.join('');
+}
+function ttSaveCfg(){
+  const g=id=>document.getElementById(id);
+  const err=(id,msg)=>{ const e=g(id); if(e){e.textContent=msg;e.classList.add('show');} return msg; };
+  ['ttTimeErr','ttOrgErr'].forEach(id=>{const e=g(id);if(e)e.classList.remove('show');});
+  if(!TT.timeS||!TT.timeE){ toast(err('ttTimeErr','请设置任务起止时间')); return; }
+  if(TT.timeS>=TT.timeE){ toast(err('ttTimeErr','任务开始时间需早于结束时间')); return; }
+  if(!TT.org.size){ toast(err('ttOrgErr','请选择学员范围（至少 1 家组织）')); return; }
+  const i=TT_VIEW, nm=ttName(i);
+  const c=TT_XTRA[esc(nm)]||{};
+  c.group=TT.group; c.taskType=TT.taskType; c.timeS=TT.timeS; c.timeE=TT.timeE;
+  c.org=[...TT.org]; c.roles=[...TT.roles];
+  TT_XTRA[esc(nm)]=c;
+  /* 五类任务相互独立：培训任务仅保存自身设置，不再同步链中任务 */
+  const row=DB.trainTasks.rows[i];
+  row[3]=exFmtDT(TT.timeS)+' ~ '+exFmtDT(TT.timeE);
+  row[2]=String(TT.org.size);
+  toast('已保存任务设置：'+nm);
+  render();
+}
+/* ================== 培训中心 · 培训任务模块结束 ================== */
+
+
+
+/* ================== 培训中心 · 五类任务详情页（陪练 / 课程学习 / 对话考试 / 试题考试 / 培训） ==================
+   整页详情，字段与各「新建」页一一对应，样式参考「剧本详情」：基础信息 / 选择资源（组卷）/ 任务设置 / 学员范围；
+   各列表点击任务名称进入对应详情；培训任务详情中的链中任务可点击跳转到对应任务详情；
+   种子任务的配置快照在此补齐（结构与各任务保存函数写入的 XTRA 快照一致） */
+const TD_ORG_A=['北京奥迪门店','汽车示范站','北京比亚迪','珠海路虎','珠海奥迪','河北奥迪门店','河北奔驰百货'];
+const TD_ORG_B=['成都奥迪门店','重庆奔驰门店','上海奥迪门店','杭州路虎门店'];
+const TD_ORG_C=['北京路虎3店','北京奥迪5店','石家庄奥迪店','保定奔驰店'];
+/* ---- 种子任务配置快照 ---- */
+PT_XTRA['周末试驾邀约专项陪练']={scripts:['试驾邀约电话演练'],taskType:'手动推送',attempts:'3',desc:'针对周末到店高峰的试驾邀约场景，完成电话邀约全流程演练：开场确认、需求确认、邀约理由说明与到店时间锁定。',org:TD_ORG_A,roles:['销售顾问']};
+PT_XTRA['金融分期话术专项陪练']={scripts:['金融分期异议处理'],taskType:'手动推送',attempts:'2',desc:'围绕分期方案讲解、利率与手续费异议处理、合规提示进行对练，帮助金融专员统一话术口径。',org:TD_ORG_B,roles:['销售顾问','金融专员']};
+PT_XTRA['竞品对比应对陪练']={scripts:['竞品对比价格谈判','进店首次接待·犹豫型客户','老客户置换升级邀约'],taskType:'手动推送',attempts:'3',desc:'针对竞品比价与价格谈判场景的专项陪练，覆盖异议开场、对比澄清、价值重构与权益谈判。',org:TD_ORG_C,roles:['销售顾问']};
+PT_XTRA['11月新车接待陪练']={scripts:['进店首次接待·犹豫型客户'],taskType:'自动推送',attempts:'3',desc:'11月新车上市期间的到店接待专项陪练，重点演练破冰接待与犹豫型客户的需求挖掘。',org:TD_ORG_A,roles:['销售顾问']};
+CL_XTRA['新车销售六步法学习任务']={courses:['新车销售六步法','试驾邀约与体验设计','客户异议处理二十讲'],taskType:'自动推送',attempts:'1',desc:'新车销售全流程课程学习任务：依次完成六步法、试驾邀约与异议处理三门课程的学习。',org:TD_ORG_A,roles:['销售顾问']};
+CL_XTRA['银河E5产品知识学习']={courses:['银河E5产品卖点精讲','客户异议处理二十讲'],taskType:'手动推送',attempts:'2',desc:'银河E5 上市前的产品知识学习任务，掌握核心卖点并能应对常见客户疑问。',org:TD_ORG_A,roles:['销售顾问']};
+CL_XTRA['试驾邀约话术课程包']={courses:['试驾邀约与体验设计','新车销售六步法'],taskType:'手动推送',attempts:'1',desc:'试驾邀约相关课程组合学习，提升电话邀约与到店体验设计能力。',org:TD_ORG_B,roles:['销售顾问']};
+DK_XTRA['进店接待对话考核']={scripts:['进店首次接待·犹豫型客户','试驾邀约电话演练'],passes:{'进店首次接待·犹豫型客户':80,'试驾邀约电话演练':80},taskType:'自动推送',attempts:'2',anticheat:true,desc:'进店接待场景的对话认证考核，各剧本对话得分达到及格分记为合格。',org:TD_ORG_A,roles:['销售顾问']};
+DK_XTRA['竞品应对话术通关']={scripts:['竞品对比价格谈判'],passes:{'竞品对比价格谈判':75},taskType:'手动推送',attempts:'3',anticheat:false,desc:'竞品比价话术通关考核，考核通过后方可参与竞品应对陪练。',org:TD_ORG_B,roles:['销售顾问']};
+DK_XTRA['金融分期异议处理考核']={scripts:['金融分期异议处理','竞品对比价格谈判'],passes:{'金融分期异议处理':85,'竞品对比价格谈判':85},taskType:'手动推送',attempts:'2',anticheat:true,desc:'金融专员上岗前的对话考核，重点检验分期异议处理与合规话术。',org:TD_ORG_C,roles:['金融专员','销售顾问']};
+EX_XTRA['11月产品知识月考']={qsel:[0,1,2,3,4,6],qscore:{0:20,1:15,2:20,3:10,4:20,6:15},qgroup:'',pass:'60',taskType:'自动推送',attempts:'1',limit:'45',anticheat:true,desc:'11 月产品知识月度考核，覆盖产品知识 / 销售流程 / 金融保险 / 销售技巧四个题库分组。',org:TD_ORG_A,roles:['销售顾问']};
+EX_XTRA['销售流程通关练习']={qsel:[2,0,1,6],qscore:{2:30,0:25,1:25,6:20},qgroup:'',pass:'70',taskType:'手动推送',attempts:'3',limit:'0',anticheat:false,desc:'销售流程专项练习，通过反复练习巩固接待、需求挖掘与试驾流程要点。',org:TD_ORG_B,roles:['销售顾问']};
+EX_XTRA['银河E5产品知识周练']={qsel:[0,3,4],qscore:{0:40,3:25,4:35},qgroup:'',pass:'60',taskType:'手动推送',attempts:'2',limit:'30',anticheat:false,desc:'银河 E5 产品知识周度练习，限时 30 分钟完成。',org:TD_ORG_A,roles:['销售顾问']};
+
+/* ---- 详情页公共 ---- */
+let PR_VIEW=-1,CL_VIEW=-1,DK_VIEW=-1,EX_VIEW=-1,TT_INFO=-1;
+function tdStCls(st){ return st==='进行中'?INFO:GRAY; }
+function tdKv(l,val){ return '<div class="kv"><span>'+l+'</span><b>'+((val&&val!=='—')?val:'—')+'</b></div>'; }
+function tdHead(title,desc,back,extra){
+  return '<div class="page-head"><h1>'+title+'</h1><span class="desc">'+desc+'</span><div class="btns">'+(extra||'')+
+    '<button class="btn btn-g" onclick="go(\''+back+'\')">'+icon('back',13)+'返回</button></div></div>';
+}
+/* 学员范围（组织 chips + 角色）：与新建页「学员范围」对应 */
+function tdScopeHtml(xt,stuTxt){
+  const orgs=xt.org||[],roles=xt.roles||[];
+  let h='<div class="fsec"><h3>学员范围</h3></div>'+
+    '<div class="kv-list">'+tdKv('覆盖学员',stuTxt)+'</div>';
+  h+=orgs.length?'<div class="sd-mats">'+orgs.map(o=>'<span class="sd-mat">'+icon('org',13)+'<span>'+esc(o)+'</span></span>').join('')+'</div>':'<div class="sd-empty">未选择组织</div>';
+  h+='<div class="sd-stage-row" style="margin-top:10px"><span>角色</span><b>'+(roles.length?esc(roles.join('、')):'全部角色（未单独指定）')+'</b></div>'+
+    (orgs.length?'<div class="sd-stage-sum" style="margin-top:4px">共 '+orgs.length+' 家组织 · 任务有效时间范围内，新加入所选组织/角色的员工将自动获得此任务（手动推送任务推送后同样自动纳入）</div>':'');
+  return h;
+}
+/* 任务设置（对应各新建页「任务设置」：所属分组 / 任务类型 / 任务时间 等） */
+function tdSettingsHtml(rows){
+  return '<div class="fsec"><h3>任务设置</h3></div><div class="kv-list">'+rows.map(r=>tdKv(r[0],r[1])).join('')+'</div>';
+}
+/* 剧本卡片（陪练 / 对话考试）：点击可查看剧本详情；passOf 返回该剧本及格分（对话考试） */
+function tdScriptCards(names,passOf){
+  return '<div class="sd-custs">'+names.map(nm=>{
+    const i=DB.scripts.rows.findIndex(r=>String(r[0]).replace(/<[^>]+>/g,'').trim()===nm);
+    const r=i>=0?DB.scripts.rows[i]:null;
+    const meta=r?'适用：'+String(r[1]).replace(/<[^>]+>/g,'')+' · '+String(r[2]).replace(/<[^>]+>/g,'')+' · '+String(r[5]).replace(/<[^>]+>/g,'')+' 个会话阶段':'';
+    const pw=passOf?passOf(nm):'';
+    return '<div class="sd-cust"'+(i>=0?' style="cursor:pointer" title="查看剧本详情" onclick="viewScript('+i+')"':'')+'>'+
+      '<div class="pav">'+icon('script',15)+'</div><div style="min-width:0">'+
+      '<div class="nm">'+esc(nm)+(pw?'<span class="sd-stage-w" style="margin-left:8px">及格分 '+pw+' 分</span>':'')+'</div>'+
+      '<div class="mt">'+esc(meta||'剧本不存在或已删除')+'</div></div></div>';
+  }).join('')+'</div>';
+}
+/* 课程卡片（课程学习任务）：点击可查看课程详情 */
+function tdCourseCards(names){
+  return '<div class="sd-custs">'+names.map(nm=>{
+    const i=DB.courses.rows.findIndex(r=>String(r[0]).replace(/<[^>]+>/g,'').trim()===nm);
+    const r=i>=0?DB.courses.rows[i]:null;
+    const meta=r?'适用：'+String(r[3]).replace(/<[^>]+>/g,'')+' · '+String(r[1]).replace(/<[^>]+>/g,'')+' · '+String(r[2]).replace(/<[^>]+>/g,'')+' 个章节':'';
+    return '<div class="sd-cust"'+(i>=0?' style="cursor:pointer" title="查看课程详情" onclick="crsView('+i+')"':'')+'>'+
+      '<div class="pav">'+icon('play',15)+'</div><div style="min-width:0">'+
+      '<div class="nm">'+esc(nm)+'</div><div class="mt">'+esc(meta||'课程不存在或已删除')+'</div></div></div>';
+  }).join('')+'</div>';
+}
+/* 培训任务链中任务 → 对应任务详情页跳转 */
+function taskDetailGo(k,name){
+  const clean=String(name).replace(/<[^>]+>/g,'').trim();
+  const map={pr:{db:DB.practiceTasks,v:viewPrTask},cl:{db:DB.courseTasks,v:viewClTask},dk:{db:DB.dialogExams,v:viewDkTask},ex:{db:DB.examTasks,v:viewExTask}};
+  const m=map[k]; if(!m)return;
+  const i=m.db.rows.findIndex(r=>String(r[0]).replace(/<[^>]+>/g,'').trim()===clean);
+  if(i>=0)m.v(i); else toast('未找到任务「'+clean+'」');
+}
+/* 快照读取（种子与保存快照兼容；缺失时给默认值） */
+function prXtraOf(nm){ return Object.assign({scripts:[],taskType:'手动推送',attempts:'1',desc:'',org:[],roles:[]},PT_XTRA[esc(nm)]||PT_XTRA[nm]||{}); }
+function clXtraOf(nm){ return Object.assign({courses:[],taskType:'手动推送',attempts:'1',desc:'',org:[],roles:[]},CL_XTRA[esc(nm)]||CL_XTRA[nm]||{}); }
+function dkXtraOf(nm){ return Object.assign({scripts:[],passes:{},taskType:'手动推送',attempts:'1',anticheat:false,desc:'',org:[],roles:[]},DK_XTRA[esc(nm)]||DK_XTRA[nm]||{}); }
+function exXtraOf(nm){ return Object.assign({qsel:[],qscore:{},qgroup:'',pass:'',limit:'0',anticheat:false,taskType:'手动推送',attempts:'1',desc:'',org:[],roles:[]},EX_XTRA[esc(nm)]||EX_XTRA[nm]||{}); }
+function ttXtraOf(nm){ return Object.assign({steps:[],taskType:'手动推送',attempts:'1',anticheat:false,desc:'',org:[],roles:[]},TT_XTRA[esc(nm)]||TT_XTRA[nm]||{}); }
+/* ---- 手动推送（列表操作）：推送给学员范围内学员；有效期内新加入组织/角色的员工自动获得 ---- */
+const TASK_PUSH={ex:{db:'examTasks',x:exXtraOf},pr:{db:'practiceTasks',x:prXtraOf},cl:{db:'courseTasks',x:clXtraOf},dk:{db:'dialogExams',x:dkXtraOf},tt:{db:'trainTasks',x:ttXtraOf}};
+function taskPushAsk(kind,i){
+  const cfg=TASK_PUSH[kind],r=DB[cfg.db]&&DB[cfg.db].rows[i];if(!r)return;
+  const nm=String(r[0]).replace(/<[^>]+>/g,'');
+  const xt=cfg.x(nm);
+  const orgs=(xt.org||[]).join('、')||'—';
+  const roles=(xt.roles&&xt.roles.length)?xt.roles.join('、'):'全部角色';
+  matAsk('手动推送任务','将「'+nm+'」推送给学员范围内的学员？',()=>{
+    toast('已手动推送「'+nm+'」（'+((xt.org||[]).length)+' 家组织 · '+roles+'）');render();
+  },'<div style="margin-top:8px;font-size:12.5px;color:var(--t2)">组织：'+orgs+'<br>角色：'+roles+'</div><div class="ex-note" style="margin-top:10px">任务有效时间范围内，新加入所选组织/角色的员工将自动获得此任务</div>');
+}
+
+function viewPrTask(i){ PR_VIEW=i; go('prTaskDetail'); }
+function viewClTask(i){ CL_VIEW=i; go('clTaskDetail'); }
+function viewDkTask(i){ DK_VIEW=i; go('dkTaskDetail'); }
+function viewExTask(i){ EX_VIEW=i; go('exTaskDetail'); }
+function viewTtTask(i){ TT_INFO=i; go('ttTaskInfo'); }
+
+/* ---- 陪练任务详情 ---- */
+function pgPrTaskDetail(){
+  const i=PR_VIEW,row=DB.practiceTasks.rows[i];
+  if(!row){ go('taskPractice'); return ''; }
+  const nm=prName(i), xt=prXtraOf(nm), st=prStatusOf(row);
+  const N=[];
+  N.push(tdHead('陪练任务详情',esc(nm)+' · 更新于 '+esc(String(row[6])),'taskPractice'));
+  N.push(ST(st,tdStCls(st)));
+  N.push('<div class="pn-wrap"><div class="pn-card">');
+  /* 1 · 基础信息（对应新建页：任务名称 / 任务说明） */
+  N.push('<div class="fsec"><h3>基础信息</h3></div>');
+  N.push('<div class="kv-list">'+
+    tdKv('任务名称',esc(nm))+tdKv('任务类型',esc(xt.taskType))+tdKv('状态',st)+
+    tdKv('完成率',esc(String(row[4]).replace(/<[^>]+>/g,'')))+tdKv('更新时间',esc(String(row[6])))+
+    '<div class="kv" style="grid-column:1/-1;display:block"><span style="display:block;margin-bottom:6px;white-space:nowrap">任务说明</span>'+
+      '<div class="sd-config">'+esc(xt.desc||'—')+'</div></div>'+
+  '</div>');
+  /* 2 · 选择剧本（对应新建页：从已创建的剧本中选择，最多 5 个） */
+  N.push('<div class="fsec"><h3>选择剧本</h3></div>');
+  N.push(xt.scripts.length?tdScriptCards(xt.scripts):'<div class="sd-empty">未选择剧本</div>');
+  N.push('<div class="sd-stage-sum">共 '+xt.scripts.length+' 个剧本（最多可选 5 个）'+(xt.scripts.length?' · 点击剧本卡片可查看剧本详情':'')+'</div>');
+  /* 3 · 任务设置（对应新建页：所属分组 / 任务类型 / 任务时间） */
+  N.push(tdSettingsHtml([
+    ['所属分组',esc(ptGName(ptRowGroupId(i)))],
+    ['任务时间',esc(String(row[3]))],
+  ]));
+  /* 4 · 学员范围（对应新建页：按组织下发 + 角色过滤） */
+  N.push(tdScopeHtml(xt,esc(String(row[1]).replace(/<[^>]+>/g,''))+' 人'));
+  N.push('</div></div>');
+  return N.join('');
+}
+
+/* ---- 课程学习任务详情 ---- */
+function pgClTaskDetail(){
+  const i=CL_VIEW,row=DB.courseTasks.rows[i];
+  if(!row){ go('taskCourse'); return ''; }
+  const nm=clName(i), xt=clXtraOf(nm), st=clStatusOf(row);
+  const N=[];
+  N.push(tdHead('课程学习任务详情',esc(nm)+' · 更新于 '+esc(String(row[6])),'taskCourse'));
+  N.push(ST(st,tdStCls(st)));
+  N.push('<div class="pn-wrap"><div class="pn-card">');
+  N.push('<div class="fsec"><h3>基础信息</h3></div>');
+  N.push('<div class="kv-list">'+
+    tdKv('任务名称',esc(nm))+tdKv('任务类型',esc(xt.taskType))+tdKv('状态',st)+
+    tdKv('完成率',esc(String(row[4]).replace(/<[^>]+>/g,'')))+tdKv('更新时间',esc(String(row[6])))+
+    '<div class="kv" style="grid-column:1/-1;display:block"><span style="display:block;margin-bottom:6px;white-space:nowrap">任务说明</span>'+
+      '<div class="sd-config">'+esc(xt.desc||'—')+'</div></div>'+
+  '</div>');
+  N.push('<div class="fsec"><h3>选择课程</h3></div>');
+  N.push(xt.courses.length?tdCourseCards(xt.courses):'<div class="sd-empty">未选择课程</div>');
+  N.push('<div class="sd-stage-sum">共 '+xt.courses.length+' 门课程（最多可选 5 门）'+(xt.courses.length?' · 点击课程卡片可查看课程详情':'')+'</div>');
+  N.push(tdSettingsHtml([
+    ['所属分组',esc(tgName('cl',tgRowGroupId('cl',i)))],
+    ['任务时间',esc(String(row[3]))],
+  ]));
+  N.push(tdScopeHtml(xt,esc(String(row[1]).replace(/<[^>]+>/g,''))+' 人'));
+  N.push('</div></div>');
+  return N.join('');
+}
+
+/* ---- 对话考试详情 ---- */
+function pgDkTaskDetail(){
+  const i=DK_VIEW,row=DB.dialogExams.rows[i];
+  if(!row){ go('examDialog'); return ''; }
+  const nm=dkName(i), xt=dkXtraOf(nm), st=dkStatusOf(row);
+  const passOf=nm2=>{ const p=parseFloat(xt.passes&&xt.passes[nm2]); return p>0?String(Math.round(p*10)/10):''; };
+  const N=[];
+  N.push(tdHead('对话考试详情',esc(nm)+' · 更新于 '+esc(String(row[7])),'examDialog'));
+  N.push(ST(st,tdStCls(st)));
+  N.push('<div class="pn-wrap"><div class="pn-card">');
+  N.push('<div class="fsec"><h3>基础信息</h3></div>');
+  N.push('<div class="kv-list">'+
+    tdKv('任务名称',esc(nm))+tdKv('任务类型',esc(xt.taskType))+tdKv('状态',st)+
+    tdKv('完成率',esc(String(row[5]).replace(/<[^>]+>/g,'')))+tdKv('更新时间',esc(String(row[7])))+
+    '<div class="kv" style="grid-column:1/-1;display:block"><span style="display:block;margin-bottom:6px;white-space:nowrap">任务说明</span>'+
+      '<div class="sd-config">'+esc(xt.desc||'—')+'</div></div>'+
+  '</div>');
+  N.push('<div class="fsec"><h3>选择剧本（含打标分数）</h3></div>');
+  N.push(xt.scripts.length?tdScriptCards(xt.scripts,passOf):'<div class="sd-empty">未选择剧本</div>');
+  N.push('<div class="sd-stage-sum">共 '+xt.scripts.length+' 个剧本（最多可选 5 个）· 每个剧本单独设置打标分数（0-100 分），达到即合格'+(xt.scripts.length?' · 点击剧本卡片可查看剧本详情':'')+'</div>');
+  N.push(tdSettingsHtml([
+    ['所属分组',esc(tgName('dk',tgRowGroupId('dk',i)))],
+    ['任务时间',esc(String(row[4]))],
+    ['防作弊（预留）',xt.anticheat?'已开启（预留配置，本期不生效）':'未开启']
+  ]));
+  N.push(tdScopeHtml(xt,esc(String(row[1]).replace(/<[^>]+>/g,''))+' 人'));
+  N.push('</div></div>');
+  return N.join('');
+}
+
+/* ---- 试题考试详情 ---- */
+function pgExTaskDetail(){
+  const i=EX_VIEW,row=DB.examTasks.rows[i];
+  if(!row){ go('examPaper'); return ''; }
+  const nm=exName(i), xt=exXtraOf(nm), st=exStatusOf(row);
+  const qs=(xt.qsel||[]).filter(q=>DB.questions.rows[q]);
+  const total=qs.reduce((s,q)=>s+(parseFloat(xt.qscore[q])||0),0);
+  const N=[];
+  N.push(tdHead('试题考试详情',esc(nm)+' · 更新于 '+esc(String(row[9])),'examPaper'));
+  N.push(ST(st,tdStCls(st)));
+  N.push('<div class="pn-wrap"><div class="pn-card">');
+  /* 1 · 基础信息 */
+  N.push('<div class="fsec"><h3>基础信息</h3></div>');
+  N.push('<div class="kv-list">'+
+    tdKv('任务名称',esc(nm))+tdKv('任务类型',esc(xt.taskType))+tdKv('状态',st)+
+    tdKv('通过率',esc(String(row[7]).replace(/<[^>]+>/g,'')))+tdKv('更新时间',esc(String(row[9])))+
+    '<div class="kv" style="grid-column:1/-1;display:block"><span style="display:block;margin-bottom:6px;white-space:nowrap">任务说明</span>'+
+      '<div class="sd-config">'+esc(xt.desc||'—')+'</div></div>'+
+  '</div>');
+  /* 2 · 组卷配置（对应新建页：题库分组选出题范围 → 逐题选择 → 每题分数，总分 = 各题分数之和 = 100） */
+  N.push('<div class="fsec"><h3>组卷配置</h3></div>');
+  N.push('<div class="kv-list" style="margin-bottom:10px">'+
+    tdKv('出题范围',xt.qgroup?esc(qbGName(xt.qgroup)):'全部分组')+
+    tdKv('通过分数（及格分）',xt.pass?(Math.round(parseFloat(xt.pass)*10)/10)+' 分（总分 100 分）':'—')+
+  '</div>');
+  if(qs.length){
+    N.push('<table class="ex-qtbl"><thead><tr><th>题目名称</th><th style="width:80px">题型</th><th style="width:110px">分组</th><th style="width:110px">答案识别</th><th style="width:110px">每题分数</th></tr></thead><tbody>'+
+      qs.map(q=>{
+        const r=DB.questions.rows[q];
+        return '<tr><td>'+esc(exQName(q))+'</td><td>'+esc(r[1])+'</td><td>'+esc(qbGName(qbRowGroupId(q)))+'</td><td>'+esc(r[3])+'</td><td style="text-align:right">'+(Math.round((parseFloat(xt.qscore[q])||0)*10)/10)+' 分</td></tr>';
+      }).join('')+'</tbody></table>');
+    N.push('<div class="ex-sum">已选题目 <b>'+qs.length+'</b> 道 · 总分 <b>'+(Math.round(total*10)/10).toFixed(1)+'</b> / 100 分 · 考试限时 '+(parseInt(xt.limit)>0?parseInt(xt.limit)+' 分钟':'不限时')+'</div>');
+  } else {
+    N.push('<div class="sd-empty">暂无组卷题目（题目可能已被删除或停用）</div>');
+  }
+  /* 3 · 任务设置 */
+  N.push(tdSettingsHtml([
+    ['所属分组',esc(exGName(exRowGroupId(i)))],
+    ['任务时间',esc(String(row[6]))],
+    ['考试限时',parseInt(xt.limit)>0?parseInt(xt.limit)+' 分钟（0 表示不限时）':'不限时'],
+    ['防作弊（预留）',xt.anticheat?'已开启（预留配置，本期不生效）':'未开启']
+  ]));
+  /* 4 · 学员范围 */
+  N.push(tdScopeHtml(xt,esc(String(row[2]).replace(/<[^>]+>/g,''))+' 人'));
+  N.push('</div></div>');
+  return N.join('');
+}
+
+/* ---- 培训任务详情（任务链条编排 + 统一任务设置） ---- */
+const TD_STEP_IC={cl:'play',pr:'face',dk:'spark',ex:'exam'};
+function pgTtTaskInfo(){
+  const i=TT_INFO,row=DB.trainTasks.rows[i];
+  if(!row){ go('tasks'); return ''; }
+  const nm=ttName(i), xt=ttXtraOf(nm), st=ttStatusOf(row);
+  const en=(xt.steps||[]).filter(s=>s.on);
+  const totalTasks=en.reduce((a,s)=>a+((s.tasks||[]).length),0);
+  const N=[];
+  N.push(tdHead('培训任务详情',esc(nm)+' · 更新于 '+esc(String(row[6])),'tasks',
+    '<button class="btn btn-p" onclick="ttView(TT_INFO)">配置任务设置</button>'));
+  N.push(ST(st,tdStCls(st)));
+  N.push('<div class="pn-wrap"><div class="pn-card">');
+  /* 1 · 基础信息（对应新建页：任务名称 / 任务说明） */
+  N.push('<div class="fsec"><h3>基础信息</h3></div>');
+  N.push('<div class="kv-list">'+
+    tdKv('任务名称',esc(nm))+tdKv('任务类型',esc(xt.taskType))+tdKv('状态',st)+
+    tdKv('完成率',esc(String(row[4]).replace(/<[^>]+>/g,'')))+tdKv('更新时间',esc(String(row[6])))+
+    '<div class="kv" style="grid-column:1/-1;display:block"><span style="display:block;margin-bottom:6px;white-space:nowrap">任务说明</span>'+
+      '<div class="sd-config">'+esc(xt.desc||'—')+'</div></div>'+
+  '</div>');
+  /* 2 · 任务链条（对应新建页：课程学习 / 陪练 / 对话考试 / 试题考试，包含与顺序可配置；链中任务可点击查看详情） */
+  N.push('<div class="fsec"><h3>任务链条</h3></div>');
+  if(en.length){
+    N.push('<div class="sd-stages">'+en.map((s,si)=>
+      '<div class="sd-stage">'+
+        '<div class="sd-stage-hd"><span class="sd-stage-no">'+(si+1)+'</span><span class="sd-stage-nm">'+esc(ttStepName(s.k))+'</span></div>'+
+        '<div class="sd-lab">步骤说明</div><div class="sd-txt">'+esc(ttStepDesc(s.k))+'</div>'+
+        '<div class="sd-lab">链中任务（'+((s.tasks||[]).length)+' 个，点击查看任务详情）</div>'+
+        '<div class="sd-mats" style="margin-top:6px">'+(s.tasks||[]).map(n=>{
+          const t=String(n).replace(/<[^>]+>/g,'');
+          return '<span class="sd-mat" style="cursor:pointer" title="查看任务详情" data-k="'+s.k+'" data-n="'+esc(t)+'" onclick="taskDetailGo(this.dataset.k,this.dataset.n)">'+icon(TD_STEP_IC[s.k]||'task',13)+'<span>'+esc(t)+'</span></span>';
+        }).join('')+'</div>'+
+      '</div>').join('')+'</div>');
+    N.push('<div class="sd-stage-sum">共 '+en.length+' 个执行步骤 · '+totalTasks+' 个链中任务（链中任务相互独立，任务设置各自独立配置）</div>');
+  } else {
+    N.push('<div class="sd-empty">未配置任务链条</div>');
+  }
+  /* 3 · 任务设置 */
+  N.push(tdSettingsHtml([
+    ['所属分组',esc(tgName('tt',tgRowGroupId('tt',i)))],
+    ['任务时间',esc(String(row[3]))]
+  ]));
+  /* 4 · 学员范围 */
+  N.push(tdScopeHtml(xt,esc(String(row[2]).replace(/<[^>]+>/g,''))+' 人'));
+  N.push('</div></div>');
+  return N.join('');
+}
+/* ================== 培训中心 · 任务详情页模块结束 ================== */
 
 /* ---- 启动 ---- */
 render();
