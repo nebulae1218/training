@@ -1020,6 +1020,9 @@ tbody tr:hover{background:#F8FAFF}
 .lmodal-mask{position:fixed;inset:0;background:rgba(12,18,40,.45);display:none;align-items:center;justify-content:center;z-index:95;backdrop-filter:blur(2px)}
 .lmodal-mask.on{display:flex}
 .modal{position:relative;width:420px;max-width:calc(100vw - 32px);background:#fff;border-radius:16px;padding:26px;box-shadow:0 30px 80px rgba(12,18,40,.30);animation:pop .2s ease}
+.modal.modal-w{width:660px;max-width:calc(100vw - 32px)}
+.modal-w .tt-cm-body{max-height:60vh;overflow:auto;margin-top:14px;padding-right:4px}
+.modal-w .mu-err.show{display:block}
 @keyframes pop{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
 .modal h3{font-size:18px;font-weight:700;margin-bottom:6px}
 .modal .ms{font-size:13px;color:var(--t3);margin-bottom:20px;line-height:1.6}
@@ -1401,6 +1404,24 @@ body.chpwd .chpwd-page{display:flex}
   </div>
 </div>
 
+<!-- 标签管理：新建标签弹窗（来源=自建） -->
+<div class="lmodal-mask" id="tagNewMask">
+  <div class="modal">
+    <h3>新建标签</h3>
+    <p class="ms">自建标签创建后可在 5 类任务「按标签下发」中使用；久智数联推送标签由系统每日自动同步，不支持手动创建。</p>
+    <div style="margin:12px 0">
+      <div class="field" style="margin-bottom:10px"><label>标签名称 <span style="color:var(--bad)">*</span></label><div class="inp"><input id="tagName" placeholder="请输入标签名称，如：新能源意向客户"></div></div>
+      <div class="field" style="margin-bottom:10px"><label>标签说明</label><div class="inp"><input id="tagDesc" placeholder="请输入标签说明（选填）"></div></div>
+      <div class="field" style="margin-bottom:0"><label>来源</label><div><span class="st ok">自建</span><span style="font-size:12px;color:var(--t3);margin-left:8px">久智数联推送标签由系统同步，不支持手动创建</span></div></div>
+      <div class="err" id="tagNewErr" style="margin-top:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span id="tagNewErrTx"></span></div>
+    </div>
+    <div class="modal-actions">
+      <button class="l-btn-g" onclick="tagNewClose()">取消</button>
+      <button class="btn-primary" style="flex:1" onclick="tagNewSave()">创建标签</button>
+    </div>
+  </div>
+</div>
+
 <!-- 素材库：上传素材弹窗 -->
 <div class="lmodal-mask" id="matUploadMask">
   <div class="modal modal-wide">
@@ -1718,6 +1739,21 @@ body.chpwd .chpwd-page{display:flex}
   </div>
 </div>
 
+<!-- 培训任务 · 任务链条弹窗新建（复用各任务新建页的资源选择模块） -->
+<div class="lmodal-mask" id="ttChainMask">
+  <div class="modal modal-w">
+    <span class="close-x" onclick="ttCloseChain()">✕</span>
+    <h3 id="ttChainTitle">新建课程学习任务</h3>
+    <p class="ms" id="ttChainDesc">选择课程加入培训任务「任务链条」的该步骤</p>
+    <div class="tt-cm-body" id="ttChainBody"></div>
+    <div class="mu-err" id="ttChainErrM"></div>
+    <div class="modal-actions">
+      <button class="l-btn-g" onclick="ttCloseChain()">取消</button>
+      <button class="btn-primary" style="flex:1" onclick="ttChainConfirm()">确定</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="ltoast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg><span id="ltoastTx"></span></div>
 <div class="app">
   <aside class="side">
@@ -1797,6 +1833,7 @@ body.chpwd .chpwd-page{display:flex}
 <script>
 /* ============ 图标 ============ */
 const IC = {
+  tag:'<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.83z"/><circle cx="7" cy="7" r="1.5"/>',
   dash:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
   book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
   play:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3z"/>',
@@ -1856,12 +1893,13 @@ const NAV=[
  {g:'训练与数据分析',items:[
    {k:'rlearn',t:'学习记录',ic:'book'},
    {k:'rpractice',t:'陪练记录',ic:'script'},
-   {k:'rexam',t:'考核记录',ic:'exam'},
+   {k:'rtask',t:'任务完成记录',ic:'task'},
    {k:'ability',t:'能力分析',ic:'radar'},
    {k:'kanban',t:'培训数据看板',ic:'screen'}]},
  {g:'组织与系统管理',items:[
    {k:'orgs',t:'组织架构',ic:'org'},
    {k:'staff',t:'员工管理',ic:'user'},
+   {k:'tags',t:'标签管理',ic:'tag'},
    {k:'roles',t:'角色管理',ic:'shield'},
    {k:'logs',t:'操作日志',ic:'log'},
    {k:'settings',t:'系统配置',ic:'gear'}]}
@@ -2020,59 +2058,41 @@ const DB={
   detail:['任务名称','任务类型','任务简介','起止时间','完成规则','下发范围','状态','创建人'],
   dsec:[['任务内容',[['阶段1 课程（2门）','新车销售六步法 / 银河E5产品卖点精讲'],['阶段2 陪练（2个剧本）','进店首次接待·犹豫型客户 / 竞品对比价格谈判'],['阶段3 正式考核（1项）','新车销售顾问认证考核 · 及格分80']]],['操作记录',[['2026-10-15 09:00 张伟 发布任务','2026-10-15 09:00 下发至26家门店/184名学员'],['2026-10-18 16:20 张伟 修改截止时间','10-28 → 10-31']]]]},
 
- rlearn:{filters:['组织:全部|集团本部|华北区域|西南区域','来源:全部|任务|自主'],
-  cols:[['学员',0],['课程',0],['所属组织',0],['来源任务',0],['学习进度',0],['最近学习',0]],
-  rows:[
-   ['赵磊','新车销售六步法','北京长久博瑞店','10月银河E5上市冲刺培训',ST('100%',OK),'2026-10-24 20:31'],
-   ['钱多多','银河E5产品卖点精讲','北京长久博瑞店','10月银河E5上市冲刺培训',ST('83%',WARN),'2026-10-25 19:02'],
-   ['孙晓','新车销售六步法','天津空港店','10月银河E5上市冲刺培训',ST('100%',OK),'2026-10-23 21:15'],
-   ['李文静','客户异议处理二十讲','石家庄裕华店','自主',ST('45%',WARN),'2026-10-25 12:40'],
-   ['周洋','新车销售六步法','成都锦江店','10月银河E5上市冲刺培训',ST('33%',BAD),'2026-10-22 18:55'],
-   ['吴倩','试驾邀约与体验设计','华北区域','周末试驾邀约专项陪练',ST('100%',OK),'2026-10-24 09:18']],
-  detail:['学员','课程','所属组织','来源任务/自主','学习进度','已完成章节','最近学习时间']},
 
- rpractice:{filters:['模式:全部|文字|语音|模拟电话','来源:全部|任务|自主'],
-  cols:[['学员',0],['剧本',0],['模拟客户',0],['来源',0],['得分',0],['训练时间',0]],
-  rows:[
-   ['赵磊','竞品对比价格谈判','王先生','任务',ST('86',OK),'2026-10-25 20:10'],
-   ['钱多多','进店首次接待·犹豫型客户','李女士','任务',ST('72',WARN),'2026-10-25 19:44'],
-   ['孙晓','试驾邀约电话演练','刘总','任务',ST('91',OK),'2026-10-25 17:26'],
-   ['李文静','进店首次接待·犹豫型客户','李女士','自主',ST('64',WARN),'2026-10-25 11:03'],
-   ['周洋','竞品对比价格谈判','王先生','任务',ST('58',BAD),'2026-10-24 21:37'],
-   ['吴倩','金融分期异议处理','张老师','任务',ST('79',WARN),'2026-10-24 15:50']],
-  detail:['学员','剧本','模拟客户','模式','来源任务/自主','会话时长','得分','各维度得分','训练时间']},
+/* 学习记录 / 陪练记录 / 任务完成记录：已改为独立页面实现（见下方「训练与数据分析：三个记录页」代码段），不再走通用 DB 列表 */
 
- rexam:{filters:['方式:全部|AI实训|试卷','结果:全部|通过|未通过'],
-  cols:[['学员',0],['考核',0],['方式',0],['来源',0],['得分',0],['结果',0],['时间',0]],
-  rows:[
-   ['赵磊','新车销售顾问认证考核','AI实训','任务','88',ST('通过',OK),'2026-10-25 21:02'],
-   ['钱多多','新车销售顾问认证考核','AI实训','任务','74',ST('未通过',BAD),'2026-10-25 20:31'],
-   ['孙晓','10月产品知识月考','试卷','任务','92',ST('通过',OK),'2026-10-20 10:15'],
-   ['李文静','10月产品知识月考','试卷','模拟',ST('模拟',GRAY),'—',ST('—',GRAY),'2026-10-19 15:22'],
-   ['周洋','新车销售顾问认证考核','AI实训','任务','66',ST('未通过',BAD),'2026-10-24 19:48'],
-   ['吴倩','10月产品知识月考','试卷','任务','81',ST('通过',OK),'2026-10-20 09:40']],
-  detail:['学员','考核名称','方式','正式/模拟','来源任务','得分','及格线','结果','用时','提交时间']},
 
 /* 员工管理 V1.1：区分「全局账号」与「租户成员」，支持多角色、应用访问权限 */
  staff:{filters:['组织:全部|集团本部|华北区域|西南区域','成员状态:全部|启用|停用'],
   list:[
-   {name:'赵磊',phone:'13812342016',gstatus:'正常',empId:'CJ010261',org:'北京长久博瑞店',post:['销售顾问'],roles:['销售顾问','集团管理员'],app:{admin:true,student:true},mstatus:'启用',join:'2026-03-12',createAt:'2026-03-10',tasks:14,lastLogin:'2026-10-25 20:35'},
-   {name:'钱多多',phone:'13812342033',gstatus:'正常',empId:'CJ010262',org:'北京长久博瑞店',post:['销售顾问','金融专员'],roles:['销售顾问','金融专员'],app:{admin:false,student:true},mstatus:'启用',join:'2026-03-12',createAt:'2026-03-10',tasks:9,lastLogin:'2026-10-25 19:40'},
-   {name:'孙晓',phone:'13912341180',gstatus:'正常',empId:'CJ020115',org:'天津空港店',post:['销售顾问'],roles:['销售顾问'],app:{admin:false,student:true},mstatus:'启用',join:'2026-05-08',createAt:'2026-05-06',tasks:11,lastLogin:'2026-10-25 17:20'},
-   {name:'马店长',phone:'13712346621',gstatus:'正常',empId:'CJ020001',org:'天津空港店',post:[],roles:['店长','区域培训专员'],app:{admin:true,student:true},mstatus:'启用',join:'2025-11-02',createAt:'2025-10-28',tasks:22,lastLogin:'2026-10-25 08:50'},
-   {name:'李文静',phone:'13512347745',gstatus:'正常',empId:'CJ030208',org:'石家庄裕华店',post:['销售顾问'],roles:['销售顾问'],app:{admin:false,student:true},mstatus:'启用',join:'2026-06-20',createAt:'2026-06-18',tasks:7,lastLogin:'2026-10-25 11:00'},
+   {name:'赵磊',phone:'13812342016',gstatus:'正常',empId:'CJ010261',org:'北京长久博瑞店',post:['销售顾问'],roles:['销售顾问','集团管理员'],app:{admin:true,student:true},mstatus:'启用',join:'2026-03-12',createAt:'2026-03-10',tasks:14,lastLogin:'2026-10-25 20:35',tags:['高意向线索','新能源意向客户']},
+   {name:'钱多多',phone:'13812342033',gstatus:'正常',empId:'CJ010262',org:'北京长久博瑞店',post:['销售顾问','金融专员'],roles:['销售顾问','金融专员'],app:{admin:false,student:true},mstatus:'启用',join:'2026-03-12',createAt:'2026-03-10',tasks:9,lastLogin:'2026-10-25 19:40',tags:['金融分期敏感']},
+   {name:'孙晓',phone:'13912341180',gstatus:'正常',empId:'CJ020115',org:'天津空港店',post:['销售顾问'],roles:['销售顾问'],app:{admin:false,student:true},mstatus:'启用',join:'2026-05-08',createAt:'2026-05-06',tasks:11,lastLogin:'2026-10-25 17:20',tags:['新入职（30 天内）','高意向线索']},
+   {name:'马店长',phone:'13712346621',gstatus:'正常',empId:'CJ020001',org:'天津空港店',post:[],roles:['店长','区域培训专员'],app:{admin:true,student:true},mstatus:'启用',join:'2025-11-02',createAt:'2025-10-28',tasks:22,lastLogin:'2026-10-25 08:50',tags:['保有客户回访']},
+   {name:'李文静',phone:'13512347745',gstatus:'正常',empId:'CJ030208',org:'石家庄裕华店',post:['销售顾问'],roles:['销售顾问'],app:{admin:false,student:true},mstatus:'启用',join:'2026-06-20',createAt:'2026-06-18',tasks:7,lastLogin:'2026-10-25 11:00',tags:['试驾未成交']},
    {name:'周洋',phone:'13612343399',gstatus:'正常',empId:'CJ040311',org:'成都锦江店',post:['销售顾问'],roles:['销售顾问'],app:{admin:false,student:true},mstatus:'停用',join:'2026-02-18',createAt:'2026-02-15',leaveAt:'2026-10-02',tasks:0,lastLogin:'2026-10-02 09:12'}],
-  detail:['姓名','工号','手机号','所属组织','岗位','角色（可多个）','状态','参与培训任务数','最近登录']},
+  detail:['姓名','工号','手机号','所属组织','岗位','角色（可多个）','标签字段（可多个）','状态','参与培训任务数','最近登录']},
 
 /* 角色管理 V1.1：业务岗位角色（不含管理权限）与管理角色（含应用/功能/数据权限）分离 */
  roles:{filters:['类型:全部|管理角色|业务岗位角色'],
   list:[
-   {name:'集团管理员',type:'管理',org:'集团本部',belong:'长久集团租户',desc:'集团级全模块管理，含组织、资源、任务、人员',status:'启用',dataScope:'全部组织',app:{admin:true,student:true},perms:['script:view','script:create','script:edit','script:delete','script:publish','script:authorize','course:*','task:*','user:*','org:*'],empCount:3,creator:'本组织创建',editable:true},
-   {name:'区域培训专员',type:'管理',org:'华北区域',belong:'长久集团租户',desc:'所辖区域培训任务与训练数据管理',status:'启用',dataScope:'本组织及以下',app:{admin:true,student:false},perms:['script:view','script:create','script:edit','task:create','task:view','rlearn:view','rpractice:view'],empCount:12,creator:'本组织创建',editable:true},
-   {name:'店长',type:'管理',org:'北京长久博瑞店',belong:'长久集团租户',desc:'本门店人员、任务与训练记录管理',status:'启用',dataScope:'本组织及以下',app:{admin:true,student:false},perms:['script:view','task:create','task:view','user:view','rlearn:view'],empCount:26,creator:'上级组织分配',editable:false},
+   {name:'集团管理员',type:'管理',org:'集团本部',belong:'长久集团租户',desc:'集团级全模块管理，含组织、资源、任务、人员',status:'启用',dataScope:'全部组织',app:{admin:true,student:true},perms:['script:view','script:create','script:edit','script:delete','script:publish','script:authorize','course:*','task:*','user:*','org:*','tag:*'],empCount:3,creator:'本组织创建',editable:true},
+   {name:'区域培训专员',type:'管理',org:'华北区域',belong:'长久集团租户',desc:'所辖区域培训任务与训练数据管理',status:'启用',dataScope:'本组织及以下',app:{admin:true,student:false},perms:['script:view','script:create','script:edit','task:create','task:view','rlearn:view','rpractice:view','rtask:view'],empCount:12,creator:'本组织创建',editable:true},
+   {name:'店长',type:'管理',org:'北京长久博瑞店',belong:'长久集团租户',desc:'本门店人员、任务与训练记录管理',status:'启用',dataScope:'本组织及以下',app:{admin:true,student:false},perms:['script:view','task:create','task:view','user:view','rlearn:view','rtask:view'],empCount:26,creator:'上级组织分配',editable:false},
    {name:'销售顾问',type:'岗位',org:'全集团门店',belong:'长久集团租户',desc:'标识从事新车销售业务岗位，用于剧本适用范围与任务分配',status:'启用',dataScope:'仅本人',app:{admin:false,student:true},perms:[],empCount:184,creator:'行业包初始化',editable:false},
    {name:'金融专员',type:'岗位',org:'全集团门店',belong:'长久集团租户',desc:'标识金融/保险业务岗位，用于专业剧本适用与任务分配',status:'启用',dataScope:'仅本人',app:{admin:false,student:true},perms:[],empCount:31,creator:'行业包初始化',editable:false}],
   detail:['角色名称','角色类型','功能权限（菜单/按钮）','组织数据范围','关联员工数']},
+
+ /* 标签管理：来源=自建 / 久智数联推送；员工侧称「标签字段」，一人可多个 */
+ tags:{filters:['来源:全部|自建|久智数联推送'],
+  list:[
+   {name:'新能源意向客户',src:'自建',desc:'到店咨询或线上留资的新能源意向学员，用于新能源产品类任务精准下发',upd:'2026-11-18 10:20',by:'张伟'},
+   {name:'试驾未成交',src:'自建',desc:'已完成试驾但尚未成交，需持续跟进邀约的学员',upd:'2026-11-15 14:02',by:'李娜'},
+   {name:'新入职（30 天内）',src:'自建',desc:'入职 30 天内的新员工，用于上岗基础培训链路自动下发',upd:'2026-11-10 09:30',by:'王芳'},
+   {name:'高意向线索',src:'久智数联推送',desc:'久智数联 CRM 每日自动同步：DCC 线索评分 A 级客户对应学员',upd:'2026-11-25 08:00',by:'久智数联'},
+   {name:'金融分期敏感',src:'久智数联推送',desc:'久智数联推送：近 90 天有金融分期咨询记录的客户对应学员',upd:'2026-11-24 08:00',by:'久智数联'},
+   {name:'保有客户回访',src:'久智数联推送',desc:'久智数联推送：保养 / 保险到期客户回访负责学员',upd:'2026-11-23 08:00',by:'久智数联'}],
+  detail:['标签名称','来源','标签说明','关联员工数','更新人','更新时间']},
 
  logs:{filters:['对象:全部|任务|课程|剧本|考核|员工','结果:全部|成功|失败'],
   cols:[['操作人',0],['所属组织',0],['对象类型',0],['操作动作',0],['时间',0],['结果',0]],
@@ -2085,12 +2105,178 @@ const DB={
   detail:['操作人','所属组织','对象类型','对象名称','操作动作','操作前/后内容','时间','结果','IP']}
 };
 
+
+/* ==================== 训练与数据分析：三个记录页 ====================
+   学习记录：学员端「课程」学习记录（章节明细实时取自课程管理 COURSE_XTRA；来源=课程学习任务 / 培训任务阶段 / 自主学习）
+   陪练记录：学员端「AI 陪练」训练记录（剧本 + 模拟客户 + 能力雷达；提交会话生成训练报告即计完成）
+   任务完成记录（原「考核记录」）：学员端「任务」完成记录，完成机制与 5 类任务管理一致 */
+const RADAR6=['开场破冰','需求挖掘','产品介绍','异议处理','促成邀约','沟通表达'];
+const progBar=p=>'<div style="display:flex;align-items:center;gap:10px"><div class="bar" style="width:120px"><i style="width:'+p+'%'+(p<50?';background:var(--warn)':'')+'"></i></div><b style="font-size:12px;white-space:nowrap">'+p+'%</b></div>';
+/* 通用：记录页骨架（统计卡 + 筛选卡 + 表格），样式与任务列表一致 */
+function recPage(title,desc,stats,filters,cols,rowsHtml,count){
+  return '<div class="page-head"><h1>'+title+'</h1><span class="desc">'+desc+'</span><div class="btns">'+headBtns(CUR)+'</div></div>'+
+  '<div class="stat-grid">'+stats.map(x=>'<div class="stat"><div class="l">'+x[0]+'</div><div class="v">'+x[1]+'</div><div class="s">'+x[2]+'</div></div>').join('')+'</div>'+
+  '<div class="filter-card"><div class="f-item"><span>关键词</span><input placeholder="搜索学员 / 名称"></div>'+
+   filters.map(f=>{const i=f.indexOf(':');const lb=f.slice(0,i),ops=f.slice(i+1);
+     return '<div class="f-item"><span>'+lb+'</span><select>'+ops.split('|').map(o=>'<option>'+esc(o)+'</option>').join('')+'</select></div>';}).join('')+
+   '<button class="btn btn-p btn-sm">查询</button><button class="btn btn-g btn-sm">重置</button></div>'+
+  '<div class="tbl-card"><div class="tbl-scroll"><table><thead><tr>'+cols.map(c=>'<th>'+c+'</th>').join('')+'</tr></thead><tbody>'+rowsHtml+'</tbody></table></div>'+
+  '<div class="tbl-foot">共 '+count+' 条 · 每页 10 条<div class="pgs"><button>‹</button><button class="on">1</button><button>2</button><button>›</button></div></div></div>';
+}
+/* 通用：记录详情抽屉（kv 明细 + 自定义区块 + 能力雷达） */
+function recDrawer(title,kv,secs,radar){
+  let h='<div class="kv-list">'+kv.map(x=>'<div class="kv"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>').join('')+'</div>';
+  if(radar) h+='<div class="sec"><h4>能力雷达 · '+radar.name+'</h4><div id="recRadar"></div>'+
+    '<div style="margin-top:10px">'+RADAR6.map((d,i)=>'<div class="dim-row"><label>'+d+'</label><div class="bar"><i style="width:'+radar.vals[i]+'%'+(radar.vals[i]<60?';background:var(--warn)':'')+'"></i></div><b>'+radar.vals[i]+'</b></div>').join('')+'</div></div>';
+  (secs||[]).forEach(x=>{
+    h+='<div class="sec"><h4>'+x[0]+'</h4>'+(x[2]||'')+'<div>'+x[1].map(it=>'<div style="margin-bottom:6px">'+it+'</div>').join('')+'</div>'+
+      (x[3]?'<div class="ex-note" style="margin-top:8px">'+x[3]+'</div>':'')+'</div>';
+  });
+  h+='<div class="sec" style="display:flex;gap:10px"><button class="btn btn-g" onclick="closeDrawer()">关闭</button></div>';
+  openDrawerHtml('<span class="st info">详情</span> '+title,h);
+  if(radar) setTimeout(()=>drawRadarDims('recRadar',RADAR6,radar.vals,220),50);
+}
+
+/* ---- 学习记录：学员 × 课程（章节明细实时取自 COURSE_XTRA，来源任务与课程/培训任务逻辑一致） ---- */
+const RL_ROWS=[
+ {name:'赵磊',org:'北京长久博瑞店',course:'新车销售六步法',src:'任务',task:'新车销售六步法学习任务（课程学习任务）',pct:100,dur:'97min',time:'2026-10-24 20:31'},
+ {name:'钱多多',org:'北京长久博瑞店',course:'银河E5产品卖点精讲',src:'任务',task:'新车销售六步法学习任务（课程学习任务）',pct:83,dur:'82min',time:'2026-10-25 19:02'},
+ {name:'孙晓',org:'天津空港店',course:'新车销售六步法',src:'任务',task:'10月银河E5上市冲刺培训（培训任务 · 阶段1）',pct:100,dur:'95min',time:'2026-10-23 21:15'},
+ {name:'李文静',org:'石家庄裕华店',course:'客户异议处理二十讲',src:'自主',task:'自主学习（课程库）',pct:45,dur:'58min',time:'2026-10-25 12:40'},
+ {name:'周洋',org:'成都锦江店',course:'新车销售六步法',src:'任务',task:'10月银河E5上市冲刺培训（培训任务 · 阶段1）',pct:33,dur:'39min',time:'2026-10-22 18:55'},
+ {name:'吴倩',org:'华北区域',course:'试驾邀约与体验设计',src:'任务',task:'试驾邀约话术课程包（课程学习任务）',pct:100,dur:'66min',time:'2026-10-24 09:18'},
+ {name:'郑鹏',org:'成都锦江店',course:'金融方案与分期话术',src:'自主',task:'自主学习（课程库）',pct:12,dur:'14min',time:'2026-10-25 08:52'}];
+function pgRLearn(){
+  const rows=RL_ROWS.map((r,i)=>{
+    const chs=(COURSE_XTRA[r.course]||{chapters:[]}).chapters;
+    const done=r.pct>=100?chs.length:Math.floor(r.pct*chs.length/100);
+    return '<tr><td>'+r.name+'</td><td><span class="lk" onclick="openRLearn('+i+')">'+esc(r.course)+'</span></td><td>'+r.org+'</td>'+
+      '<td>'+(r.src==='任务'?'<span class="pill">'+esc(r.task)+'</span>':'<span class="pill">自主</span> 课程库')+'</td>'+
+      '<td>'+progBar(r.pct)+'</td><td>'+(r.pct>=100?ST('已完成',OK):ST('学习中',INFO))+'</td>'+
+      '<td>'+done+'/'+chs.length+' 章</td><td>'+r.dur+'</td><td>'+r.time+'</td></tr>';
+  }).join('');
+  return recPage('学习记录','学员端「课程」学习记录 · 章节明细与课程管理实时同步',
+   [['学习学员','38','本月新增 6 人'],['在学课程','6','全部来自课程库'],['平均完成率','72%','已完成 3 人'],['累计学习时长','451min','本周 128min']],
+   ['组织:全部|集团本部|华北区域|西南区域','来源:全部|任务|自主','学习状态:全部|学习中|已完成'],
+   ['学员','课程','所属组织','来源任务 / 自主','学习进度','完成状态','已完成章节','累计时长','最近学习'],rows,RL_ROWS.length);
+}
+function openRLearn(i){
+  const r=RL_ROWS[i],chs=(COURSE_XTRA[r.course]||{chapters:[]}).chapters;
+  const done=r.pct>=100?chs.length:Math.floor(r.pct*chs.length/100);
+  const ingIdx=(r.pct>0&&r.pct<100)?done:-1;
+  const chap=chs.map((c,ci)=>{
+    const tag=ci<done?ST('已完成',OK):(ci===ingIdx?ST('学习中',INFO):ST('未开始',GRAY));
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px dashed var(--line)"><span>'+esc(c.title)+' <span style="font-size:11px;color:var(--t3)">'+c.type+' · '+c.dur+'</span></span>'+tag+'</div>';
+  }).join('');
+  const mech=r.task.indexOf('培训任务')>=0
+    ?'所属培训任务按阶段顺序解锁：阶段内全部课程 100% 完成后开放下一阶段。'
+    :(r.src==='任务'?'所属课程学习任务要求所选课程全部 100% 完成（全部章节学完）计任务完成；未完成可反复学习。':'学员在课程库自主发起学习，不关联任务完成机制。');
+  recDrawer(esc(r.course)+' · '+r.name,
+   [['学员',r.name],['课程',esc(r.course)],['所属组织',r.org],['来源类型',r.src==='任务'?'任务下发':'自主'],['来源任务',esc(r.task)],['已完成章节',done+'/'+chs.length],['累计学习时长',r.dur],['最近学习时间',r.time]],
+   [['章节学习明细（'+chs.length+' 章）',[chap],'','<b>学习规则：</b>'+((COURSE_XTRA[r.course]||{}).rule||'自由学习')+' · '+mech]],
+   null);
+}
+
+/* ---- 陪练记录：学员 × AI 陪练会话（剧本 / 模拟客户 / 模式 / 能力雷达；出报告即完成） ---- */
+const RP_ROWS=[
+ {name:'赵磊',org:'北京长久博瑞店',script:'竞品对比价格谈判',persona:'王先生',mode:'模拟电话',src:'任务',task:'竞品对比应对陪练（陪练任务）',dur:'8分12秒',turns:11,score:86,time:'2026-10-25 20:10',dims:[88,84,82,80,90,86]},
+ {name:'钱多多',org:'北京长久博瑞店',script:'进店首次接待·犹豫型客户',persona:'李女士',mode:'语音',src:'任务',task:'周末试驾邀约专项陪练（陪练任务）',dur:'6分48秒',turns:9,score:72,time:'2026-10-25 19:44',dims:[75,70,68,72,74,71]},
+ {name:'孙晓',org:'天津空港店',script:'试驾邀约电话演练',persona:'刘总',mode:'模拟电话',src:'任务',task:'周末试驾邀约专项陪练（陪练任务）',dur:'7分03秒',turns:10,score:91,time:'2026-10-25 17:26',dims:[92,90,88,93,90,92]},
+ {name:'李文静',org:'石家庄裕华店',script:'进店首次接待·犹豫型客户',persona:'李女士',mode:'文字',src:'自主',task:'自主练习',dur:'5分26秒',turns:8,score:64,time:'2026-10-25 11:03',dims:[62,66,60,64,68,63]},
+ {name:'周洋',org:'成都锦江店',script:'竞品对比价格谈判',persona:'王先生',mode:'文字',src:'任务',task:'竞品对比应对陪练（陪练任务）',dur:'4分40秒',turns:6,score:58,time:'2026-10-24 21:37',dims:[55,60,52,58,62,57]},
+ {name:'吴倩',org:'华北区域',script:'金融分期异议处理',persona:'张老师',mode:'语音',src:'任务',task:'金融分期话术专项陪练（陪练任务）',dur:'6分15秒',turns:9,score:79,time:'2026-10-24 15:50',dims:[78,80,76,82,77,80]},
+ {name:'赵磊',org:'北京长久博瑞店',script:'竞品对比价格谈判',persona:'王先生',mode:'模拟电话',src:'任务',task:'竞品对比应对陪练（陪练任务）',dur:'7分50秒',turns:10,score:78,time:'2026-10-22 19:05',dims:[80,76,74,78,82,78],note:'第 2 次练习（任务未完成可反复练习）'},
+ {name:'钱多多',org:'北京长久博瑞店',script:'试驾邀约电话演练',persona:'刘总',mode:'文字',src:'自主',task:'自主练习',dur:'5分02秒',turns:7,score:69,time:'2026-10-21 20:12',dims:[70,66,68,70,72,68]}];
+function pgRPractice(){
+  const rows=RP_ROWS.map((r,i)=>'<tr><td>'+r.name+'</td><td><span class="lk" onclick="openRPractice('+i+')">'+esc(r.script)+'</span></td><td>'+r.persona+'</td>'+
+   '<td><span class="pill">'+r.mode+'</span></td><td>'+(r.src==='任务'?'<span class="pill">'+esc(r.task)+'</span>':'<span class="pill">自主</span>')+'</td>'+
+   '<td>'+r.dur+'</td><td>'+r.turns+' 轮</td><td><b>'+r.score+'</b></td><td>'+r.time+'</td></tr>').join('');
+  return recPage('陪练记录','学员端「AI 陪练」训练记录 · 提交会话生成训练报告即计完成',
+   [['陪练学员','38','覆盖 5 个剧本'],['本月场次','886','较上月 ↑ 12%'],['平均得分','76.5','60 分以下占 8%'],['报告生成率','100%','会话结束自动生成']],
+   ['组织:全部|集团本部|华北区域|西南区域','剧本:全部|进店首次接待·犹豫型客户|竞品对比价格谈判|金融分期异议处理|试驾邀约电话演练|交付环节客户关怀','模式:全部|文字|语音|模拟电话','来源:全部|任务|自主'],
+   ['学员','剧本','模拟客户','模式','来源任务 / 自主','会话时长','对话轮次','得分','训练时间'],rows,RP_ROWS.length);
+}
+function openRPractice(i){
+  const r=RP_ROWS[i],pd=PERSONAS.find(p=>p.name===r.persona);
+  const kv=[['学员',r.name],['剧本',esc(r.script)],['模拟客户',r.persona+(pd?' · '+pd.meta:'')],['练习模式',r.mode],
+   ['来源',r.src==='任务'?esc(r.task):'自主'],['会话时长',r.dur],['对话轮次',r.turns+' 轮'],['训练得分',r.score+' 分'],['训练时间',r.time]];
+  if(r.note)kv.push(['备注',r.note]);
+  recDrawer(esc(r.script)+' · '+r.name,kv,
+   [['训练报告',[],'','<b>完成机制：</b>提交会话并生成训练报告即计完成；所属任务未完成可反复练习，任务进度取最高分报告。']],
+   {name:'销售能力雷达表（六维）',vals:r.dims});
+}
+
+/* ---- 任务完成记录（原「考核记录」）：学员 × 5 类任务完成情况（完成机制与任务管理一致） ---- */
+const RT_ROWS=[
+ {name:'赵磊',org:'北京长久博瑞店',task:'10月银河E5上市冲刺培训',type:'培训任务',prog:67,status:'进行中',time:'2026-10-25 20:31',result:'阶段 2/3 · 陪练练习中',
+  steps:[['阶段1 课程学习','新车销售六步法 / 银河E5产品卖点精讲（均 100%）','done'],['阶段2 陪练练习','竞品对比价格谈判 · 已出报告 86 分','ing'],['阶段3 试题考试','待阶段 2 完成后解锁','lock']]},
+ {name:'钱多多',org:'北京长久博瑞店',task:'10月银河E5上市冲刺培训',type:'培训任务',prog:33,status:'进行中',time:'2026-10-25 19:44',result:'阶段 1/3 · 课程学习中',
+  steps:[['阶段1 课程学习','银河E5产品卖点精讲 · 83%','ing'],['阶段2 陪练练习','未解锁','lock'],['阶段3 试题考试','未解锁','lock']]},
+ {name:'孙晓',org:'天津空港店',task:'10月银河E5上市冲刺培训',type:'培训任务',prog:100,status:'已完成',time:'2026-10-25 21:02',result:'全部阶段完成',
+  steps:[['阶段1 课程学习','新车销售六步法 / 银河E5产品卖点精讲','done'],['阶段2 陪练练习','试驾邀约电话演练 · 91 分','done'],['阶段3 试题考试','银河E5产品知识周练 · 88 分（及格 60）','done']]},
+ {name:'孙晓',org:'天津空港店',task:'新车销售六步法学习任务',type:'课程学习',prog:100,status:'已完成',time:'2026-10-23 21:15',result:'3 门课程全部完成',
+  courses:[['新车销售六步法',100],['银河E5产品卖点精讲',100],['试驾邀约与体验设计',100]]},
+ {name:'周洋',org:'成都锦江店',task:'新车销售六步法学习任务',type:'课程学习',prog:33,status:'进行中',time:'2026-10-22 18:55',result:'完成 1/3 门',
+  courses:[['新车销售六步法',100],['银河E5产品卖点精讲',0],['试驾邀约与体验设计',0]]},
+ {name:'孙晓',org:'天津空港店',task:'周末试驾邀约专项陪练',type:'陪练任务',prog:100,status:'已完成',time:'2026-10-25 17:26',result:'2 个剧本均出报告 · 最高 91 分',
+  scripts:[['试驾邀约电话演练',91],['进店首次接待·犹豫型客户',84]]},
+ {name:'钱多多',org:'北京长久博瑞店',task:'周末试驾邀约专项陪练',type:'陪练任务',prog:50,status:'进行中',time:'2026-10-25 19:44',result:'已出报告 1/2 个',
+  scripts:[['进店首次接待·犹豫型客户',72],['试驾邀约电话演练',null]]},
+ {name:'赵磊',org:'北京长久博瑞店',task:'进店接待对话考核',type:'对话考试',prog:100,status:'已完成',time:'2026-10-25 20:31',result:'逐剧本达标 · 已出报告',
+  dks:[['进店首次接待·犹豫型客户',88,80],['竞品对比价格谈判',82,80]]},
+ {name:'李文静',org:'石家庄裕华店',task:'进店接待对话考核',type:'对话考试',prog:50,status:'进行中',time:'2026-10-25 11:03',result:'1/2 个剧本达及格分',
+  dks:[['进店首次接待·犹豫型客户',84,80],['竞品对比价格谈判',null,80]]},
+ {name:'周洋',org:'成都锦江店',task:'竞品应对话术通关',type:'对话考试',prog:0,status:'进行中',time:'2026-10-24 19:48',result:'58 分未达及格分 75 · 可重考',
+  dks:[['竞品对比价格谈判',58,75]]},
+ {name:'吴倩',org:'华北区域',task:'银河E5产品知识周练',type:'试题考试',prog:100,status:'已完成',time:'2026-10-20 09:40',result:'92 分（及格分 60）',
+  exam:{score:92,pass:60,qs:'3 题 · 总分 100',used:'18 分钟'}},
+ {name:'周洋',org:'成都锦江店',task:'银河E5产品知识周练',type:'试题考试',prog:0,status:'进行中',time:'2026-10-19 16:22',result:'45 分未达及格分 60 · 可重考',
+  exam:{score:45,pass:60,qs:'3 题 · 总分 100',used:'25 分钟'}},
+ {name:'郑鹏',org:'成都锦江店',task:'11月产品知识月考',type:'试题考试',prog:0,status:'未开始',time:'—',result:'—',exam:null}];
+const RT_ST_KV={已完成:'ok',进行中:'info',未开始:'gray'};
+function pgRTask(){
+  const rows=RT_ROWS.map((r,i)=>'<tr><td>'+r.name+'</td><td><span class="lk" onclick="openRTask('+i+')">'+esc(r.task)+'</span></td>'+
+   '<td><span class="pill">'+r.type+'</span></td><td>'+r.org+'</td><td>'+progBar(r.prog)+'</td><td>'+r.result+'</td>'+
+   '<td>'+ST(r.status,RT_ST_KV[r.status]||'info')+'</td><td>'+r.time+'</td></tr>').join('');
+  return recPage('任务完成记录','学员端「任务」完成记录 · 覆盖培训 / 课程学习 / 陪练 / 对话考试 / 试题考试五类任务',
+   [['覆盖学员','184','26 家门店下发'],['进行中','52','本周新增 6 人'],['已完成人次','96','较上周 ↑ 9'],['任务完成率','63%','进行中任务 5 个']],
+   ['任务类型:全部|培训任务|课程学习|陪练任务|对话考试|试题考试','完成状态:全部|已完成|进行中|未开始','组织:全部|集团本部|华北区域|西南区域'],
+   ['学员','任务名称','任务类型','所属组织','完成进度','成绩 / 结果','完成状态','最近动态'],rows,RT_ROWS.length);
+}
+function openRTask(i){
+  const r=RT_ROWS[i];
+  const kv=[['学员',r.name],['任务名称',esc(r.task)],['任务类型',r.type],['所属组织',r.org],['完成进度',r.prog+'%'],['成绩 / 结果',r.result],['完成状态',r.status],['最近动态',r.time]];
+  const stTagOf=k=>k==='done'?ST('已完成',OK):(k==='ing'?ST('进行中',INFO):(k==='lock'?ST('未解锁',GRAY):ST('未达标',WARN)));
+  const line=(l,d,tag)=>'<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:7px 0;border-bottom:1px dashed var(--line)"><span>'+l+(d?' <span style="font-size:11px;color:var(--t3)">'+d+'</span>':'')+'</span>'+tag+'</div>';
+  let items='',note='';
+  if(r.type==='培训任务'){
+    items=r.steps.map(x=>line('<b>'+x[0]+'</b>',x[1],stTagOf(x[2]))).join('');
+    note='<b>完成机制：</b>培训任务按阶段顺序解锁，完成当前阶段全部内容后开放下一阶段；全部阶段完成计任务完成。';
+  }else if(r.type==='课程学习'){
+    items=r.courses.map(c=>line(esc(c[0]),'',progBar(c[1]))).join('');
+    note='<b>完成机制：</b>所选课程全部 100% 完成（所有章节学完）计任务完成；未完成可反复学习。';
+  }else if(r.type==='陪练任务'){
+    items=r.scripts.map(x=>line(esc(x[0]),'',x[1]!=null?ST('已出报告 · '+x[1]+' 分',OK):ST('未开始',GRAY))).join('');
+    note='<b>完成机制：</b>每个剧本提交会话并生成训练报告即计完成；未完成可反复练习，进度取最高分报告。';
+  }else if(r.type==='对话考试'){
+    items=r.dks.map(x=>line(esc(x[0]),'及格分 '+x[2],x[1]!=null?(x[1]>=x[2]?ST('达标 · '+x[1]+' 分',OK):ST('未达标 · '+x[1]+' 分',WARN)):ST('未开始',GRAY))).join('');
+    note='<b>完成机制：</b>每个剧本出报告且达到及格分计完成；未达标的剧本可重考，不限次数。';
+  }else{
+    if(r.exam){const e=r.exam;
+      items=line('考试成绩',e.qs+' · 用时 '+e.used,e.score>=e.pass?ST(e.score+' 分 · 通过（及格 '+e.pass+'）',OK):ST(e.score+' 分 · 未通过（及格 '+e.pass+'）',WARN));
+    }else items='<div style="padding:8px 0;color:var(--t3)">学员尚未开始此任务。</div>';
+    note='<b>完成机制：</b>出成绩且达到及格分计任务完成；未通过可重考，不限次数。';
+  }
+  if(r.status==='已完成')items+='<div class="ex-note" style="margin-top:10px">已完成任务的学员可在 App「任务记录」中随时查看；任务删除后已完成记录仍保留可查。</div>';
+  recDrawer(esc(r.task)+' · '+r.name,kv,[['完成明细',[items],'',note]],null);
+}
+
 /* ============ 路由与渲染 ============ */
 let CUR='dashboard';
 let PERSONA_EDIT=-1;
 function go(k){ if(k==='scoring'||k==='scoreNew')k='radar'; CUR=k; document.body.classList.remove('chpwd'); render(); }
 function headBtns(k){
-  if(['rlearn','rpractice','rexam','logs','ability'].includes(k)) return '<button class="btn btn-g">'+icon('download',13)+'导出</button>';
+  if(['rlearn','rpractice','rtask','logs','ability'].includes(k)) return '<button class="btn btn-g">'+icon('download',13)+'导出</button>';
   if(k==='courses') return '<button class="btn btn-p" onclick="COURSE_EDIT=-1;go(\'courseNew\')">'+icon('plus',13)+'新建课程</button>';
   if(k==='assessments') return '<button class="btn btn-p">'+icon('plus',13)+'新建</button>';
   if(k==='tasks') return '<button class="btn btn-g" onclick="ttBatchGroup()">批量修改分组</button><button class="btn btn-p" onclick="ttReset();go(\'ttTaskNew\')">'+icon('plus',13)+'新建培训任务</button>';
@@ -2104,6 +2290,7 @@ function headBtns(k){
   if(k==='examDialog') return '<button class="btn btn-g" onclick="dkBatchGroup()">批量修改分组</button><button class="btn btn-p" onclick="dkReset();go(\'dkTaskNew\')">'+icon('plus',13)+'新建对话考试</button>';
   if(k==='staff') return '<button class="btn btn-g">导出</button><button class="btn btn-p" onclick="go(\'staffNew\')">'+icon('plus',13)+'新增员工</button>';
   if(k==='roles') return '<button class="btn btn-p" onclick="go(\'roleNew\')">'+icon('plus',13)+'新增角色</button>';
+  if(k==='tags') return '<button class="btn btn-g" onclick="toast(\'久智数联标签每日 08:00 自动同步（预留）\')">'+icon('download',13)+'同步久智数联（预留）</button><button class="btn btn-p" onclick="tagNewOpen()">'+icon('plus',13)+'新建标签</button>';
   return '';
 }
 function render(){
@@ -2155,6 +2342,10 @@ function render(){
   else if(CUR==='staffNew'){ c.innerHTML=pgStaffNew(); initStaffNew(); }
   else if(CUR==='personaDetail'){ c.innerHTML=pgPersonaDetail(); }
   else if(CUR==='scriptDetail'){ c.innerHTML=pgScriptDetail(); }
+  else if(CUR==='rlearn') c.innerHTML=pgRLearn();
+  else if(CUR==='rpractice') c.innerHTML=pgRPractice();
+  else if(CUR==='rtask') c.innerHTML=pgRTask();
+  else if(CUR==='tags'){ c.innerHTML=pgTags(); }
   else if(CUR==='staff'){ c.innerHTML=pgStaff(); }
   else if(CUR==='roles'){ c.innerHTML=pgRoles(); }
   else c.innerHTML=pgList(CUR);
@@ -6156,9 +6347,75 @@ const PERM_DEMO=[
  {g:'剧本管理',items:[['script:view','查看剧本'],['script:create','创建剧本'],['script:edit','编辑剧本'],['script:delete','删除剧本'],['script:publish','发布剧本'],['script:authorize','授权剧本']]},
  {g:'课程与任务',items:[['course:view','查看课程'],['course:create','创建课程'],['task:create','创建任务'],['task:view','查看任务']]}
 ];
+/* ==================== 标签管理（组织与系统管理） ====================
+   标签来源：自建 / 久智数联推送；员工侧称「标签字段」，一人可多个；
+   供 5 类任务「按标签下发」圈定学员（支持 OR / AND 组合） */
+function tagSrcPill(src){ return src==='自建'?ST('自建',OK):ST('久智数联推送',INFO); }
+function tagEmpCount(nm){ return DB.staff.list.filter(s=>(s.tags||[]).indexOf(nm)>=0).length; }
+function pgTags(){
+  const list=DB.tags.list;
+  const nSelf=list.filter(t=>t.src==='自建').length;
+  const nPush=list.filter(t=>t.src==='久智数联推送').length;
+  const nEmp=DB.staff.list.filter(s=>(s.tags||[]).length).length;
+  const rows=list.map((t,i)=>'<tr>'+
+    '<td><span class="lk" onclick="openTagStaff('+i+')">'+esc(t.name)+'</span></td>'+
+    '<td>'+tagSrcPill(t.src)+'</td>'+
+    '<td style="max-width:340px">'+esc(t.desc)+'</td>'+
+    '<td><b>'+tagEmpCount(t.name)+'</b> 人</td>'+
+    '<td>'+esc(t.by)+'</td><td>'+t.upd+'</td></tr>').join('');
+  const empRows=DB.staff.list.map((s,i)=>'<tr>'+
+    '<td><span class="lk" onclick="viewStaff('+i+')">'+s.name+'</span></td>'+
+    '<td>'+s.empId+'</td><td>'+s.org+'</td>'+
+    '<td style="max-width:360px">'+staffTagPills(s)+'</td>'+
+    '<td><b>'+(s.tags||[]).length+'</b> 个</td></tr>').join('');
+  return '<div class="page-head"><h1>标签管理</h1><span class="desc">标签来源：自建 / 久智数联推送 · 员工侧称「标签字段」，一人可拥有多个标签 · 用于任务「按标签下发」</span><div class="btns">'+headBtns('tags')+'</div></div>'+
+   '<div class="stat-grid">'+
+   '<div class="stat"><div class="l">标签总数</div><div class="v">'+list.length+'</div><div class="s">自建 <b>'+nSelf+'</b> · 推送 <b>'+nPush+'</b></div></div>'+
+   '<div class="stat"><div class="l">自建标签</div><div class="v">'+nSelf+'</div><div class="s">后台手动创建维护</div></div>'+
+   '<div class="stat"><div class="l">久智数联推送</div><div class="v">'+nPush+'</div><div class="s">每日 08:00 自动同步（预留）</div></div>'+
+   '<div class="stat"><div class="l">已打标员工</div><div class="v">'+nEmp+'</div><div class="s">共 '+DB.staff.list.length+' 名员工</div></div>'+
+   '</div>'+
+   '<div class="filter-card"><div class="f-item"><span>关键词</span><input placeholder="搜索标签名称 / 说明"></div>'+
+   '<div class="f-item"><span>来源</span><select><option>全部</option><option>自建</option><option>久智数联推送</option></select></div>'+
+   '<button class="btn btn-p btn-sm">查询</button><button class="btn btn-g btn-sm">重置</button></div>'+
+   '<div class="tbl-card"><div class="tbl-scroll"><table><thead><tr><th>标签名称</th><th>来源</th><th>标签说明</th><th>关联员工数</th><th>更新人</th><th>更新时间</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+   '<div class="tbl-foot">共 '+list.length+' 条 · 每页 10 条<div class="pgs"><button>‹</button><button class="on">1</button><button>›</button></div></div></div>'+
+   '<div class="fsec" style="margin-top:20px"><h3>员工标签字段（一人可多个）</h3></div>'+
+   '<div class="tbl-card"><div class="tbl-scroll"><table><thead><tr><th>员工</th><th>工号</th><th>所属组织</th><th>标签字段</th><th>标签数</th></tr></thead><tbody>'+empRows+'</tbody></table></div>'+
+   '<div class="tbl-foot">共 '+DB.staff.list.length+' 条 · 每页 10 条<div class="pgs"><button>‹</button><button class="on">1</button><button>›</button></div></div></div>';
+}
+/* 标签抽屉：标签明细 + 打标员工（标签字段） */
+function openTagStaff(i){
+  const t=DB.tags.list[i]; if(!t)return;
+  const emps=DB.staff.list.filter(s=>(s.tags||[]).indexOf(t.name)>=0);
+  const kv=[['标签名称',esc(t.name)],['来源',tagSrcPill(t.src)],['标签说明',esc(t.desc)],
+    ['关联员工数',emps.length+' 人'],['更新人',esc(t.by)],['更新时间',t.upd]];
+  const items=emps.length?emps.map(s=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px dashed var(--line)"><span>'+esc(s.name)+' <span style="font-size:11px;color:var(--t3)">'+esc(s.org)+'</span></span><span style="font-size:12px;color:var(--t3)">其余标签：'+((s.tags||[]).filter(x=>x!==t.name).map(esc).join('、')||'—')+'</span></div>').join(''):'<div class="sd-empty">暂无员工被打上该标签</div>';
+  const note=t.src==='久智数联推送'?'该标签由久智数联 CRM 每日 08:00 自动同步（预留），员工标签字段随推送自动更新，后台不可手动修改。':'自建标签可在后台手动维护；员工标签字段变化后，按标签下发的任务将自动重新匹配学员。';
+  recDrawer('<span class="st info">标签</span> '+t.name,kv,[['打标员工（标签字段）',[items],'',note]],null);
+}
+/* 新建标签弹窗（来源=自建；久智数联推送由系统同步，不支持手动新建） */
+function tagNewOpen(){
+  $('tagName').value=''; $('tagDesc').value='';
+  clearErr('tagNewErr');
+  $('tagNewMask').classList.add('on');
+}
+function tagNewClose(){ $('tagNewMask').classList.remove('on'); }
+function tagNewSave(){
+  clearErr('tagNewErr');
+  const name=($('tagName').value||'').trim();
+  const desc=($('tagDesc').value||'').trim();
+  if(!name){ showErr('tagNewErr','请填写标签名称'); return; }
+  if(DB.tags.list.some(t=>t.name===name)){ showErr('tagNewErr','标签名称已存在，请更换名称'); return; }
+  DB.tags.list.unshift({name:name,src:'自建',desc:desc||'（暂无说明）',upd:todayStr()+' 09:00',by:'张伟'});
+  tagNewClose();
+  render();
+  toast('已创建自建标签「'+name+'」，可在任务「按标签下发」中使用');
+}
+
 /* 组织与系统管理（独立模块，不与功能操作权限混在一起） */
 const ORGSYS_DEMO=[
- {g:'组织与系统管理',items:[['org:view','查看组织与架构'],['user:view','查看人员'],['role:view','查看角色'],['sys:config','系统配置管理'],['rlearn:view','查看学习记录'],['rpractice:view','查看陪练记录']]}
+ {g:'组织与系统管理',items:[['org:view','查看组织与架构'],['user:view','查看人员'],['role:view','查看角色'],['tag:view','查看标签管理'],['tag:manage','标签管理维护（新建/停用）'],['sys:config','系统配置管理'],['rlearn:view','查看学习记录'],['rpractice:view','查看陪练记录'],['rtask:view','查看任务完成记录']]}
 ];
 const DATA_SCOPE=[['仅本人','仅查看与本人相关的业务数据'],['本组织及以下','查看本人组织及全部下级组织数据'],['全部组织','查看当前租户授权管理范围内的全部组织数据']];
 function appRow(label,desc,on,id){
@@ -6175,6 +6432,7 @@ function pgStaff(){
       '<td>'+s.empId+'</td>'+
       '<td>'+s.org+'</td>'+
       '<td>'+(s.roles.length?s.roles.join(' · '):'<span style="color:var(--t3)">—</span>')+'</td>'+
+      '<td>'+staffTagPills(s)+'</td>'+
       '<td>'+(app||'<span style="color:var(--t3)">—</span>')+'</td>'+
       '<td>'+mst+'</td>'+
       '<td>'+s.lastLogin+'</td>'+
@@ -6186,7 +6444,7 @@ function pgStaff(){
    '<div class="f-item"><span>成员状态</span><select><option>全部</option><option>启用</option><option>停用</option></select></div>'+
    '<button class="btn btn-p btn-sm">查询</button><button class="btn btn-g btn-sm">重置</button></div>'+
    '<div class="tbl-card"><div class="tbl-scroll"><table><thead><tr>'+
-    '<th>姓名</th><th>工号</th><th>所属组织</th><th>角色</th><th>应用权限</th><th>成员状态</th><th>最近登录</th>'+
+    '<th>姓名</th><th>工号</th><th>所属组织</th><th>角色</th><th>标签字段</th><th>应用权限</th><th>成员状态</th><th>最近登录</th>'+
     '</tr></thead><tbody>'+rows+'</tbody></table></div>'+
    '<div class="tbl-foot">共 '+list.length+' 条 · 每页 10 条<div class="pgs"><button>‹</button><button class="on">1</button><button>2</button><button>›</button></div></div></div>';
 }
@@ -6218,8 +6476,21 @@ function pgStaffDetail(){
     kv('最近登录',s.lastLogin)+kv('离职时间',s.mstatus==='停用'?(s.leaveAt||'—'):'')+
    '</div>');
   N.push('<div class="fsec"><h3>角色（可多个）</h3></div><div class="sec" style="padding:0;border:0;background:none">'+tagPills(s.roles)+'</div>');
+  N.push('<div class="fsec"><h3>标签字段（可多个）</h3></div><div class="sec" style="padding:0;border:0;background:none">'+
+    staffTagPills(s)+
+    ((s.tags||[]).length?'<div class="sd-stage-sum" style="margin-top:10px">标签字段来自「标签管理」（自建 / 久智数联推送），用于任务「按标签下发」精准圈定学员</div>':'')+
+    '</div>');
   N.push('</div></div>');
   return N.join('');
+}
+/* 员工标签字段 pills（一人可多个；久智数联推送来源带「推送」角标） */
+function staffTagPills(s){
+  const arr=s.tags||[];
+  if(!arr.length)return '<span style="color:var(--t3)">未打标</span>';
+  return arr.map(t=>{
+    const tg=(DB.tags&&DB.tags.list.find(x=>x.name===t))||null;
+    return '<span class="tag-pill">'+esc(t)+(tg&&tg.src==='久智数联推送'?' <i style="font-style:normal;opacity:.65;font-size:10px">推送</i>':'')+'</span>';
+  }).join(' ');
 }
 function todayStr(){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
 /* 启用 / 停用 租户成员：停用即记录离职时间（文档 §4.3 / §4.7） */
@@ -6383,7 +6654,7 @@ function staffSaveNew(draft){
     if(status==='启用') o.leaveAt='';
     toast('已更新成员：'+name); STAFF_EDIT=-1;
   } else {
-    DB.staff.list.unshift({name,phone:phone,gstatus:'正常',empId:empIdFinal,org,post,roles,app,mstatus:status,join:todayStr(),createAt:todayStr(),tasks:0,lastLogin:'—'});
+    DB.staff.list.unshift({name,phone:phone,gstatus:'正常',empId:empIdFinal,org,post,roles,app,mstatus:status,join:todayStr(),createAt:todayStr(),tasks:0,lastLogin:'—',tags:[]});
     toast((draft?'已保存草稿：':'已创建成员并启用：')+name);
   }
   go('staff');
@@ -6852,7 +7123,7 @@ function wtype(){}
 function pgExecution(){
   const learners=[
    ['赵磊','北京长久博瑞店','课程 2/2','陪练 1/2','考核 88 · 通过',ST('进行中',INFO),'92%'],
-   ['钱多多','北京长久博瑞店','课程 2/2','陪练 1/2','考核 74 · 未通过(可重考2次)',ST('进行中',INFO),'85%'],
+   ['钱多多','北京长久博瑞店','课程 2/2','陪练 1/2','考核 74 · 未通过（未达及格分，可重考不限次数）',ST('进行中',INFO),'85%'],
    ['孙晓','天津空港店','课程 2/2','陪练 2/2','考核 92 · 通过',ST('已完成',OK),'100%'],
    ['李文静','石家庄裕华店','课程 1/2','陪练 0/2','未开始',ST('进行中',INFO),'38%'],
    ['周洋','成都锦江店','课程 1/2','陪练 0/2','未开始',ST('逾期',BAD),'20%'],
@@ -6866,7 +7137,7 @@ function pgExecution(){
     '<tr><td><b>'+r[0]+'</b></td><td>'+r[1]+'</td><td><div style="display:flex;align-items:center;gap:10px"><div class="bar"><i style="width:'+r[2]+'%'+(r[2]<50?';background:var(--warn)':'')+'"></i></div><b style="width:36px;text-align:right">'+r[2]+'%</b></div></td><td>'+r[3]+'</td><td>'+(r[4]>0?ST(r[4]+' 人逾期',BAD):'—')+'</td><td><span class="lk">下钻 ›</span></td></tr>').join('')+
   '</tbody></table></div></div></div>'+
   '<div class="card" style="margin-top:12px"><div class="h">学员明细（示例门店：北京长久博瑞店）</div><div class="b"><div class="tbl-scroll"><table><thead><tr><th>学员</th><th>门店</th><th>课程阶段</th><th>陪练阶段</th><th>考核阶段</th><th>状态</th><th>总进度</th></tr></thead><tbody>'+
-   learners.map(r=>'<tr><td><span class="lk" onclick="openDrawer(\'rpractice\',0)">'+r[0]+'</span></td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td>'+r[5]+'</td><td><b>'+r[6]+'</b></td></tr>').join('')+
+   learners.map(r=>'<tr><td><span class="lk" onclick="openRPractice(0)">'+r[0]+'</span></td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td>'+r[5]+'</td><td><b>'+r[6]+'</b></td></tr>').join('')+
   '</tbody></table></div><div style="font-size:11px;color:var(--t3);margin-top:8px">※ 状态由学员端真实行为回写，不支持页面手工"标记完成"</div></div></div>';
 }
 function exeTab(el,i){
@@ -8725,6 +8996,9 @@ function exReset(){
     anticheat:false,desc:'',orgAuto:false};
   EX.org=new Set();
   EX.roles=new Set();
+  EX.dispatch='org';
+  EX.tags=new Set();
+  EX.tagLogic='or';
 }
 exReset();
 EX_GROUPS.forEach(g=>{ if(EX_GROUPS.some(x=>x.parent===g.id)) EX_G_EXPAND.add(g.id); });
@@ -8926,12 +9200,7 @@ function pgExamNew(){
     W.push(exSw('anticheat','防作弊（预留）','预留配置，本期不生效；防作弊仅对话考试与试题考试支持，开启后切屏、退出全屏等行为将被记录'));
   /* 学员范围（组织 + 角色）· 并入任务设置 */
     W.push('<div class="ex-note" style="margin:10px 0">完成机制：学员完成考试并出具成绩，得分达到及格分记为通过；未完成前可反复参加考试。</div>');
-    W.push('<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>学员范围<i>*</i><span class="opt-tip">（按组织下发，勾选上级组织将自动连选其全部下级）</span></label><span class="org-cnt">已选择<b id="exOrgCntN">'+EX.org.size+'</b>家门店</span></div>'+
-    '<div class="org-box"><div class="org-search"><input id="exOrgSearch" placeholder="请输入搜索关键词" oninput="exOrgRender()"></div><div class="org-tree" id="exOrgTree"></div></div>'+
-    '<div class="ex-note">任务有效时间范围内，新加入所选组织/角色的员工将自动获得此任务（手动推送任务推送后同样自动纳入）</div>'+
-    '<div class="form-err" id="exOrgErr">请选择学员范围（至少 1 家组织）</div></div>');
-    W.push('<div class="form-item" style="margin-bottom:16px"><label>角色<span class="opt-tip">（在所选组织范围内按角色过滤学员，可多选 · 来自「角色管理」· 不选则全部角色生效）</span></label>'+
-    '<div class="rchips" id="exRoleChips">'+exRoleChips()+'</div></div>');
+    W.push(tgScopeHtml('ex'));
   W.push('</div></div>');
   /* 右侧实时任务配置总览 */
   W.push('<div class="pn-aside"><div class="pn-card pn-pv"><h3 class="pn-pv-title">实时任务配置总览<span class="live">实时</span></h3>'+
@@ -8964,7 +9233,7 @@ function updateExamPreview(){
     ['所属分组',exGName(EX.group)],
     ['任务时间',(EX.timeS&&EX.timeE)?exFmtDT(EX.timeS)+' ~ '+exFmtDT(EX.timeE):'未设置'],
     ['考试限时',parseInt(EX.limit)>0?'限时 '+EX.limit+' 分钟':'不限时'],
-    ['学员范围',(EX.org.size?EX.org.size+' 家组织':'未选择')+(EX.roles.size?' · 角色 '+[...EX.roles].join('、'):'')]
+    ['学员范围',tgScopeBrief(EX)]
   ];
   g('exPvRows').innerHTML=rows.map(x=>'<div class="ex-pv-row"><span class="k">'+x[0]+'</span><span class="v">'+esc(String(x[1]))+'</span></div>').join('');
   const dots=[['防作弊（预留）',EX.anticheat]];
@@ -8977,7 +9246,7 @@ function initExamNew(){
     if(n==='exTaskType'){ EX.taskType=e.target.value; }
     updateExamPreview();
   });
-  exOrgRender();
+  tgScopeRender('ex');
   const c=document.querySelector('.content');
   if(c){ if(!c.dataset.pnScroll){ c.addEventListener('scroll',pnScroll,{passive:true}); c.dataset.pnScroll='1'; } pnScroll(); }
   const fh=document.querySelector('.page-head.ph-fix'),nv=document.getElementById('pnNav'),asd=document.querySelector('.pn-aside');
@@ -9014,7 +9283,8 @@ function exValidate(){
   {
     if(!EX.timeS||!EX.timeE)return err('exTimeErr','请设置任务起止时间');
     if(EX.timeS>=EX.timeE)return err('exTimeErr','任务开始时间需早于结束时间');
-    if(!EX.org.size)return err('exOrgErr','请选择学员范围（至少 1 家组织）');
+    if(EX.dispatch==='tag'){ if(!EX.tags.size)return err('exTagErr','请选择下发标签（至少 1 个）'); }
+    else if(!EX.org.size)return err('exOrgErr','请选择学员范围（至少 1 家组织）');
   }
   return '';
 }
@@ -9029,6 +9299,7 @@ function exSave(){
   const snap=Object.assign({},EX);
   snap.org=[...EX.org];
   snap.roles=[...EX.roles];
+  snap.dispatch=EX.dispatch; snap.tags=[...EX.tags]; snap.tagLogic=EX.tagLogic;
   EX_XTRA[esc(name)]=snap;
   exReset();
   if(TT_CHAIN_K){ const k=TT_CHAIN_K; TT_CHAIN_K=''; ttChainAdd(k,name); go('ttTaskNew'); toast('已创建试题考试任务「'+name.replace(/<[^>]+>/g,'')+'」并加入任务链条'); return; }
@@ -9274,6 +9545,9 @@ function prReset(){
   PR={name:'',scripts:[],sq:'',sgroup:'',group:'ptUngrouped',taskType:'手动推送',timeS:'',timeE:'',attempts:'1',desc:''};
   PR.org=new Set();
   PR.roles=new Set();
+  PR.dispatch='org';
+  PR.tags=new Set();
+  PR.tagLogic='or';
 }
 prReset();
 function prSet(k,v){ PR[k]=v; updatePrPreview(); }
@@ -9394,12 +9668,7 @@ function pgPrTaskNew(){
     '<div class="form-err" id="prTimeErr">请设置任务起止时间，且开始时间需早于结束时间</div></div></div>');
   /* 学员范围（组织 + 角色）· 并入任务设置 */
     W.push('<div class="ex-note" style="margin:10px 0">完成机制：每个剧本完成陪练并生成陪练报告即记为完成；未完成前可反复练习。</div>');
-    W.push('<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>学员范围<i>*</i><span class="opt-tip">（按组织下发，勾选上级组织将自动连选其全部下级）</span></label><span class="org-cnt">已选择<b id="prOrgCntN">'+PR.org.size+'</b>家门店</span></div>'+
-    '<div class="org-box"><div class="org-search"><input id="prOrgSearch" placeholder="请输入搜索关键词" oninput="prOrgRender()"></div><div class="org-tree" id="prOrgTree"></div></div>'+
-    '<div class="ex-note">任务有效时间范围内，新加入所选组织/角色的员工将自动获得此任务（手动推送任务推送后同样自动纳入）</div>'+
-    '<div class="form-err" id="prOrgErr">请选择学员范围（至少 1 家组织）</div></div>');
-    W.push('<div class="form-item" style="margin-bottom:16px"><label>角色<span class="opt-tip">（在所选组织范围内按角色过滤学员，可多选 · 来自「角色管理」· 不选则全部角色生效）</span></label>'+
-    '<div class="rchips" id="prRoleChips">'+prRoleChips()+'</div></div>');
+    W.push(tgScopeHtml('pr'));
   W.push('</div></div>');
   /* 右侧实时任务配置总览 */
   W.push('<div class="pn-aside"><div class="pn-card pn-pv"><h3 class="pn-pv-title">实时任务配置总览<span class="live">实时</span></h3>'+
@@ -9429,7 +9698,7 @@ function updatePrPreview(){
     ['选择剧本',PR.scripts.length?('已选 '+PR.scripts.length+'/'+PR_SCRIPT_MAX+' · '+PR.scripts.map(s=>s.length>10?s.slice(0,10)+'…':s).join('、')):'未选择'],
     ['所属分组',ptGName(PR.group)],
     ['任务时间',(PR.timeS&&PR.timeE)?exFmtDT(PR.timeS)+' ~ '+exFmtDT(PR.timeE):'未设置'],
-    ['学员范围',(PR.org.size?PR.org.size+' 家组织':'未选择')+(PR.roles.size?' · 角色 '+[...PR.roles].join('、'):'')]
+    ['学员范围',tgScopeBrief(PR)]
   ];
   g('prPvRows').innerHTML=rows.map(x=>'<div class="ex-pv-row"><span class="k">'+x[0]+'</span><span class="v">'+esc(String(x[1]))+'</span></div>').join('');
   g('prPvDots').innerHTML='';
@@ -9441,7 +9710,7 @@ function initPrTaskNew(){
     if(n==='prTaskType'){ PR.taskType=e.target.value; }
     updatePrPreview();
   });
-  prOrgRender(); prRenderScripts();
+  tgScopeRender('pr'); prRenderScripts();
   const c=document.querySelector('.content');
   if(c){ if(!c.dataset.pnScroll){ c.addEventListener('scroll',pnScroll,{passive:true}); c.dataset.pnScroll='1'; } pnScroll(); }
   const fh=document.querySelector('.page-head.ph-fix'),nv=document.getElementById('pnNav'),asd=document.querySelector('.pn-aside');
@@ -9472,7 +9741,8 @@ function prValidate(){
   {
     if(!PR.timeS||!PR.timeE)return err('prTimeErr','请设置任务起止时间');
     if(PR.timeS>=PR.timeE)return err('prTimeErr','任务开始时间需早于结束时间');
-    if(!PR.org.size)return err('prOrgErr','请选择学员范围（至少 1 家组织）');
+    if(PR.dispatch==='tag'){ if(!PR.tags.size)return err('prTagErr','请选择下发标签（至少 1 个）'); }
+    else if(!PR.org.size)return err('prOrgErr','请选择学员范围（至少 1 家组织）');
   }
   return '';
 }
@@ -9484,6 +9754,7 @@ function prSave(){
   PT_ROW_GROUPS[esc(name)]=PR.group;
   const snap=Object.assign({},PR);
   snap.org=[...PR.org]; snap.roles=[...PR.roles];
+  snap.dispatch=PR.dispatch; snap.tags=[...PR.tags]; snap.tagLogic=PR.tagLogic;
   PT_XTRA[esc(name)]=snap;
   prReset();
   if(TT_CHAIN_K){ const k=TT_CHAIN_K; TT_CHAIN_K=''; ttChainAdd(k,name); go('ttTaskNew'); toast('已创建陪练任务「'+name.replace(/<[^>]+>/g,'')+'」并加入任务链条'); return; }
@@ -9675,13 +9946,13 @@ function tgGroupDelAsk(ctx,id){
 }
 
 /* ---- 新任务模块通用：组织树 + 角色（学员范围，与试题考试一致） ---- */
-function tgStOf(ctx){ return ctx==='cl'?CL:ctx==='dk'?DK:TT; }
-function ttPvDispatch(ctx){ if(ctx==='cl')updateClPreview(); else if(ctx==='dk')updateDkPreview(); else updateTtPreview(); }
+function tgStOf(ctx){ return ctx==='cl'?CL:ctx==='dk'?DK:ctx==='tt'?TT:ctx==='ex'?EX:PR; }
+function ttPvDispatch(ctx){ if(ctx==='cl')updateClPreview(); else if(ctx==='dk')updateDkPreview(); else if(ctx==='ex')updateExamPreview(); else if(ctx==='pr')updatePrPreview(); else updateTtPreview(); }
 function tgOrgNode(ctx,node,depth,q){
   const st=tgStOf(ctx);
   if(q&&!orgMatches(node,q))return '';
   const kids=node.c?orgNorm(node.c).filter(c=>orgMatches(c,q)):[];
-  const open=q?true:st.orgOpen.has(node.n);
+  const open=q?true:((st.orgOpen||new Set()).has(node.n));
   const leaves=orgLeaves(node);
   const selN=leaves.filter(l=>st.org.has(l)).length;
   const checked=selN>0&&selN===leaves.length;
@@ -9712,6 +9983,7 @@ function tgOrgCheck(ctx,name,add){
 }
 function tgOrgToggle(ctx,name){
   const st=tgStOf(ctx);
+  if(!st.orgOpen)st.orgOpen=new Set(['总部','华北','北京','河北','长久集团']);
   st.orgOpen.has(name)?st.orgOpen.delete(name):st.orgOpen.add(name);
   tgOrgRender(ctx);
 }
@@ -9731,12 +10003,82 @@ function tgRoleToggle(ctx,v,on){
 }
 function tgScopeHtml(ctx){
   const st=tgStOf(ctx);
-  return '<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>学员范围<i>*</i><span class="opt-tip">（按组织下发，勾选上级组织将自动连选其全部下级）</span></label><span class="org-cnt">已选择<b id="'+ctx+'OrgCntN">'+st.org.size+'</b>家门店</span></div>'+
+  return tgDispatchChips(ctx)+
+    '<div class="org-head" style="margin-bottom:8px"><label>学员范围<i>*</i></label><span class="org-cnt" id="'+ctx+'ScopeCnt">'+tgScopeCntTxt(st)+'</span></div>'+
+    '<div id="'+ctx+'ScopeBody">'+tgScopeInner(ctx)+'</div>';
+}
+/* 下发方式：按组织 / 角色（组织树圈定）或 按标签（员工标签字段圈定，支持 OR / AND 组合） */
+function tgScopeCntTxt(st){
+  return st.dispatch==='tag'
+    ?'已选择<b>'+(st.tags?st.tags.size:0)+'</b>个标签'
+    :'已选择<b>'+(st.org?st.org.size:0)+'</b>家门店';
+}
+function tgDispatchChips(ctx){
+  const st=tgStOf(ctx);
+  return '<div class="form-item" style="margin-bottom:14px"><label>下发方式<span class="opt-tip">（按组织/角色：组织树圈定学员；按标签：按员工「标签字段」圈定学员，标签来自「标签管理」，支持 OR / AND 组合）</span></label>'+
+    '<div class="rchips">'+[['org','按组织 / 角色'],['tag','按标签']].map(o=>'<label class="rchip"><input type="radio" name="'+ctx+'Dispatch" value="'+o[0]+'"'+(st.dispatch===o[0]?' checked':'')+' onchange="tgDispatchSet(\''+ctx+'\',\''+o[0]+'\')"><span>'+o[1]+'</span></label>').join('')+'</div></div>';
+}
+function tgScopeInner(ctx){
+  const st=tgStOf(ctx);
+  if(st.dispatch==='tag'){
+    return '<div class="form-item" style="margin-bottom:14px"><label>下发标签<span class="opt-tip">（员工「标签字段」，一人可多个 · 来自「标签管理」· 可多选）</span></label>'+
+      '<div class="rchips" id="'+ctx+'TagChips">'+tgTagChips(ctx)+'</div>'+
+      '<div class="form-err" id="'+ctx+'TagErr">请选择下发标签（至少 1 个）</div></div>'+
+      tgTagLogicHtml(ctx)+
+      '<div class="ex-note">任务有效时间范围内，新满足标签条件的员工将自动获得此任务（手动推送任务推送后同样自动纳入）</div>';
+  }
+  return '<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>组织<span class="opt-tip">（勾选上级组织将自动连选其全部下级）</span></label><span class="org-cnt">已选择<b id="'+ctx+'OrgCntN">'+st.org.size+'</b>家门店</span></div>'+
     '<div class="org-box"><div class="org-search"><input id="'+ctx+'OrgSearch" placeholder="请输入搜索关键词" oninput="tgOrgRender(\''+ctx+'\')"></div><div class="org-tree" id="'+ctx+'OrgTree"></div></div>'+
     '<div class="ex-note">任务有效时间范围内，新加入所选组织/角色的员工将自动获得此任务（手动推送任务推送后同样自动纳入）</div>'+
     '<div class="form-err" id="'+ctx+'OrgErr">请选择学员范围（至少 1 家组织）</div></div>'+
     '<div class="form-item" style="margin-bottom:16px"><label>角色<span class="opt-tip">（在所选组织范围内按角色过滤学员，可多选 · 来自「角色管理」· 不选则全部角色生效）</span></label>'+
     '<div class="rchips" id="'+ctx+'RoleChips">'+tgRoleChips(ctx)+'</div></div>';
+}
+function tgScopeRender(ctx){
+  const st=tgStOf(ctx);
+  const w=document.getElementById(ctx+'ScopeBody'); if(!w)return;
+  w.innerHTML=tgScopeInner(ctx);
+  const c=document.getElementById(ctx+'ScopeCnt'); if(c)c.innerHTML=tgScopeCntTxt(st);
+  if(st.dispatch==='org')tgOrgRender(ctx);
+  ttPvDispatch(ctx);
+}
+function tgDispatchSet(ctx,v){
+  const st=tgStOf(ctx);
+  st.dispatch=v;
+  tgScopeRender(ctx);
+}
+function tgTagChips(ctx){
+  const st=tgStOf(ctx);
+  const all=DB.tags.list.map(t=>t.name);
+  const allOn=all.length>0&&all.every(n=>st.tags.has(n));
+  return '<label class="rchip"><input type="checkbox" value="__ALL__"'+(allOn?' checked':'')+' onchange="tgTagToggle(\''+ctx+'\',this.value,this.checked)"><span>全部</span></label>'+
+    DB.tags.list.map(t=>'<label class="rchip"><input type="checkbox" value="'+esc(t.name)+'"'+(st.tags.has(t.name)?' checked':'')+' onchange="tgTagToggle(\''+ctx+'\',this.value,this.checked)"><span>'+esc(t.name)+(t.src==='久智数联推送'?' <i style="font-style:normal;opacity:.65;font-size:10px">推送</i>':'')+'</span></label>').join('');
+}
+function tgTagToggle(ctx,v,on){
+  const st=tgStOf(ctx);
+  if(v==='__ALL__'){ if(on)DB.tags.list.forEach(t=>st.tags.add(t.name)); else st.tags.clear(); }
+  else on?st.tags.add(v):st.tags.delete(v);
+  const w=document.getElementById(ctx+'TagChips'); if(w)w.innerHTML=tgTagChips(ctx);
+  const c=document.getElementById(ctx+'ScopeCnt'); if(c)c.innerHTML=tgScopeCntTxt(st);
+  ttPvDispatch(ctx);
+}
+function tgTagLogicHtml(ctx){
+  const st=tgStOf(ctx);
+  return '<div class="form-item" style="margin-bottom:16px"><label>标签组合方式<span class="opt-tip">（满足任一标签 = OR，满足全部标签 = AND）</span></label>'+
+    '<div class="rchips" id="'+ctx+'TagLogic">'+[['or','满足任一标签（OR）'],['and','满足全部标签（AND）']].map(o=>'<label class="rchip"><input type="radio" name="'+ctx+'TagLogic" value="'+o[0]+'"'+(st.tagLogic===o[0]?' checked':'')+' onchange="tgTagLogicSet(\''+ctx+'\',\''+o[0]+'\')"><span>'+o[1]+'</span></label>').join('')+'</div></div>';
+}
+function tgTagLogicSet(ctx,v){
+  const st=tgStOf(ctx);
+  st.tagLogic=v;
+  ttPvDispatch(ctx);
+}
+/* 学员范围摘要（实时预览 / 详情页共用） */
+function tgScopeBrief(st){
+  if(st.dispatch==='tag'){
+    const n=st.tags?st.tags.size:0;
+    return '按标签 · '+(n?[...st.tags].join(' / ')+'（'+(st.tagLogic==='and'?'满足全部标签 AND':'满足任一标签 OR')+'）':'未选择标签');
+  }
+  return (st.org.size?st.org.size+' 家组织':'未选择')+(st.roles.size?' · 角色 '+[...st.roles].join('、'):'');
 }
 /* pn 页通用初始化（导航吸顶 + 滚动监听 + 章节高亮，与 initPrTaskNew 同骨架） */
 function tgInitPageNav(formId){
@@ -9768,6 +10110,9 @@ function clReset(){
   CL.org=new Set();
   CL.roles=new Set();
   CL.orgOpen=new Set(['总部','华北','北京','河北','长久集团']);
+  CL.dispatch='org';
+  CL.tags=new Set();
+  CL.tagLogic='or';
 }
 clReset();
 function clSet(k,v){ CL[k]=v; updateClPreview(); }
@@ -9975,7 +10320,7 @@ function updateClPreview(){
     ['选择课程',CL.courses.length?('已选 '+CL.courses.length+'/'+CL_COURSE_MAX+' · '+CL.courses.map(s=>s.length>10?s.slice(0,10)+'…':s).join('、')):'未选择'],
     ['所属分组',tgName('cl',CL.group)],
     ['任务时间',(CL.timeS&&CL.timeE)?exFmtDT(CL.timeS)+' ~ '+exFmtDT(CL.timeE):'未设置'],
-    ['学员范围',(CL.org.size?CL.org.size+' 家组织':'未选择')+(CL.roles.size?' · 角色 '+[...CL.roles].join('、'):'')]
+    ['学员范围',tgScopeBrief(CL)]
   ];
   g('clPvRows').innerHTML=rows.map(x=>'<div class="ex-pv-row"><span class="k">'+x[0]+'</span><span class="v">'+esc(String(x[1]))+'</span></div>').join('');
   g('clPvDots').innerHTML='';
@@ -9987,7 +10332,7 @@ function initClTaskNew(){
     if(n==='clTaskType'){ CL.taskType=e.target.value; }
     updateClPreview();
   });
-  tgOrgRender('cl'); clRenderCourses();
+  tgScopeRender('cl'); clRenderCourses();
   tgInitPageNav('clForm');
   updateClPreview();
 }
@@ -10001,7 +10346,8 @@ function clValidate(){
   {
     if(!CL.timeS||!CL.timeE)return err('clTimeErr','请设置任务起止时间');
     if(CL.timeS>=CL.timeE)return err('clTimeErr','任务开始时间需早于结束时间');
-    if(!CL.org.size)return err('clOrgErr','请选择学员范围（至少 1 家组织）');
+    if(CL.dispatch==='tag'){ if(!CL.tags.size)return err('clTagErr','请选择下发标签（至少 1 个）'); }
+    else if(!CL.org.size)return err('clOrgErr','请选择学员范围（至少 1 家组织）');
   }
   return '';
 }
@@ -10013,6 +10359,7 @@ function clSave(){
   CL_ROW_GROUPS[esc(name)]=CL.group; CL_ROW_GROUPS[name]=CL.group;
   const snap=Object.assign({},CL);
   snap.org=[...CL.org]; snap.roles=[...CL.roles];
+  snap.dispatch=CL.dispatch; snap.tags=[...CL.tags]; snap.tagLogic=CL.tagLogic;
   CL_XTRA[esc(name)]=snap;
   clReset();
   if(TT_CHAIN_K){ const k=TT_CHAIN_K; TT_CHAIN_K=''; ttChainAdd(k,name); go('ttTaskNew'); toast('已创建课程学习任务「'+name.replace(/<[^>]+>/g,'')+'」并加入任务链条'); return; }
@@ -10031,6 +10378,9 @@ function dkReset(){
   DK.org=new Set();
   DK.roles=new Set();
   DK.orgOpen=new Set(['总部','华北','北京','河北','长久集团']);
+  DK.dispatch='org';
+  DK.tags=new Set();
+  DK.tagLogic='or';
 }
 dkReset();
 function dkSet(k,v){ DK[k]=v; updateDkPreview(); }
@@ -10268,7 +10618,7 @@ function updateDkPreview(){
     ['剧本及格分',DK.scripts.length?DK.scripts.map(n=>{const p=parseFloat(DK.passes[n]);return (n.length>8?n.slice(0,8)+'…':n)+' '+(p>0?p+' 分':'未设置');}).join('、'):'未设置'],
     ['所属分组',tgName('dk',DK.group)],
     ['任务时间',(DK.timeS&&DK.timeE)?exFmtDT(DK.timeS)+' ~ '+exFmtDT(DK.timeE):'未设置'],
-    ['学员范围',(DK.org.size?DK.org.size+' 家组织':'未选择')+(DK.roles.size?' · 角色 '+[...DK.roles].join('、'):'')]
+    ['学员范围',tgScopeBrief(DK)]
   ];
   g('dkPvRows').innerHTML=rows.map(x=>'<div class="ex-pv-row"><span class="k">'+x[0]+'</span><span class="v">'+esc(String(x[1]))+'</span></div>').join('');
   const dots=[['防作弊（预留）',DK.anticheat]];
@@ -10281,7 +10631,7 @@ function initDkTaskNew(){
     if(n==='dkTaskType'){ DK.taskType=e.target.value; }
     updateDkPreview();
   });
-  tgOrgRender('dk'); dkRenderScripts();
+  tgScopeRender('dk'); dkRenderScripts();
   tgInitPageNav('dkForm');
   updateDkPreview();
 }
@@ -10296,7 +10646,8 @@ function dkValidate(){
   {
     if(!DK.timeS||!DK.timeE)return err('dkTimeErr','请设置任务起止时间');
     if(DK.timeS>=DK.timeE)return err('dkTimeErr','任务开始时间需早于结束时间');
-    if(!DK.org.size)return err('dkOrgErr','请选择学员范围（至少 1 家组织）');
+    if(DK.dispatch==='tag'){ if(!DK.tags.size)return err('dkTagErr','请选择下发标签（至少 1 个）'); }
+    else if(!DK.org.size)return err('dkOrgErr','请选择学员范围（至少 1 家组织）');
   }
   return '';
 }
@@ -10308,6 +10659,7 @@ function dkSave(){
   DK_ROW_GROUPS[esc(name)]=DK.group; DK_ROW_GROUPS[name]=DK.group;
   const snap=Object.assign({},DK);
   snap.org=[...DK.org]; snap.roles=[...DK.roles];
+  snap.dispatch=DK.dispatch; snap.tags=[...DK.tags]; snap.tagLogic=DK.tagLogic;
   DK_XTRA[esc(name)]=snap;
   dkReset();
   if(TT_CHAIN_K){ const k=TT_CHAIN_K; TT_CHAIN_K=''; ttChainAdd(k,name); go('ttTaskNew'); toast('已创建对话考试「'+name.replace(/<[^>]+>/g,'')+'」并加入任务链条'); return; }
@@ -10320,7 +10672,7 @@ function dkCancel(){ dkReset(); if(TT_CHAIN_K){TT_CHAIN_K=''; go('ttTaskNew'); t
    列表：分组树 + 筛选 + 表格（TG_REG 'tt'，分组弹窗/转移弹窗复用试题考试弹窗，TT_GCTX / TT_MOVE_ON 调度）
    新建：基础信息 / 任务链条（课程学习 → 陪练 → 对话考试 → 试题考试，是否包含与顺序可配置；
         各步骤跳转对应任务创建页（含各自「任务设置」）/ 培训任务自身任务设置
-   详情：培训任务仅保存自身设置，链中任务在对应任务列表中单独调整 */
+   详情：培训任务仅保存自身设置，链中任务的资源内容在「任务链条」弹窗中调整 */
 let TT={};
 let TT_CHAIN_K='';
 const TT_STEP_MAX=5;
@@ -10334,6 +10686,7 @@ function ttReset(){
       {on:false,k:'ex', tasks:[]}],
     group:'ttUngrouped',taskType:'手动推送',timeS:'',timeE:'',attempts:'1',anticheat:false};
   TT.org=new Set(); TT.roles=new Set(); TT.orgOpen=new Set(['总部','华北','北京','河北','长久集团']);
+  TT.dispatch='org'; TT.tags=new Set(); TT.tagLogic='or';
   TT_CHAIN_K='';
 }
 ttReset();
@@ -10345,7 +10698,7 @@ DB.trainTasks.rows.forEach(function(r){
   if(nm.indexOf('冲刺培训')>=0)gid=tgIdByName('tt','产品上市');
   else if(nm.indexOf('全流程')>=0)gid=tgIdByName('tt','新员工培训');
   TT_ROW_GROUPS[esc(nm)]=gid;
-  TT_XTRA[esc(nm)]={name:nm,desc:(nm.indexOf('冲刺培训')>=0?'银河E5 上市冲刺培训：按「课程学习 → 陪练练习 → 试题考试」顺序完成，链中任务相互独立，任务设置各自独立配置。':nm.indexOf('周培训')>=0?'银河E5 产品知识周培训：完成课程学习后进入产品知识周练与考核。':'新车销售全流程培训：覆盖课程学习、陪练练习与对话考试的完整上岗培训链路。'),
+  TT_XTRA[esc(nm)]={name:nm,desc:(nm.indexOf('冲刺培训')>=0?'银河E5 上市冲刺培训：按「课程学习 → 陪练练习 → 试题考试」顺序完成，链中任务通过弹窗配置资源，与其它任务列表互不引用。':nm.indexOf('周培训')>=0?'银河E5 产品知识周培训：完成课程学习后进入产品知识周练与考核。':'新车销售全流程培训：覆盖课程学习、陪练练习与对话考试的完整上岗培训链路。'),
     org:['北京奥迪门店','汽车示范站','北京比亚迪','珠海路虎','珠海奥迪','河北奥迪门店','河北奔驰百货'],roles:['销售顾问'],steps:[
     {on:true, k:'cl', tasks:['新车销售六步法学习任务']},
     {on:nm.indexOf('周培训')<0, k:'pr', tasks:['周末试驾邀约专项陪练']},
@@ -10375,11 +10728,77 @@ function ttMoveStep(k,dir){
   const t=TT.steps[i]; TT.steps[i]=TT.steps[j]; TT.steps[j]=t;
   ttRenderChain(); updateTtPreview();
 }
-/* ---- 任务链条 · 步骤内容：不可从已创建任务中选择，页面跳转新建，保存后自动返回 ---- */
-function ttGoNew(k){
-  TT_CHAIN_K=k;
-  if(k==='cl')clReset(); else if(k==='pr')prReset(); else if(k==='dk')dkReset(); else if(k==='ex')exReset();
-  go({cl:'clTaskNew',pr:'prTaskNew',dk:'dkTaskNew',ex:'examNew'}[k]);
+/* ---- 任务链条 · 弹窗新建：复用各任务新建页的资源选择模块（同 id 同函数），确定后加入该步骤 ---- */
+let TT_CM={k:''};
+function ttGoNew(k){ ttOpenChain(k); }
+function ttChainModalBody(k){
+  if(k==='pr')return '<div class="form-item" style="margin-bottom:6px"><div class="org-head"><label>选择剧本<i>*</i><span class="opt-tip">（从已创建的剧本中选择，最多 '+PR_SCRIPT_MAX+' 个）</span></label>'+
+    '<span class="org-cnt">已选择<b id="prScrCnt">'+PR.scripts.length+'</b>/'+PR_SCRIPT_MAX+' 个剧本</span></div>'+
+    '<div class="org-search"><select id="prScriptGroup" style="flex:none;width:170px" onchange="prSet(\'sgroup\',this.value);prRenderScripts()">'+scFilterOpts(PR.sgroup)+'</select><input id="prScriptSearch" placeholder="请输入剧本名称" oninput="prScriptSearch(this.value)"></div>'+
+    '<div class="pr-scr-list" id="prScriptList"></div>'+
+    '<div style="margin-top:10px" id="prScrChips"></div>'+
+    '<div class="form-err" id="prScrErr">请至少选择 1 个剧本</div></div>';
+  if(k==='cl')return '<div class="form-item" style="margin-bottom:6px"><div class="org-head"><label>选择课程<i>*</i><span class="opt-tip">（从已创建的课程中选择，最多 '+CL_COURSE_MAX+' 个）</span></label>'+
+    '<span class="org-cnt">已选择<b id="clCrCnt">'+CL.courses.length+'</b>/'+CL_COURSE_MAX+' 门课程</span></div>'+
+    '<div class="org-search"><select id="clCourseGroup" style="flex:none;width:170px" onchange="clSet(\'cgroup\',this.value);clRenderCourses()">'+crsFilterOpts(CL.cgroup)+'</select><input id="clCourseSearch" placeholder="请输入课程名称" oninput="clCourseSearch(this.value)"></div>'+
+    '<div class="pr-scr-list" id="clCourseList"></div>'+
+    '<div style="margin-top:10px" id="clCrChips"></div>'+
+    '<div class="form-err" id="clCrErr">请至少选择 1 门课程</div></div>';
+  if(k==='dk')return '<div class="form-item" style="margin-bottom:16px"><div class="org-head"><label>选择剧本<i>*</i><span class="opt-tip">（从已创建的剧本中选择，最多 '+DK_SCRIPT_MAX+' 个）</span></label>'+
+    '<span class="org-cnt">已选择<b id="dkScrCnt">'+DK.scripts.length+'</b>/'+DK_SCRIPT_MAX+' 个剧本</span></div>'+
+    '<div class="org-search"><select id="dkScriptGroup" style="flex:none;width:170px" onchange="dkSet(\'sgroup\',this.value);dkRenderScripts()">'+scFilterOpts(DK.sgroup)+'</select><input id="dkScriptSearch" placeholder="请输入剧本名称" oninput="dkScriptSearch(this.value)"></div>'+
+    '<div class="pr-scr-list" id="dkScriptList"></div>'+
+    '<div style="margin-top:10px" id="dkScrChips"></div>'+
+    '<div class="form-err" id="dkScrErr">请至少选择 1 个剧本</div></div>'+
+    '<div class="form-item" style="margin-bottom:6px"><label>剧本及格分（打标分数）<i>*</i><span class="opt-tip">（选择剧本后，为每个剧本单独设置打标分数 · 0-100 分 · 学员在该剧本的得分达到及格分记为合格）</span></label>'+
+    '<div id="dkPassRows">'+dkPassRowsHtml()+'</div>'+
+    '<div class="form-err" id="dkPassErr">请为每个已选剧本设置及格分（0-100 分）</div></div>';
+  return '<div id="exPaperBody">'+exPaperHtml()+'</div>'+
+    '<div class="form-row" style="margin-top:16px"><div class="form-item"><label>通过分数（及格分）<i>*</i><span class="opt-tip">（试卷总分为 100 分 · 学员得分达到及格分记为通过）</span></label>'+
+    '<input type="number" id="exPass" min="0" step="0.5" placeholder="如：60" value="'+esc(EX.pass)+'" oninput="exSet(\'pass\',this.value)">'+
+    '<div class="form-err" id="exPassErr">请填写通过分数，且不能大于总分（100 分）</div></div></div>';
+}
+function ttOpenChain(k){
+  const s=ttStep(k); if(!s)return;
+  TT_CM.k=k;
+  if(k==='pr'){ prReset(); s.tasks.forEach(n=>{if(PR.scripts.indexOf(n)<0)PR.scripts.push(n);}); }
+  else if(k==='cl'){ clReset(); s.tasks.forEach(n=>{if(CL.courses.indexOf(n)<0)CL.courses.push(n);}); }
+  else if(k==='dk'){ dkReset(); s.tasks.forEach(n=>{if(DK.scripts.indexOf(n)<0)DK.scripts.push(n);}); if(s.passes)DK.passes=Object.assign({},s.passes); }
+  else if(k==='ex'){ exReset(); if(s.paper){ EX.qgroup=s.paper.qgroup||''; EX.qsel=(s.paper.qsel||[]).slice(); EX.qscore=Object.assign({},s.paper.qscore); EX.pass=s.paper.pass||''; } }
+  const g=id=>document.getElementById(id);
+  g('ttChainTitle').textContent='新建'+ttStepName(k)+'任务';
+  g('ttChainDesc').textContent=({cl:'选择课程加入培训任务「任务链条」的该步骤（不可从已创建任务中选择）',pr:'选择剧本加入培训任务「任务链条」的该步骤（不可从已创建任务中选择）',dk:'选择剧本并设置及格分，加入培训任务「任务链条」的该步骤（不可从已创建任务中选择）',ex:'配置组卷加入培训任务「任务链条」的该步骤'})[k]||'';
+  g('ttChainBody').innerHTML=ttChainModalBody(k);
+  const em=g('ttChainErrM'); if(em){em.textContent='';em.classList.remove('show');}
+  ['prScrErr','clCrErr','dkScrErr','dkPassErr','exTypeError','exPaperErr2','exTotalErr','exPassErr'].forEach(id=>{const x=g(id);if(x)x.classList.remove('show');});
+  g('ttChainMask').classList.add('on');
+  if(k==='pr')prRenderScripts(); else if(k==='cl')clRenderCourses(); else if(k==='dk')dkRenderScripts(); else exRenderPaperTypes();
+}
+function ttCloseChain(){ const m=document.getElementById('ttChainMask'); if(m)m.classList.remove('on'); }
+function ttChainConfirm(){
+  const k=TT_CM.k, s=ttStep(k), e=document.getElementById('ttChainErrM');
+  let tasks=null, msg='';
+  if(k==='pr'){ if(!PR.scripts.length)msg='请至少选择 1 个剧本'; else tasks=PR.scripts.slice(); }
+  else if(k==='cl'){ if(!CL.courses.length)msg='请至少选择 1 门课程'; else tasks=CL.courses.slice(); }
+  else if(k==='dk'){
+    if(!DK.scripts.length)msg='请至少选择 1 个剧本';
+    else if(!dkPassOk())msg='请为每个已选剧本设置及格分（0-100 分）';
+    else tasks=DK.scripts.slice();
+    if(tasks)s.passes=Object.assign({},DK.passes);
+  }
+  else if(k==='ex'){
+    if(!EX.qsel.length)msg='请至少选择 1 道题目';
+    else if(!EX.qsel.every(i=>parseFloat(EX.qscore[i])>0))msg='请为每道已选题目设置每题分数';
+    else if(parseFloat(exTotalScore())!==100)msg='各题目「每题分数」之和需为 100 分';
+    else if(!(parseFloat(EX.pass)>0))msg='请填写通过分数（及格分）';
+    else if(parseFloat(EX.pass)>100)msg='通过分数不能大于总分（100 分）';
+    else{ tasks=['试题考试（'+exTotalCnt()+' 题 · 及格 '+(Math.round(parseFloat(EX.pass)*10)/10)+' 分）']; s.paper={qgroup:EX.qgroup,qsel:EX.qsel.slice(),qscore:Object.assign({},EX.qscore),pass:String(EX.pass)}; }
+  }
+  if(msg){ e.textContent=msg; e.classList.add('show'); return; }
+  s.tasks=tasks;
+  ttCloseChain();
+  ttRenderChain(); updateTtPreview();
+  toast('已配置「'+ttStepName(k)+'」步骤并加入任务链条（'+tasks.length+' 个任务）');
 }
 function ttChainAdd(k,name){
   const s=ttStep(k);
@@ -10395,7 +10814,7 @@ function ttChainRemove(k,name){
 }
 function ttStepCfgHtml(s){
   let h='<div style="margin-top:12px">'+
-    '<div class="ex-note" style="margin-top:0">不可从已创建的任务中选择；点击下方按钮跳转到对应任务的新建页，保存后自动返回本页并加入该步骤（链中任务相互独立，任务设置在各任务创建页单独配置）</div>';
+    '<div class="ex-note" style="margin-top:0">不可从已创建的任务中选择；点击下方按钮在弹窗中选择课程 / 剧本或配置组卷，确定后加入该步骤（链中任务在培训任务内配置，与其它任务列表互不引用）</div>';
   if(s.tasks.length){
     h+='<div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px">'+s.tasks.map(n=>{
       const t=String(n).replace(/<[^>]+>/g,'');
@@ -10443,7 +10862,7 @@ function ttTaskSetHtml(){
 /* ---- 新建培训任务页 ---- */
 function pgTrainTaskNew(){
   const W=[];
-  W.push('<div class="page-head ph-fix"><h1>新建培训任务</h1><span class="desc">编排任务链条：课程学习 / 陪练 / 对话考试 / 试题考试 · 链中任务通过页面跳转新建</span><div class="btns">'+
+  W.push('<div class="page-head ph-fix"><h1>新建培训任务</h1><span class="desc">编排任务链条：课程学习 / 陪练 / 对话考试 / 试题考试 · 链中任务通过弹窗配置</span><div class="btns">'+
     '<span class="pn-prog" id="ttProg">必填：任务名称 * · 任务链条 * · 任务时间 * · 学员范围 *</span>'+
     '<button class="btn btn-g" onclick="ttCancel()">取消</button>'+
     '<button class="btn btn-p" onclick="ttSave()">提交</button></div></div>');
@@ -10456,7 +10875,7 @@ function pgTrainTaskNew(){
   W.push('<div class="form-item" style="margin-bottom:14px"><label>任务说明<span class="opt-tip">（0/200 · 展示在学员端任务详情）</span></label>'+
     '<div class="qb-ta"><textarea maxlength="200" placeholder="请输入任务说明" oninput="ttSet(\'desc\',this.value)">'+esc(TT.desc)+'</textarea></div></div>');
   W.push('<div class="fsec" id="ttChainSec"><h3>任务链条</h3></div>');
-  W.push('<div class="ex-note" style="margin-top:0">按顺序编排任务链条：可配置每类任务是否包含及先后顺序；链中任务不可从已创建任务中选择，点击各步骤的「新建」按钮跳转创建，保存后自动返回本页并加入链条；链中任务相互独立，任务设置在各任务创建页单独配置</div>');
+  W.push('<div class="ex-note" style="margin-top:0">按顺序编排任务链条：可配置每类任务是否包含及先后顺序；链中任务不可从已创建任务中选择，点击各步骤的「新建」按钮在弹窗中完成配置，确定后加入链条；链中任务在培训任务内管理，与其它任务列表互不引用</div>');
   W.push('<div id="ttChain" style="margin-top:12px">'+ttChainHtml()+'</div>');
   W.push('<div class="form-err" id="ttChainErr">请至少包含 1 类任务</div>');
   W.push('<div class="fsec" id="ttTaskSec"><h3>任务设置</h3></div>');
@@ -10479,7 +10898,7 @@ function initTtTaskNew(){
     if(n==='ttTaskType'){ TT.taskType=e.target.value; }
     updateTtPreview();
   });
-  tgOrgRender('tt');
+  tgScopeRender('tt');
   ttRenderChain();
   tgInitPageNav('ttForm');
   updateTtPreview();
@@ -10514,7 +10933,7 @@ function updateTtPreview(){
     ['步骤配置',en.length?en.map(s=>ttStepName(s.k)+'：'+ttStepSum(s.k)).join('；'):'—'],
     ['所属分组',tgName('tt',TT.group)],
     ['任务时间',(TT.timeS&&TT.timeE)?exFmtDT(TT.timeS)+' ~ '+exFmtDT(TT.timeE):'未设置'],
-    ['学员范围',(TT.org.size?TT.org.size+' 家组织':'未选择')+(TT.roles.size?' · 角色 '+[...TT.roles].join('、'):'')]
+    ['学员范围',tgScopeBrief(TT)]
   ];
   g('ttPvRows').innerHTML=rows.map(x=>'<div class="ex-pv-row"><span class="k">'+x[0]+'</span><span class="v">'+esc(String(x[1]))+'</span></div>').join('');
   const dots=[];
@@ -10530,11 +10949,12 @@ function ttValidate(){
   if(!en.length)return err('ttChainErr','请至少包含 1 类任务');
   for(let i=0;i<en.length;i++){
     const s=en[i];
-    if(!s.tasks.length)return err('ttChainErr','「'+ttStepName(s.k)+'」步骤尚未创建任务：请点击该步骤的「新建'+ttStepName(s.k)+'任务」按钮，保存后自动加入链条');
+    if(!s.tasks.length)return err('ttChainErr','「'+ttStepName(s.k)+'」步骤尚未创建任务：请点击该步骤的「新建'+ttStepName(s.k)+'任务」按钮，在弹窗中完成配置后加入链条');
   }
   if(!TT.timeS||!TT.timeE)return err('ttTimeErr','请设置任务起止时间');
   if(TT.timeS>=TT.timeE)return err('ttTimeErr','任务开始时间需早于结束时间');
-  if(!TT.org.size)return err('ttOrgErr','请选择学员范围（至少 1 家组织）');
+  if(TT.dispatch==='tag'){ if(!TT.tags.size)return err('ttTagErr','请选择下发标签（至少 1 个）'); }
+  else if(!TT.org.size)return err('ttOrgErr','请选择学员范围（至少 1 家组织）');
   return '';
 }
 /* ---- 保存：链中任务写入各自任务列表 + 培训任务入库 ---- */
@@ -10544,10 +10964,10 @@ function ttSave(){
   const en=TT.steps.filter(s=>s.on);
   const chainDesc=en.map(s=>ttStepName(s.k)).join(' → ');
   const timeTxt=exFmtDT(TT.timeS)+' ~ '+exFmtDT(TT.timeE);
-  /* 链中任务已在各自创建页保存（相互独立的任务，可在各任务列表中单独管理），此处仅登记培训任务 */
+  /* 链中任务在培训任务「任务链条」弹窗中配置（不写入各任务列表），此处仅登记培训任务 */
   DB.trainTasks.rows.unshift([esc(name),chainDesc,String(TT.org.size),timeTxt,'—',ST('未开始',GRAY),crsNow()]);
   TT_ROW_GROUPS[esc(name)]=TT.group; TT_ROW_GROUPS[name]=TT.group;
-  TT_XTRA[esc(name)]={name:name,desc:TT.desc,steps:JSON.parse(JSON.stringify(TT.steps)),group:TT.group,taskType:TT.taskType,timeS:TT.timeS,timeE:TT.timeE,org:[...TT.org],roles:[...TT.roles],chain:chainDesc};
+  TT_XTRA[esc(name)]={name:name,desc:TT.desc,steps:JSON.parse(JSON.stringify(TT.steps)),group:TT.group,taskType:TT.taskType,timeS:TT.timeS,timeE:TT.timeE,org:[...TT.org],roles:[...TT.roles],dispatch:TT.dispatch,tags:[...TT.tags],tagLogic:TT.tagLogic,chain:chainDesc};
   ttReset();
   go('tasks');
   toast('已创建培训任务：'+name.replace(/<[^>]+>/g,'')+'（链中 '+en.reduce((a,s)=>a+s.tasks.length,0)+' 个任务）');
@@ -10720,7 +11140,7 @@ function pgTrainTaskDetail(){
     '<div class="kv"><span>链中任务</span><b>'+(en.length?en.map(s=>ttStepName(s.k)+'：'+(s.tasks.length?s.tasks.map(x=>esc(String(x).replace(/<[^>]+>/g,''))).join('、'):'—')).join('；'):'—')+'</b></div>'+
     '<div class="kv"><span>任务说明</span><b>'+esc(TT.desc||'—')+'</b></div></div>');
   W.push('<div class="fsec" id="ttCfg"><h3>任务设置</h3></div>');
-  W.push('<div class="ex-note" style="margin-top:0">以下设置为培训任务自身设置；链中任务相互独立，其资源内容与任务设置请在对应任务列表（课程学习 / 陪练 / 对话考试 / 试题考试）中单独调整</div>');
+  W.push('<div class="ex-note" style="margin-top:0">以下设置为培训任务自身设置；链中任务的资源内容在培训任务「任务链条」各步骤弹窗中调整，与其它任务列表互不引用</div>');
   W.push('<div style="margin-top:12px">'+ttTaskSetHtml()+'</div>');
   W.push('</div></div>');
   W.push('<div class="pn-aside"><div class="pn-card pn-pv"><h3 class="pn-pv-title">实时任务配置总览<span class="live">实时</span></h3>'+
@@ -10790,6 +11210,14 @@ function tdScopeHtml(xt,stuTxt){
   const orgs=xt.org||[],roles=xt.roles||[];
   let h='<div class="fsec"><h3>学员范围</h3></div>'+
     '<div class="kv-list">'+tdKv('覆盖学员',stuTxt)+'</div>';
+  if(xt.dispatch==='tag'){
+    const tags=xt.tags||[];
+    h+='<div class="sd-stage-row"><span>下发方式</span><b>按标签（员工「标签字段」）</b></div>';
+    h+=tags.length?'<div class="sd-mats">'+tags.map(t=>'<span class="sd-mat">'+icon('tag',13)+'<span>'+esc(t)+'</span></span>').join('')+'</div>':'<div class="sd-empty">未选择标签</div>';
+    h+='<div class="sd-stage-row" style="margin-top:10px"><span>标签组合</span><b>'+(xt.tagLogic==='and'?'满足全部标签（AND）':'满足任一标签（OR）')+'</b></div>'+
+      (tags.length?'<div class="sd-stage-sum" style="margin-top:4px">共 '+tags.length+' 个标签 · 任务有效时间范围内，新满足标签条件的员工将自动获得此任务（手动推送任务推送后同样自动纳入）</div>':'');
+    return h;
+  }
   h+=orgs.length?'<div class="sd-mats">'+orgs.map(o=>'<span class="sd-mat">'+icon('org',13)+'<span>'+esc(o)+'</span></span>').join('')+'</div>':'<div class="sd-empty">未选择组织</div>';
   h+='<div class="sd-stage-row" style="margin-top:10px"><span>角色</span><b>'+(roles.length?esc(roles.join('、')):'全部角色（未单独指定）')+'</b></div>'+
     (orgs.length?'<div class="sd-stage-sum" style="margin-top:4px">共 '+orgs.length+' 家组织 · 任务有效时间范围内，新加入所选组织/角色的员工将自动获得此任务（手动推送任务推送后同样自动纳入）</div>':'');
@@ -10832,11 +11260,11 @@ function taskDetailGo(k,name){
   if(i>=0)m.v(i); else toast('未找到任务「'+clean+'」');
 }
 /* 快照读取（种子与保存快照兼容；缺失时给默认值） */
-function prXtraOf(nm){ return Object.assign({scripts:[],taskType:'手动推送',attempts:'1',desc:'',org:[],roles:[]},PT_XTRA[esc(nm)]||PT_XTRA[nm]||{}); }
-function clXtraOf(nm){ return Object.assign({courses:[],taskType:'手动推送',attempts:'1',desc:'',org:[],roles:[]},CL_XTRA[esc(nm)]||CL_XTRA[nm]||{}); }
-function dkXtraOf(nm){ return Object.assign({scripts:[],passes:{},taskType:'手动推送',attempts:'1',anticheat:false,desc:'',org:[],roles:[]},DK_XTRA[esc(nm)]||DK_XTRA[nm]||{}); }
-function exXtraOf(nm){ return Object.assign({qsel:[],qscore:{},qgroup:'',pass:'',limit:'0',anticheat:false,taskType:'手动推送',attempts:'1',desc:'',org:[],roles:[]},EX_XTRA[esc(nm)]||EX_XTRA[nm]||{}); }
-function ttXtraOf(nm){ return Object.assign({steps:[],taskType:'手动推送',attempts:'1',anticheat:false,desc:'',org:[],roles:[]},TT_XTRA[esc(nm)]||TT_XTRA[nm]||{}); }
+function prXtraOf(nm){ return Object.assign({scripts:[],taskType:'手动推送',attempts:'1',desc:'',org:[],roles:[],dispatch:'org',tags:[],tagLogic:'or'},PT_XTRA[esc(nm)]||PT_XTRA[nm]||{}); }
+function clXtraOf(nm){ return Object.assign({courses:[],taskType:'手动推送',attempts:'1',desc:'',org:[],roles:[],dispatch:'org',tags:[],tagLogic:'or'},CL_XTRA[esc(nm)]||CL_XTRA[nm]||{}); }
+function dkXtraOf(nm){ return Object.assign({scripts:[],passes:{},taskType:'手动推送',attempts:'1',anticheat:false,desc:'',org:[],roles:[],dispatch:'org',tags:[],tagLogic:'or'},DK_XTRA[esc(nm)]||DK_XTRA[nm]||{}); }
+function exXtraOf(nm){ return Object.assign({qsel:[],qscore:{},qgroup:'',pass:'',limit:'0',anticheat:false,taskType:'手动推送',attempts:'1',desc:'',org:[],roles:[],dispatch:'org',tags:[],tagLogic:'or'},EX_XTRA[esc(nm)]||EX_XTRA[nm]||{}); }
+function ttXtraOf(nm){ return Object.assign({steps:[],taskType:'手动推送',attempts:'1',anticheat:false,desc:'',org:[],roles:[],dispatch:'org',tags:[],tagLogic:'or'},TT_XTRA[esc(nm)]||TT_XTRA[nm]||{}); }
 /* ---- 手动推送（列表操作）：推送给学员范围内学员；有效期内新加入组织/角色的员工自动获得 ---- */
 const TASK_PUSH={ex:{db:'examTasks',x:exXtraOf},pr:{db:'practiceTasks',x:prXtraOf},cl:{db:'courseTasks',x:clXtraOf},dk:{db:'dialogExams',x:dkXtraOf},tt:{db:'trainTasks',x:ttXtraOf}};
 function taskPushAsk(kind,i){
@@ -10845,9 +11273,13 @@ function taskPushAsk(kind,i){
   const xt=cfg.x(nm);
   const orgs=(xt.org||[]).join('、')||'—';
   const roles=(xt.roles&&xt.roles.length)?xt.roles.join('、'):'全部角色';
+  const tags=(xt.tags||[]).join('、')||'—';
+  const tagLine=xt.dispatch==='tag'
+    ?'<div style="margin-top:8px;font-size:12.5px;color:var(--t2)">下发标签：'+tags+'（'+(xt.tagLogic==='and'?'满足全部标签 AND':'满足任一标签 OR')+'）</div>'
+    :'<div style="margin-top:8px;font-size:12.5px;color:var(--t2)">组织：'+orgs+'<br>角色：'+roles+'</div>';
   matAsk('手动推送任务','将「'+nm+'」推送给学员范围内的学员？',()=>{
-    toast('已手动推送「'+nm+'」（'+((xt.org||[]).length)+' 家组织 · '+roles+'）');render();
-  },'<div style="margin-top:8px;font-size:12.5px;color:var(--t2)">组织：'+orgs+'<br>角色：'+roles+'</div><div class="ex-note" style="margin-top:10px">任务有效时间范围内，新加入所选组织/角色的员工将自动获得此任务</div>');
+    toast('已手动推送「'+nm+'」（'+(xt.dispatch==='tag'?(xt.tags||[]).length+' 个标签':'· '+((xt.org||[]).length)+' 家组织 · '+roles)+'）');render();
+  },tagLine+'<div class="ex-note" style="margin-top:10px">任务有效时间范围内，新满足下发条件的员工将自动获得此任务</div>');
 }
 
 function viewPrTask(i){ PR_VIEW=i; go('prTaskDetail'); }
@@ -11028,7 +11460,7 @@ function pgTtTaskInfo(){
           return '<span class="sd-mat" style="cursor:pointer" title="查看任务详情" data-k="'+s.k+'" data-n="'+esc(t)+'" onclick="taskDetailGo(this.dataset.k,this.dataset.n)">'+icon(TD_STEP_IC[s.k]||'task',13)+'<span>'+esc(t)+'</span></span>';
         }).join('')+'</div>'+
       '</div>').join('')+'</div>');
-    N.push('<div class="sd-stage-sum">共 '+en.length+' 个执行步骤 · '+totalTasks+' 个链中任务（链中任务相互独立，任务设置各自独立配置）</div>');
+    N.push('<div class="sd-stage-sum">共 '+en.length+' 个执行步骤 · '+totalTasks+' 个链中任务（链中任务在「任务链条」弹窗中配置）</div>');
   } else {
     N.push('<div class="sd-empty">未配置任务链条</div>');
   }
